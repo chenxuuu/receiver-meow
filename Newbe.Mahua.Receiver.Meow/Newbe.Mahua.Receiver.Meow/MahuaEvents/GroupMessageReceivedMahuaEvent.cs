@@ -22,7 +22,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaEvents
         {
             if (context.FromQq == "80000000")
                 return;
-            string replay = MessageSolve.GetReplay(context.FromQq, context.Message,context.FromGroup);
+            string replay = MessageSolve.GetReplay(context.FromQq, context.Message, _mahuaApi, context.FromGroup);
             if (replay != "")
             {
                 _mahuaApi.SendGroupMessage(context.FromGroup, replay);

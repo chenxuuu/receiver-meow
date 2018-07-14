@@ -21,11 +21,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaEvents
 
         public void ProcessPrivateMessage(PrivateMessageReceivedContext context)
         {
-            if(context.Message.IndexOf("赞") != -1)
-            {
-                _mahuaApi.SendLike(context.FromQq);
-            }
-            else if (context.Message.IndexOf("宠物绑定") == 0)
+            if (context.Message.IndexOf("宠物绑定") == 0)
             {
                 XmlSolve.del("qq_pet_uin", context.FromQq.ToString());
                 XmlSolve.del("qq_pet_skey", context.FromQq.ToString());
@@ -49,7 +45,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaEvents
             }
             else
             {
-                string replay = MessageSolve.GetReplay(context.FromQq, context.Message);
+                string replay = MessageSolve.GetReplay(context.FromQq, context.Message, _mahuaApi);
                 if (replay != "")
                 {
                     _mahuaApi.SendPrivateMessage(context.FromQq, replay);
