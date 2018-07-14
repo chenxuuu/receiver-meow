@@ -23,6 +23,12 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             return "[CQ:at,qq=" + qq + "]";
         }
 
+        public static int GetRandomNumber(int min, int max)
+        {
+            Random ran = new Random(System.DateTime.Now.Millisecond);
+            return ran.Next(min, max);
+        }
+
         /// <summary>  
         /// GET 请求与获取结果（qq宠物专用，带cookie参数）  
         /// </summary>  
