@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -86,9 +88,9 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
         /// </summary>
         /// <param name="str">字符串</param>
         /// <returns>数字</returns>
-        public static long GetNumberLong(string str)
+        public static string GetNumber(string str)
         {
-            long result = 0;
+            string result = "";
             if (str != null && str != string.Empty)
             {
                 // 正则表达式剔除非数字字符（不包含小数点.）
@@ -96,7 +98,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 // 如果是数字，则转换为decimal类型
                 if (Regex.IsMatch(str, @"^[+-]?\d*[.]?\d*$"))
                 {
-                    result = long.Parse(str);
+                    result = str;
                 }
             }
             return result;
@@ -205,5 +207,64 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             }
             return freeSpace;
         }
+
+
+        /// <summary>
+        /// 获取快递信息
+        /// </summary>
+        /// <param name="expressNo"></param>
+        /// <param name="qq"></param>
+        /// <returns></returns>
+        public static string GetExpress(string expressNo, string qq)
+        {
+            if (expressNo == "")
+            {
+                expressNo = XmlSolve.xml_get("express", qq);
+                if (expressNo == "")
+                {
+                    return At(qq) + "你没有查询过任何快递，请输入要查询的单号";
+                }
+            }
+            else
+            {
+                XmlSolve.del("express", qq);
+                XmlSolve.insert("express", qq, expressNo);
+            }
+
+            string result_msg = "";
+            try
+            {
+                string html = HttpGet("https://www.kuaidi100.com/autonumber/autoComNum", "text=" + expressNo);
+                JObject jo = (JObject)JsonConvert.DeserializeObject(html);
+                string comCode = jo["auto"][0]["comCode"].ToString();
+                result_msg = comCode + "\r\n";
+
+                html = HttpGet("https://www.kuaidi100.com/query", "type=" + comCode + "&postid=" + expressNo);
+                jo = (JObject)JsonConvert.DeserializeObject(html);
+                foreach (var i in jo["data"])
+                {
+                    result_msg += i["time"].ToString() + " ";
+                    result_msg += i["context"].ToString() + " 地点：";
+                    result_msg += i["location"].ToString() + "\r\n";
+                }
+                if (result_msg == comCode + "\r\n")
+                {
+                    result_msg = "";
+                }
+            }
+            catch
+            {
+
+            }
+            if (result_msg == "")
+            {
+                return At(qq) + "无此单号的数据";
+            }
+            else
+            {
+                return At(qq) + result_msg + "下次查询该快递可直接发送“查快递”命令，无需在输入单号";
+            }
+        }
+
     }
 }
