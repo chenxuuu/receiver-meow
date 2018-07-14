@@ -23,6 +23,12 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             return "[CQ:at,qq=" + qq + "]";
         }
 
+        /// <summary>
+        /// 获取随机数
+        /// </summary>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        /// <returns></returns>
         public static int GetRandomNumber(int min, int max)
         {
             Random ran = new Random(System.DateTime.Now.Millisecond);
