@@ -72,6 +72,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MahuaApis\QQPet.cs" />
+    <Compile Include="MahuaApis\Tools.cs" />
     <Compile Include="MahuaApis\XmlSolve.cs" />
     <Compile Include="MahuaEvents\PrivateMessageReceivedMahuaEvent.cs" />
     <Compile Include="MahuaModule.cs" />
