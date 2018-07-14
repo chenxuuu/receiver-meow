@@ -1,0 +1,6 @@
+1	bind_qq
+5	bind_qq_wait
+11	qq_pet_uin
+12	qq_pet_skey
+2333	common
+123456	admin_list
