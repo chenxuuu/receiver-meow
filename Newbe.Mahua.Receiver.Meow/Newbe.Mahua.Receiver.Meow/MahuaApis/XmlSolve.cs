@@ -242,7 +242,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             }
         }
 
-        public static int AdminCheck(long fromQQ)
+        public static int AdminCheck(string fromQQ)
         {
             dircheck("admin_list");
 
