@@ -12,14 +12,10 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
     {
         static string path = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "data/";//AppDomain.CurrentDomain.SetupInformation.ApplicationBase
 
-        public static string ReplayGroupStatic(long fromGroup, string msg)
+        public static string ReplayGroupStatic(string fromGroup, string msg)
         {
             string replay_ok = replay_get(fromGroup, msg);
-            string replay_common = replay_get(2333, msg);
-
-            //CQ.SendGroupMessage(fromGroup, msg);
-
-            //System.Windows.Forms.MessageBox.Show(msg);
+            string replay_common = replay_get("common", msg);
 
             if (replay_ok != "")
             {
@@ -41,7 +37,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             return "";
         }
 
-        public static string replay_get(long group, string msg)
+        public static string replay_get(string group, string msg)
         {
             dircheck(group);
             XElement root = XElement.Load(path + group + ".xml");
@@ -69,7 +65,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
 
         public static long qq_get(string msg)
         {
-            long group = 1;
+            string group = "bind_qq";
             dircheck(group);
             XElement root = XElement.Load(path + group + ".xml");
             string ansall = "";
@@ -93,7 +89,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
 
         public static long qq_get_unregister(string msg)
         {
-            long group = 5;
+            string group = "bind_qq_wait";
             dircheck(group);
             XElement root = XElement.Load(path + group + ".xml");
             string ansall = "";
@@ -115,7 +111,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             return ansqq;
         }
 
-        public static string xml_get(long group, string msg)
+        public static string xml_get(string group, string msg)
         {
             dircheck(group);
             XElement root = XElement.Load(path + group + ".xml");
@@ -147,7 +143,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             return ans;
         }
 
-        public static string list_get(long group, string msg)
+        public static string list_get(string group, string msg)
         {
             dircheck(group);
             XElement root = XElement.Load(path + group + ".xml");
@@ -165,7 +161,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             return ansall;
         }
 
-        public static void del(long group, string msg)
+        public static void del(string group, string msg)
         {
             dircheck(group);
             string gg = group.ToString();
@@ -184,7 +180,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
 
 
 
-        public static void remove(long group, string msg, string ans)
+        public static void remove(string group, string msg, string ans)
         {
             dircheck(group);
             string gg = group.ToString();
@@ -201,7 +197,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
         }
 
 
-        public static void insert(long group, string msg, string ans)
+        public static void insert(string group, string msg, string ans)
         {
             if (msg.IndexOf("\r\n") < 0 & msg != "")
             {
@@ -220,7 +216,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             }
         }
 
-        public static void createxml(long group)
+        public static void createxml(string group)
         {
             XElement root = new XElement("Categories",
                 new XElement("msginfo",
@@ -232,7 +228,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             root.Save(path + group + ".xml");
         }
 
-        public static void dircheck(long group)
+        public static void dircheck(string group)
         {
             if (File.Exists(path + group + ".xml"))
             {
@@ -248,9 +244,9 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
 
         public static int AdminCheck(long fromQQ)
         {
-            dircheck(123456);
+            dircheck("admin_list");
 
-            XElement root = XElement.Load(path + "123456.xml");
+            XElement root = XElement.Load(path + "admin_list.xml");
             int count = 0;
             foreach (XElement mm in root.Elements("msginfo"))
             {
