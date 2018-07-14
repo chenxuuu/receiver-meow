@@ -1,5 +1,5 @@
 # receiver-meow
-基于[酷Q](https://cqp.cc/)与[Newbe.Mahua](https://gitee.com/yks/Newbe.Mahua.Framework)框架，重新编写的接待喵qq机器人
+基于[酷Q](https://cqp.cc/)与[Newbe.Mahua](https://github.com/newbe36524/Newbe.Mahua.Framework/)框架，重新编写的接待喵qq机器人
 
 接待喵的qq号：751323264
 

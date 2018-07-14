@@ -11,6 +11,15 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
 {
     class Tools
     {
+        /// <summary>
+        /// 获取at某人的整合格式
+        /// </summary>
+        /// <param name="qq"></param>
+        /// <returns></returns>
+        public static string At(string qq)
+        {
+            return "[CQ:at,qq=" + qq + "]";
+        }
 
         /// <summary>  
         /// GET 请求与获取结果（qq宠物专用，带cookie参数）  
