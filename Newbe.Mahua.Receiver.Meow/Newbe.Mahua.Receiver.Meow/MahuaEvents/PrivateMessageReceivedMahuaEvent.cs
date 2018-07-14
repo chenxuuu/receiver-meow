@@ -1,6 +1,7 @@
 ﻿using Newbe.Mahua.MahuaEvents;
 using System;
 using System.Threading.Tasks;
+using Newbe.Mahua.Receiver.Meow.MahuaApis;
 
 namespace Newbe.Mahua.Receiver.Meow.MahuaEvents
 {
@@ -27,8 +28,10 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaEvents
 
             // 换行，重复消息
             _mahuaApi.SendPrivateMessage(context.FromQq)
-                .Text(context.Message)
+                .Text(XmlSolve.ReplayGroupStatic(2333, context.Message))
                 .Done();
+
+            
 
             // 异步发送消息，不能使用 _mahuaApi 实例，需要另外开启Session
             //Task.Factory.StartNew(() =>
