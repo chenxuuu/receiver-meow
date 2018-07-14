@@ -25,7 +25,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 result += "命令帮助：\r\n！add 词条：回答\r\n！del 词条：回答\r\n！list 词条\r\n" +
                     "所有符号均为全角符号\r\n词条中请勿包含冒号\r\n" +
                     "发送“坷垃金曲”+数字序号即可点金坷垃歌（如坷垃金曲21，最大71）\r\n" +
-                    "私聊发送“赞我”可使接待给你点赞\r\n" +
+                    "发送“点赞”可使接待给你点赞\r\n" +
                     "发送“今日运势”可以查看今日运势\r\n" +
                     "发送“淘宝”+关键词即可搜索淘宝优惠搜索结果\r\n" +
                     "发送“pixel”可以查看像素游戏图片\r\n" +
@@ -103,6 +103,134 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 {
                     result += Tools.At(fromqq) +  "\r\n" + "[CQ:image,file=7CE7991F3D714978606B41C816FBC549.jpg]";
                 }
+            }
+            else if (msg.IndexOf("坷垃金曲") == 0)
+            {
+                int song = 0;
+                try
+                {
+                    song = int.Parse(msg.Replace("坷垃金曲", ""));
+                }
+                catch { }
+                if (song >= 1 && song <= 71)
+                {
+                    result += "[CQ:record,file=CoolQ 语音时代！\\坷垃金曲\\" + song.ToString().PadLeft(3, '0') + ".mp3]";
+                }
+                else
+                {
+                    result += Tools.At(fromqq) + "编号不对哦，编号只能是1-71";
+                }
+            }
+            else if (msg.IndexOf("！list ") == 0)
+            {
+                result += string.Format("当前词条回复如下：\r\n{0}\r\n全局词库内容：\r\n{1}",
+                                        XmlSolve.list_get(fromgroup, msg.Replace("！list ", "")),
+                                        XmlSolve.list_get("common", msg.Replace("！list ", "")));
+            }
+            else if (msg.IndexOf("！add ") == 0)
+            {
+                if (XmlSolve.AdminCheck(fromqq) >= 1 || (fromgroup == "common" && fromqq != "961726194"))
+                {
+                    string get_msg = msg.Replace("！add ", ""), tmsg = "", tans = "";
+
+                    if (get_msg.IndexOf("：") >= 1 && get_msg.IndexOf("：") != get_msg.Length - 1)
+                    {
+                        string[] str2;
+                        int count_temp = 0;
+                        str2 = get_msg.Split('：');
+                        foreach (string i in str2)
+                        {
+                            if (count_temp == 0)
+                            {
+                                tmsg = i.ToString();
+                                count_temp++;
+                            }
+                            else if (count_temp == 1)
+                            {
+                                tans = i.ToString();
+                            }
+                        }
+                        XmlSolve.insert(fromgroup, tmsg, tans);
+                        result += "添加完成！\r\n词条：" + tmsg + "\r\n回答为：" + tans;
+                    }
+                    else
+                    {
+                        result += "格式错误！";
+                    }
+                }
+                else
+                {
+                    result += "你没有权限调教接待喵";
+                }
+            }
+            else if (msg.IndexOf("！del ") == 0)
+            {
+                if (XmlSolve.AdminCheck(fromqq) >= 1 || (fromgroup == "common" && fromqq != "961726194"))
+                {
+                    string get_msg = msg.Replace("！del ", ""), tmsg = "", tans = "";
+                    if (get_msg.IndexOf("：") >= 1 && get_msg.IndexOf("：") != get_msg.Length - 1)
+                    {
+                        string[] str2;
+                        int count_temp = 0;
+                        str2 = get_msg.Split('：');
+                        foreach (string i in str2)
+                        {
+                            if (count_temp == 0)
+                            {
+                                tmsg = i.ToString();
+                                count_temp++;
+                            }
+                            else if (count_temp == 1)
+                            {
+                                tans = i.ToString();
+                            }
+                        }
+                        XmlSolve.insert(fromgroup, tmsg, tans);
+                        result += "删除完成！\r\n词条：" + tmsg + "\r\n回答为：" + tans;
+                    }
+                    else
+                    {
+                        result += "格式错误！";
+                    }
+                }
+                else
+                {
+                    result += "你没有权限调教接待喵";
+                }
+            }
+            else if (msg.IndexOf("！delall ") == 0)
+            {
+                if (XmlSolve.AdminCheck(fromqq) >= 1 || (fromgroup == "common" && fromqq != "961726194"))
+                {
+                    string get_msg = msg.Replace("！delall ", "");
+                    if (get_msg.Length > 0)
+                    {
+                        XmlSolve.del(fromgroup, get_msg);
+                        result += "删除完成！\r\n触发词：" + get_msg;
+                    }
+                    else
+                    {
+                        result += "格式错误！";
+                    }
+                }
+                else
+                {
+                    result += "你没有权限调教接待喵";
+                }
+            }
+            else if (msg.IndexOf("！addadmin ") == 0 && fromqq == "961726194")
+            {
+                XmlSolve.insert("admin_list", "给我列一下狗管理", msg.Replace("！addadmin ", ""));
+                result += "已添加一位狗管理";
+            }
+            else if (msg.IndexOf("！deladmin ") == 0 && fromqq == "961726194")
+            {
+                XmlSolve.remove("admin_list", "给我列一下狗管理", msg.Replace("！deladmin ", ""));
+                result += "已删除一位狗管理";
+            }
+            else if (msg == "给我列一下狗管理")
+            {
+                result += "当前狗管理如下：\r\n" + XmlSolve.list_get("admin_list", "给我列一下狗管理");
             }
             else
             {
