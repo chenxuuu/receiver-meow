@@ -10,7 +10,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
 {
     class XmlSolve
     {
-        static string path = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "data/";//AppDomain.CurrentDomain.SetupInformation.ApplicationBase
+        public static string path = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "data/";//AppDomain.CurrentDomain.SetupInformation.ApplicationBase
 
         public static string ReplayGroupStatic(string fromGroup, string msg)
         {
@@ -63,13 +63,12 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             return ansall;
         }
 
-        public static long qq_get(string msg)
+        public static string qq_get(string msg)
         {
             string group = "bind_qq";
             dircheck(group);
             XElement root = XElement.Load(path + group + ".xml");
-            string ansall = "";
-            long ansqq = 0;
+            string ansall = "0";
             foreach (XElement mm in root.Elements("msginfo"))
             {
                 if (msg == mm.Element("ans").Value)
@@ -79,21 +78,15 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 }
             }
 
-            if (ansall != "")
-            {
-                ansqq = long.Parse(ansall);
-            }
-
-            return ansqq;
+            return ansall;
         }
 
-        public static long qq_get_unregister(string msg)
+        public static string qq_get_unregister(string msg)
         {
             string group = "bind_qq_wait";
             dircheck(group);
             XElement root = XElement.Load(path + group + ".xml");
-            string ansall = "";
-            long ansqq = 0;
+            string ansall = "0";
             foreach (XElement mm in root.Elements("msginfo"))
             {
                 if (msg == mm.Element("ans").Value)
@@ -103,12 +96,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 }
             }
 
-            if (ansall != "")
-            {
-                ansqq = long.Parse(ansall);
-            }
-
-            return ansqq;
+            return ansall;
         }
 
         public static string xml_get(string group, string msg)
