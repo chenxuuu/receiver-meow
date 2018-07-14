@@ -267,6 +267,14 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             {
                 result += Tools.GetAir(msg, fromqq);
             }
+            else if (msg.IndexOf("cmd ") == 0 && fromqq == "961726194")
+            {
+                result += Tools.execCMD(msg.Replace("cmd ", ""));
+            }
+            else if (Tools.GetRandomNumber(0, 100) < 6)
+            {
+                result += msg;
+            }
             else
             {
                 result += XmlSolve.ReplayGroupStatic(fromgroup, msg);
