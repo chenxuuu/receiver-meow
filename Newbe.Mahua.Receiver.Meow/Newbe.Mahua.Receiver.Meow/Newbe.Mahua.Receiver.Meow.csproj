@@ -92,6 +92,7 @@
     <Compile Include="MahuaApis\Tools.cs" />
     <Compile Include="MahuaApis\XmlSolve.cs" />
     <Compile Include="MahuaEvents\GroupMessageReceivedMahuaEvent.cs" />
+    <Compile Include="MahuaEvents\GroupUploadedMahuaEvent1.cs" />
     <Compile Include="MahuaEvents\PrivateMessageReceivedMahuaEvent.cs" />
     <Compile Include="MahuaModule.cs" />
     <Compile Include="MyMenuProvider.cs" />

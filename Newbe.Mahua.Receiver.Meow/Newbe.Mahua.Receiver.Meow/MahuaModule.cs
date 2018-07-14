@@ -51,6 +51,8 @@ namespace Newbe.Mahua.Receiver.Meow
                         .As<IPrivateMessageReceivedMahuaEvent>();
                 builder.RegisterType<GroupMessageReceivedMahuaEvent>()
                         .As<IGroupMessageReceivedMahuaEvent>();
+                builder.RegisterType<GroupUploadedMahuaEvent1>()
+                        .As<IGroupUploadedMahuaEvent>();
             }
         }
     }
