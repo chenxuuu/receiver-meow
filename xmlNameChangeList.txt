@@ -1,5 +1,6 @@
 1	bind_qq
 5	bind_qq_wait
+10	ban_card
 11	qq_pet_uin
 12	qq_pet_skey
 13	qq_pet_study

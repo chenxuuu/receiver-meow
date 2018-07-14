@@ -23,19 +23,15 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             else if (msg.ToUpper() == "HELP" || msg == "帮助")
             {
                 result += "命令帮助：\r\n！add 词条：回答\r\n！del 词条：回答\r\n！list 词条\r\n" +
-                    "所有符号均为全角符号\r\n词条中请勿包含冒号\r\n" +
+                    "所有符号均为全角符号，词条中请勿包含冒号\r\n" +
                     "发送“坷垃金曲”+数字序号即可点金坷垃歌（如坷垃金曲21，最大71）\r\n" +
                     "发送“点赞”可使接待给你点赞\r\n" +
                     "发送“今日运势”可以查看今日运势\r\n" +
-                    "发送“淘宝”+关键词即可搜索淘宝优惠搜索结果\r\n" +
-                    "发送“pixel”可以查看像素游戏图片\r\n" +
                     "发送“查快递”和单号即可搜索快递物流信息\r\n" +
-                    "发送“网易云”和歌曲id号/歌曲名即可定向点歌\r\n" +
                     "发送“正则”+字符串+“换行”+正则表达式，可查询C#正则\r\n" +
                     "发送“空气质量”可查询当前时间的空气质量\r\n" +
                     "发送“宠物助手”可查询QQ宠物代挂的帮助信息\r\n" +
-                    "发送“查磁链”+“关键词”可查询磁链\r\n" +
-                    "如有建议请到https://github.com/chenxuuu/receiver-meow/issues反馈";
+                    "如有建议请到https://git.io/fNmBc反馈，欢迎star";
             }
             else if (msg == "宠物助手")
             {
@@ -231,6 +227,34 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             else if (msg == "给我列一下狗管理")
             {
                 result += "当前狗管理如下：\r\n" + XmlSolve.list_get("admin_list", "给我列一下狗管理");
+            }
+            else if (msg == "今日黄历" || msg == "今日运势" || msg == "今天运势" || msg == "今天运势")
+            {
+                result += TodaysAlmanac.GetAlmanac(fromqq, DateTime.Now.DayOfYear);
+            }
+            else if (msg == "昨日黄历" || msg == "昨日运势" || msg == "昨天运势" || msg == "昨天运势")
+            {
+                result += TodaysAlmanac.GetAlmanac(fromqq, DateTime.Now.DayOfYear - 1);
+            }
+            else if (msg == "明日黄历" || msg == "明日运势" || msg == "明天运势" || msg == "明天运势")
+            {
+                result += TodaysAlmanac.GetAlmanac(fromqq, DateTime.Now.DayOfYear + 1);
+            }
+            else if(msg == "抽奖" && fromgroup != "common")
+            {
+                result += LotteryEvent.Lottery(fromqq, _mahuaApi, fromgroup);
+            }
+            else if (msg == "禁言卡")
+            {
+                result += LotteryEvent.GetBanCard(fromqq);
+            }
+            else if (msg.IndexOf("禁言") == 0 && fromgroup != "common")
+            {
+                result += LotteryEvent.BanSomebody(fromqq, Tools.GetNumberLong(msg).ToString(), fromgroup, _mahuaApi);
+            }
+            else if (msg.IndexOf("解禁") == 0 && fromgroup != "common")
+            {
+                result += LotteryEvent.UnbanSomebody(fromqq, Tools.GetNumberLong(msg).ToString(), fromgroup, _mahuaApi);
             }
             else
             {
