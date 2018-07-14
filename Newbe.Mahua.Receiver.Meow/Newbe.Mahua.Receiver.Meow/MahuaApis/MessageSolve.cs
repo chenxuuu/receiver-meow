@@ -48,7 +48,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                     "挂机时会自动喂养与清洗，并且自动种菜收菜\r\n" +
                     "测试功能，如有bug请反馈";
             }
-            if (msg.IndexOf("宠物") == 0)
+            else if (msg.IndexOf("宠物") == 0)
             {
                 //获取uin和skey
                 string uin = XmlSolve.replay_get("qq_pet_uin", fromqq);
@@ -248,14 +248,19 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             {
                 result += LotteryEvent.GetBanCard(fromqq);
             }
-            else if (msg.IndexOf("禁言") == 0 && fromgroup != "common")
+            else if (msg.IndexOf("禁言") == 0 && msg.Length > 2 && fromgroup != "common")
             {
-                result += LotteryEvent.BanSomebody(fromqq, Tools.GetNumberLong(msg).ToString(), fromgroup, _mahuaApi);
+                result += LotteryEvent.BanSomebody(fromqq, Tools.GetNumber(msg), fromgroup, _mahuaApi);
             }
-            else if (msg.IndexOf("解禁") == 0 && fromgroup != "common")
+            else if (msg.IndexOf("解禁") == 0 && msg.Length > 2 && fromgroup != "common")
             {
-                result += LotteryEvent.UnbanSomebody(fromqq, Tools.GetNumberLong(msg).ToString(), fromgroup, _mahuaApi);
+                result += LotteryEvent.UnbanSomebody(fromqq, Tools.GetNumber(msg), fromgroup, _mahuaApi);
             }
+            else if (msg.IndexOf("查快递") == 0)
+            {
+                result += Tools.GetExpress(Tools.GetNumber(msg), fromqq);
+            }
+
             else
             {
                 result += XmlSolve.ReplayGroupStatic(fromgroup, msg);
