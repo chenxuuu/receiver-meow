@@ -28,7 +28,6 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                     "发送“点赞”可使接待给你点赞\r\n" +
                     "发送“今日运势”可以查看今日运势\r\n" +
                     "发送“查快递”和单号即可搜索快递物流信息\r\n" +
-                    "发送“正则”+字符串+“换行”+正则表达式，可查询C#正则\r\n" +
                     "发送“空气质量”可查询当前时间的空气质量\r\n" +
                     "发送“宠物助手”可查询QQ宠物代挂的帮助信息\r\n" +
                     "如有建议请到https://git.io/fNmBc反馈，欢迎star";
@@ -55,49 +54,49 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 string skey = XmlSolve.replay_get("qq_pet_skey", fromqq);
                 if (msg == "宠物状态")
                 {
-                    result += Tools.At(fromqq) +  "\r\n" + QQPet.GetPetState(uin, skey);
+                    result += Tools.At(fromqq) + "\r\n" + QQPet.GetPetState(uin, skey);
                 }
                 else if (msg == "宠物资料")
                 {
-                    result += Tools.At(fromqq) +  "\r\n" + QQPet.GetPetMore(uin, skey);
+                    result += Tools.At(fromqq) + "\r\n" + QQPet.GetPetMore(uin, skey);
                 }
                 else if (msg.IndexOf("宠物喂养") == 0)
                 {
-                    result += Tools.At(fromqq) +  "\r\n" + QQPet.FeedPetSelect(uin, skey, msg.Replace("宠物喂养", ""));
+                    result += Tools.At(fromqq) + "\r\n" + QQPet.FeedPetSelect(uin, skey, msg.Replace("宠物喂养", ""));
                 }
                 else if (msg.IndexOf("宠物清洁") == 0)
                 {
-                    result += Tools.At(fromqq) +  "\r\n" + QQPet.WashPetSelect(uin, skey, msg.Replace("宠物清洁", ""));
+                    result += Tools.At(fromqq) + "\r\n" + QQPet.WashPetSelect(uin, skey, msg.Replace("宠物清洁", ""));
                 }
                 else if (msg.IndexOf("宠物治疗") == 0)
                 {
-                    result += Tools.At(fromqq) +  "\r\n" + QQPet.CurePetSelect(uin, skey, msg.Replace("宠物治疗", ""));
+                    result += Tools.At(fromqq) + "\r\n" + QQPet.CurePetSelect(uin, skey, msg.Replace("宠物治疗", ""));
                 }
                 else if (msg.IndexOf("宠物使用") == 0)
                 {
-                    result += Tools.At(fromqq) +  "\r\n" + QQPet.UsePet(uin, skey, msg.Replace("宠物使用", ""));
+                    result += Tools.At(fromqq) + "\r\n" + QQPet.UsePet(uin, skey, msg.Replace("宠物使用", ""));
                 }
                 else if (msg == "宠物学习开启")
                 {
                     XmlSolve.del("qq_pet_study", fromqq);
                     XmlSolve.insert("qq_pet_study", fromqq, "0");
-                    result += Tools.At(fromqq) +  "\r\n" + "已开启自动学习（自动上课与换课程）";
+                    result += Tools.At(fromqq) + "\r\n" + "已开启自动学习（自动上课与换课程）";
                 }
                 else if (msg == "宠物学习关闭")
                 {
                     XmlSolve.del("qq_pet_study", fromqq);
                     XmlSolve.insert("qq_pet_study", fromqq, "28");
-                    result += Tools.At(fromqq) +  "\r\n" + "已关闭自动学习（学习完后不会自动继续学）";
+                    result += Tools.At(fromqq) + "\r\n" + "已关闭自动学习（学习完后不会自动继续学）";
                 }
                 else if (msg == "宠物解绑")
                 {
                     XmlSolve.del("qq_pet_study", fromqq);
                     XmlSolve.del("qq_pet_study", fromqq);
-                    result += Tools.At(fromqq) +  "\r\n" + "\r\n解绑成功！";
+                    result += Tools.At(fromqq) + "\r\n" + "\r\n解绑成功！";
                 }
                 else if (msg == "宠物绑定方法")
                 {
-                    result += Tools.At(fromqq) +  "\r\n" + "[CQ:image,file=7CE7991F3D714978606B41C816FBC549.jpg]";
+                    result += Tools.At(fromqq) + "\r\n" + "[CQ:image,file=7CE7991F3D714978606B41C816FBC549.jpg]";
                 }
             }
             else if (msg.IndexOf("坷垃金曲") == 0)
@@ -240,7 +239,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             {
                 result += TodaysAlmanac.GetAlmanac(fromqq, DateTime.Now.DayOfYear + 1);
             }
-            else if(msg == "抽奖" && fromgroup != "common")
+            else if (msg == "抽奖" && fromgroup != "common")
             {
                 result += LotteryEvent.Lottery(fromqq, _mahuaApi, fromgroup);
             }
@@ -260,7 +259,14 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             {
                 result += Tools.GetExpress(Tools.GetNumber(msg), fromqq);
             }
-
+            else if (msg == "开车")
+            {
+                result += "magnet:?xt=urn:btih:" + Tools.GetRandomString(40, true, false, false, false, "ABCDEF");
+            }
+            else if (msg.IndexOf("空气质量") == 0)
+            {
+                result += Tools.GetAir(msg, fromqq);
+            }
             else
             {
                 result += XmlSolve.ReplayGroupStatic(fromgroup, msg);
