@@ -23,6 +23,54 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             return "[CQ:at,qq=" + qq + "]";
         }
 
+
+        /// <summary>
+        /// 获取是否复读
+        /// </summary>
+        /// <param name="group"></param>
+        /// <returns></returns>
+        public static bool GetRepeat(string group)
+        {
+            int sum = 0;
+            try
+            {
+                sum = int.Parse(XmlSolve.xml_get("repeat_settings", group));
+                if (GetRandomNumber(0, 100) < sum)
+                    return true;
+                else
+                    return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+
+        /// <summary>
+        /// 设置复读概率
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="group"></param>
+        /// <returns></returns>
+        public static string SetRepeat(string input, string group)
+        {
+            int sum = 0;
+            try
+            {
+                sum = int.Parse(input);
+                XmlSolve.del("repeat_settings", group);
+                XmlSolve.insert("repeat_settings", group, sum.ToString());
+                return "设置完成，复读概率更改为" + sum + "%";
+            }
+            catch
+            {
+                return "设置失败，请检查参数";
+            }
+        }
+
+
+
         /// <summary>
         /// 获取随机数
         /// </summary>
