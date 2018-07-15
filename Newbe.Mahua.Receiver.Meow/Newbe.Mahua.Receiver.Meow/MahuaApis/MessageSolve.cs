@@ -125,7 +125,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             }
             else if (msg.IndexOf("！add ") == 0)
             {
-                if ((XmlSolve.AdminCheck(fromqq) >= 1 && fromgroup != "common") || (fromgroup == "common" && fromqq != "961726194"))
+                if ((XmlSolve.AdminCheck(fromqq) >= 1 && fromgroup != "common") || (fromgroup == "common" && fromqq == "961726194"))
                 {
                     string get_msg = msg.Replace("！add ", ""), tmsg = "", tans = "";
 
@@ -156,12 +156,12 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 }
                 else
                 {
-                    result += "你没有权限调教接待喵，申请群词条更改权限，请私聊接待发普通红包（不会去领的，放心233）";
+                    result += "你没有权限调教接待喵，申请群词条更改权限，请私聊接待发普通红包\r\n（不会去领的，放心233）";
                 }
             }
             else if (msg.IndexOf("！del ") == 0)
             {
-                if ((XmlSolve.AdminCheck(fromqq) >= 1 && fromgroup != "common") || (fromgroup == "common" && fromqq != "961726194"))
+                if ((XmlSolve.AdminCheck(fromqq) >= 1 && fromgroup != "common") || (fromgroup == "common" && fromqq == "961726194"))
                 {
                     string get_msg = msg.Replace("！del ", ""), tmsg = "", tans = "";
                     if (get_msg.IndexOf("：") >= 1 && get_msg.IndexOf("：") != get_msg.Length - 1)
@@ -196,7 +196,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             }
             else if (msg.IndexOf("！delall ") == 0)
             {
-                if ((XmlSolve.AdminCheck(fromqq) >= 1 && fromgroup != "common") || (fromgroup == "common" && fromqq != "961726194"))
+                if ((XmlSolve.AdminCheck(fromqq) >= 1 && fromgroup != "common") || (fromgroup == "common" && fromqq == "961726194"))
                 {
                     string get_msg = msg.Replace("！delall ", "");
                     if (get_msg.Length > 0)
