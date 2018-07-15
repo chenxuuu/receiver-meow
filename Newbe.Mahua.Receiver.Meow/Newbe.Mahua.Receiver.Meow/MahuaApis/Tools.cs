@@ -13,6 +13,37 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
 {
     class Tools
     {
+        public static int messageCount = 0;
+        public static string now = DateTime.Now.ToString();
+        /// <summary>
+        /// 判断是否发消息，消息速率限制函数
+        /// </summary>
+        /// <returns></returns>
+        public static bool MessageControl(int count)
+        {
+            if (now == DateTime.Now.ToString())
+            {
+                if (messageCount < count)
+                {
+                    messageCount++;
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                now = DateTime.Now.ToString();
+                messageCount = 0;
+                return false;
+            }
+        }
+
+
+
+
         /// <summary>
         /// 获取at某人的整合格式
         /// </summary>
