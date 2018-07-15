@@ -16,9 +16,9 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             string result = "";
             if (msg == "赞我" || msg == "点赞")
             {
-                for (int i = 0; i < 10; i++)
+                for (int i = 0; i < 50; i++)
                     _mahuaApi.SendLike(fromqq);
-                result += Tools.At(fromqq) + "已为你点赞十次，一天只能点赞十次哦~";
+                result += Tools.At(fromqq) + "已为你点赞50次，一天只能点赞50次哦~";
             }
             else if (msg.ToUpper() == "HELP" || msg == "帮助" || msg == "菜单")
             {
