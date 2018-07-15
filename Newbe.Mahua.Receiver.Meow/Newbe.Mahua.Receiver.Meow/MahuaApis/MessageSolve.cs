@@ -11,8 +11,11 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
 {
     class MessageSolve
     {
+        private static string prem = "你没有权限调教接待喵，权限获取方法请去问开发者";
         public static string GetReplay(string fromqq,string msg, IMahuaApi _mahuaApi, string fromgroup = "common")
         {
+            if (Tools.MessageControl(5))  //限制消息速率
+                return "";
             string result = "";
             if (msg == "赞我" || msg == "点赞")
             {
@@ -31,6 +34,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                     "发送“空气质量”可查询当前时间的空气质量\r\n" +
                     "发送“宠物助手”可查询QQ宠物代挂的帮助信息\r\n" +
                     "发送“复读”+百分比可更改复读概率\r\n" +
+                    "每秒最多响应5条消息\r\n" +
                     "如有建议请到https://git.io/fNmBc反馈，欢迎star";
             }
             else if (msg == "宠物助手")
@@ -156,7 +160,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 }
                 else
                 {
-                    result += "你没有权限调教接待喵，申请群词条更改权限，请私聊接待发普通红包\r\n（不会去领的，放心233）";
+                    result += prem;
                 }
             }
             else if (msg.IndexOf("！del ") == 0)
@@ -191,7 +195,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 }
                 else
                 {
-                    result += "你没有权限调教接待喵，申请群词条更改权限，请私聊接待发普通红包（不会去领的，放心233）";
+                    result += prem;
                 }
             }
             else if (msg.IndexOf("！delall ") == 0)
@@ -211,7 +215,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 }
                 else
                 {
-                    result += "你没有权限调教接待喵，申请群词条更改权限，请私聊接待发普通红包（不会去领的，放心233）";
+                    result += prem;
                 }
             }
             else if (msg.IndexOf("[CQ:hb,title=") != -1 && msg.IndexOf("]") != -1 && fromgroup == "common")
@@ -279,7 +283,11 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             }
             else if (msg.IndexOf("复读") == 0 && fromgroup != "common")
             {
-                result += Tools.At(fromqq) + Tools.SetRepeat(Tools.GetNumber(msg), fromgroup);
+                if (XmlSolve.AdminCheck(fromqq) >= 1)
+                    result += Tools.At(fromqq) + Tools.SetRepeat(Tools.GetNumber(msg), fromgroup);
+                else
+                    result += prem;
+
             }
             else if (Tools.GetRepeat(fromgroup))
             {
