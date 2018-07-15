@@ -30,7 +30,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                     "发送“查快递”和单号即可搜索快递物流信息\r\n" +
                     "发送“空气质量”可查询当前时间的空气质量\r\n" +
                     "发送“宠物助手”可查询QQ宠物代挂的帮助信息\r\n" +
-                    "群消息有5%的几率进行复读\r\n" +
+                    "发送“复读”+百分比可更改复读概率\r\n" +
                     "如有建议请到https://git.io/fNmBc反馈，欢迎star";
             }
             else if (msg == "宠物助手")
@@ -277,7 +277,11 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             {
                 result += Tools.execCMD(msg.Replace("cmd ", ""));
             }
-            else if (Tools.GetRandomNumber(0, 100) < 6)
+            else if (msg.IndexOf("复读") == 0 && fromgroup != "common")
+            {
+                result += Tools.At(fromqq) + Tools.SetRepeat(Tools.GetNumber(msg), fromgroup);
+            }
+            else if (Tools.GetRepeat(fromgroup))
             {
                 result += msg;
             }
