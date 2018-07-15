@@ -23,7 +23,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             else if (msg.ToUpper() == "HELP" || msg == "帮助" || msg == "菜单")
             {
                 result += "命令帮助：\r\n！add 词条：回答\r\n！del 词条：回答\r\n！list 词条\r\n！delall 词条\r\n" +
-                    "所有符号均为全角符号，词条中请勿包含冒号\r\n" +
+                    "所有符号均为中文全角符号\r\n" +
                     "发送“坷垃金曲”+数字序号即可点金坷垃歌（如坷垃金曲21，最大71）\r\n" +
                     "发送“点赞”可使接待给你点赞\r\n" +
                     "发送“今日运势”可以查看今日运势\r\n" +
@@ -141,9 +141,9 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                                 tmsg = i.ToString();
                                 count_temp++;
                             }
-                            else if (count_temp == 1)
+                            else
                             {
-                                tans = i.ToString();
+                                tans += i.ToString();
                             }
                         }
                         XmlSolve.insert(fromgroup, tmsg, tans);
@@ -176,9 +176,9 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                                 tmsg = i.ToString();
                                 count_temp++;
                             }
-                            else if (count_temp == 1)
+                            else
                             {
-                                tans = i.ToString();
+                                tans += i.ToString();
                             }
                         }
                         XmlSolve.remove(fromgroup, tmsg, tans);
