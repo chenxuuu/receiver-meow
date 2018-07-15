@@ -17,6 +17,10 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
         /// <returns></returns>
         public static string Lottery(string qq, IMahuaApi _mahuaApi,string group)
         {
+            if (CheckCount(qq))
+            {
+                return Tools.At(qq) + "今日抽奖次数已用完！";
+            }
             string result = "";
             int need_add = 0;
             Random ran = new Random(System.DateTime.Now.Millisecond);
@@ -167,6 +171,43 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             else
             {
                 return Tools.At(fromqq) + "\r\n你哪儿有禁言卡？";
+            }
+        }
+
+
+        /// <summary>
+        /// 检查今日抽奖次数有没有用完
+        /// </summary>
+        /// <param name="qq"></param>
+        /// <returns></returns>
+        public static bool CheckCount(string qq)
+        {
+            string last_time = XmlSolve.xml_get("daily_sign_in_time", qq);
+            if(last_time == System.DateTime.Today.ToString())  //今天抽过奖了
+            {
+                int count = 0;
+                try
+                {
+                    count = int.Parse(XmlSolve.xml_get("lottery_count", qq));
+                }
+                catch { }
+
+                if (count == 0)
+                    return true;
+                else
+                {
+                    XmlSolve.del("lottery_count", qq);
+                    XmlSolve.insert("lottery_count", qq, (count - 1).ToString());
+                    return false;
+                }
+            }
+            else  //今天没抽奖
+            {
+                XmlSolve.del("daily_sign_in_time", qq);
+                XmlSolve.insert("daily_sign_in_time", qq, System.DateTime.Today.ToString());
+                XmlSolve.del("lottery_count", qq);
+                XmlSolve.insert("lottery_count", qq, "4");
+                return false;
             }
         }
     }
