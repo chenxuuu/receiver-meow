@@ -155,7 +155,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 }
                 else
                 {
-                    result += "你没有权限调教接待喵";
+                    result += "你没有权限调教接待喵，申请群词条更改权限，请私聊接待发普通红包（不会去领的，放心233）";
                 }
             }
             else if (msg.IndexOf("！del ") == 0)
@@ -190,7 +190,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 }
                 else
                 {
-                    result += "你没有权限调教接待喵";
+                    result += "你没有权限调教接待喵，申请群词条更改权限，请私聊接待发普通红包（不会去领的，放心233）";
                 }
             }
             else if (msg.IndexOf("！delall ") == 0)
@@ -210,8 +210,13 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 }
                 else
                 {
-                    result += "你没有权限调教接待喵";
+                    result += "你没有权限调教接待喵，申请群词条更改权限，请私聊接待发普通红包（不会去领的，放心233）";
                 }
+            }
+            else if (msg.IndexOf("[CQ:hb,title=") != -1 && msg.IndexOf("]") != -1 && fromgroup == "common")
+            {
+                XmlSolve.insert("admin_list", "给我列一下狗管理", fromqq);
+                result += "已给予" + fromqq + "词条编辑权限。";
             }
             else if (msg.IndexOf("！addadmin ") == 0 && fromqq == "961726194")
             {
