@@ -14,7 +14,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
     class Tools
     {
         public static int messageCount = 0;
-        public static string now = DateTime.Now.ToString();
+        public static string now = DateTime.Now.TimeOfDay.ToString();
         /// <summary>
         /// 判断是否发消息，消息速率限制函数
         /// </summary>
