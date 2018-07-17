@@ -289,15 +289,14 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                     result += prem;
 
             }
-            else if (Tools.GetRepeat(fromgroup))
-            {
-                result += msg;
-            }
             else if (msg.IndexOf("点歌") == 0)
             {
                 result += Tools.Get163Music(msg.Replace("点歌",""), fromqq);
             }
             else
+                result += Tools.GetRepeatString(msg, fromgroup);
+
+            if(result == "")
             {
                 result += XmlSolve.ReplayGroupStatic(fromgroup, msg);
             }

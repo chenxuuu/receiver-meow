@@ -54,28 +54,42 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             return "[CQ:at,qq=" + qq + "]";
         }
 
-
         /// <summary>
-        /// 获取是否复读
+        /// 获取复读语句
         /// </summary>
+        /// <param name="msg"></param>
         /// <param name="group"></param>
         /// <returns></returns>
-        public static bool GetRepeat(string group)
+        public static string GetRepeatString(string msg, string group)
         {
             int sum = 0;
             try
             {
                 sum = int.Parse(XmlSolve.xml_get("repeat_settings", group));
                 if (GetRandomNumber(0, 100) < sum)
-                    return true;
+                {
+                    if (sum <= 100)
+                        return msg;
+                    else
+                    {
+                        string result = "";
+                        for (int i = 0; i < sum / 100; i++)
+                            result += msg;
+                        if (GetRandomNumber(0, 100) < sum % 100)
+                            return result + msg;
+                        else
+                            return result;
+                    }
+                }
                 else
-                    return false;
+                    return "";
             }
             catch
             {
-                return false;
+                return "";
             }
         }
+
 
 
         /// <summary>
@@ -90,6 +104,8 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             try
             {
                 sum = int.Parse(input);
+                if (sum > 1000)
+                    sum = 1000;
                 XmlSolve.del("repeat_settings", group);
                 XmlSolve.insert("repeat_settings", group, sum.ToString());
                 return "设置完成，复读概率更改为" + sum + "%";
