@@ -562,5 +562,32 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 }
             }
         }
+
+
+        public static string Get163Music(string songName, string qq)
+        {
+            int songID = 0;
+            try
+            {
+                songID = int.Parse(songName);
+            }
+            catch
+            {
+                try
+                {
+                    string html = HttpGet("http://s.music.163.com/search/get/", "type=1&s=" + songName);
+                    JObject jo = (JObject)JsonConvert.DeserializeObject(html);
+                    string idGet = jo["result"]["songs"][0]["id"].ToString();
+                    songID = int.Parse(idGet);
+                }
+                catch
+                {
+                    return At(qq) + "\r\n机器人爆炸了，原因：根本没这首歌";
+                }
+            }
+            return "[CQ:music,type=163,id=" + songID + "]";
+        }
+
+
     }
 }
