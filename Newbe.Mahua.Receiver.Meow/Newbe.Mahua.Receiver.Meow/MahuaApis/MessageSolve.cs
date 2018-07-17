@@ -31,8 +31,9 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                     "发送“今日运势”可以查看今日运势\r\n" +
                     "发送“查快递”和单号即可搜索快递物流信息\r\n" +
                     "发送“空气质量”可查询当前时间的空气质量\r\n" +
+                    "发送“点歌”加网易云id或歌名可点歌\r\n" +
                     "发送“宠物助手”可查询QQ宠物代挂的帮助信息\r\n" +
-                    "发送“复读”+百分比可更改复读概率\r\n" +
+                    "发送“复读”加百分比可更改复读概率\r\n" +
                     "每秒最多响应5条消息\r\n" +
                     "如有建议请到https://git.io/fNmBc反馈，欢迎star";
             }
@@ -291,6 +292,10 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             else if (Tools.GetRepeat(fromgroup))
             {
                 result += msg;
+            }
+            else if (msg.IndexOf("点歌") == 0)
+            {
+                result += Tools.Get163Music(msg.Replace("点歌",""), fromqq);
             }
             else
             {
