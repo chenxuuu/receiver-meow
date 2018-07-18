@@ -14,6 +14,8 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
         private static string prem = "你没有权限调教接待喵，权限获取方法请去问开发者";
         public static string GetReplay(string fromqq,string msg, IMahuaApi _mahuaApi, string fromgroup = "common")
         {
+            if (Tools.MessageControl(5))
+                return "";
             string result = "";
             if (msg == "赞我" || msg == "点赞")
             {
