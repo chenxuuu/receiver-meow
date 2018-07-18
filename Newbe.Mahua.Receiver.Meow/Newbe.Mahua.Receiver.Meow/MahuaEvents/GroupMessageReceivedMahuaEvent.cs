@@ -23,7 +23,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaEvents
             if (context.FromQq == "80000000" || context.FromQq == "1811436283" || context.Message.IndexOf(Tools.At("751323264")) != -1)
                 return;
             string replay = MessageSolve.GetReplay(context.FromQq, context.Message, _mahuaApi, context.FromGroup);
-            if (replay != "" && !Tools.MessageControl(5))
+            if (replay != "")
             {
                 _mahuaApi.SendGroupMessage(context.FromGroup, replay);
             }
