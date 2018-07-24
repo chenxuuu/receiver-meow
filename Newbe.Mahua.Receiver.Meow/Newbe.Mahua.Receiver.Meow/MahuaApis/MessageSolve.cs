@@ -291,8 +291,12 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             }
             else if (msg.IndexOf("点歌") == 0)
             {
-                result += Tools.Get163Music(msg.Replace("点歌",""), fromqq);
+                result += Tools.Get163Music(msg.Replace("点歌", ""), fromqq);
             }
+            else if (fromgroup == "241464054") //糖拌群
+                result += MinecraftSolve.SolvePlayer(fromqq, msg, _mahuaApi);
+            else if (fromgroup == "567145439") //分赃群
+                result += MinecraftSolve.SolveAdmin(fromqq, msg, _mahuaApi);
             else
                 result += Tools.GetRepeatString(msg, fromgroup);
 
