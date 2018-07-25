@@ -33,6 +33,8 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaEvents
                     {
                         _mahuaApi.SendGroupMessage("567145439", "检测到玩家" + player + "已退群，请管理进入游戏，执行\r\n/code "+
                             MinecraftSolve.DelNewCode(player) +"\r\n命令来删除该玩家的白名单");
+                        XmlSolve.del("bind_qq_wait", player);
+                        XmlSolve.del("bind_qq", player);
                     }
                 }
             }
