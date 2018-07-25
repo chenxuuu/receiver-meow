@@ -57,6 +57,8 @@ namespace Newbe.Mahua.Receiver.Meow
                         .As<IGroupUploadedMahuaEvent>();//上传文件
                 builder.RegisterType<GroupJoiningInvitationReceivedMahuaEvent>()
                         .As<IGroupJoiningInvitationReceivedMahuaEvent>();//入群邀请
+                builder.RegisterType<GroupMemberChangedMahuaEvent1>()
+                        .As<IGroupMemberChangedMahuaEvent>();//群成员变化
             }
         }
     }
