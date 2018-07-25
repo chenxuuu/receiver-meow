@@ -28,6 +28,24 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             return result;
         }
 
+        /// <summary>
+        /// 删除白名单命令
+        /// </summary>
+        /// <param name="player"></param>
+        public static string DelNewCode(string player)
+        {
+            string result = Tools.GetRandomString(40, true, false, false, false, "ABCDEF");
+            //在将文本写入文件前，处理文本行
+            //StreamWriter一个参数默认覆盖
+            //StreamWriter第二个参数为false覆盖现有文件，为true则把文本追加到文件末尾
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(codeFile, true))
+            {
+                file.WriteLine(result + ": /manudel " + player);// 直接追加文件末尾，换行   
+            }
+            return result;
+        }
+
+
 
         /// <summary>
         /// 处理玩家群消息

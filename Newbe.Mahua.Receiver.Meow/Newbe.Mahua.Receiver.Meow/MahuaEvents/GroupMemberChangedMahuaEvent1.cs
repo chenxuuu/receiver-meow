@@ -1,5 +1,6 @@
 ﻿using Newbe.Mahua.MahuaEvents;
 using System;
+using Newbe.Mahua.Receiver.Meow.MahuaApis;
 
 namespace Newbe.Mahua.Receiver.Meow.MahuaEvents
 {
@@ -19,7 +20,22 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaEvents
 
         public void ProcessGroupMemberChanged(GroupMemberChangedContext context)
         {
-            
+            if(context.GroupMemberChangedType.ToString() == "Increased") //进群
+            {
+                _mahuaApi.SendGroupMessage(context.FromGroup, "欢迎" + Tools.At(context.JoinedOrLeftQq) + "进群！请仔细阅读群公告哦~");
+            }
+            else if (context.GroupMemberChangedType.ToString() == "Decreased")//退群
+            {
+                if(context.FromGroup== "241464054")
+                {
+                    string player = XmlSolve.xml_get("bind_qq", context.JoinedOrLeftQq);
+                    if(player=="")
+                    {
+                        _mahuaApi.SendGroupMessage("567145439", "检测到玩家" + player + "已退群，请管理进入游戏，执行\r\n/code "+
+                            MinecraftSolve.DelNewCode(player) +"\r\n命令来删除该玩家的白名单");
+                    }
+                }
+            }
         }
     }
 }
