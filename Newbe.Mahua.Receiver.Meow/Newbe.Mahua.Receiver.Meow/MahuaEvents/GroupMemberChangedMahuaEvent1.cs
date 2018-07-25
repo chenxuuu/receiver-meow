@@ -29,12 +29,12 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaEvents
                 if(context.FromGroup== "241464054")
                 {
                     string player = XmlSolve.xml_get("bind_qq", context.JoinedOrLeftQq);
-                    if(player=="")
+                    if(player!="")
                     {
                         _mahuaApi.SendGroupMessage("567145439", "检测到玩家" + player + "已退群，请管理进入游戏，执行\r\n/code "+
                             MinecraftSolve.DelNewCode(player) +"\r\n命令来删除该玩家的白名单");
-                        XmlSolve.del("bind_qq_wait", player);
-                        XmlSolve.del("bind_qq", player);
+                        XmlSolve.del("bind_qq_wait", context.JoinedOrLeftQq);
+                        XmlSolve.del("bind_qq", context.JoinedOrLeftQq);
                     }
                 }
             }
