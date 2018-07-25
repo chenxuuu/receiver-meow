@@ -17,7 +17,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
         /// <param name="player"></param>
         private static string AddNewCode(string player)
         {
-            string result = Tools.GetRandomString(40, true, false, false, false, "ABCDEF");
+            string result = Tools.GetRandomString(40, true, false, false, false, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
             //在将文本写入文件前，处理文本行
             //StreamWriter一个参数默认覆盖
             //StreamWriter第二个参数为false覆盖现有文件，为true则把文本追加到文件末尾
@@ -34,7 +34,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
         /// <param name="player"></param>
         public static string DelNewCode(string player)
         {
-            string result = Tools.GetRandomString(40, true, false, false, false, "ABCDEF");
+            string result = Tools.GetRandomString(40, true, false, false, false, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
             //在将文本写入文件前，处理文本行
             //StreamWriter一个参数默认覆盖
             //StreamWriter第二个参数为false覆盖现有文件，为true则把文本追加到文件末尾
@@ -91,7 +91,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             }
             else  //绑定过的情况下
             {
-                if(msg.IndexOf("激活")==0)
+                if(msg == "激活")
                 {
                     if(wait)
                     {
@@ -103,7 +103,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                             "命令只能使用一次，请尽快使用，失效可重新获取";
                     }
                 }
-                else if(msg.IndexOf("催促审核") == 0)
+                else if(msg=="催促审核")
                 {
                     if (wait)
                     {
