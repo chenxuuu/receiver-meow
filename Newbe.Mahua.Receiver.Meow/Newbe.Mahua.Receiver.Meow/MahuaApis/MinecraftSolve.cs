@@ -17,7 +17,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
         /// <param name="player"></param>
         private static string AddNewCode(string player)
         {
-            string result = Tools.GetRandomString(40, true, false, false, false, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
+            string result = Tools.GetRandomString(66, true, false, false, false, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
             //在将文本写入文件前，处理文本行
             //StreamWriter一个参数默认覆盖
             //StreamWriter第二个参数为false覆盖现有文件，为true则把文本追加到文件末尾
@@ -34,13 +34,30 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
         /// <param name="player"></param>
         public static string DelNewCode(string player)
         {
-            string result = Tools.GetRandomString(40, true, false, false, false, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
+            string result = Tools.GetRandomString(66, true, false, false, false, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
             //在将文本写入文件前，处理文本行
             //StreamWriter一个参数默认覆盖
             //StreamWriter第二个参数为false覆盖现有文件，为true则把文本追加到文件末尾
             using (System.IO.StreamWriter file = new System.IO.StreamWriter(codeFile, true))
             {
                 file.WriteLine(result + ": /manudel " + player);// 直接追加文件末尾，换行   
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 获取任意命令
+        /// </summary>
+        /// <param name="player"></param>
+        public static string GetCode(string cmd)
+        {
+            string result = Tools.GetRandomString(66, true, false, false, false, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
+            //在将文本写入文件前，处理文本行
+            //StreamWriter一个参数默认覆盖
+            //StreamWriter第二个参数为false覆盖现有文件，为true则把文本追加到文件末尾
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(codeFile, true))
+            {
+                file.WriteLine(result + ": /" + cmd);// 直接追加文件末尾，换行   
             }
             return result;
         }
@@ -73,7 +90,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 {
                     if (!CheckID(msg.Replace("绑定", "")))
                     {
-                        return Tools.At(qq) + "你绑定的id为“" + msg.Replace("绑定", "") + "”，不符合规范，请换一个id绑定";
+                        return Tools.At(qq) + "你绑定的id为“" + msg.Replace("绑定", "").Replace(" ","空格") + "”，不符合规范，请换一个id绑定";
                     }
                     else
                     {
@@ -107,7 +124,11 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 {
                     if (wait)
                     {
-                        return Tools.At(qq) + "你还不如直接at管理员呢，自己去问吧";
+                        _mahuaApi.SendGroupMessage("567145439", "接待喵糖拌管理：\r\n玩家id：" + msg.Replace("绑定", "") + "\r\n进行了催促审核" + qq +
+                                "\r\n请及时检查该玩家是否已经提交白名单申请https://wj.qq.com/mine.html" +
+                                "\r\n如果符合要求，请回复“通过”+qq来给予白名单" +
+                                "\r\n如果不符合要求，请回复“不通过”+qq+空格+原因来给打回去重填");
+                        return Tools.At(qq) + "催促成功，还没回你就去找管理员";
                     }
                     else
                     {
@@ -152,7 +173,6 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 {
                     return "参数不对或该玩家不在待审核玩家数据中";
                 }
-
             }
             else if (msg.IndexOf("不通过") == 0)
             {
@@ -203,6 +223,10 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             {
                 System.Diagnostics.Process.Start(@"D:\backup.bat");
                 return "备份任务已开始";  //567145439
+            }
+            else if (msg.IndexOf("命令") == 0)
+            {
+                return "命令/" + msg.Replace("命令", "") + "的执行码为：/code " + GetCode(msg.Replace("命令", ""));
             }
             return "";
         }
