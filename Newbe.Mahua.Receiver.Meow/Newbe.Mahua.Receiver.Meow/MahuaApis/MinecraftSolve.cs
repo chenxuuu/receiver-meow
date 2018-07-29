@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Newbe.Mahua.Receiver.Meow.MahuaApis
 {
@@ -51,6 +52,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
         /// <param name="player"></param>
         public static string GetCode(string cmd)
         {
+            cmd = HttpUtility.HtmlDecode(cmd);
             string result = Tools.GetRandomString(66, true, false, false, false, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
             //在将文本写入文件前，处理文本行
             //StreamWriter一个参数默认覆盖
