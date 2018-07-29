@@ -40,7 +40,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             //StreamWriter第二个参数为false覆盖现有文件，为true则把文本追加到文件末尾
             using (System.IO.StreamWriter file = new System.IO.StreamWriter(codeFile, true))
             {
-                file.WriteLine(result + ": /manudel " + player);// 直接追加文件末尾，换行   
+                file.WriteLine(result + ": /manudel " + player + " default world");// 直接追加文件末尾，换行   
             }
             return result;
         }
