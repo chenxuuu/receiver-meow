@@ -297,13 +297,13 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 result += MinecraftSolve.SolvePlayer(fromqq, msg, _mahuaApi);
             else if (fromgroup == "567145439") //分赃群
                 result += MinecraftSolve.SolveAdmin(fromqq, msg, _mahuaApi);
-            else
-                result += Tools.GetRepeatString(msg, fromgroup);
 
             if(result == "")
-            {
                 result += XmlSolve.ReplayGroupStatic(fromgroup, msg);
-            }
+
+            if (result == "")
+                result += Tools.GetRepeatString(msg, fromgroup);
+
             return result;
         }
     }
