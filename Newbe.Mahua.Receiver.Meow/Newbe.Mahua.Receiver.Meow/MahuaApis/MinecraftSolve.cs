@@ -110,9 +110,9 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             }
             else  //绑定过的情况下
             {
-                if(msg == "激活")
+                if (msg == "激活")
                 {
-                    if(wait)
+                    if (wait)
                     {
                         return Tools.At(qq) + "你还没通过审核呢，想什么呢";
                     }
@@ -122,7 +122,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                             "命令只能使用一次，请尽快使用，失效可重新获取";
                     }
                 }
-                else if(msg=="催促审核")
+                else if (msg == "催促审核")
                 {
                     if (wait)
                     {
@@ -135,6 +135,92 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                     else
                     {
                         return Tools.At(qq) + "你已经有权限了，发送“激活”来获取权限吧";
+                    }
+                }
+                else if (msg == "签到")
+                {
+                    string last_time = XmlSolve.xml_get("daily_mc_sign_in_time", qq);
+
+                    if (last_time == System.DateTime.Today.ToString())
+                        return Tools.At(qq) + "你今天已经签过到啦！";
+
+                    string qdTimesStr = XmlSolve.xml_get("daily_sign_in_count", qq);
+                    string CoinStr = XmlSolve.xml_get("money", qq);
+
+                    int CoinsTemp, qdTimesTemp;
+
+                    if (CoinStr != "")
+                        CoinsTemp = int.Parse(CoinStr);
+                    else
+                        CoinsTemp = 0;
+
+                    if (qdTimesStr != "")
+                        qdTimesTemp = int.Parse(qdTimesStr);
+                    else
+                        qdTimesTemp = 1;
+
+                    if (last_time == System.DateTime.Today.AddDays(-1).ToString())
+                        qdTimesTemp++;
+                    else
+                        qdTimesTemp = 1;
+
+                    Random ran = new Random(System.DateTime.Now.Millisecond);
+                    int RandKey = ran.Next(100, 501);
+                    CoinsTemp += RandKey + qdTimesTemp * 5;
+
+                    XmlSolve.del("money", qq);
+                    XmlSolve.del("daily_mc_sign_in_time", qq);
+                    XmlSolve.del("daily_sign_in_count", qq);
+                    XmlSolve.insert("money", qq, CoinsTemp.ToString());
+                    XmlSolve.insert("daily_sign_in_count", qq, qdTimesTemp.ToString());
+                    XmlSolve.insert("daily_mc_sign_in_time", qq, System.DateTime.Today.ToString());
+
+                    return Tools.At(qq) + "\r\n签到成功！已连续签到" + qdTimesTemp.ToString() + "天\r\n获得游戏币" + RandKey + "+" + qdTimesTemp.ToString() + "*5枚！\r\n银行内游戏币" + CoinsTemp + "枚\r\n取钱请回复“取钱”加金额\r\n发送“查询”可查询余额";
+                }
+                else if (msg == "查询")
+                {
+                    string CoinStr = XmlSolve.xml_get("money", qq);
+                    if (CoinStr != "")
+                    {
+                        return Tools.At(qq) + "你的群内余额为" + CoinStr;
+                    }
+                    else
+                    {
+                        return Tools.At(qq) + "你的群内余额为0";
+                    }
+                }
+                else if (msg.IndexOf("取钱") == 0)
+                {
+                    int CoinsTemp = 0;
+                    try
+                    {
+                        CoinsTemp = int.Parse(Tools.GetNumber(msg));
+                    }
+                    catch
+                    {
+                        return Tools.At(qq) + "格式错误！";
+                    }
+                    if (CoinsTemp == 0)
+                        return Tools.At(qq) + "请输入大于0的数字";
+
+                    string CoinStr = XmlSolve.xml_get("money", qq);
+                    if (CoinStr != "")
+                    {
+                        int CoinsHave = int.Parse(CoinStr);
+                        if (CoinsHave < CoinsTemp)
+                            return Tools.At(qq) + "你的钱不够";
+
+                        CoinsHave -= CoinsTemp;
+                        XmlSolve.del("money", qq);
+                        XmlSolve.insert("money", qq, CoinsHave.ToString());
+                        _mahuaApi.SendPrivateMessage(qq, "请在服务器中使用/code " +
+                            GetCode("eco give " + player + " " + CoinsTemp.ToString()) +
+                            "来领取取出的" + CoinsTemp + "金币");
+                        return Tools.At(qq) + "已取出" + CoinsTemp + "金币";
+                    }
+                    else
+                    {
+                        return Tools.At(qq) + "你的钱不够";
                     }
                 }
             }
