@@ -24,7 +24,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             //StreamWriter第二个参数为false覆盖现有文件，为true则把文本追加到文件末尾
             using (System.IO.StreamWriter file = new System.IO.StreamWriter(codeFile, true))
             {
-                file.WriteLine(result + ": /manuadd " + player + " builder world");// 直接追加文件末尾，换行   
+                file.WriteLine((result + ": /manuadd " + player + " builder world").Replace("\r", "").Replace("\n", ""));// 直接追加文件末尾，换行   
             }
             return result;
         }
@@ -41,7 +41,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             //StreamWriter第二个参数为false覆盖现有文件，为true则把文本追加到文件末尾
             using (System.IO.StreamWriter file = new System.IO.StreamWriter(codeFile, true))
             {
-                file.WriteLine(result + ": /manudel " + player + " default world");// 直接追加文件末尾，换行   
+                file.WriteLine((result + ": /manudel " + player + " default world").Replace("\r", "").Replace("\n", ""));// 直接追加文件末尾，换行   
             }
             return result;
         }
@@ -59,7 +59,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             //StreamWriter第二个参数为false覆盖现有文件，为true则把文本追加到文件末尾
             using (System.IO.StreamWriter file = new System.IO.StreamWriter(codeFile, true))
             {
-                file.WriteLine(result + ": /" + cmd);// 直接追加文件末尾，换行   
+                file.WriteLine((result + ": /" + cmd).Replace("\r", "").Replace("\n", ""));// 直接追加文件末尾，换行   
             }
             return result;
         }
