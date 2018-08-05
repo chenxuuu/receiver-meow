@@ -18,7 +18,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
         /// <param name="player"></param>
         private static string AddNewCode(string player)
         {
-            string result = Tools.GetRandomString(66, true, false, false, false, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
+            string result = Tools.GetRandomString(32, true, false, false, false, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
             //在将文本写入文件前，处理文本行
             //StreamWriter一个参数默认覆盖
             //StreamWriter第二个参数为false覆盖现有文件，为true则把文本追加到文件末尾
@@ -35,7 +35,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
         /// <param name="player"></param>
         public static string DelNewCode(string player)
         {
-            string result = Tools.GetRandomString(66, true, false, false, false, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
+            string result = Tools.GetRandomString(32, true, false, false, false, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
             //在将文本写入文件前，处理文本行
             //StreamWriter一个参数默认覆盖
             //StreamWriter第二个参数为false覆盖现有文件，为true则把文本追加到文件末尾
@@ -53,7 +53,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
         public static string GetCode(string cmd)
         {
             cmd = HttpUtility.HtmlDecode(cmd);
-            string result = Tools.GetRandomString(66, true, false, false, false, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
+            string result = Tools.GetRandomString(32, true, false, false, false, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
             //在将文本写入文件前，处理文本行
             //StreamWriter一个参数默认覆盖
             //StreamWriter第二个参数为false覆盖现有文件，为true则把文本追加到文件末尾
