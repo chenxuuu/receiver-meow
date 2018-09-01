@@ -91,6 +91,7 @@
     <Compile Include="MahuaApis\QQPet.cs" />
     <Compile Include="MahuaApis\TodaysAlmanac.cs" />
     <Compile Include="MahuaApis\Tools.cs" />
+    <Compile Include="MahuaApis\WhatAnime.cs" />
     <Compile Include="MahuaApis\XmlSolve.cs" />
     <Compile Include="MahuaEvents\GroupJoiningInvitationReceivedMahuaEvent.cs" />
     <Compile Include="MahuaEvents\GroupMemberChangedMahuaEvent1.cs" />

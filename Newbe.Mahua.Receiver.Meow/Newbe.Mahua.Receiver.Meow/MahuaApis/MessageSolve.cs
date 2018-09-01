@@ -34,6 +34,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                     "发送“点歌”加网易云id或歌名可点歌\r\n" +
                     "发送“宠物助手”可查询QQ宠物代挂的帮助信息\r\n" +
                     "发送“复读”加百分比可更改复读概率\r\n" +
+                    "发送“查动画”加截图可搜索番剧\r\n" +
                     "每秒最多响应5条消息\r\n" +
                     "如有建议请到https://git.io/fNmBc反馈，欢迎star";
             }
@@ -292,6 +293,11 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             else if (msg.IndexOf("点歌") == 0)
             {
                 result += Tools.Get163Music(msg.Replace("点歌", ""), fromqq);
+            }
+            else if (msg.IndexOf("搜动画") != -1 || msg.IndexOf("搜番") != -1 || 
+                msg.IndexOf("查动画") != -1 || msg.IndexOf("查番") != -1)
+            {
+                result += Tools.At(fromqq) + "\r\n" + WhatAnime.GetAnime(msg.Replace("\r", "").Replace("\n", ""));
             }
             else if (fromgroup == "241464054") //糖拌群
                 result += MinecraftSolve.SolvePlayer(fromqq, msg, _mahuaApi);
