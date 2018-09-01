@@ -250,6 +250,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Url + (postDataStr == "" ? "" : "?") + postDataStr);
                 request.Method = "GET";
                 request.ContentType = "text/html;charset=UTF-8";
+                request.Timeout = 5000;
 
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                 Stream myResponseStream = response.GetResponseStream();
@@ -264,8 +265,6 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             catch { }
             return "";
         }
-
-
 
         ///<summary>
         ///生成随机字符串 
