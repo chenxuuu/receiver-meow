@@ -44,16 +44,29 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 string html = HttpPost("https://whatanime.ga/api/search?token=" + token,
                         "image=\"data:image/jpeg;base64," + imgBase64 + "\"");
                 if (html == "")
-                    return "查找失败，网站炸了";
+                    return "查找失败，网站炸了，请稍后再试";
                 JObject jo = (JObject)JsonConvert.DeserializeObject(html);
                 try
                 {
-                    result = "搜索结果：";
-                    result += "\r\n动画名：" + jo["docs"][0]["title_native"] + "(" + jo["docs"][0]["title_romaji"] + ")";
-                    try { result += "\r\n中文名：" + jo["docs"][0]["title_chinese"]; } catch { }
-                    try { result += "\r\n准确度：" + ((int)jo["docs"][0]["similarity"]).ToString("p"); } catch { }
-                    try { result += "\r\n话数：" + jo["docs"][0]["episode"]; } catch { }
-                    try { result += "\r\n截图出现在：" + jo["docs"][0]["from"] + "-" + jo["docs"][0]["to"] + "秒"; } catch { }
+                    if ((double)jo["docs"][0]["similarity"] < 0.86)
+                    {
+                        result += "没搜到准确结果，请确保这张图片是完整的、没有裁剪过的动画视频截图";
+                    }
+                    else
+                    {
+                        result = "搜索结果：";
+                        result += "\r\n动画名：" + jo["docs"][0]["title_native"] + "(" + jo["docs"][0]["title_romaji"] + ")";
+                        try { result += "\r\n译名：" + jo["docs"][0]["title_chinese"]; } catch { }
+                        try { result += "\r\n准确度：" + ((double)jo["docs"][0]["similarity"]).ToString("p"); } catch { }
+                        try { result += "\r\n话数：" + jo["docs"][0]["episode"]; } catch { }
+                        try
+                        {
+                            result += "\r\n截图出现在：" + ConvertSecond((int)jo["docs"][0]["from"]) + "-"
+                              + ConvertSecond((int)jo["docs"][0]["to"]);
+                        }
+                        catch { }
+                        result += "\r\nby whatanime.ga";
+                    }
                 }
                 catch (Exception e)
                 {
@@ -68,6 +81,12 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             return result;
         }
 
+        public static string ConvertSecond(int t)
+        {
+            TimeSpan ts = new TimeSpan(0, 0, t);
+            return (int)ts.TotalHours + ":" + ts.Minutes + ":" + ts.Seconds;
+        }
+        
         /// <summary>
         /// POST请求与获取结果，whatanime.ga专用，tls1.1连接
         /// </summary>

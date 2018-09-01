@@ -34,7 +34,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                     "发送“点歌”加网易云id或歌名可点歌\r\n" +
                     "发送“宠物助手”可查询QQ宠物代挂的帮助信息\r\n" +
                     "发送“复读”加百分比可更改复读概率\r\n" +
-                    "发送“查动画”加截图可搜索番剧\r\n" +
+                    "发送“查动画”加没裁剪过的视频截图可搜索番剧\r\n" +
                     "每秒最多响应5条消息\r\n" +
                     "如有建议请到https://git.io/fNmBc反馈，欢迎star";
             }
