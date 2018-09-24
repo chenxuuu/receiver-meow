@@ -282,6 +282,10 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             {
                 result += Tools.execCMD(msg.Replace("cmd ", ""));
             }
+            else if (msg.IndexOf("pe命令") == 0 && fromqq == "961726194")
+            {
+                result += "返回："+Tools.HttpGet("http://localhost:2333/" + msg.Replace("pe命令", ""), "");
+            }
             else if (msg.IndexOf("复读") == 0 && fromgroup != "common")
             {
                 if (XmlSolve.AdminCheck(fromqq) >= 1)
