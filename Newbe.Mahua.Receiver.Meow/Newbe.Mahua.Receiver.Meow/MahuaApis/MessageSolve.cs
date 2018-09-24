@@ -282,9 +282,10 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             {
                 result += Tools.execCMD(msg.Replace("cmd ", ""));
             }
-            else if (msg.IndexOf("pe命令") == 0 && fromqq == "961726194")
+            else if (msg.IndexOf("bedrock ") == 0 && fromqq == "961726194")
             {
-                result += "返回："+Tools.HttpGet("http://localhost:2333/" + msg.Replace("pe命令", ""), "");
+                Tools.HttpGet("http://localhost:2333/list", "");
+                result += Tools.HttpGet("http://localhost:2333/" + msg.Replace("bedrock ", ""), "") + "--返回";
             }
             else if (msg.IndexOf("复读") == 0 && fromgroup != "common")
             {
@@ -307,7 +308,20 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 result += MinecraftSolve.SolvePlayer(fromqq, msg, _mahuaApi);
             else if (fromgroup == "567145439") //分赃群
                 result += MinecraftSolve.SolveAdmin(fromqq, msg, _mahuaApi);
-
+            else if (fromgroup == "543632048") //基岩版
+            {
+                if (msg.IndexOf("领铁轨") == 0)
+                {
+                    if (msg.Length <= 3)
+                        return Tools.At(fromqq) + "请用格式“领铁轨”加上id，领取铁轨";
+                    else
+                    {
+                        Tools.HttpGet("http://localhost:2333/give " + msg.Replace("领铁轨", "") + " rail 64", "");
+                        Tools.HttpGet("http://localhost:2333/give " + msg.Replace("领铁轨", "") + " redstone 1", "");
+                        return Tools.At(fromqq) + "已发放，请查收";
+                    }
+                }
+            }
             if(result == "")
                 result += XmlSolve.ReplayGroupStatic(fromgroup, msg);
 
