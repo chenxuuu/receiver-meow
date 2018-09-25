@@ -317,7 +317,8 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                     else
                     {
                         Tools.HttpGet("http://localhost:2333/give " + msg.Replace("领铁轨", "") + " rail 64", "");
-                        Tools.HttpGet("http://localhost:2333/give " + msg.Replace("领铁轨", "") + " redstone 1", "");
+                        Tools.HttpGet("http://localhost:2333/give " + msg.Replace("领铁轨", "") + " golden_rail 64", "");
+                        Tools.HttpGet("http://localhost:2333/give " + msg.Replace("领铁轨", "") + " redstone_torch 10", "");
                         return Tools.At(fromqq) + "已发放，请查收";
                     }
                 }
