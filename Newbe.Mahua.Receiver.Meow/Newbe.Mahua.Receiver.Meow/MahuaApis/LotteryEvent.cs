@@ -39,17 +39,18 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             }
             else if (RandKey == 1 && RandKey2 == 0)
             {
-                need_add += 200;
+                need_add -= 200;
                 TimeSpan span = new TimeSpan(30, 0, 0, 0);
                 _mahuaApi.BanGroupMember(group, qq, span);
-                result += Tools.At(qq) + "\r\n恭喜你抽中了顶级豪华月卡禁言套餐，并附赠200张禁言卡！奖励已发放！";
+                result += Tools.At(qq) + "\r\n恭喜你抽中了顶级豪华月卡禁言套餐，并扣除200张禁言卡！奖励已发放！";
 
             }
             else if (RandKey < 11)
             {
                 TimeSpan span = new TimeSpan(0, RandKey, 0, 0);
                 _mahuaApi.BanGroupMember(group, qq, span);
-                result += Tools.At(qq) + "\r\n恭喜你抽中了禁言" + RandKey + "小时！奖励已发放到你的QQ~";
+                need_add -= RandKey;
+                result += Tools.At(qq) + "\r\n恭喜你抽中了禁言" + RandKey + "小时，并扣除" + RandKey + "张禁言卡！奖励已发放到你的QQ~";
             }
             else
             {
