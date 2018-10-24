@@ -41,7 +41,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 string imgBase64 = ImgToBase64Stream(stream);
                 //请求api，搜索该图片
                 string token = XmlSolve.ReplayGroupStatic("common", "whatanime.ga[api]");//获取保存的token
-                string html = HttpPost("https://whatanime.ga/api/search?token=" + token,
+                string html = HttpPost("https://trace.moe/api/search?token=" + token,
                         "image=\"data:image/jpeg;base64," + imgBase64 + "\"");
                 if (html == "")
                     return "查找失败，网站炸了，请稍后再试";
@@ -65,7 +65,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                               + ConvertSecond((int)jo["docs"][0]["to"]);
                         }
                         catch { }
-                        result += "\r\nby whatanime.ga";
+                        result += "\r\nby trace.moe";
                     }
                 }
                 catch (Exception e)
@@ -88,14 +88,14 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
         }
         
         /// <summary>
-        /// POST请求与获取结果，whatanime.ga专用，tls1.1连接
+        /// POST请求与获取结果，trace.moe专用，tls1.2连接
         /// </summary>
         public static string HttpPost(string Url, string postDataStr)
         {
             try
             {
                 //必须设定https协议类型，不然连不上服务器
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls11;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                 ServicePointManager.ServerCertificateValidationCallback =
                     new System.Net.Security.RemoteCertificateValidationCallback(CheckValidationResult);
 
@@ -105,7 +105,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 request.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";
                 request.ContentLength = postDataStr.Length;
 
-                request.Host = "whatanime.ga";
+                request.Host = "trace.moe";
                 StreamWriter writer = new StreamWriter(request.GetRequestStream(), Encoding.ASCII);
                 writer.Write(postDataStr);
                 writer.Flush();
