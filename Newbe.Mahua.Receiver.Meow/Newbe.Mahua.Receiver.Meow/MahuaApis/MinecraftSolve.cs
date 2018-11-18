@@ -137,7 +137,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                         return Tools.At(qq) + "你已经有权限了，发送“激活”来获取权限吧";
                     }
                 }
-                else if (msg == "签到")
+                else if (msg == "签到" || msg.IndexOf("[CQ:sign,") != -1)
                 {
                     string last_time = XmlSolve.xml_get("daily_mc_sign_in_time", qq);
 
