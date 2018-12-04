@@ -20,7 +20,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaEvents
 
         public void ProcessGroupMessage(GroupMessageReceivedContext context)
         {
-            if (context.FromQq == "80000000" || context.FromQq == "1000000" || context.FromQq == "1811436283" || context.Message.IndexOf(Tools.At("751323264")) != -1)
+            if (context.FromQq == "80000000" || context.FromQq == "1000000" || context.FromQq == "1811436283")
                 return;
             string replay = MessageSolve.GetReplay(context.FromQq, context.Message, _mahuaApi, context.FromGroup);
             if (replay != "")

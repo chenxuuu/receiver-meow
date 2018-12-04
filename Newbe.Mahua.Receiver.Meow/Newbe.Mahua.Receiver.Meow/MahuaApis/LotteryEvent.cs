@@ -32,43 +32,49 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             }
             else if (RandKey == 1 && RandKey2 != 0)
             {
-                need_add += 10;
-                TimeSpan span = new TimeSpan(0, 10, 0, 0);
-                _mahuaApi.BanGroupMember(group, qq, span);
-                result += Tools.At(qq) + "\r\n恭喜你抽中了超豪华禁言套餐，并附赠10张禁言卡！奖励已发放！";
+                if (Tools.GetXmlNumber("gift", qq) > 10)
+                {
+                    need_add += 10;
+                    TimeSpan span = new TimeSpan(0, 10, 0, 0);
+                    _mahuaApi.BanGroupMember(group, qq, span);
+                    result += Tools.At(qq) + "\r\n恭喜你抽中了超豪华禁言套餐，并附赠10张禁言卡！奖励已发放！";
+                }
+                else
+                {
+                    result += Tools.At(qq) + "\r\n是超豪华禁言套餐呢。。。这次套餐我请客吧ww";
+                }
             }
             else if (RandKey == 1 && RandKey2 == 0)
             {
-                need_add -= 200;
-                TimeSpan span = new TimeSpan(30, 0, 0, 0);
-                _mahuaApi.BanGroupMember(group, qq, span);
-                result += Tools.At(qq) + "\r\n恭喜你抽中了顶级豪华月卡禁言套餐，并扣除200张禁言卡！奖励已发放！";
-
+                if(Tools.GetXmlNumber("gift", qq) > 10)
+                {
+                    need_add -= 200;
+                    TimeSpan span = new TimeSpan(30, 0, 0, 0);
+                    _mahuaApi.BanGroupMember(group, qq, span);
+                    result += Tools.At(qq) + "\r\n恭喜你抽中了顶级豪华月卡禁言套餐，并扣除200张禁言卡！奖励已发放！";
+                }
+                else
+                {
+                    result += Tools.At(qq) + "\r\n是顶级豪华月卡禁言套餐呢。。。这次套餐我请客吧ww";
+                }
             }
-            else if (RandKey < 11)
+            else if (RandKey < 11 - Tools.GetXmlNumber("gift", qq) / 10)
             {
                 TimeSpan span = new TimeSpan(0, RandKey, 0, 0);
                 _mahuaApi.BanGroupMember(group, qq, span);
                 need_add -= RandKey;
-                result += Tools.At(qq) + "\r\n恭喜你抽中了禁言" + RandKey + "小时，并扣除" + RandKey + "张禁言卡！奖励已发放到你的QQ~";
+                result += Tools.At(qq) + "\r\n恭喜你抽中了禁言" + RandKey + "小时，并扣除" + RandKey + "张禁言卡！奖励已发放到你的QQ~\r\n送我礼物可以提升好感度降低禁言几率哦~";
             }
             else
             {
-                need_add += 1;
-                result += Tools.At(qq) + "\r\n恭喜你抽中了一张禁言卡，回复“禁言卡”可以查看使用帮助。";
+                int lucky = ran.Next(0, Tools.GetXmlNumber("gift", qq) / 10 + 1);
+                need_add += lucky;
+                result += Tools.At(qq) + "\r\n恭喜你抽中了"+ need_add + "张禁言卡，回复“禁言卡”可以查看使用帮助。";
             }
 
             if(need_add != 0)
             {
-                int fk = 0;
-                string fks = XmlSolve.xml_get("ban_card", qq);
-                if (fks != "")
-                {
-                    fk = int.Parse(fks);
-                }
-                fk += need_add;
-                XmlSolve.del("ban_card", qq);
-                XmlSolve.insert("ban_card", qq, fk.ToString());
+                Tools.AddXmlNumber("ban_card", qq, need_add);
             }
             return result;
         }
@@ -116,7 +122,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 try
                 {
                     Random ran = new Random(System.DateTime.Now.Millisecond);
-                    int RandKey = ran.Next(0, 60);
+                    int RandKey = ran.Next(0, 60 + Tools.GetXmlNumber("gift", fromqq));
                     TimeSpan span = new TimeSpan(0, 0, RandKey, 0);
                     _mahuaApi.BanGroupMember(group, banqq, span);
                     fk--;
@@ -210,6 +216,16 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 XmlSolve.insert("lottery_count", qq, "4");
                 return false;
             }
+        }
+
+        /// <summary>
+        /// 接收礼物
+        /// </summary>
+        /// <param name="qq"></param>
+        /// <returns></returns>
+        public static string ReceiveGift(string qq)
+        {
+            return "感谢"+Tools.At(qq)+"的礼物~\r\n当前羁绊值："+ Tools.AddXmlNumber("gift", qq, 1);
         }
     }
 }
