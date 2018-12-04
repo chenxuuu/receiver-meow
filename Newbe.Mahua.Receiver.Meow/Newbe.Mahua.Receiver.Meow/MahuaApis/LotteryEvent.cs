@@ -67,7 +67,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             }
             else
             {
-                int lucky = ran.Next(0, Tools.GetXmlNumber("gift", qq) / 10 + 1);
+                int lucky = ran.Next(1, Tools.GetXmlNumber("gift", qq) / 10 + 1);
                 need_add += lucky;
                 result += Tools.At(qq) + "\r\n恭喜你抽中了"+ need_add + "张禁言卡，回复“禁言卡”可以查看使用帮助。";
             }
