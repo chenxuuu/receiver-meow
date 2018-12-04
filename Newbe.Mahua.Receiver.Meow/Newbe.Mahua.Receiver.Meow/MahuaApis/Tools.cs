@@ -13,6 +13,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
 {
     class Tools
     {
+        public static string qqNumber = "914887249";
         public static int messageCount = 0;
         public static string now = DateTime.Now.ToString();
         /// <summary>
@@ -603,6 +604,68 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             return "[CQ:music,type=163,id=" + songID + "]";
         }
 
+        /// <summary>
+        /// 获取xml存储的数值
+        /// </summary>
+        /// <param name="xml"></param>
+        /// <param name="info"></param>
+        /// <returns></returns>
+        public static int GetXmlNumber(string xml,string info)
+        {
+            string resultStr = XmlSolve.xml_get(xml, info);
+            int result = 0;
+            try
+            {
+                result = int.Parse(resultStr);
+            }
+            catch { }
+            return result;
+        }
+
+        /// <summary>
+        /// 获取xml存储的字符串
+        /// </summary>
+        /// <param name="xml"></param>
+        /// <param name="info"></param>
+        /// <returns></returns>
+        public static string GetXmlString(string xml, string info)
+        {
+            return XmlSolve.xml_get(xml, info);
+        }
+
+        /// <summary>
+        /// 将xml值增加指定数值
+        /// </summary>
+        /// <param name="xml"></param>
+        /// <param name="info"></param>
+        /// <param name="add"></param>
+        public static int AddXmlNumber(string xml,string info,int add)
+        {
+            string resultStr = XmlSolve.xml_get(xml, info);
+            int result = 0;
+            try
+            {
+                result = int.Parse(resultStr);
+            }
+            catch { }
+            result += add;
+            XmlSolve.del(xml, info);
+            XmlSolve.insert(xml, info, result.ToString());
+            return result;
+        }
+
+
+        /// <summary>
+        /// 将xml值更改为指定值
+        /// </summary>
+        /// <param name="xml"></param>
+        /// <param name="info"></param>
+        /// <param name="add"></param>
+        public static void SetXmlString(string xml, string info, string str)
+        {
+            XmlSolve.del(xml, info);
+            XmlSolve.insert(xml, info, str);
+        }
 
     }
 }

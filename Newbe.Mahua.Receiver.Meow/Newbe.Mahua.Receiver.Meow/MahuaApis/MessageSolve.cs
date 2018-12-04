@@ -266,6 +266,10 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             {
                 result += LotteryEvent.UnbanSomebody(fromqq, Tools.GetNumber(msg), fromgroup, _mahuaApi);
             }
+            else if (msg.IndexOf("&#91;送礼物&#93; 为[CQ:at,qq="+Tools.qqNumber+"] 送出 ") == 0 && fromgroup != "common")
+            {
+                result += LotteryEvent.ReceiveGift(fromqq);
+            }
             else if (msg.IndexOf("查快递") == 0)
             {
                 result += Tools.GetExpress(Tools.GetNumber(msg), fromqq);
