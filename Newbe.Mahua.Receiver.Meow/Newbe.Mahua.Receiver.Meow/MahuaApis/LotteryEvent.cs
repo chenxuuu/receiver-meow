@@ -32,7 +32,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             }
             else if (RandKey == 1 && RandKey2 != 0)
             {
-                if (Tools.GetXmlNumber("gift", qq) > 10)
+                if (Tools.GetXmlNumber("gift", qq) < 10)
                 {
                     need_add += 10;
                     TimeSpan span = new TimeSpan(0, 10, 0, 0);
@@ -46,7 +46,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             }
             else if (RandKey == 1 && RandKey2 == 0)
             {
-                if(Tools.GetXmlNumber("gift", qq) > 10)
+                if(Tools.GetXmlNumber("gift", qq) < 10)
                 {
                     need_add -= 200;
                     TimeSpan span = new TimeSpan(30, 0, 0, 0);
