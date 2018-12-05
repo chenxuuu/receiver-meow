@@ -199,7 +199,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 }
                 catch { }
 
-                if (count == 0)
+                if (count == -Tools.GetXmlNumber("gift",qq)/5)
                     return true;
                 else
                 {
@@ -225,7 +225,20 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
         /// <returns></returns>
         public static string ReceiveGift(string qq)
         {
-            return "感谢"+Tools.At(qq)+"的礼物~\r\n当前羁绊值："+ Tools.AddXmlNumber("gift", qq, 1);
+            string extra = "";
+            int gift = Tools.AddXmlNumber("gift", qq, 1);
+            if (gift % 5 == 0)
+                extra += "\r\n每日抽奖次数+1了哦~";
+            if(gift == 10)
+                extra += "\r\n以后的大禁言套餐都由我请客~";
+            if (gift % 10 == 0 && gift < 110)
+                extra += "\r\n禁言概率降低了哦~";
+            if (gift % 10 == 0 )
+                extra += "\r\n每次抽中禁言卡数量上限+1~";
+            if (gift == 110)
+                extra += "\r\n再也不会让你抽中禁言啦~";
+
+            return "感谢"+Tools.At(qq)+"的礼物~\r\n当前羁绊值："+ gift + extra;
         }
     }
 }
