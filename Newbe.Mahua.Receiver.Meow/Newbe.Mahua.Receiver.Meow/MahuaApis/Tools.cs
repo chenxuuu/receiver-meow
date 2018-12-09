@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -734,7 +735,9 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                             "video_jacket_img\" src=\"//(?<pic>.*?)\"", "pic");
             //视频时长
             string len = Reg_get(html,
-                            "class=\"text\">(?<len>\\d*?)</span> 分钟", "len");            //导演            string director = Reg_get(html,
+                            "class=\"text\">(?<len>\\d*?)</span> 分钟", "len");
+            //导演
+            string director = Reg_get(html,
                             "\" rel=\"tag\">(?<director>.*?)</a> &nbsp;<span id=\"director", "director");
             //制片厂家
             string maker = Reg_get(html,
@@ -755,8 +758,16 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 "\r\n类型：" + tags + "\r\n演员：" + act;
             if (magnet != "")
                 result += "\r\n"+magnet;
-            result += "\r\n封面：" + pic.Replace(".","点");
-            return result;
+            result += "\r\n封面：http://" + pic;
+
+            Bitmap bmp = new Bitmap(800, 160);
+            Graphics g = Graphics.FromImage(bmp);
+            g.FillRectangle(Brushes.White, new Rectangle() { X = 0, Y = 0, Height = 160, Width = 800 });
+            Font font = new Font("宋体", 9);
+            g.DrawString(result, font, Brushes.Black, new PointF() { X = 0, Y = 0 });
+            bmp.Save(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "data/image/javlib"+ id + ".png");
+
+            return "[CQ:image,file=javlib" + id + ".png]";
         }
 
     }
