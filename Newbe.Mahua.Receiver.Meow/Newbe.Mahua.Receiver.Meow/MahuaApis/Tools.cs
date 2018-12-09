@@ -189,7 +189,30 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             return result;
         }
 
-
+        /// <summary>
+        /// 直接获取正则表达式的所有匹配值
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="regstr"></param>
+        /// <param name="name"></param>
+        /// <param name="name">连接符</param>
+        /// <returns></returns>
+        public static string Reg_get_all(string str, string regstr, string name, string connect)
+        {
+            string result = "";
+            MatchCollection matchs = Reg_solve(str, regstr);
+            foreach (Match item in matchs)
+            {
+                if (item.Success)
+                {
+                    result += connect + item.Groups[name].Value;
+                }
+            }
+            if (result != "")
+                return result.Substring(connect.Length);
+            else
+                return result;
+        }
 
         /// <summary>
         /// 获取字符串中的数字
@@ -665,6 +688,75 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
         {
             XmlSolve.del(xml, info);
             XmlSolve.insert(xml, info, str);
+        }
+
+        /// <summary>
+        /// 获取网址前缀
+        /// </summary>
+        /// <returns></returns>
+        public static string GetUrl()
+        {
+            string url = XmlSolve.ReplayGroupStatic("common", "javliburl");//获取保存的url
+            return url;
+        }
+
+        /// <summary>
+        /// 获取番号详情
+        /// </summary>
+        /// <param name="t"></param>
+        /// <returns></returns>
+        public static string GetAVInfo(string id)
+        {
+            string result = "";
+            string html = HttpGet(GetUrl() + "vl_searchbyid.php", "keyword=" + id);
+            Console.WriteLine(html);
+            if (html.IndexOf("搜寻提示") != -1)
+                return "无此影片，请重试";
+            if (html.IndexOf("识别码搜寻结果") != -1)
+            {
+                string urlTemp = Reg_get(html, "<a href=\"\\./.v=javli(?<url>.*?)\" title=", "url");
+                html = HttpGet(GetUrl(), "v=javli" + urlTemp);
+            }
+            if (html.Length == 0)
+                return "加载失败";
+
+            //匹配磁链
+            string magnet = Reg_get(html,
+                            "xt=urn:btih:(?<seed>........................................?)", "seed");
+            //标题
+            string title = Reg_get(html,
+                            "<title>(?<title>.*?) - JAVLibrary", "title");
+            //发行日期
+            string time = Reg_get(html,
+                            "\"text\">(?<time>\\d\\d\\d\\d-\\d\\d-\\d\\d?)</td>", "time");
+            //封面图片地址
+            string pic = Reg_get(html,
+                            "video_jacket_img\" src=\"//(?<pic>.*?)\"", "pic");
+            //视频时长
+            string len = Reg_get(html,
+                            "class=\"text\">(?<len>\\d*?)</span> 分钟", "len");            //导演            string director = Reg_get(html,
+                            "\" rel=\"tag\">(?<director>.*?)</a> &nbsp;<span id=\"director", "director");
+            //制片厂家
+            string maker = Reg_get(html,
+                            "\" rel=\"tag\">(?<maker>.*?)</a> &nbsp;<span id=\"maker", "maker");
+            //发行商
+            string label = Reg_get(html,
+                            "\" rel=\"tag\">(?<label>.*?)</a> &nbsp;<span id=\"label", "label");
+            //标签类别
+            string tags = Reg_get_all(html,
+                            "rel=\"category tag\">(?<tag>.*?)</a></span>", "tag", ",");
+            //演员
+            string act = Reg_get_all(html,
+                            "vl_star.php.s=.....\" rel=\"tag\">(?<act>.*?)</a></span>", "act", ",");
+            if (title == "")
+                return "运行错误";
+            result = "标题：\r\n" + title + "\r\n发行日期：" + time + "\r\n视频时长：" + len + "分种" +
+                "\r\n导演：" + director + "\r\n制作商：" + maker + "\r\n发行商：" + label +
+                "\r\n类型：" + tags + "\r\n演员：" + act;
+            if (magnet != "")
+                result += "\r\n"+magnet;
+            result += "\r\n封面：" + pic.Replace(".","点");
+            return result;
         }
 
     }

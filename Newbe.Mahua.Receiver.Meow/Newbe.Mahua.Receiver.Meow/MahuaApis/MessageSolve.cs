@@ -308,6 +308,10 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             {
                 result += Tools.At(fromqq) + "\r\n" + WhatAnime.GetAnime(msg.Replace("\r", "").Replace("\n", ""));
             }
+            else if (msg.IndexOf("番号") == 0 && msg.Length > 4)
+            {
+                result += Tools.At(fromqq) + Tools.GetAVInfo(msg.Substring(2));
+            }
             else if (fromgroup == "241464054") //糖拌群
                 result += MinecraftSolve.SolvePlayer(fromqq, msg, _mahuaApi);
             else if (fromgroup == "567145439") //分赃群
