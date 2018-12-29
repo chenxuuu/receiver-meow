@@ -44,33 +44,33 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 string html = HttpPost("https://trace.moe/api/search?token=" + token,
                         "image=\"data:image/jpeg;base64," + imgBase64 + "\"");
                 if (html == "")
-                    return "查找失败，网站炸了，请稍后再试";
+                    return "查找失败，网站炸了，请稍后再试。或图片大小超过了1MB";
                 JObject jo = (JObject)JsonConvert.DeserializeObject(html);
                 try
                 {
+                    result = "搜索结果：";
+                    result += "\r\n动画名：" + jo["docs"][0]["title_native"] + "(" + jo["docs"][0]["title_romaji"] + ")";
+                    try { result += "\r\n译名：" + jo["docs"][0]["title_chinese"]; } catch { }
                     if ((double)jo["docs"][0]["similarity"] < 0.86)
                     {
-                        result += "没搜到准确结果，请确保这张图片是完整的、没有裁剪过的动画视频截图";
+                        try { result += "\r\n准确度：" + ((double)jo["docs"][0]["similarity"]).ToString("p"); } catch { }
+                        try { result += "\r\n（准确度过低，请确保这张图片是完整的、没有裁剪过的动画视频截图）"; } catch { }
                     }
                     else
                     {
-                        result = "搜索结果：";
-                        result += "\r\n动画名：" + jo["docs"][0]["title_native"] + "(" + jo["docs"][0]["title_romaji"] + ")";
-                        try { result += "\r\n译名：" + jo["docs"][0]["title_chinese"]; } catch { }
-                        try { result += "\r\n准确度：" + ((double)jo["docs"][0]["similarity"]).ToString("p"); } catch { }
-                        try { result += "\r\n话数：" + jo["docs"][0]["episode"]; } catch { }
-                        try
-                        {
-                            result += "\r\n截图出现在：" + ConvertSecond((int)jo["docs"][0]["from"]) + "-"
-                              + ConvertSecond((int)jo["docs"][0]["to"]);
-                        }
-                        catch { }
-                        result += "\r\nby trace.moe";
                     }
+                    try { result += "\r\n话数：" + jo["docs"][0]["episode"]; } catch { }
+                    try
+                    {
+                        result += "\r\n截图出现在：" + ConvertSecond((int)jo["docs"][0]["from"]) + "-"
+                          + ConvertSecond((int)jo["docs"][0]["to"]);
+                    }
+                    catch { }
+                    result += "\r\nby trace.moe";
                 }
                 catch (Exception e)
                 {
-                    result = "没搜到结果，请选一张清晰的图片，或者小一点的图片(图片大小不可超过1MB)";
+                    result = "没搜到结果，请换一张完整的、没有裁剪过的动画视频截图";
                 }
             }
             catch (Exception e)
