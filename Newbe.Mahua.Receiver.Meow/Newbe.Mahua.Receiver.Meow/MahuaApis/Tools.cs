@@ -4,12 +4,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Newbe.Mahua.Receiver.Meow.MahuaApis
 {
@@ -797,6 +800,113 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 }
             }
             return list;
+        }
+        
+        /// <summary>
+        /// 统计字符串中某字符出现的次数
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="search"></param>
+        /// <returns></returns>
+        public static int CharNum(string str, string search)
+        {
+            string[] resultString = Regex.Split(str, search, RegexOptions.IgnoreCase);
+            return resultString.Length;
+        }
+
+        /// <summary>
+        /// 运行lua脚本
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        public static string RunLua(string text)
+        {
+            LuaTimeout lua = new LuaTimeout();
+            lua.code = text;
+            lua.CallWithTimeout(3000);
+            return lua.result;
+        }
+    }
+
+
+    /// <summary>
+    /// 带超时处理的lua运行类
+    /// </summary>
+    class LuaTimeout
+    {
+        public string result = "timeout";
+        public string code;
+
+        public void Run(string code)
+        {
+            NLua.Lua lua = new NLua.Lua();
+            lua["lua_run_result_var"] = "";
+            string head =
+            "function print(...)\r\n" +
+                "if lua_run_result_var ~= \"\" then\r\n" +
+                    "lua_run_result_var = lua_run_result_var..\"\\r\\n\"\r\n" +
+                "end\r\n" +
+                "for i=1,select('#', ...) do\r\n" +
+                    "lua_run_result_var = lua_run_result_var..tostring(select(i, ...))..\"\\t\"\r\n" +
+                "end\r\n" +
+            "end\r\n" +
+            "function io.open()\r\n" +
+                "print(\"fail\")\r\n" +
+            "end\r\n" +
+            "io = nil\r\n" +
+            "os = nil\r\n" +
+            "require = nil\r\n" +
+            "package = nil";
+            lua.DoString(head);
+            try
+            {
+                lua.DoString(code);
+                lua.DoString("lua_run_result_var = string.gsub(lua_run_result_var, \"(.)\", function(c) return string.format(\"%02X\", string.byte(c)) end)");
+                if (Tools.CharNum(lua["lua_run_result_var"].ToString(), "0A") > 20)
+                    result = "行数超过了20行，限制一下吧";
+                else if (lua["lua_run_result_var"].ToString().Length > 500)
+                    result = "字数超过了250，限制一下吧";
+                else
+                    result = Hex2String(lua["lua_run_result_var"].ToString());
+            }
+            catch (Exception e)
+            {
+                result = "你的代码崩掉啦\r\n" + e.Message;
+            }
+        }
+
+        public void CallWithTimeout(int timeoutMilliseconds)
+        {
+            Thread threadToKill = null;
+            Action wrappedAction = () =>
+            {
+                threadToKill = Thread.CurrentThread;
+                Run(code);
+            };
+
+            IAsyncResult result = wrappedAction.BeginInvoke(null, null);
+            if (result.AsyncWaitHandle.WaitOne(timeoutMilliseconds))
+            {
+                wrappedAction.EndInvoke(result);
+            }
+            else
+            {
+                threadToKill.Abort();
+                //throw new TimeoutException();
+            }
+        }
+
+        public static string Hex2String(string mHex)
+        {
+            mHex = Regex.Replace(mHex, "[^0-9A-Fa-f]", "");
+            if (mHex.Length % 2 != 0)
+                mHex = mHex.Remove(mHex.Length - 1, 1);
+            if (mHex.Length <= 0) return "";
+            byte[] vBytes = new byte[mHex.Length / 2];
+            for (int i = 0; i < mHex.Length; i += 2)
+                if (!byte.TryParse(mHex.Substring(i, 2), NumberStyles.HexNumber, null, out vBytes[i / 2]))
+                    vBytes[i / 2] = 0;
+            return Encoding.Default.GetString(vBytes);
         }
     }
 }
