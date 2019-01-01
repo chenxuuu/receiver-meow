@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Newbe.Mahua.MahuaEvents;
 using Newbe.Mahua.Receiver.Meow.MahuaApis;
 using Newbe.Mahua.Receiver.Meow;
+using System.Web;
 
 namespace Newbe.Mahua.Receiver.Meow.MahuaApis
 {
@@ -284,12 +285,12 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             }
             else if (msg.IndexOf("cmd ") == 0 && fromqq == "961726194")
             {
-                result += Tools.execCMD(msg.Replace("cmd ", ""));
+                result += Tools.execCMD(HttpUtility.HtmlDecode(msg.Replace("cmd ", "")));
             }
             else if (msg.IndexOf("bedrock ") == 0 && fromqq == "961726194")
             {
-                Tools.HttpGet("http://localhost:2333/list", "");
-                result += Tools.HttpGet("http://localhost:2333/" + msg.Replace("bedrock ", ""), "") + "--返回";
+                Tools.HttpGet("http://localhost:2333/list", ""); 
+                 result += Tools.HttpGet("http://localhost:2333/" + HttpUtility.HtmlDecode(msg.Replace("bedrock ", "")), "") + "--返回";
             }
             else if (msg.IndexOf("复读") == 0 && fromgroup != "common")
             {
@@ -311,6 +312,10 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             else if (msg.IndexOf("番号") == 0 && msg.Length > 4)
             {
                 result += Tools.At(fromqq) + Tools.GetAVInfo(msg.Substring(2));
+            }
+            else if (msg.IndexOf("lua") == 0 && msg.Length > 4)
+            {
+                result += Tools.At(fromqq) + "\r\n" + Tools.RunLua(HttpUtility.HtmlDecode(msg.Substring(4)));
             }
             else if (fromgroup == "241464054") //糖拌群
                 result += MinecraftSolve.SolvePlayer(fromqq, msg, _mahuaApi);
