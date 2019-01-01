@@ -49,6 +49,8 @@ namespace Newbe.Mahua.Receiver.Meow
                 // 将需要监听的事件注册，若缺少此注册，则不会调用相关的实现类
                 builder.RegisterType<InitializationMahuaEvent>()
                         .As<IInitializationMahuaEvent>();//初始化事件
+                builder.RegisterType<PluginEnabledMahuaEvent>()
+                        .As<IPluginEnabledMahuaEvent>();//插件启用
                 builder.RegisterType<PrivateMessageReceivedMahuaEvent>()
                         .As<IPrivateMessageReceivedMahuaEvent>();//私聊
                 builder.RegisterType<GroupMessageReceivedMahuaEvent>()

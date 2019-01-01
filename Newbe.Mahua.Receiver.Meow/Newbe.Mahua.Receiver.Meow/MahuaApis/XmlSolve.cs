@@ -63,6 +63,26 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             return ansall;
         }
 
+        /// <summary>
+        /// 检查是否有该词条的回复
+        /// </summary>
+        /// <param name="group"></param>
+        /// <param name="msg"></param>
+        /// <returns></returns>
+        public static bool IsAnswer(string group, string msg)
+        {
+            dircheck(group);
+            XElement root = XElement.Load(path + group + ".xml");
+            foreach (XElement mm in root.Elements("msginfo"))
+            {
+                if (mm.Element("ans").Value.IndexOf(msg) != -1 )
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public static string qq_get(string msg)
         {
             string group = "bind_qq";

@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -770,5 +771,32 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             return "[CQ:image,file=javlib" + id + ".png]";
         }
 
+        
+        /// <summary>
+        /// 获取所有qq群的列表
+        /// </summary>
+        /// <returns>ArrayList列表</returns>
+        public static ArrayList GetGroupList()
+        {
+            ArrayList list = new ArrayList();
+            DirectoryInfo dir = new DirectoryInfo(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "data/");
+            FileSystemInfo[] files = dir.GetFileSystemInfos();
+            for (int i = 0; i < files.Length; i++)
+            {
+                FileInfo file = files[i] as FileInfo;
+                //是文件
+                if (file != null)
+                {
+                    string group = file.Name.ToUpper().Replace(".XML", "");
+                    string pattern = @"^[0-9]+$";
+                    Match match = Regex.Match(group, pattern);
+                    if (match.Success && group.Length > 6)
+                    {
+                        list.Add(group);
+                    }
+                }
+            }
+            return list;
+        }
     }
 }

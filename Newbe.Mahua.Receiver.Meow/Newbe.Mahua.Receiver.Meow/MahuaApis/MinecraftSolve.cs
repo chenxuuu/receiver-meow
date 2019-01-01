@@ -174,6 +174,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                     XmlSolve.insert("money", qq, CoinsTemp.ToString());
                     XmlSolve.insert("daily_sign_in_count", qq, qdTimesTemp.ToString());
                     XmlSolve.insert("daily_mc_sign_in_time", qq, System.DateTime.Today.ToString());
+                    Tools.AddXmlNumber("daily_sign_in_count_all", System.DateTime.Today.ToString(), 1);
 
                     return Tools.At(qq) + "\r\n签到成功！已连续签到" + qdTimesTemp.ToString() + "天\r\n获得游戏币" + RandKey + "+" + qdTimesTemp.ToString() + "*5枚！\r\n银行内游戏币" + CoinsTemp + "枚\r\n取钱请回复“取钱”加金额\r\n发送“查询”可查询余额";
                 }
