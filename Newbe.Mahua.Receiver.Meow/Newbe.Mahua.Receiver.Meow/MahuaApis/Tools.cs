@@ -819,10 +819,11 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        public static string RunLua(string text)
+        public static string RunLua(string text,string headRun = "")
         {
             LuaTimeout lua = new LuaTimeout();
             lua.code = text;
+            lua.headRun = headRun;
             lua.CallWithTimeout(3000);
             return lua.result;
         }
