@@ -253,10 +253,6 @@ lua 加 代码 直接运行
             {
                 result += Tools.GetExpress(Tools.GetNumber(msg), fromqq);
             }
-            else if (msg == "开车")
-            {
-                result += "magnet:?xt=urn:btih:" + Tools.GetRandomString(40, true, false, false, false, "ABCDEF");
-            }
             else if (msg.IndexOf("空气质量") == 0)
             {
                 result += Tools.GetAir(msg, fromqq);
@@ -276,7 +272,6 @@ lua 加 代码 直接运行
                     result += Tools.At(fromqq) + Tools.SetRepeat(Tools.GetNumber(msg), fromgroup);
                 else
                     result += prem;
-
             }
             else if (msg.IndexOf("点歌") == 0)
             {
