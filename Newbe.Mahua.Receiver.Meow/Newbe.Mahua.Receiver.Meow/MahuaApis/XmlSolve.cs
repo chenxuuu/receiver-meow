@@ -13,10 +13,10 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
     {
         public static string path = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "data/";//AppDomain.CurrentDomain.SetupInformation.ApplicationBase
 
-        public static string ReplayGroupStatic(string fromGroup, string msg)
+        public static string ReplayGroupStatic(string fromGroup, string msg, string fromqq = "")
         {
-            string replay_ok = replay_get(fromGroup, msg);
-            string replay_common = replay_get("common", msg);
+            string replay_ok = replay_get(fromGroup, msg, fromqq);
+            string replay_common = replay_get("common", msg, fromqq);
 
             if (replay_ok != "")
             {
@@ -38,7 +38,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             return "";
         }
 
-        public static string replay_get(string group, string msg)
+        public static string replay_get(string group, string msg, string fromqq = "")
         {
             dircheck(group);
             XElement root = XElement.Load(path + group + ".xml");
@@ -63,7 +63,10 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             if(ansall.IndexOf("[lua]") == 0)
             {
                 int len = ansall.IndexOf(".");
-                ansall = Tools.RunLua(HttpUtility.HtmlDecode(ansall.Substring(len+1)));
+                ansall = Tools.RunLua(HttpUtility.HtmlDecode(ansall.Substring(len + 1)),
+                        "message=[[" + msg.Replace("]]", "") + "]]\r\n" +
+                        "fromqq = \"" + fromqq + "\"\r\n" +
+                        "fromgroup = \"" + group + "\"");
             }
             return ansall;
         }
