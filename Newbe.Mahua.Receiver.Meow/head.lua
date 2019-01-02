@@ -38,9 +38,8 @@ local safeFunctions = {
     print = true,
     _G = true,
     lua_run_result_var = true,
+    os = true,
     at = true,
-    get = true,
-    WebClient = true,
 }
 
 --安全的os函数
