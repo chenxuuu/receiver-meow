@@ -61,3 +61,5 @@ for fnc in pairs(_G) do
     end
 end
 
+--加强随机数随机性
+math.randomseed(tostring(os.time()):reverse():sub(1, 6))
