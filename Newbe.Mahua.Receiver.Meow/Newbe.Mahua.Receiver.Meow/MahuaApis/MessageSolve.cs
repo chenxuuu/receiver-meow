@@ -33,78 +33,10 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                     "发送“查快递”和单号即可搜索快递物流信息\r\n" +
                     "发送“空气质量”可查询当前时间的空气质量\r\n" +
                     "发送“点歌”加网易云id或歌名可点歌\r\n" +
-                    "发送“宠物助手”可查询QQ宠物代挂的帮助信息\r\n" +
                     "发送“复读”加百分比可更改复读概率\r\n" +
                     "发送“查动画”加没裁剪过的视频截图可搜索番剧\r\n" +
                     "每秒最多响应5条消息\r\n" +
                     "如有建议请到https://git.io/fNmBc反馈，欢迎star";
-            }
-            else if (msg == "宠物助手")
-            {
-                result += "宠物助手：\r\n" +
-                    "发送“宠物状态”可查看宠物状态\r\n" +
-                    "发送“宠物资料”可查看宠物详细资料\r\n" +
-                    "发送“宠物喂养”加页码数可查看宠物喂养物品列表\r\n" +
-                    "发送“宠物清洁”加页码数可查看宠物清洁物品列表\r\n" +
-                    "发送“宠物治疗”加页码数可查看宠物药物物品列表\r\n" +
-                    "发送“宠物使用”加物品代码可使用宠物物品\r\n" +
-                    "发送“宠物学习开启”可开启自动学习\r\n" +
-                    "发送“宠物学习关闭”可关闭自动学习\r\n" +
-                    "发送“宠物解绑”可解除绑定，停止代挂\r\n" +
-                    "挂机时会自动喂养与清洗，并且自动种菜收菜\r\n" +
-                    "测试功能，如有bug请反馈";
-            }
-            else if (msg.IndexOf("宠物") == 0)
-            {
-                //获取uin和skey
-                string uin = XmlSolve.replay_get("qq_pet_uin", fromqq);
-                string skey = XmlSolve.replay_get("qq_pet_skey", fromqq);
-                if (msg == "宠物状态")
-                {
-                    result += Tools.At(fromqq) + "\r\n" + QQPet.GetPetState(uin, skey);
-                }
-                else if (msg == "宠物资料")
-                {
-                    result += Tools.At(fromqq) + "\r\n" + QQPet.GetPetMore(uin, skey);
-                }
-                else if (msg.IndexOf("宠物喂养") == 0)
-                {
-                    result += Tools.At(fromqq) + "\r\n" + QQPet.FeedPetSelect(uin, skey, msg.Replace("宠物喂养", ""));
-                }
-                else if (msg.IndexOf("宠物清洁") == 0)
-                {
-                    result += Tools.At(fromqq) + "\r\n" + QQPet.WashPetSelect(uin, skey, msg.Replace("宠物清洁", ""));
-                }
-                else if (msg.IndexOf("宠物治疗") == 0)
-                {
-                    result += Tools.At(fromqq) + "\r\n" + QQPet.CurePetSelect(uin, skey, msg.Replace("宠物治疗", ""));
-                }
-                else if (msg.IndexOf("宠物使用") == 0)
-                {
-                    result += Tools.At(fromqq) + "\r\n" + QQPet.UsePet(uin, skey, msg.Replace("宠物使用", ""));
-                }
-                else if (msg == "宠物学习开启")
-                {
-                    XmlSolve.del("qq_pet_study", fromqq);
-                    XmlSolve.insert("qq_pet_study", fromqq, "0");
-                    result += Tools.At(fromqq) + "\r\n" + "已开启自动学习（自动上课与换课程）";
-                }
-                else if (msg == "宠物学习关闭")
-                {
-                    XmlSolve.del("qq_pet_study", fromqq);
-                    XmlSolve.insert("qq_pet_study", fromqq, "28");
-                    result += Tools.At(fromqq) + "\r\n" + "已关闭自动学习（学习完后不会自动继续学）";
-                }
-                else if (msg == "宠物解绑")
-                {
-                    XmlSolve.del("qq_pet_study", fromqq);
-                    XmlSolve.del("qq_pet_study", fromqq);
-                    result += Tools.At(fromqq) + "\r\n" + "\r\n解绑成功！";
-                }
-                else if (msg == "宠物绑定方法")
-                {
-                    result += Tools.At(fromqq) + "\r\n" + "[CQ:image,file=7CE7991F3D714978606B41C816FBC549.jpg]";
-                }
             }
             else if (msg.IndexOf("坷垃金曲") == 0)
             {

@@ -4,8 +4,16 @@ function print(...)
         lua_run_result_var = lua_run_result_var.."\r\n"
     end
     for i=1,select('#', ...) do
-        lua_run_result_var = lua_run_result_var..tostring(select(i, ...)).."\t"
+        lua_run_result_var = lua_run_result_var..tostring(select(i, ...))
+        if i ~= select('#', ...) then
+            lua_run_result_var = lua_run_result_var.."\t"
+        end
     end
+end
+
+--返回at某人的字符串
+function at(qq)
+    return "[CQ:at,qq="..tostring(qq).."]"
 end
 
 --安全的函数
@@ -30,6 +38,9 @@ local safeFunctions = {
     print = true,
     _G = true,
     lua_run_result_var = true,
+    at = true,
+    get = true,
+    WebClient = true,
 }
 
 --安全的os函数
@@ -37,6 +48,7 @@ local safeOsFunctions = {
     clock = true,
     difftime = true,
     time = true,
+    date = true,
 }
 --去除所有不安全函数
 for fnc in pairs(os) do
