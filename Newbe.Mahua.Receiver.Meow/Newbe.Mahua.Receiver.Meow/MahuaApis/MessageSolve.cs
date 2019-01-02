@@ -316,7 +316,7 @@ lua 加 代码 直接运行
                 }
             }
             if(result == "")
-                result += XmlSolve.ReplayGroupStatic(fromgroup, msg);
+                result += XmlSolve.ReplayGroupStatic(fromgroup, msg, fromqq);
 
             if (result == "")
                 result += Tools.GetRepeatString(msg, fromgroup);

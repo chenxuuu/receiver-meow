@@ -852,14 +852,14 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 lua.DoString("lua_run_result_var = string.gsub(lua_run_result_var, \"(.)\", function(c) return string.format(\"%02X\", string.byte(c)) end)");
                 if (Tools.CharNum(lua["lua_run_result_var"].ToString(), "0A") > 40)
                     result = "行数超过了20行，限制一下吧";
-                else if (lua["lua_run_result_var"].ToString().Length > 550)
-                    result = "字数超过了250，限制一下吧";
+                else if (lua["lua_run_result_var"].ToString().Length > 4000)
+                    result = "字数超过了2000，限制一下吧";
                 else
                     result = Hex2String(lua["lua_run_result_var"].ToString());
             }
             catch (Exception e)
             {
-                result = "你的代码崩掉啦\r\n" + e.Message;
+                result = "代码崩掉啦\r\n" + e.Message;
             }
         }
 
