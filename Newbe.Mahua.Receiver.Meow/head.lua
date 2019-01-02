@@ -1,3 +1,4 @@
+JSON = assert(loadfile "JSON.lua")()
 --重写print函数
 function print(...)
     if lua_run_result_var ~= "" then
@@ -40,6 +41,8 @@ local safeFunctions = {
     lua_run_result_var = true,
     os = true,
     at = true,
+    httpGet = true,
+    JSON = true,
 }
 
 --安全的os函数
