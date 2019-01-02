@@ -272,7 +272,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
         /// <summary>  
         /// GET 请求与获取结果  
         /// </summary>  
-        public static string HttpGet(string Url, string postDataStr)
+        public static string HttpGet(string Url, string postDataStr = "")
         {
             try
             {
@@ -827,6 +827,12 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             lua.CallWithTimeout(3000);
             return lua.result;
         }
+
+        public static JObject JsonDecode(string json)
+        {
+            JObject jo = (JObject)JsonConvert.DeserializeObject(json);
+            return jo;
+        }
     }
 
 
@@ -846,6 +852,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             lua["lua_run_result_var"] = "";
             try
             {
+                lua.RegisterFunction("httpGet", null, typeof(Tools).GetMethod("HttpGet"));
                 lua.DoFile(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "data/head.lua");
                 lua.DoString(headRun);
                 lua.DoString(code);
