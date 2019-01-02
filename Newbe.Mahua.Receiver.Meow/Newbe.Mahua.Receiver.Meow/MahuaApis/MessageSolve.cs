@@ -25,18 +25,30 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             }
             else if (msg.ToUpper() == "HELP" || msg == "帮助" || msg == "菜单")
             {
-                result += "命令帮助：\r\n！add 词条：回答\r\n！del 词条：回答\r\n！list 词条\r\n！delall 词条\r\n" +
-                    "所有符号均为中文全角符号\r\n" +
-                    "发送“坷垃金曲”+数字序号即可点金坷垃歌（如坷垃金曲21，最大71）\r\n" +
-                    "发送“点赞”可使接待给你点赞\r\n" +
-                    "发送“今日运势”可以查看今日运势\r\n" +
-                    "发送“查快递”和单号即可搜索快递物流信息\r\n" +
-                    "发送“空气质量”可查询当前时间的空气质量\r\n" +
-                    "发送“点歌”加网易云id或歌名可点歌\r\n" +
-                    "发送“复读”加百分比可更改复读概率\r\n" +
-                    "发送“查动画”加没裁剪过的视频截图可搜索番剧\r\n" +
-                    "每秒最多响应5条消息\r\n" +
-                    "如有建议请到https://git.io/fNmBc反馈，欢迎star";
+                result += @"命令帮助：
+！add 关键词：回答
+！del 关键词：回答
+！list 关键词
+！delall 关键词
+坷垃金曲+数字序号（最大71）
+点赞
+今日运势
+查快递 加 单号
+空气质量
+点歌 加 网易云id或歌名
+复读 加 百分比
+查动画 加 没裁剪过的视频截图
+！lua 查看lua工具使用说明
+如有建议请到https://git.io/fNmBc反馈，欢迎star";
+            }
+            else if(msg.ToUpper()=="！LUA")
+            {
+                result += @"lua功能使用帮助：
+lua 加 代码 直接运行
+！luaadd 关键词：代码
+！luadel 关键词
+！lualist
+点我查看可供使用的api说明";
             }
             else if (msg.IndexOf("坷垃金曲") == 0)
             {
@@ -60,6 +72,40 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 result += string.Format("当前词条回复如下：\r\n{0}\r\n全局词库内容：\r\n{1}",
                                         XmlSolve.list_get(fromgroup, msg.Replace("！list ", "")),
                                         XmlSolve.list_get("common", msg.Replace("！list ", "")));
+            }
+            else if (msg.IndexOf("！lualist") == 0)
+            {
+                result += string.Format("本群脚本：\r\n{0}\r\n全局脚本：\r\n{1}",
+                                        XmlSolve.lua_list_get(fromgroup),
+                                        XmlSolve.lua_list_get("common"));
+            }
+            else if (msg.IndexOf("！luaadd ") == 0 && msg.Length > 10)
+            {
+                if ((XmlSolve.AdminCheck(fromqq) >= 1 && fromgroup != "common") || (fromgroup == "common" && fromqq == "961726194"))
+                {
+                    string luaMsg = msg.Replace("！luaadd ", "");
+                    int len = luaMsg.IndexOf("：");
+                    string tmsg = luaMsg.Substring(0, len), tans = luaMsg.Substring(len + 1);
+                    XmlSolve.insert(fromgroup, tmsg, "[lua]" + fromqq + "." + tans);
+                    result += "添加完成！\r\n词条：" + tmsg + "\r\n回答为一个脚本";
+                }
+                else
+                {
+                    result += prem;
+                }
+            }
+            else if(msg.IndexOf("！luadel ") == 0 && msg.Length > 8)
+            {
+                if ((XmlSolve.AdminCheck(fromqq) >= 1 && fromgroup != "common") || (fromgroup == "common" && fromqq == "961726194"))
+                {
+                    string get_msg = msg.Replace("！luadel ", "");
+                    XmlSolve.luadel(fromgroup, get_msg);
+                    result += "删除完成！\r\n脚本触发词为：" + get_msg;
+                }
+                else
+                {
+                    result += prem;
+                }
             }
             else if (msg.IndexOf("！add ") == 0)
             {
