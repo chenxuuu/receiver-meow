@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Xml.Linq;
 
 namespace Newbe.Mahua.Receiver.Meow.MahuaApis
@@ -59,7 +60,11 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 RandKey = ran.Next(0, count);
                 ansall = replay_str[RandKey];
             }
-
+            if(ansall.IndexOf("[lua]") == 0)
+            {
+                int len = ansall.IndexOf(".");
+                ansall = Tools.RunLua(HttpUtility.HtmlDecode(ansall.Substring(len+1)));
+            }
             return ansall;
         }
 
@@ -161,11 +166,39 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             {
                 if (msg == mm.Element("msg").Value)
                 {
-                    ansall = ansall + mm.Element("ans").Value + "\r\n";
+                    if(mm.Element("ans").Value.IndexOf("[lua]") == 0)
+                    {
+                        int len = mm.Element("ans").Value.IndexOf(".");
+                        ansall += Tools.At(mm.Element("ans").Value.Substring(5, len - 5)) + "的lua脚本\r\n";
+                    }
+                    else
+                    {
+                        ansall = ansall + mm.Element("ans").Value + "\r\n";
+                    }
                     count++;
                 }
             }
             ansall = ansall + "一共有" + count.ToString() + "条回复";
+            return ansall;
+        }
+
+        public static string lua_list_get(string group)
+        {
+            dircheck(group);
+            XElement root = XElement.Load(path + group + ".xml");
+            int count = 0;
+            string ansall = "";
+            foreach (XElement mm in root.Elements("msginfo"))
+            {
+                if (mm.Element("ans").Value.IndexOf("[lua]")==0)
+                {
+                    int len = mm.Element("ans").Value.IndexOf(".");
+                    ansall += mm.Element("msg").Value + "：" +
+                        Tools.At(mm.Element("ans").Value.Substring(5, len - 5)) + "的lua脚本\r\n";
+                    count++;
+                }
+            }
+            ansall = ansall + "一共有" + count.ToString() + "个脚本";
             return ansall;
         }
 
@@ -186,7 +219,22 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             root.Save(path + group + ".xml");
         }
 
+        public static void luadel(string group, string msg)
+        {
+            dircheck(group);
+            string gg = group.ToString();
+            XElement root = XElement.Load(path + group + ".xml");
 
+            var element = from ee in root.Elements()
+                          where (string)ee.Element("msg") == msg && ((string)ee.Element("ans")).IndexOf("[lua]") == 0
+                          select ee;
+            if (element.Count() > 0)
+            {
+                //element.First().Remove();
+                element.Remove();
+            }
+            root.Save(path + group + ".xml");
+        }
 
         public static void remove(string group, string msg, string ans)
         {
