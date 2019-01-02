@@ -834,37 +834,23 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
     /// </summary>
     class LuaTimeout
     {
-        public string result = "timeout";
+        public string result = "lua脚本运行超时，请检查代码";
         public string code;
+        public string headRun = "";
 
         public void Run(string code)
         {
             NLua.Lua lua = new NLua.Lua();
             lua["lua_run_result_var"] = "";
-            string head =
-            "function print(...)\r\n" +
-                "if lua_run_result_var ~= \"\" then\r\n" +
-                    "lua_run_result_var = lua_run_result_var..\"\\r\\n\"\r\n" +
-                "end\r\n" +
-                "for i=1,select('#', ...) do\r\n" +
-                    "lua_run_result_var = lua_run_result_var..tostring(select(i, ...))..\"\\t\"\r\n" +
-                "end\r\n" +
-            "end\r\n" +
-            "function io.open()\r\n" +
-                "print(\"fail\")\r\n" +
-            "end\r\n" +
-            "io = nil\r\n" +
-            "os = nil\r\n" +
-            "require = nil\r\n" +
-            "package = nil";
-            lua.DoString(head);
             try
             {
+                lua.DoFile(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "data/head.lua");
+                lua.DoString(headRun);
                 lua.DoString(code);
                 lua.DoString("lua_run_result_var = string.gsub(lua_run_result_var, \"(.)\", function(c) return string.format(\"%02X\", string.byte(c)) end)");
-                if (Tools.CharNum(lua["lua_run_result_var"].ToString(), "0A") > 20)
+                if (Tools.CharNum(lua["lua_run_result_var"].ToString(), "0A") > 40)
                     result = "行数超过了20行，限制一下吧";
-                else if (lua["lua_run_result_var"].ToString().Length > 500)
+                else if (lua["lua_run_result_var"].ToString().Length > 550)
                     result = "字数超过了250，限制一下吧";
                 else
                     result = Hex2String(lua["lua_run_result_var"].ToString());
