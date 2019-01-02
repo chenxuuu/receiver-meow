@@ -842,6 +842,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
         public void Run(string code)
         {
             NLua.Lua lua = new NLua.Lua();
+            lua.LoadCLRPackage();
             lua["lua_run_result_var"] = "";
             try
             {
