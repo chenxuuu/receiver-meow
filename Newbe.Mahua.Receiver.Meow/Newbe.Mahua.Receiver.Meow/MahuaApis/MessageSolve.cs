@@ -315,7 +315,8 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             }
             else if (msg.IndexOf("lua") == 0 && msg.Length > 4)
             {
-                result += Tools.At(fromqq) + "\r\n" + Tools.RunLua(HttpUtility.HtmlDecode(msg.Substring(4)));
+                result += Tools.At(fromqq) + "\r\n" + Tools.RunLua(HttpUtility.HtmlDecode(msg.Substring(4)),
+                    string.Format("fromqq={0}\r\nfromgroup={1}\r\n", fromqq, fromgroup));
             }
             else if (fromgroup == "241464054") //糖拌群
                 result += MinecraftSolve.SolvePlayer(fromqq, msg, _mahuaApi);
