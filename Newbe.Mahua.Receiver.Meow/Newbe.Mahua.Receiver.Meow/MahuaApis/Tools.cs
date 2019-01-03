@@ -849,8 +849,6 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             //返回转换后的字符
             return s.GetString(db);
         }
-
-
     }
 
 
@@ -873,8 +871,8 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 lua.RegisterFunction("httpGet", null, typeof(Tools).GetMethod("HttpGet"));
                 lua.RegisterFunction("encodingChange", null, typeof(Tools).GetMethod("EncodeChange"));
                 lua.DoFile(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "data/head.lua");
-                lua.DoString(headRun);
-                lua.DoString(code);
+                lua.DoString(Tools.EncodeChange(headRun, "gb2312", "utf-8"));
+                lua.DoString(Tools.EncodeChange(code, "gb2312", "utf-8"));
                 lua.DoString("lua_run_result_var = string.gsub(lua_run_result_var, \"(.)\", function(c) return string.format(\"%02X\", string.byte(c)) end)");
                 if (Tools.CharNum(lua["lua_run_result_var"].ToString(), "0A") > 40)
                     result = "行数超过了20行，限制一下吧";
