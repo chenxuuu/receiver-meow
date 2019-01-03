@@ -39,7 +39,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
 复读 加 百分比
 查动画 加 没裁剪过的视频截图
 ！lua 查看lua工具使用说明
-如有建议请到https://git.io/fNmBc反馈，欢迎star";
+如有建议请到https://github.com/chenxuuu/receiver-meow/issues反馈，欢迎star";
             }
             else if(msg.ToUpper()=="！LUA")
             {
@@ -49,7 +49,8 @@ lua 加 代码 直接运行
 ！luadel 关键词
 ！lualist
 ！luasee 关键词
-点我查看可供使用的api说明";
+查看可供使用的api说明：
+https://github.com/chenxuuu/receiver-meow/blob/master/lua.md";
             }
             else if (msg.IndexOf("坷垃金曲") == 0)
             {
