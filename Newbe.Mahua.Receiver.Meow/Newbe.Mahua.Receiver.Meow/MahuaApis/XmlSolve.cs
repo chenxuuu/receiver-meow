@@ -63,8 +63,11 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             if(ansall.IndexOf("[lua]") == 0)
             {
                 int len = ansall.IndexOf(".");
+                msg = HttpUtility.HtmlDecode(msg.Replace("]]", ""));
+                if(msg.Substring(msg.Length-1) == "]")
+                    msg += " ";
                 ansall = Tools.RunLua(HttpUtility.HtmlDecode(ansall.Substring(len + 1)),
-                        "message=[[" + msg.Replace("]]", "") + "]]\r\n" +
+                        "message=[[" + msg + "]]\r\n" +
                         "fromqq = \"" + fromqq + "\"\r\n" +
                         "fromgroup = \"" + group + "\"");
             }
