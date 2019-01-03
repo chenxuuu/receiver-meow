@@ -293,8 +293,13 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 request.Timeout = timeout;
 
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                string encoding = response.ContentEncoding;
+                if (encoding == null || encoding.Length < 1)
+                {
+                    encoding = "UTF-8"; //默认编码
+                }
                 Stream myResponseStream = response.GetResponseStream();
-                StreamReader myStreamReader = new StreamReader(myResponseStream, Encoding.UTF8);
+                StreamReader myStreamReader = new StreamReader(myResponseStream, Encoding.GetEncoding(encoding));
 
                 string retString = myStreamReader.ReadToEnd();
                 myStreamReader.Close();
@@ -305,16 +310,54 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             catch { }
             return "";
         }
-        public static string String2Hex(string str, bool space)
-        {
-            if (space)
-                return BitConverter.ToString(Encoding.Default.GetBytes(str)).Replace("-", " ");
-            else
-                return BitConverter.ToString(Encoding.Default.GetBytes(str)).Replace("-", "");
-        }
         public static string LuaHttpGet(string Url, string postDataStr = "", int timeout = 5000)
         {
             string result = HttpGet(Url, postDataStr, timeout);
+            return String2Hex(result, false);
+        }
+
+        /// <summary>
+        /// POST请求与获取结果
+        /// </summary>
+        public static string HttpPost(string Url, string postDataStr, int timeout = 5000)
+        {
+            try
+            {
+                //请求前设置一下使用的安全协议类型 System.Net
+                if (Url.StartsWith("https", StringComparison.OrdinalIgnoreCase))
+                {
+                    ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors) =>
+                    {
+                        return true; //总是接受  
+                    });
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+                }
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Url);
+                request.Method = "POST";
+                request.Timeout = timeout;
+                request.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";
+                request.ContentLength = postDataStr.Length;
+
+                StreamWriter writer = new StreamWriter(request.GetRequestStream(), Encoding.ASCII);
+                writer.Write(postDataStr);
+                writer.Flush();
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                string encoding = response.ContentEncoding;
+                if (encoding == null || encoding.Length < 1)
+                {
+                    encoding = "UTF-8"; //默认编码
+                }
+                StreamReader reader = new StreamReader(response.GetResponseStream(), Encoding.GetEncoding(encoding));
+                string retString = reader.ReadToEnd();
+                return retString;
+            }
+            catch (Exception e)
+            { }
+            return "";
+        }
+        public static string LuaHttpPost(string Url, string postDataStr = "", int timeout = 5000)
+        {
+            string result = HttpPost(Url, postDataStr, timeout);
             return String2Hex(result, false);
         }
 
@@ -630,31 +673,6 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             }
         }
 
-
-        public static string Get163Music(string songName, string qq)
-        {
-            int songID = 0;
-            try
-            {
-                songID = int.Parse(songName);
-            }
-            catch
-            {
-                try
-                {
-                    string html = HttpGet("http://s.music.163.com/search/get/", "type=1&s=" + songName);
-                    JObject jo = (JObject)JsonConvert.DeserializeObject(html);
-                    string idGet = jo["result"]["songs"][0]["id"].ToString();
-                    songID = int.Parse(idGet);
-                }
-                catch
-                {
-                    return At(qq) + "\r\n机器人爆炸了，原因：根本没这首歌";
-                }
-            }
-            return "[CQ:music,type=163,id=" + songID + "]";
-        }
-
         /// <summary>
         /// 获取xml存储的数值
         /// </summary>
@@ -847,7 +865,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             LuaTimeout lua = new LuaTimeout();
             lua.code = text;
             lua.headRun = headRun;
-            lua.CallWithTimeout(5000);
+            lua.CallWithTimeout(8000);
             return lua.result;
         }
 
@@ -870,6 +888,43 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             //返回转换后的字符
             return s.GetString(r);
         }
+
+        /// <summary>
+        /// 字符串转hex
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="space"></param>
+        /// <returns></returns>
+        public static string String2Hex(string str, bool space)
+        {
+            if (space)
+                return BitConverter.ToString(Encoding.Default.GetBytes(str)).Replace("-", " ");
+            else
+                return BitConverter.ToString(Encoding.Default.GetBytes(str)).Replace("-", "");
+        }
+
+        /// <summary>
+        /// hex转字符串
+        /// </summary>
+        /// <param name="mHex"></param>
+        /// <returns></returns>
+        public static string Hex2String(string mHex)
+        {
+            mHex = Regex.Replace(mHex, "[^0-9A-Fa-f]", "");
+            if (mHex.Length % 2 != 0)
+                mHex = mHex.Remove(mHex.Length - 1, 1);
+            if (mHex.Length <= 0) return "";
+            byte[] vBytes = new byte[mHex.Length / 2];
+            for (int i = 0; i < mHex.Length; i += 2)
+                if (!byte.TryParse(mHex.Substring(i, 2), NumberStyles.HexNumber, null, out vBytes[i / 2]))
+                    vBytes[i / 2] = 0;
+            return Encoding.Default.GetString(vBytes);
+        }
+        
+        public static string UrlEncode(string str)
+        {
+            return HttpUtility.UrlEncode(Hex2String(str));
+        }
     }
 
 
@@ -890,7 +945,9 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             try
             {
                 lua.RegisterFunction("httpGet_row", null, typeof(Tools).GetMethod("LuaHttpGet"));
-                lua.RegisterFunction("encodingChange", null, typeof(Tools).GetMethod("EncodeChange"));
+                lua.RegisterFunction("httpPost_row", null, typeof(Tools).GetMethod("LuaHttpPost"));
+                lua.RegisterFunction("encodeChange", null, typeof(Tools).GetMethod("EncodeChange"));
+                lua.RegisterFunction("urlEncode_row", null, typeof(Tools).GetMethod("UrlEncode"));
                 lua.DoFile(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "data/head.lua");
                 lua.DoString(headRun);
                 lua.DoString(code);
