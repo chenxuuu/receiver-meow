@@ -8,6 +8,8 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -272,14 +274,23 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
         /// <summary>  
         /// GET 请求与获取结果  
         /// </summary>  
-        public static string HttpGet(string Url, string postDataStr = "")
+        public static string HttpGet(string Url, string postDataStr = "", int timeout = 5000)
         {
             try
             {
+                //请求前设置一下使用的安全协议类型 System.Net
+                if (Url.StartsWith("https", StringComparison.OrdinalIgnoreCase))
+                {
+                    ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors) =>
+                    {
+                        return true; //总是接受  
+                    });
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+                }
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Url + (postDataStr == "" ? "" : "?") + postDataStr);
                 request.Method = "GET";
                 request.ContentType = "text/html;charset=UTF-8";
-                request.Timeout = 5000;
+                request.Timeout = timeout;
 
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                 Stream myResponseStream = response.GetResponseStream();
@@ -824,15 +835,22 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             LuaTimeout lua = new LuaTimeout();
             lua.code = text;
             lua.headRun = headRun;
-            lua.CallWithTimeout(3000);
+            lua.CallWithTimeout(5000);
             return lua.result;
         }
 
-        public static JObject JsonDecode(string json)
+        public static string EncodeChange(string text, string src, string dst)
         {
-            JObject jo = (JObject)JsonConvert.DeserializeObject(json);
-            return jo;
+            System.Text.Encoding s, d;
+            s = System.Text.Encoding.GetEncoding(src);
+            d = System.Text.Encoding.GetEncoding(dst);
+            byte[] db;
+            db = d.GetBytes(text);
+            //返回转换后的字符
+            return s.GetString(db);
         }
+
+
     }
 
 
@@ -853,6 +871,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             try
             {
                 lua.RegisterFunction("httpGet", null, typeof(Tools).GetMethod("HttpGet"));
+                lua.RegisterFunction("encodingChange", null, typeof(Tools).GetMethod("EncodeChange"));
                 lua.DoFile(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "data/head.lua");
                 lua.DoString(headRun);
                 lua.DoString(code);
@@ -901,7 +920,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             for (int i = 0; i < mHex.Length; i += 2)
                 if (!byte.TryParse(mHex.Substring(i, 2), NumberStyles.HexNumber, null, out vBytes[i / 2]))
                     vBytes[i / 2] = 0;
-            return Encoding.Default.GetString(vBytes);
+            return Encoding.UTF8.GetString(vBytes);
         }
     }
 }

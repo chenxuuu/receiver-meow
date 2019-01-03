@@ -43,6 +43,7 @@ local safeFunctions = {
     at = true,
     httpGet = true,
     JSON = true,
+    encodingChange = true,
 }
 
 --安全的os函数
