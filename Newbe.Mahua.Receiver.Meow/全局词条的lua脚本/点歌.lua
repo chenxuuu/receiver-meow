@@ -1,4 +1,4 @@
-message = "点歌种太阳"
+--message = "点歌种太阳"
 local songID
 if message:find("点歌") == 1 then
     if message:gsub("点歌",""):gsub("%d","") == "" then
@@ -6,7 +6,7 @@ if message:find("点歌") == 1 then
     else
         local html = httpGet("http://s.music.163.com/search/get/", "type=1&s="..message:gsub("点歌",""):urlEncode())
         local jo = JSON:decode(html)
-        if jo and jo.result then
+        if jo and jo.result and jo.result.songs and jo.result.songs[1] then
             songID = jo.result.songs[1].id
         end
     end
