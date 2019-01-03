@@ -25,6 +25,19 @@ function httpGet(url,para,timeout)
     return httpGet_row(url,para,timeout):fromHex()
 end
 
+--httpPost获取
+function httpPost(url,para,timeout)
+    if not para then para = "" end
+    if not timeout then timeout = 5000 end
+    return httpPost_row(url,para,timeout):fromHex()
+end
+
+--url编码
+function string.urlEncode(s)
+    local s = s:toHex()
+    return urlEncode_row(s)
+end
+
 --安全的函数
 local safeFunctions = {
     assert = true,
@@ -51,8 +64,11 @@ local safeFunctions = {
     at = true,
     httpGet_row = true,
     httpGet = true,
+    httpPost_row = true,
+    httpPost = true,
     JSON = true,
-    encodingChange = true,
+    encodeChange = true,
+    urlEncode_row = true,
 }
 
 --安全的os函数
