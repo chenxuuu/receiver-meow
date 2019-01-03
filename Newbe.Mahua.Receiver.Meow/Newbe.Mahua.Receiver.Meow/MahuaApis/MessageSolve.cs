@@ -48,6 +48,7 @@ lua 加 代码 直接运行
 ！luaadd 关键词：代码
 ！luadel 关键词
 ！lualist
+！luasee 关键词
 点我查看可供使用的api说明";
             }
             else if (msg.IndexOf("坷垃金曲") == 0)
@@ -101,6 +102,18 @@ lua 加 代码 直接运行
                     string get_msg = msg.Replace("！luadel ", "");
                     XmlSolve.luadel(fromgroup, get_msg);
                     result += "删除完成！\r\n脚本触发词为：" + get_msg;
+                }
+                else
+                {
+                    result += prem;
+                }
+            }
+            else if (msg.IndexOf("！luasee ") == 0 && msg.Length > 8)
+            {
+                if ((XmlSolve.AdminCheck(fromqq) >= 1 && fromgroup != "common") || (fromgroup == "common" && fromqq == "961726194"))
+                {
+                    string get_msg = msg.Replace("！luasee ", "");
+                    result += XmlSolve.xml_get(fromgroup, get_msg);
                 }
                 else
                 {
@@ -272,10 +285,6 @@ lua 加 代码 直接运行
                     result += Tools.At(fromqq) + Tools.SetRepeat(Tools.GetNumber(msg), fromgroup);
                 else
                     result += prem;
-            }
-            else if (msg.IndexOf("点歌") == 0)
-            {
-                result += Tools.Get163Music(msg.Replace("点歌", ""), fromqq);
             }
             else if (msg.IndexOf("搜动画") != -1 || msg.IndexOf("搜番") != -1 || 
                 msg.IndexOf("查动画") != -1 || msg.IndexOf("查番") != -1)

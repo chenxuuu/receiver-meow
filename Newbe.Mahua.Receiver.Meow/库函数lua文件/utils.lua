@@ -68,17 +68,6 @@ function string.utf8Len(str)
     end
     return cnt
 end
--- 将一个字符转为urlEncode编码
-local function urlEncodeChar(c)
-    return "%" .. string.format("%02X", string.byte(c))
-end
---- 返回字符串的urlEncode编码
--- @string str，要转换编码的字符串
--- @return str,urlEncode编码的字符串
--- @usage string.urlEncode("####133")
-function string.urlEncode(str)
-    return string.gsub(string.gsub(string.gsub(tostring(str), "\n", "\r\n"), "([^%w%.%- ])", urlEncodeChar), " ", "+")
-end
 --- 返回数字的千位符号格式
 -- @number num,数字
 -- @return string，千位符号的数字字符串
