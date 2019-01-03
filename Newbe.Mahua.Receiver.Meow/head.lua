@@ -1,4 +1,5 @@
-JSON = assert(loadfile "JSON.lua")()
+JSON = require("JSON")
+utils = require("utils")
 --重写print函数
 function print(...)
     if lua_run_result_var ~= "" then
@@ -15,6 +16,13 @@ end
 --返回at某人的字符串
 function at(qq)
     return "[CQ:at,qq="..tostring(qq).."]"
+end
+
+--httpGet获取
+function httpGet(url,para,timeout)
+    if not para then para = "" end
+    if not timeout then timeout = 5000 end
+    return httpGet_row(url,para,timeout):fromHex()
 end
 
 --安全的函数
@@ -41,6 +49,7 @@ local safeFunctions = {
     lua_run_result_var = true,
     os = true,
     at = true,
+    httpGet_row = true,
     httpGet = true,
     JSON = true,
     encodingChange = true,
