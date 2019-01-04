@@ -106,6 +106,20 @@ print(jd.a,jd.t[1].b)
 
 json库用的是：http://regex.info/blog/lua/json
 
+### getData(fromqq,name) 读取指定名称的数据
+
+```lua
+getData(fromqq,"search_for_kydi")
+```
+
+### setData(fromqq,name,data) 存储指定名称的数据
+
+注意！name名称必须大于十个字节长度，防止重名的情况发生
+
+```lua
+setData(fromqq,"search_for_kydi","12345678")
+```
+
 ### string.fromHex(hex)
 
 ```lua
