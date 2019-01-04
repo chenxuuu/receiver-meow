@@ -52,23 +52,6 @@ lua 加 代码 直接运行
 查看可供使用的api说明：
 https://github.com/chenxuuu/receiver-meow/blob/master/lua.md";
             }
-            else if (msg.IndexOf("坷垃金曲") == 0)
-            {
-                int song = 0;
-                try
-                {
-                    song = int.Parse(msg.Replace("坷垃金曲", ""));
-                }
-                catch { }
-                if (song >= 1 && song <= 71)
-                {
-                    result += "[CQ:record,file=CoolQ 语音时代！\\坷垃金曲\\" + song.ToString().PadLeft(3, '0') + ".mp3]";
-                }
-                else
-                {
-                    result += Tools.At(fromqq) + "编号不对哦，编号只能是1-71";
-                }
-            }
             else if (msg.IndexOf("！list ") == 0)
             {
                 result += string.Format("当前词条回复如下：\r\n{0}\r\n全局词库内容：\r\n{1}",
