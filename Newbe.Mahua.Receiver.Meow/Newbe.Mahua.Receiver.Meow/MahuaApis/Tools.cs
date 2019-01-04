@@ -736,6 +736,8 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             XmlSolve.insert(xml, info, str);
         }
 
+
+
         /// <summary>
         /// 获取网址前缀
         /// </summary>
@@ -948,6 +950,8 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 lua.RegisterFunction("httpPost_row", null, typeof(Tools).GetMethod("LuaHttpPost"));
                 lua.RegisterFunction("encodeChange", null, typeof(Tools).GetMethod("EncodeChange"));
                 lua.RegisterFunction("urlEncode_row", null, typeof(Tools).GetMethod("UrlEncode"));
+                lua.RegisterFunction("saveData_row", null, typeof(Tools).GetMethod("LuaSaveData"));
+                lua.RegisterFunction("getData_row", null, typeof(Tools).GetMethod("LuaGetData"));
                 lua.DoFile(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "data/head.lua");
                 lua.DoString(headRun);
                 lua.DoString(code);
