@@ -263,10 +263,6 @@ https://github.com/chenxuuu/receiver-meow/blob/master/lua.md";
             {
                 result += LotteryEvent.ReceiveGift(fromqq);
             }
-            else if (msg.IndexOf("查快递") == 0)
-            {
-                result += Tools.GetExpress(Tools.GetNumber(msg), fromqq);
-            }
             else if (msg.IndexOf("空气质量") == 0)
             {
                 result += Tools.GetAir(msg, fromqq);
