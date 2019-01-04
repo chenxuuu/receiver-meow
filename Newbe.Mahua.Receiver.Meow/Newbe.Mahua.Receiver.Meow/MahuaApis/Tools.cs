@@ -410,67 +410,6 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
         }
 
 
-        /// <summary>
-        /// 获取快递信息
-        /// </summary>
-        /// <param name="expressNo"></param>
-        /// <param name="qq"></param>
-        /// <returns></returns>
-        public static string GetExpress(string expressNo, string qq)
-        {
-            if (expressNo == "")
-            {
-                expressNo = XmlSolve.xml_get("express", qq);
-                if (expressNo == "")
-                {
-                    return At(qq) + "你没有查询过任何快递，请输入要查询的单号";
-                }
-            }
-            else
-            {
-                XmlSolve.del("express", qq);
-                XmlSolve.insert("express", qq, expressNo);
-            }
-
-            string result_msg = "";
-            try
-            {
-                string html = HttpGet("https://www.kuaidi100.com/autonumber/autoComNum", "text=" + expressNo);
-                JObject jo = (JObject)JsonConvert.DeserializeObject(html);
-                string comCode = jo["auto"][0]["comCode"].ToString();
-                result_msg = comCode + "\r\n";
-
-                html = HttpGet("https://www.kuaidi100.com/query", "type=" + comCode + "&postid=" + expressNo);
-                jo = (JObject)JsonConvert.DeserializeObject(html);
-                foreach (var i in jo["data"])
-                {
-                    result_msg += i["time"].ToString() + " ";
-                    result_msg += i["context"].ToString() + " 地点：";
-                    result_msg += i["location"].ToString() + "\r\n";
-                }
-                if (result_msg == comCode + "\r\n")
-                {
-                    result_msg = "";
-                }
-            }
-            catch
-            {
-
-            }
-            if (result_msg == "")
-            {
-                return At(qq) + "无此单号的数据";
-            }
-            else
-            {
-                return At(qq) + result_msg + "下次查询该快递可直接发送“查快递”命令，无需在输入单号";
-            }
-        }
-
-
-
-
-
         private static int[] pyValue = new int[]
 {
                 -20319,-20317,-20304,-20295,-20292,-20283,-20265,-20257,-20242,-20230,-20051,-20036,
@@ -923,9 +862,38 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             return Encoding.Default.GetString(vBytes);
         }
         
+
+        /// <summary>
+        /// url编码，lua专用
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
         public static string UrlEncode(string str)
         {
             return HttpUtility.UrlEncode(Hex2String(str));
+        }
+
+        /// <summary>
+        /// lua读取数据
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="qq"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static string LuaGetXml(string qq, string name)
+        {
+            return GetXmlString("luaData", qq + name);
+        }
+
+        /// <summary>
+        /// lua存储数据
+        /// </summary>
+        /// <param name="qq"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static void LuaSetXml(string qq, string name, string str)
+        {
+            SetXmlString("luaData", qq + name, str);
         }
     }
 
@@ -950,8 +918,8 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 lua.RegisterFunction("httpPost_row", null, typeof(Tools).GetMethod("LuaHttpPost"));
                 lua.RegisterFunction("encodeChange", null, typeof(Tools).GetMethod("EncodeChange"));
                 lua.RegisterFunction("urlEncode_row", null, typeof(Tools).GetMethod("UrlEncode"));
-                lua.RegisterFunction("saveData_row", null, typeof(Tools).GetMethod("LuaSaveData"));
-                lua.RegisterFunction("getData_row", null, typeof(Tools).GetMethod("LuaGetData"));
+                lua.RegisterFunction("setData_row", null, typeof(Tools).GetMethod("LuaSetXml"));
+                lua.RegisterFunction("getData_row", null, typeof(Tools).GetMethod("LuaGetXml"));
                 lua.DoFile(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "data/head.lua");
                 lua.DoString(headRun);
                 lua.DoString(code);
