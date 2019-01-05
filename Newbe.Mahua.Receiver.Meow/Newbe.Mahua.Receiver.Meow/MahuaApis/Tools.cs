@@ -882,7 +882,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
         /// <returns></returns>
         public static string LuaGetXml(string qq, string name)
         {
-            return GetXmlString("luaData", qq + name);
+            return GetXmlString("luaData", qq + "." + name);
         }
 
         /// <summary>
@@ -893,7 +893,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
         /// <returns></returns>
         public static void LuaSetXml(string qq, string name, string str)
         {
-            SetXmlString("luaData", qq + name, str);
+            SetXmlString("luaData", qq + "." + name, str);
         }
     }
 
@@ -910,7 +910,6 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
         public void Run(string code)
         {
             NLua.Lua lua = new NLua.Lua();
-            lua.LoadCLRPackage();
             lua["lua_run_result_var"] = "";
             try
             {

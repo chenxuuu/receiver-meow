@@ -42,23 +42,17 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
         {
             dircheck(group);
             XElement root = XElement.Load(path + group + ".xml");
-            string[] replay_str = new string[50];
-            int count = 0;
             Random ran = new Random(System.DateTime.Now.Millisecond);
             int RandKey;
             string ansall = "";
-            foreach (XElement mm in root.Elements("msginfo"))
+            var element = from ee in root.Elements()
+                          where msg.IndexOf(ee.Element("msg").Value) != -1
+                          select ee;
+            XElement[] result = element.ToArray();
+            if (result.Count() > 0)
             {
-                if (msg.IndexOf(mm.Element("msg").Value) != -1 && count < 50)
-                {
-                    replay_str[count] = mm.Element("ans").Value;
-                    count++;
-                }
-            }
-            if (count != 0)
-            {
-                RandKey = ran.Next(0, count);
-                ansall = replay_str[RandKey];
+                RandKey = ran.Next(0, result.Count());
+                ansall = result[RandKey].Element("ans").Value;
             }
             if(ansall.IndexOf("[lua]") == 0)
             {
@@ -84,50 +78,10 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
         {
             dircheck(group);
             XElement root = XElement.Load(path + group + ".xml");
-            foreach (XElement mm in root.Elements("msginfo"))
-            {
-                if (mm.Element("ans").Value.IndexOf(msg) != -1 )
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        public static string qq_get(string msg)
-        {
-            string group = "bind_qq";
-            dircheck(group);
-            XElement root = XElement.Load(path + group + ".xml");
-            string ansall = "0";
-            foreach (XElement mm in root.Elements("msginfo"))
-            {
-                if (msg == mm.Element("ans").Value)
-                {
-                    ansall = mm.Element("msg").Value;
-                    break;
-                }
-            }
-
-            return ansall;
-        }
-
-        public static string qq_get_unregister(string msg)
-        {
-            string group = "bind_qq_wait";
-            dircheck(group);
-            XElement root = XElement.Load(path + group + ".xml");
-            string ansall = "0";
-            foreach (XElement mm in root.Elements("msginfo"))
-            {
-                if (msg == mm.Element("ans").Value)
-                {
-                    ansall = mm.Element("msg").Value;
-                    break;
-                }
-            }
-
-            return ansall;
+            var element = from ee in root.Elements()
+                          where ee.Element("ans").Value.IndexOf(msg) != -1
+                          select ee;
+            return element.Count() > 0;
         }
 
         public static string xml_get(string group, string msg)
@@ -135,56 +89,38 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             dircheck(group);
             XElement root = XElement.Load(path + group + ".xml");
             string ansall = "";
-            foreach (XElement mm in root.Elements("msginfo"))
+            var element = from ee in root.Elements()
+                          where ee.Element("msg").Value == msg
+                          select ee;
+            if(element.Count() > 0)
             {
-                if (msg == mm.Element("msg").Value)
-                {
-                    ansall = mm.Element("ans").Value;
-                    break;
-                }
+                ansall = element.First().Element("ans").Value;
             }
-
             return ansall;
-        }
-
-        public static string xml_dic_get(string num)
-        {
-            XElement root = XElement.Load(path + "dic.xml");
-            string ans = "";
-            foreach (XElement mm in root.Elements("msginfo"))
-            {
-                if (num == mm.Element("sum").Value)
-                {
-                    ans = mm.Element("word").Value + "\r\n" + mm.Element("translate").Value;
-                    break;
-                }
-            }
-            return ans;
         }
 
         public static string list_get(string group, string msg)
         {
             dircheck(group);
             XElement root = XElement.Load(path + group + ".xml");
-            int count = 0;
             string ansall = "";
-            foreach (XElement mm in root.Elements("msginfo"))
+            var element = from ee in root.Elements()
+                          where ee.Element("msg").Value == msg
+                          select ee;
+            XElement[] result = element.ToArray();
+            foreach (XElement mm in result)
             {
-                if (msg == mm.Element("msg").Value)
+                if (mm.Element("ans").Value.IndexOf("[lua]") == 0)
                 {
-                    if(mm.Element("ans").Value.IndexOf("[lua]") == 0)
-                    {
-                        int len = mm.Element("ans").Value.IndexOf(".");
-                        ansall += Tools.At(mm.Element("ans").Value.Substring(5, len - 5)) + "的lua脚本\r\n";
-                    }
-                    else
-                    {
-                        ansall = ansall + mm.Element("ans").Value + "\r\n";
-                    }
-                    count++;
+                    int len = mm.Element("ans").Value.IndexOf(".");
+                    ansall += Tools.At(mm.Element("ans").Value.Substring(5, len - 5)) + "的lua脚本\r\n";
+                }
+                else
+                {
+                    ansall = ansall + mm.Element("ans").Value + "\r\n";
                 }
             }
-            ansall = ansall + "一共有" + count.ToString() + "条回复";
+            ansall = ansall + "一共有" + element.Count() + "条回复";
             return ansall;
         }
 
@@ -192,19 +128,18 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
         {
             dircheck(group);
             XElement root = XElement.Load(path + group + ".xml");
-            int count = 0;
             string ansall = "";
-            foreach (XElement mm in root.Elements("msginfo"))
+            var element = from ee in root.Elements()
+                          where ee.Element("ans").Value.IndexOf("[lua]") == 0
+                          select ee;
+            XElement[] result = element.ToArray();
+            foreach (XElement mm in result)
             {
-                if (mm.Element("ans").Value.IndexOf("[lua]")==0)
-                {
-                    int len = mm.Element("ans").Value.IndexOf(".");
-                    ansall += mm.Element("msg").Value + "：" +
-                        Tools.At(mm.Element("ans").Value.Substring(5, len - 5)) + "的lua脚本\r\n";
-                    count++;
-                }
+                int len = mm.Element("ans").Value.IndexOf(".");
+                ansall += mm.Element("msg").Value + "：" +
+                    Tools.At(mm.Element("ans").Value.Substring(5, len - 5)) + "的lua脚本\r\n";
             }
-            ansall = ansall + "一共有" + count.ToString() + "个脚本";
+            ansall = ansall + "一共有" + element.Count() + "个脚本";
             return ansall;
         }
 
