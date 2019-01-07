@@ -89,22 +89,22 @@ local zh,en = "中文","English"
 print(zh:urlEncode(), en:urlEncode())
 ```
 
-### JSON:decode(string) json解码
+### jsonDecode(string) json解码
 
 举例：
 
 ```lua
 local j = [[{
     "a":123,
-    "t":[
-        "b":"ccc"
-    ]
+    "b":"ccc"
 }]]
-local jd = JSON:decode(j)
-print(jd.a,jd.t[1].b)
+local t,result,error = jsonDecode(j)
+if result then
+    print(t.a,t.b)
+else
+    print(t,result,error)
+end
 ```
-
-json库用的是：http://regex.info/blog/lua/json
 
 ### getData(fromqq,name) 读取指定名称的数据
 
