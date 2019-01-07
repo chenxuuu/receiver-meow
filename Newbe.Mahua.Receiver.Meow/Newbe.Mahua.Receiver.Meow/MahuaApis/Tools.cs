@@ -310,11 +310,6 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             catch { }
             return "";
         }
-        public static string LuaHttpGet(string Url, string postDataStr = "", int timeout = 5000)
-        {
-            string result = HttpGet(Url, postDataStr, timeout);
-            return String2Hex(result, false);
-        }
 
         /// <summary>
         /// POST请求与获取结果
@@ -354,11 +349,6 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             catch (Exception e)
             { }
             return "";
-        }
-        public static string LuaHttpPost(string Url, string postDataStr = "", int timeout = 5000)
-        {
-            string result = HttpPost(Url, postDataStr, timeout);
-            return String2Hex(result, false);
         }
 
         ///<summary>
@@ -810,26 +800,6 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             return lua.result;
         }
 
-
-        /// <summary>
-        /// 更改字符串编码
-        /// </summary>
-        /// <param name="text"></param>
-        /// <param name="src"></param>
-        /// <param name="dst"></param>
-        /// <returns></returns>
-        public static string EncodeChange(string text, string src, string dst)
-        {
-            System.Text.Encoding s, d;
-            s = System.Text.Encoding.GetEncoding(src);
-            d = System.Text.Encoding.GetEncoding(dst);
-            byte[] db;
-            db = d.GetBytes(text);
-            byte[] r = Encoding.Convert(s, d, db);
-            //返回转换后的字符
-            return s.GetString(r);
-        }
-
         /// <summary>
         /// 字符串转hex
         /// </summary>
@@ -913,22 +883,19 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             lua["lua_run_result_var"] = "";
             try
             {
-                lua.RegisterFunction("httpGet_row", null, typeof(Tools).GetMethod("LuaHttpGet"));
-                lua.RegisterFunction("httpPost_row", null, typeof(Tools).GetMethod("LuaHttpPost"));
-                lua.RegisterFunction("encodeChange", null, typeof(Tools).GetMethod("EncodeChange"));
-                lua.RegisterFunction("urlEncode_row", null, typeof(Tools).GetMethod("UrlEncode"));
+                lua.RegisterFunction("httpGet_row", null, typeof(Tools).GetMethod("HttpGet"));
+                lua.RegisterFunction("httpPost_row", null, typeof(Tools).GetMethod("HttpPost"));
                 lua.RegisterFunction("setData_row", null, typeof(Tools).GetMethod("LuaSetXml"));
                 lua.RegisterFunction("getData_row", null, typeof(Tools).GetMethod("LuaGetXml"));
                 lua.DoFile(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "data/head.lua");
                 lua.DoString(headRun);
-                lua.DoString(code);
-                lua.DoString("lua_run_result_var = string.gsub(lua_run_result_var, \"(.)\", function(c) return string.format(\"%02X\", string.byte(c)) end)");
-                if (Tools.CharNum(lua["lua_run_result_var"].ToString(), "0A") > 40)
+                lua.DoString(Encoding.UTF8.GetBytes(code));
+                if (Tools.CharNum(lua["lua_run_result_var"].ToString(), "\n") > 40)
                     result = "行数超过了20行，限制一下吧";
-                else if (lua["lua_run_result_var"].ToString().Length > 4000)
+                else if (lua["lua_run_result_var"].ToString().Length > 2000)
                     result = "字数超过了2000，限制一下吧";
                 else
-                    result = Hex2String(lua["lua_run_result_var"].ToString());
+                    result = lua["lua_run_result_var"].ToString();
             }
             catch (Exception e)
             {

@@ -22,7 +22,7 @@ end
 function httpGet(url,para,timeout)
     if not para then para = "" end
     if not timeout then timeout = 5000 end
-    local result = httpGet_row(url,para,timeout):fromHex()
+    local result = httpGet_row(url,para,timeout)
     if result ~= "" then return result end
 end
 
@@ -30,14 +30,8 @@ end
 function httpPost(url,para,timeout)
     if not para then para = "" end
     if not timeout then timeout = 5000 end
-    local result = httpPost_row(url,para,timeout):fromHex()
+    local result = httpPost_row(url,para,timeout)
     if result ~= "" then return result end
-end
-
---url编码
-function string.urlEncode(s)
-    local s = s:toHex()
-    return urlEncode_row(s)
 end
 
 --存储数据
@@ -46,8 +40,6 @@ function setData(qq,name,str)
     assert(type(name) == "string", "setData invalid second partment("..type(name)..") must be string")
     assert(type(str) == "string", "setData invalid third partment("..type(str)..") must be string")
     assert(name:len() >= 10, "setData second partment too short("..tostring(name:len())..") must more then 10 byte")
-    name = name:toHex()
-    str = str:toHex()
     setData_row(qq,name,str)
 end
 
@@ -55,9 +47,18 @@ end
 function getData(qq,name,str)
     assert(type(qq) == "string", "getData invalid first partment("..type(qq)..") must be string")
     assert(type(name) == "string", "getData invalid second partment("..type(name)..") must be string")
-    name = name:toHex()
-    local result = getData_row(qq,name):fromHex()
+    local result = getData_row(qq,name)
     return result
+end
+
+--安全的，带解析结果返回的json解析函数
+function jsonDecode(s)
+    local result, info = pcall(function(t) return JSON:decode(t) end, s)
+    if result then
+        return info, true
+    else
+        return {}, false, info
+    end
 end
 
 --安全的函数
@@ -95,6 +96,7 @@ local safeFunctions = {
     getData_row = true,
     setData = true,
     getData = true,
+    jsonDecode = true,
 }
 
 --安全的os函数

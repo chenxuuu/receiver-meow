@@ -98,3 +98,38 @@ function string.split(str, delimiter)
     end
     return strlist
 end
+
+--- 返回utf8编码字符串的长度
+-- @string str,utf8编码的字符串,支持中文
+-- @return number,返回字符串长度
+-- @usage local cnt = string.utf8Len("中国"),str = 2
+function string.utf8Len(str)
+    local len = #str
+    local left = len
+    local cnt = 0
+    local arr = {0, 0xc0, 0xe0, 0xf0, 0xf8, 0xfc}
+    while left ~= 0 do
+        local tmp = string.byte(str, -left)
+        local i = #arr
+        while arr[i] do
+            if tmp >= arr[i] then
+                left = left - i
+                break
+            end
+            i = i - 1
+        end
+        cnt = cnt + 1
+    end
+    return cnt
+end
+-- 将一个字符转为urlEncode编码
+local function urlEncodeChar(c)
+    return "%" .. string.format("%02X", string.byte(c))
+end
+--- 返回字符串的urlEncode编码
+-- @string str，要转换编码的字符串
+-- @return str,urlEncode编码的字符串
+-- @usage string.urlEncode("####133")
+function string.urlEncode(str)
+    return string.gsub(string.gsub(string.gsub(tostring(str), "\n", "\r\n"), "([^%w%.%- ])", urlEncodeChar), " ", "+")
+end
