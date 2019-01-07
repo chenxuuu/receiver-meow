@@ -272,21 +272,11 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 string player = "";
                 string reason = "";
                 string qq_get = "";
-                string[] str2;
-                int count_temp = 0;
-                str2 = msg.Replace("不通过", "").Split(' ');
-                foreach (string i in str2)
+                int len = msg.Replace("不通过", "").IndexOf("：");
+                if(len >= 0)
                 {
-                    if (count_temp == 0)
-                    {
-                        player = XmlSolve.xml_get("bind_qq_wait", i);
-                        qq_get = i;
-                        count_temp++;
-                    }
-                    else if (count_temp == 1)
-                    {
-                        reason += i + " ";
-                    }
+                    player = XmlSolve.xml_get("bind_qq_wait", msg.Replace("不通过", "").Substring(0, len));
+                    reason = msg.Replace("不通过", "").Substring(len + 1);
                 }
 
                 if (player != "")

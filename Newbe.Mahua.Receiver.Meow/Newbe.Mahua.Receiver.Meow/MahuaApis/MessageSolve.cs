@@ -70,9 +70,16 @@ https://github.com/chenxuuu/receiver-meow/blob/master/lua.md";
                 {
                     string luaMsg = msg.Replace("！luaadd ", "");
                     int len = luaMsg.IndexOf("：");
-                    string tmsg = luaMsg.Substring(0, len), tans = luaMsg.Substring(len + 1);
-                    XmlSolve.insert(fromgroup, tmsg, "[lua]" + fromqq + "." + tans);
-                    result += "添加完成！\r\n词条：" + tmsg + "\r\n回答为一个脚本";
+                    if(len > 0)
+                    {
+                        string tmsg = luaMsg.Substring(0, len), tans = luaMsg.Substring(len + 1);
+                        XmlSolve.insert(fromgroup, tmsg, "[lua]" + fromqq + "." + tans);
+                        result += "添加完成！\r\n词条：" + tmsg + "\r\n回答为一个脚本";
+                    }
+                    else
+                    {
+                        result += "格式错误！";
+                    }
                 }
                 else
                 {
@@ -108,25 +115,12 @@ https://github.com/chenxuuu/receiver-meow/blob/master/lua.md";
             {
                 if ((XmlSolve.AdminCheck(fromqq) >= 1 && fromgroup != "common") || (fromgroup == "common" && fromqq == "961726194"))
                 {
-                    string get_msg = msg.Replace("！add ", ""), tmsg = "", tans = "";
+                    string get_msg = msg.Replace("！add ", "");
 
-                    if (get_msg.IndexOf("：") >= 1 && get_msg.IndexOf("：") != get_msg.Length - 1)
+                    int len = get_msg.IndexOf("：");
+                    string tmsg = get_msg.Substring(0, len), tans = get_msg.Substring(len + 1);
+                    if (len >= 0)
                     {
-                        string[] str2;
-                        int count_temp = 0;
-                        str2 = get_msg.Split('：');
-                        foreach (string i in str2)
-                        {
-                            if (count_temp == 0)
-                            {
-                                tmsg = i.ToString();
-                                count_temp++;
-                            }
-                            else
-                            {
-                                tans += i.ToString();
-                            }
-                        }
                         XmlSolve.insert(fromgroup, tmsg, tans);
                         result += "添加完成！\r\n词条：" + tmsg + "\r\n回答为：" + tans;
                     }
@@ -144,24 +138,12 @@ https://github.com/chenxuuu/receiver-meow/blob/master/lua.md";
             {
                 if ((XmlSolve.AdminCheck(fromqq) >= 1 && fromgroup != "common") || (fromgroup == "common" && fromqq == "961726194"))
                 {
-                    string get_msg = msg.Replace("！del ", ""), tmsg = "", tans = "";
-                    if (get_msg.IndexOf("：") >= 1 && get_msg.IndexOf("：") != get_msg.Length - 1)
+                    string get_msg = msg.Replace("！del ", "");
+
+                    int len = get_msg.IndexOf("：");
+                    string tmsg = get_msg.Substring(0, len), tans = get_msg.Substring(len + 1);
+                    if (len >= 0)
                     {
-                        string[] str2;
-                        int count_temp = 0;
-                        str2 = get_msg.Split('：');
-                        foreach (string i in str2)
-                        {
-                            if (count_temp == 0)
-                            {
-                                tmsg = i.ToString();
-                                count_temp++;
-                            }
-                            else
-                            {
-                                tans += i.ToString();
-                            }
-                        }
                         XmlSolve.remove(fromgroup, tmsg, tans);
                         result += "删除完成！\r\n词条：" + tmsg + "\r\n回答为：" + tans;
                     }
