@@ -70,7 +70,7 @@ function reply(s,day,d)
                 print(url)
             end
         else
-            print(j.."（发送新番加星期阿拉伯数字数字可查询当日新番哦）")
+            print(j.."（发送新番加星期阿拉伯数字可查询当日新番哦）")
             if not d then
                 print("加上“下载”可用获取下载链接哦")
             end
