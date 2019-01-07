@@ -84,6 +84,23 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             return element.Count() > 0;
         }
 
+        /// <summary>
+        /// 是否已禁止某词条的回复
+        /// </summary>
+        /// <param name="group"></param>
+        /// <param name="msg"></param>
+        /// <returns></returns>
+        public static bool IsBaned(string group, string msg)
+        {
+            dircheck(group);
+            XElement root = XElement.Load(path + group + ".xml");
+            var element = from ee in root.Elements()
+                          where ee.Element("ans").Value == "[ban]" 
+                            &&  msg.IndexOf(ee.Element("msg").Value) != -1
+                          select ee;
+            return element.Count() > 0;
+        }
+
         public static string xml_get(string group, string msg)
         {
             dircheck(group);
