@@ -17,6 +17,35 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
         {
             if (Tools.MessageControl(5))
                 return "";
+            if (msg.IndexOf("！ban ") == 0 && msg.Length > 6)
+            {
+                if ((XmlSolve.AdminCheck(fromqq) >= 1 && fromgroup != "common") || (fromgroup == "common" && fromqq == "961726194"))
+                {
+                    string get_msg = msg.Replace("！ban ", "");
+                    XmlSolve.insert(fromgroup, get_msg, "[ban]");
+                    return "已禁用包含关键词" + get_msg + "的所有响应";
+                }
+                else
+                {
+                    return prem;
+                }
+            }
+            else if (msg.IndexOf("！unban ") == 0 && msg.Length > 7)
+            {
+                if ((XmlSolve.AdminCheck(fromqq) >= 1 && fromgroup != "common") || (fromgroup == "common" && fromqq == "961726194"))
+                {
+                    string get_msg = msg.Replace("！unban ", "");
+                    XmlSolve.remove(fromgroup, get_msg, "[ban]");
+                    return "已移除关键词" + get_msg + "的禁用";
+                }
+                else
+                {
+                    return prem;
+                }
+            }
+            if (XmlSolve.IsBaned(fromgroup, msg))
+                return "";
+
             string result = "";
             if (msg == "赞我" || msg == "点赞")
             {
@@ -30,6 +59,8 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
 ！del 关键词：回答
 ！list 关键词
 ！delall 关键词
+！ban 禁止响应的词
+！unban 恢复响应的词
 坷垃金曲+数字序号（最大71）
 点赞
 今日运势
