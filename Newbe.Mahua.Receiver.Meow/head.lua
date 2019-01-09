@@ -74,7 +74,7 @@ function image(url)
         ret = ret .. string.sub(str, rchr, rchr)
     end
     if fileDownload(url,str) then
-        return "[CQ:image,file=download\\"..str.."]"
+        return "[CQ:image,file=download\\"..ret.."]"
     end
 end
 
