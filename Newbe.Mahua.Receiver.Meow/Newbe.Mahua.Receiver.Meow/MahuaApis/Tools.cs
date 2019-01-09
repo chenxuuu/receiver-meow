@@ -940,7 +940,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 lua.RegisterFunction("getData_row", null, typeof(Tools).GetMethod("LuaGetXml"));
                 lua.RegisterFunction("fileDownload", null, typeof(Tools).GetMethod("FileDownload"));
                 lua.DoFile(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "lua/head.lua");
-                lua.DoString(headRun);
+                lua.DoString(Encoding.UTF8.GetBytes(headRun));
                 lua.DoString(Encoding.UTF8.GetBytes(code));
                 if (Tools.CharNum(lua["lua_run_result_var"].ToString(), "\n") > 40)
                     result = "行数超过了20行，限制一下吧";
@@ -952,6 +952,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             catch (Exception e)
             {
                 result = "代码崩掉啦\r\n" + e.Message;
+
             }
         }
 
@@ -972,7 +973,6 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             else
             {
                 threadToKill.Abort();
-                //throw new TimeoutException();
             }
         }
 
