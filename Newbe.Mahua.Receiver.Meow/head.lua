@@ -1,5 +1,9 @@
 JSON = require("JSON")
 utils = require("utils")
+
+--加强随机数随机性
+math.randomseed(tostring(os.time()):reverse():sub(1, 6))
+
 --重写print函数
 function print(...)
     if lua_run_result_var ~= "" then
@@ -61,6 +65,19 @@ function jsonDecode(s)
     end
 end
 
+--显示某张图片
+function image(url)
+    str = "1234567890ABCDEFHIJKLMNOPQRSTUVWXYZ"
+    local ret = ""
+    for i = 1, 20 do
+        local rchr = math.random(1, string.len(str))
+        ret = ret .. string.sub(str, rchr, rchr)
+    end
+    if fileDownload(url,str) then
+        return "[CQ:image,file=download\\"..str.."]"
+    end
+end
+
 --安全的函数
 local safeFunctions = {
     assert = true,
@@ -97,6 +114,8 @@ local safeFunctions = {
     setData = true,
     getData = true,
     jsonDecode = true,
+    fileDownload = true,
+    image = true,
 }
 
 --安全的os函数
@@ -118,5 +137,3 @@ for fnc in pairs(_G) do
     end
 end
 
---加强随机数随机性
-math.randomseed(tostring(os.time()):reverse():sub(1, 6))
