@@ -73,7 +73,7 @@ function image(url)
         local rchr = math.random(1, string.len(str))
         ret = ret .. string.sub(str, rchr, rchr)
     end
-    if fileDownload(url,str) then
+    if fileDownload(url,ret) then
         return "[CQ:image,file=download\\"..ret.."]"
     end
 end
