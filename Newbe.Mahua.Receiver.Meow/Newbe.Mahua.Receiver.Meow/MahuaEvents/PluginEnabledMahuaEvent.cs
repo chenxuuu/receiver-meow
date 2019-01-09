@@ -36,6 +36,21 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaEvents
             int intMinute = e.SignalTime.Minute;
             int intSecond = e.SignalTime.Second;
 
+            //删除过期文件
+            DirectoryInfo downloadDir = new DirectoryInfo(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "data/image/download/");
+            FileSystemInfo[] downloadFiles = downloadDir.GetFileSystemInfos();
+            for (int i = 0; i < downloadFiles.Length; i++)
+            {
+                FileInfo file = downloadFiles[i] as FileInfo;
+                //是文件
+                if (file != null)
+                {
+                    TimeSpan time = DateTime.Now - file.CreationTime;
+                    if(time.TotalSeconds > 10)
+                        file.Delete();
+                }
+            }
+
             // 十二点执行
             if (intMinute == 0 && intSecond == 10 && intHour == 0)
             {
@@ -71,7 +86,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaEvents
                 var _m = MahuaRobotManager.Instance.CreateSession().MahuaApi;
                 _m.SendGroupMessage("567145439", "开始文件自动清理任务");
                 _m.SendGroupMessage("454493790", "开始文件自动清理任务");
-                int records = 0,imageall = 0, imgdel = 0, download = 0;
+                int records = 0,imageall = 0, imgdel = 0;
 
                 DirectoryInfo dir = new DirectoryInfo(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "data/record/");
                 FileSystemInfo[] files = dir.GetFileSystemInfos();
@@ -115,23 +130,10 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaEvents
                     }
                 }
 
-                DirectoryInfo downloadDir = new DirectoryInfo(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "data/image/download/");
-                FileSystemInfo[] downloadFiles = dir.GetFileSystemInfos();
-                for (int i = 0; i < files.Length; i++)
-                {
-                    FileInfo file = files[i] as FileInfo;
-                    //是文件
-                    if (file != null)
-                    {
-                        file.Delete();
-                        download++;
-                    }
-                }
-
                 _m.SendGroupMessage("567145439", "任务执行完毕\r\n共删除" + records + "个语音文件\r\n"
-                    + "删除" + imageall + "张图片中的" + imgdel + "张\r\n" + download + "个下载缓存文件");
+                    + "删除" + imageall + "张图片中的" + imgdel + "张");
                 _m.SendGroupMessage("454493790", "任务执行完毕\r\n共删除" + records + "个语音文件\r\n"
-                    + "删除" + imageall + "张图片中的" + imgdel + "张\r\n" + download + "个下载缓存文件");
+                    + "删除" + imageall + "张图片中的" + imgdel + "张");
             }
         }
     }
