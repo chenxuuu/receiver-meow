@@ -124,8 +124,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             }
         }
 
-
-
+        
         /// <summary>
         /// 获取随机数
         /// </summary>
@@ -136,31 +135,6 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
         {
             Random ran = new Random(System.DateTime.Now.Millisecond);
             return ran.Next(min, max);
-        }
-
-        /// <summary>  
-        /// GET 请求与获取结果（qq宠物专用，带cookie参数）  
-        /// </summary>  
-        public static string HttpGetPet(string Url, string postDataStr, string uin, string skey)
-        {
-            try
-            {
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Url + (postDataStr == "" ? "" : "?") + postDataStr);
-                request.Method = "GET";
-                request.ContentType = "text/html;charset=UTF-8";
-                request.Headers.Add("cookie", "uin=" + uin + "; skey=" + skey);
-                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                Stream myResponseStream = response.GetResponseStream();
-                StreamReader myStreamReader = new StreamReader(myResponseStream, Encoding.UTF8);
-
-                string retString = myStreamReader.ReadToEnd();
-                myStreamReader.Close();
-                myResponseStream.Close();
-
-                return retString;
-            }
-            catch { }
-            return "";
         }
 
         /// <summary>
@@ -349,6 +323,83 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             catch (Exception e)
             { }
             return "";
+        }
+
+        /// <summary>
+        /// 下载文件
+        /// </summary>
+        /// <param name="Url">网址</param>
+        /// <param name="fileName">文件名</param>
+        /// <param name="timeout">超时时间</param>
+        /// <returns></returns>
+        public static bool FileDownload(string Url, string fileName, int timeout = 5000)
+        {
+            try
+            {
+                //请求前设置一下使用的安全协议类型 System.Net
+                if (Url.StartsWith("https", StringComparison.OrdinalIgnoreCase))
+                {
+                    ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors) =>
+                    {
+                        return true; //总是接受  
+                    });
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+                }
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Url);
+                //request.Method = "GET";
+                request.ContentType = "text/html;charset=UTF-8";
+                request.Timeout = timeout;
+
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                Stream myResponseStream = response.GetResponseStream();
+                bool result = false;
+                if (!response.ContentType.ToLower().StartsWith("text/"))
+                {
+                    result = SaveBinaryFile(response, AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "data/image/download/" + fileName);
+                }
+
+                myResponseStream.Close();
+
+                return result;
+            }
+            catch { }
+            return false;
+        }
+
+
+        /// <summary>
+        /// Save a binary file to disk.
+        /// </summary>
+        /// <param name="response">The response used to save the file</param>
+        private static bool SaveBinaryFile(WebResponse response, string FileName)
+        {
+            bool Value = true;
+            byte[] buffer = new byte[1024];
+
+            try
+            {
+                if (File.Exists(FileName))
+                    File.Delete(FileName);
+                Stream outStream = System.IO.File.Create(FileName);
+                Stream inStream = response.GetResponseStream();
+
+                int l;
+                do
+                {
+                    l = inStream.Read(buffer, 0, buffer.Length);
+                    if (l > 0)
+                        outStream.Write(buffer, 0, l);
+                }
+                while (l > 0);
+
+                outStream.Close();
+                inStream.Close();
+            }
+            catch
+            {
+                Value = false;
+            }
+            return Value;
         }
 
         ///<summary>
@@ -887,7 +938,8 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 lua.RegisterFunction("httpPost_row", null, typeof(Tools).GetMethod("HttpPost"));
                 lua.RegisterFunction("setData_row", null, typeof(Tools).GetMethod("LuaSetXml"));
                 lua.RegisterFunction("getData_row", null, typeof(Tools).GetMethod("LuaGetXml"));
-                lua.DoFile(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "data/head.lua");
+                lua.RegisterFunction("fileDownload", null, typeof(Tools).GetMethod("FileDownload"));
+                lua.DoFile(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "lua/head.lua");
                 lua.DoString(headRun);
                 lua.DoString(Encoding.UTF8.GetBytes(code));
                 if (Tools.CharNum(lua["lua_run_result_var"].ToString(), "\n") > 40)

@@ -101,7 +101,7 @@ https://github.com/chenxuuu/receiver-meow/blob/master/lua.md";
                 {
                     string luaMsg = msg.Replace("！luaadd ", "");
                     int len = luaMsg.IndexOf("：");
-                    if(len > 0)
+                    if(len > 0 && luaMsg.Length > len)
                     {
                         string tmsg = luaMsg.Substring(0, len), tans = luaMsg.Substring(len + 1);
                         XmlSolve.insert(fromgroup, tmsg, "[lua]" + fromqq + "." + tans);
@@ -150,7 +150,7 @@ https://github.com/chenxuuu/receiver-meow/blob/master/lua.md";
 
                     int len = get_msg.IndexOf("：");
                     string tmsg = get_msg.Substring(0, len), tans = get_msg.Substring(len + 1);
-                    if (len >= 0)
+                    if (len >= 0 && tans.Length > 0)
                     {
                         XmlSolve.insert(fromgroup, tmsg, tans);
                         result += "添加完成！\r\n词条：" + tmsg + "\r\n回答为：" + tans;
@@ -173,7 +173,7 @@ https://github.com/chenxuuu/receiver-meow/blob/master/lua.md";
 
                     int len = get_msg.IndexOf("：");
                     string tmsg = get_msg.Substring(0, len), tans = get_msg.Substring(len + 1);
-                    if (len >= 0)
+                    if (len >= 0 && tans.Length > 0)
                     {
                         XmlSolve.remove(fromgroup, tmsg, tans);
                         result += "删除完成！\r\n词条：" + tmsg + "\r\n回答为：" + tans;

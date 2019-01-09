@@ -120,6 +120,12 @@ getData(fromqq,"search_for_kydi")
 setData(fromqq,"search_for_kydi","12345678")
 ```
 
+### image(url) 显示指定链接的图片
+
+```lua
+print(image("https://xxx.xxx.xxx/xxx.jpg"))
+```
+
 ### string.fromHex(hex)
 
 ```lua
