@@ -351,14 +351,13 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 request.Timeout = timeout;
 
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                //Stream myResponseStream = response.GetResponseStream();
                 bool result = false;
-                if (!response.ContentType.ToLower().StartsWith("text/"))
+                if (!response.ContentType.ToLower().StartsWith("text/") &&
+                    response.ContentLength < 1024*1024*20)
                 {
                     result = SaveBinaryFile(response, AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "data/image/download/" + fileName);
                 }
-
-                //myResponseStream.Close();
+                
 
                 return result;
             }
