@@ -124,7 +124,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             }
         }
 
-        
+
         /// <summary>
         /// 获取随机数
         /// </summary>
@@ -245,9 +245,9 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
         }
 
 
-        /// <summary>  
-        /// GET 请求与获取结果  
-        /// </summary>  
+        /// <summary>
+        /// GET 请求与获取结果
+        /// </summary>
         public static string HttpGet(string Url, string postDataStr = "", int timeout = 5000)
         {
             try
@@ -257,7 +257,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 {
                     ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors) =>
                     {
-                        return true; //总是接受  
+                        return true; //总是接受
                     });
                     ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
                 }
@@ -297,7 +297,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 {
                     ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors) =>
                     {
-                        return true; //总是接受  
+                        return true; //总是接受
                     });
                     ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
                 }
@@ -341,7 +341,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 {
                     ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors) =>
                     {
-                        return true; //总是接受  
+                        return true; //总是接受
                     });
                     ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
                 }
@@ -351,14 +351,14 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 request.Timeout = timeout;
 
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                Stream myResponseStream = response.GetResponseStream();
+                //Stream myResponseStream = response.GetResponseStream();
                 bool result = false;
                 if (!response.ContentType.ToLower().StartsWith("text/"))
                 {
                     result = SaveBinaryFile(response, AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "data/image/download/" + fileName);
                 }
 
-                myResponseStream.Close();
+                //myResponseStream.Close();
 
                 return result;
             }
@@ -382,7 +382,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                     File.Delete(FileName);
                 Stream outStream = System.IO.File.Create(FileName);
                 Stream inStream = response.GetResponseStream();
-
+                //inStream.ContentLength
                 int l;
                 do
                 {
@@ -403,7 +403,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
         }
 
         ///<summary>
-        ///生成随机字符串 
+        ///生成随机字符串
         ///</summary>
         ///<param name="length">目标字符串的长度</param>
         ///<param name="useNum">是否包含数字，1=包含，默认为包含</param>
@@ -430,11 +430,11 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
         }
 
 
-        ///  <summary> 
-        /// 获取指定驱动器的剩余空间总大小(单位为MB) 
-        ///  </summary> 
-        ///  <param name="str_HardDiskName">只需输入代表驱动器的字母即可 </param> 
-        ///  <returns> </returns> 
+        ///  <summary>
+        /// 获取指定驱动器的剩余空间总大小(单位为MB)
+        ///  </summary>
+        ///  <param name="str_HardDiskName">只需输入代表驱动器的字母即可 </param>
+        ///  <returns> </returns>
         public static long GetHardDiskFreeSpace(string str_HardDiskName)
         {
             long freeSpace = new long();
@@ -797,7 +797,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             return "[CQ:image,file=javlib" + id + ".png]";
         }
 
-        
+
         /// <summary>
         /// 获取所有qq群的列表
         /// </summary>
@@ -824,7 +824,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             }
             return list;
         }
-        
+
         /// <summary>
         /// 统计字符串中某字符出现的次数
         /// </summary>
@@ -882,7 +882,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                     vBytes[i / 2] = 0;
             return Encoding.Default.GetString(vBytes);
         }
-        
+
 
         /// <summary>
         /// url编码，lua专用
