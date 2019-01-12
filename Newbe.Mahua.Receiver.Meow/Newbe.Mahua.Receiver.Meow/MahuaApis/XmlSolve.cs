@@ -16,7 +16,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
         public static string ReplayGroupStatic(string fromGroup, string msg, string fromqq = "")
         {
             string replay_ok = replay_get(fromGroup, msg, fromqq);
-            string replay_common = replay_get("common", msg, fromqq);
+            string replay_common = replay_get("common", msg, fromqq, fromGroup);
 
             if (replay_ok != "")
             {
@@ -38,7 +38,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             return "";
         }
 
-        public static string replay_get(string group, string msg, string fromqq = "")
+        public static string replay_get(string group, string msg, string fromqq = "",string trueGroup = "")
         {
             dircheck(group);
             XElement root = XElement.Load(path + group + ".xml");
@@ -60,6 +60,8 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 msg = HttpUtility.HtmlDecode(msg.Replace("]]", ""));
                 if(msg.Substring(msg.Length-1) == "]")
                     msg += " ";
+                if (trueGroup != "")//使lua脚本获取正确的群号
+                    group = trueGroup;
                 ansall = Tools.RunLua(HttpUtility.HtmlDecode(ansall.Substring(len + 1)),
                         "message=[[" + msg + "]]\r\n" +
                         "fromqq = \"" + fromqq + "\"\r\n" +
