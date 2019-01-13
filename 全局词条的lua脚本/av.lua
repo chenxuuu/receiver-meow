@@ -7,7 +7,7 @@ function getInfo(av)
     return (image and image.."\r\n" or "")..
     "av"..av..",标题："..j.title..
     "\r\n"..j.desc:gsub("<br/>","\r\n")..
-    "\r\n分区："..j.sort,(j.subsort and "->"..j.subsort or "")
+    "\r\n分区："..(j.sort and j.sort..(j.subsort and "->"..j.subsort or "") or "")
 end
 
 if message:match("av(%d+)") then
