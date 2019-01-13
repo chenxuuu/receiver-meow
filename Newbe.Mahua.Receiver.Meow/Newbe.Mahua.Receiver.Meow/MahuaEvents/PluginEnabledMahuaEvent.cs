@@ -46,7 +46,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaEvents
                 if (file != null)
                 {
                     TimeSpan time = DateTime.Now - file.CreationTime;
-                    if(time.TotalSeconds > 10)
+                    if(time.TotalSeconds > 30)
                         file.Delete();
                 }
             }
