@@ -66,14 +66,16 @@ function jsonDecode(s)
 end
 
 --显示某张图片
-function image(url)
+function image(url,ban)
     str = "1234567890ABCDEFHIJKLMNOPQRSTUVWXYZ"
     local ret = ""
     for i = 1, 20 do
         local rchr = math.random(1, string.len(str))
         ret = ret .. string.sub(str, rchr, rchr)
     end
-    if fileDownload(url,ret) then
+    local b = false
+    if ban then b = true end
+    if fileDownload(url,ret,5000,b) then
         return "[CQ:image,file=download\\"..ret.."]"
     end
 end
