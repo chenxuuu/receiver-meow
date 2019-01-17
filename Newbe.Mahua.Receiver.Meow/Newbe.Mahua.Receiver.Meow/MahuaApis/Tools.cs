@@ -332,7 +332,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
         /// <param name="fileName">文件名</param>
         /// <param name="timeout">超时时间</param>
         /// <returns></returns>
-        public static bool FileDownload(string Url, string fileName, int timeout = 5000)
+        public static bool FileDownload(string Url, string fileName, int timeout = 5000, bool change = true)
         {
             try
             {
@@ -355,9 +355,28 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 if (!response.ContentType.ToLower().StartsWith("text/") &&
                     response.ContentLength < 1024*1024*20)
                 {
-                    result = SaveBinaryFile(response, AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "data/image/download/" + fileName);
+                    if (change)
+                        result = SaveBinaryFile(response, AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "data/image/download/" + fileName + "old");
+                    else
+                        result = SaveBinaryFile(response, AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "data/image/download/" + fileName);
                 }
-                
+
+                //防和谐处理
+                if(result && change)
+                {
+                    FileStream fs = File.OpenRead(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "data/image/download/" + fileName + "old"); //OpenRead
+                    int filelength = 0;
+                    filelength = (int)fs.Length; //获得文件长度 
+                    Byte[] image = new Byte[filelength]; //建立一个字节数组 
+                    fs.Read(image, 0, filelength); //按字节流读取 
+                    System.Drawing.Image r = System.Drawing.Image.FromStream(fs);
+                    fs.Close();
+                    Bitmap bit = new Bitmap(r);//图片对象
+                    Graphics g = Graphics.FromImage(bit);
+                    Font font = new Font("宋体", 9);
+                    g.DrawString("防屏蔽", font, Brushes.Black, new PointF() { X = 0, Y = 0 });
+                    bit.Save(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "data/image/download/" + fileName);
+                }
 
                 return result;
             }
