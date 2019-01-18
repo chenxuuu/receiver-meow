@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -372,10 +373,8 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                     System.Drawing.Image r = System.Drawing.Image.FromStream(fs);
                     fs.Close();
                     Bitmap bit = new Bitmap(r);//图片对象
-                    Graphics g = Graphics.FromImage(bit);
-                    Font font = new Font("宋体", 9);
-                    g.DrawString("防屏蔽", font, Brushes.Black, new PointF() { X = 0, Y = 0 });
-                    bit.Save(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "data/image/download/" + fileName);
+                    bit.SetPixel(1, 1, bit.GetPixel(1, 1));
+                    bit.Save(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "data/image/download/" + fileName,ImageFormat.Jpeg);
                 }
 
                 return result;
@@ -417,6 +416,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             {
                 Value = false;
             }
+            
             return Value;
         }
 
