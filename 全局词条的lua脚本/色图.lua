@@ -17,8 +17,8 @@ end
 
 if fromgroup == "115872123" then
     print(at(fromqq))
-    print(getPic("https://konachan.com/post?page="..tostring(math.random(1,200)).."&tags=order%3Ascore+rating%3Aexplicit",true))
+    print(getPic("https://konachan.com/post?page="..tostring(math.random(1,500)).."&tags=order%3Ascore+rating%3Aexplicit",true))
 else
     print(at(fromqq).."本群仅显示全年龄图：")
-    print(getPic("https://konachan.com/post?page="..tostring(math.random(1,200)).."&tags=order%3Ascore+rating%3Asafe"))
+    print(getPic("https://konachan.com/post?page="..tostring(math.random(1,170)).."&tags=order%3Ascore+rating%3Asafe+panties",true))
 end
