@@ -3,7 +3,7 @@ function getInfo(av)
     if not html then return "查找失败" end
     local j,r,e = jsonDecode(html)
     if not r or j.upid == -1 then return "数据解析失败啦" end
-    image = image("http:"..j.img)
+    image = j.img and image("http:"..j.img)
     return (image and image.."\r\n" or "")..
     "av"..av..",标题："..j.title..
     "\r\n"..j.desc:gsub("<br/>","\r\n")..
