@@ -266,6 +266,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 request.Method = "GET";
                 request.ContentType = "text/html;charset=UTF-8";
                 request.Timeout = timeout;
+                request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36 Vivaldi/2.2.1388.37";
 
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                 string encoding = response.ContentEncoding;
@@ -307,6 +308,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 request.Timeout = timeout;
                 request.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";
                 request.ContentLength = postDataStr.Length;
+                request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36 Vivaldi/2.2.1388.37";
 
                 StreamWriter writer = new StreamWriter(request.GetRequestStream(), Encoding.ASCII);
                 writer.Write(postDataStr);
@@ -350,6 +352,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 //request.Method = "GET";
                 request.ContentType = "text/html;charset=UTF-8";
                 request.Timeout = timeout;
+                request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36 Vivaldi/2.2.1388.37";
 
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                 bool result = false;
