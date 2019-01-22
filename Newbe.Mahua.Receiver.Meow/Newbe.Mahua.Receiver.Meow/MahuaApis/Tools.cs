@@ -21,7 +21,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
 {
     class Tools
     {
-        public static string qqNumber = "914887249";
+        public static string qqNumber = "751323264";
         public static int messageCount = 0;
         public static string now = DateTime.Now.ToString();
         /// <summary>
