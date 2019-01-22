@@ -1,5 +1,7 @@
 # receiver-meow
 
+[![Build Status](https://travis-ci.com/chenxuuu/receiver-meow.svg?branch=master)](https://travis-ci.com/chenxuuu/receiver-meow)
+
 能运行`lua`脚本的接待喵qq机器人
 
 lua接口文档[点我](https://github.com/chenxuuu/receiver-meow/blob/master/lua.md)查看
@@ -28,7 +30,7 @@ lua接口文档[点我](https://github.com/chenxuuu/receiver-meow/blob/master/lu
 - 新番查询
 - 开车（随机字符假磁链）
 - 一言
-- 色图（全年龄图）
+- ~~色图（全年龄图）~~
 
 ---
 
