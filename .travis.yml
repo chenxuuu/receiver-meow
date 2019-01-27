@@ -1,3 +1,19 @@
 language: csharp
 solution: Newbe.Mahua.Receiver.Meow/Newbe.Mahua.Receiver.Meow.sln
-
+before_deploy:
+  - sudo apt-get install p7zip-full
+  - wget https://github.com/chenxuuu/receiver-meow/releases/download/initial/kuqpro_pack.7z
+  - 7za x kuqpro_pack.7z -r -o./
+  - rm kuqpro_pack.7z
+  - mv Newbe.Mahua.Receiver.Meow/Newbe.Mahua.Receiver.Meow/bin/Release/Newbe.Mahua.Receiver.Meow.dll kuqpro_pack/Newbe.Mahua.Receiver.Meow/
+  - mv Newbe.Mahua.Receiver.Meow/head.lua kuqpro_pack/lua
+  - mv Newbe.Mahua.Receiver.Meow/库 函数lua文件/* kuqpro_pack/lua
+  - 7za a -t7z -r receiver-meow.7z kuqpro_pack/*
+deploy:
+  provider: releases
+  api_key: ${GITHUB_TOKEN}
+  file:
+  - receiver-meow.7z
+  skip_cleanup: true
+  on:
+    tags: true
