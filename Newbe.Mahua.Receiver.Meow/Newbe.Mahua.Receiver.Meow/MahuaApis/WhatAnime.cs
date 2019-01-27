@@ -40,9 +40,9 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 //把图片转成base64
                 string imgBase64 = ImgToBase64Stream(stream);
                 //请求api，搜索该图片
-                string token = XmlSolve.ReplayGroupStatic("common", "whatanime.ga[api]");//获取保存的token
+                string token = Tools.whatanimeApi;//获取保存的token
                 string html = HttpPost("https://trace.moe/api/search?token=" + token,
-                        "image=\"data:image/jpeg;base64," + imgBase64 + "\"");
+                        "image=data:image/jpeg;base64," + imgBase64);
                 if (html == "")
                     return "查找失败，网站炸了，请稍后再试。或图片大小超过了1MB";
                 JObject jo = (JObject)JsonConvert.DeserializeObject(html);
