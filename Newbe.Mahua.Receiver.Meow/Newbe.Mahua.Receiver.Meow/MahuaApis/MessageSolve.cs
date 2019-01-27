@@ -19,7 +19,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 return "";
             if (msg.IndexOf("！ban ") == 0 && msg.Length > 6)
             {
-                if ((XmlSolve.AdminCheck(fromqq) >= 1 && fromgroup != "common") || (fromgroup == "common" && fromqq == "961726194"))
+                if ((XmlSolve.AdminCheck(fromqq) >= 1 && fromgroup != "common") || (fromgroup == "common" && fromqq == Tools.adminNumber))
                 {
                     string get_msg = msg.Replace("！ban ", "");
                     XmlSolve.insert(fromgroup, get_msg, "[ban]");
@@ -32,7 +32,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             }
             else if (msg.IndexOf("！unban ") == 0 && msg.Length > 7)
             {
-                if ((XmlSolve.AdminCheck(fromqq) >= 1 && fromgroup != "common") || (fromgroup == "common" && fromqq == "961726194"))
+                if ((XmlSolve.AdminCheck(fromqq) >= 1 && fromgroup != "common") || (fromgroup == "common" && fromqq == Tools.adminNumber))
                 {
                     string get_msg = msg.Replace("！unban ", "");
                     XmlSolve.remove(fromgroup, get_msg, "[ban]");
@@ -97,7 +97,7 @@ https://github.com/chenxuuu/receiver-meow/blob/master/lua.md";
             }
             else if (msg.IndexOf("！luaadd ") == 0 && msg.Length > 10)
             {
-                if ((XmlSolve.AdminCheck(fromqq) >= 1 && fromgroup != "common") || (fromgroup == "common" && fromqq == "961726194"))
+                if ((XmlSolve.AdminCheck(fromqq) >= 1 && fromgroup != "common") || (fromgroup == "common" && fromqq == Tools.adminNumber))
                 {
                     string luaMsg = msg.Replace("！luaadd ", "");
                     int len = luaMsg.IndexOf("：");
@@ -119,7 +119,7 @@ https://github.com/chenxuuu/receiver-meow/blob/master/lua.md";
             }
             else if(msg.IndexOf("！luadel ") == 0 && msg.Length > 8)
             {
-                if ((XmlSolve.AdminCheck(fromqq) >= 1 && fromgroup != "common") || (fromgroup == "common" && fromqq == "961726194"))
+                if ((XmlSolve.AdminCheck(fromqq) >= 1 && fromgroup != "common") || (fromgroup == "common" && fromqq == Tools.adminNumber))
                 {
                     string get_msg = msg.Replace("！luadel ", "");
                     XmlSolve.luadel(fromgroup, get_msg);
@@ -132,7 +132,7 @@ https://github.com/chenxuuu/receiver-meow/blob/master/lua.md";
             }
             else if (msg.IndexOf("！luasee ") == 0 && msg.Length > 8)
             {
-                if ((XmlSolve.AdminCheck(fromqq) >= 1 && fromgroup != "common") || (fromgroup == "common" && fromqq == "961726194"))
+                if ((XmlSolve.AdminCheck(fromqq) >= 1 && fromgroup != "common") || (fromgroup == "common" && fromqq == Tools.adminNumber))
                 {
                     string get_msg = msg.Replace("！luasee ", "");
                     result += XmlSolve.xml_get(fromgroup, get_msg);
@@ -142,9 +142,9 @@ https://github.com/chenxuuu/receiver-meow/blob/master/lua.md";
                     result += prem;
                 }
             }
-            else if (msg.IndexOf("！add ") == 0)
+            else if (msg.IndexOf("！add ") == 0 && msg.IndexOf("：") >= 0 && msg.IndexOf("：") < msg.Length)
             {
-                if ((XmlSolve.AdminCheck(fromqq) >= 1 && fromgroup != "common") || (fromgroup == "common" && fromqq == "961726194"))
+                if ((XmlSolve.AdminCheck(fromqq) >= 1 && fromgroup != "common") || (fromgroup == "common" && fromqq == Tools.adminNumber))
                 {
                     string get_msg = msg.Replace("！add ", "");
 
@@ -165,9 +165,9 @@ https://github.com/chenxuuu/receiver-meow/blob/master/lua.md";
                     result += prem;
                 }
             }
-            else if (msg.IndexOf("！del ") == 0)
+            else if (msg.IndexOf("！del ") == 0 && msg.IndexOf("：") >= 0 && msg.IndexOf("：") < msg.Length)
             {
-                if ((XmlSolve.AdminCheck(fromqq) >= 1 && fromgroup != "common") || (fromgroup == "common" && fromqq == "961726194"))
+                if ((XmlSolve.AdminCheck(fromqq) >= 1 && fromgroup != "common") || (fromgroup == "common" && fromqq == Tools.adminNumber))
                 {
                     string get_msg = msg.Replace("！del ", "");
 
@@ -188,9 +188,9 @@ https://github.com/chenxuuu/receiver-meow/blob/master/lua.md";
                     result += prem;
                 }
             }
-            else if (msg.IndexOf("！delall ") == 0)
+            else if (msg.IndexOf("！delall ") == 0 && msg.Length > 8)
             {
-                if ((XmlSolve.AdminCheck(fromqq) >= 1 && fromgroup != "common") || (fromgroup == "common" && fromqq == "961726194"))
+                if ((XmlSolve.AdminCheck(fromqq) >= 1 && fromgroup != "common") || (fromgroup == "common" && fromqq == Tools.adminNumber))
                 {
                     string get_msg = msg.Replace("！delall ", "");
                     if (get_msg.Length > 0)
@@ -213,12 +213,12 @@ https://github.com/chenxuuu/receiver-meow/blob/master/lua.md";
                 XmlSolve.insert("admin_list", "给我列一下狗管理", fromqq);
                 result += "已给予" + fromqq + "词条编辑权限。";
             }
-            else if (msg.IndexOf("！addadmin ") == 0 && fromqq == "961726194")
+            else if (msg.IndexOf("！addadmin ") == 0 && fromqq == Tools.adminNumber)
             {
                 XmlSolve.insert("admin_list", "给我列一下狗管理", msg.Replace("！addadmin ", ""));
                 result += "已添加一位狗管理";
             }
-            else if (msg.IndexOf("！deladmin ") == 0 && fromqq == "961726194")
+            else if (msg.IndexOf("！deladmin ") == 0 && fromqq == Tools.adminNumber)
             {
                 XmlSolve.remove("admin_list", "给我列一下狗管理", msg.Replace("！deladmin ", ""));
                 result += "已删除一位狗管理";
@@ -263,11 +263,11 @@ https://github.com/chenxuuu/receiver-meow/blob/master/lua.md";
             {
                 result += Tools.GetAir(msg, fromqq);
             }
-            else if (msg.IndexOf("cmd ") == 0 && fromqq == "961726194")
+            else if (msg.IndexOf("cmd ") == 0 && fromqq == Tools.adminNumber)
             {
                 result += Tools.execCMD(HttpUtility.HtmlDecode(msg.Replace("cmd ", "")));
             }
-            else if (msg.IndexOf("bedrock ") == 0 && fromqq == "961726194")
+            else if (msg.IndexOf("bedrock ") == 0 && fromqq == Tools.adminNumber && Tools.special.Length > 0)
             {
                 Tools.HttpGet("http://localhost:2333/list", ""); 
                  result += Tools.HttpGet("http://localhost:2333/" + HttpUtility.HtmlDecode(msg.Replace("bedrock ", "")), "") + "--返回";
@@ -284,7 +284,7 @@ https://github.com/chenxuuu/receiver-meow/blob/master/lua.md";
             {
                 result += Tools.At(fromqq) + "\r\n" + WhatAnime.GetAnime(msg.Replace("\r", "").Replace("\n", ""));
             }
-            else if (msg.IndexOf("番号") == 0 && msg.Length > 4)
+            else if (msg.IndexOf("番号") == 0 && msg.Length > 4 && Tools.special.Length > 0)
             {
                 result += Tools.At(fromqq) + Tools.GetAVInfo(msg.Substring(2));
             }
