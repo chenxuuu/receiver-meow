@@ -21,7 +21,16 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
 {
     class Tools
     {
-        public static string qqNumber = "751323264";
+        //机器人qq号
+        public static string qqNumber = XmlSolve.xml_get("settings","robot");
+        //主人qq号
+        public static string adminNumber = XmlSolve.xml_get("settings", "admin");
+        //管理群的号码
+        public static string mainGroupNumber = XmlSolve.xml_get("settings", "mainGroup");
+        //开启专属功能？（一般不开）
+        public static string special = XmlSolve.xml_get("settings", "special");
+        //whatanime的api
+        public static string whatanimeApi = XmlSolve.xml_get("settings", "whatanimeApi");
         public static int messageCount = 0;
         public static string now = DateTime.Now.ToString();
         /// <summary>

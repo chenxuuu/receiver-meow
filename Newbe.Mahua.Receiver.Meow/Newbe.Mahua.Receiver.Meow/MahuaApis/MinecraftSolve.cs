@@ -298,7 +298,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                     "服务器盘剩余空间：" + ((float)GetHardDiskFreeSpace("D") / 1024).ToString(".00") + "GB\r\n" +
                     "备份盘剩余空间：" + ((float)GetHardDiskFreeSpace("E") / 1024).ToString(".00") + "GB";
             }
-            else if (msg == "即时备份" && qq == "961726194")
+            else if (msg == "即时备份" && qq == Tools.adminNumber)
             {
                 System.Diagnostics.Process.Start(@"D:\backup.bat");
                 return "备份任务已开始";  //567145439
