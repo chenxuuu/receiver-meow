@@ -6,6 +6,20 @@
 
 lua接口文档[点我](https://github.com/chenxuuu/receiver-meow/blob/master/lua.md)查看
 
+## 如何运行？
+
+项目ci在每个版本号变化后，会自动发布一份新的打包文件，文件可以在[点我去下载页面](https://github.com/chenxuuu/receiver-meow/releases/latest)下载
+
+下载`receiver-meow.7z`后，解压
+
+打开`kuqpro_pack\data\settings.xml`，按照说明配置管理员qq等信息即可
+
+打开`CQP.exe`即可运行（需要自己买授权码的）
+
+## 如何更新？
+
+把老版本data文件夹里的东西放到新版本里直接跑就行了
+
 ---
 
 用C#实现的功能：
