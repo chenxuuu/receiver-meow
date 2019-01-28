@@ -70,7 +70,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
 复读 加 百分比
 查动画 加 没裁剪过的视频截图
 ！lua 查看lua工具使用说明
-如有建议请到https://github.com/chenxuuu/receiver-meow/issues反馈，欢迎star";
+自己运行/反馈：https://github.com/chenxuuu/receiver-meow";
             }
             else if(msg.ToUpper()=="！LUA")
             {

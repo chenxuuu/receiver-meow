@@ -8,6 +8,7 @@ before_deploy:
   - mv Newbe.Mahua.Receiver.Meow/Newbe.Mahua.Receiver.Meow/bin/Release/Newbe.Mahua.Receiver.Meow.dll kuqpro_pack/Newbe.Mahua.Receiver.Meow/
   - mv Newbe.Mahua.Receiver.Meow/head.lua kuqpro_pack/lua
   - mv Newbe.Mahua.Receiver.Meow/luaRequires/* kuqpro_pack/lua
+  - mv common.xml kuqpro_pack/data
   - 7za a -t7z -r receiver-meow.7z kuqpro_pack/*
 deploy:
   provider: releases
