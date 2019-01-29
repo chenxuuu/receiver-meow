@@ -251,7 +251,8 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             string output = pro.StandardOutput.ReadToEnd();
             pro.WaitForExit();//等待程序执行完退出进程
             pro.Close();
-            return output;
+            output = output.Substring(output.IndexOf(command));
+            return output.Substring(0, output.Length - 1);
         }
 
 
