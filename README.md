@@ -32,7 +32,7 @@ lua接口文档[点我](https://github.com/chenxuuu/receiver-meow/blob/master/lu
 - 自助获取词条修改权限
 - 复读群消息
 
-用lua脚本实现的功能：
+用lua脚本实现的功能（需要自行手动添加）：
 
 - 点金坷垃歌曲
 - 查快递
