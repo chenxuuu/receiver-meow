@@ -2,6 +2,9 @@ function getInfo(av)
     local html = httpGet("https://www.jijidown.com/api/v1/video/get_info?id="..av)
     if not html then return "查找失败" end
     local j,r,e = jsonDecode(html)
+    if j.title == "正在加载数据..." then
+        return getInfo(av)
+    end
     if not r or j.upid == -1 then return "数据解析失败啦" end
     image = j.img and image("http:"..j.img)
     return (image and image.."\r\n" or "")..
