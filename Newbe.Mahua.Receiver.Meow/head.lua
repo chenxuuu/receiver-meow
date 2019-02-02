@@ -80,6 +80,15 @@ function image(url,ban)
     end
 end
 
+local runCount = 0
+function trace (event, line)
+    runCount = runCount + 1
+    if runCount > 5000 then
+        error("运行代码量超过阈值")
+    end
+end
+debug.sethook(trace, "l")
+
 --安全的函数
 local safeFunctions = {
     assert = true,

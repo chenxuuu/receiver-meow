@@ -982,8 +982,11 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             }
             catch (Exception e)
             {
-                result = "代码崩掉啦\r\n" + e.Message;
-
+                string err = e.Message;
+                int l = err.IndexOf("lua/");
+                if (l >= 0)
+                    err = err.Substring(l);
+                result = "代码崩掉啦\r\n" + err;
             }
         }
 
