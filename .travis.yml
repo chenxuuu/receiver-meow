@@ -10,7 +10,7 @@ before_deploy:
   - mv Newbe.Mahua.Receiver.Meow/luaRequires/* kuqpro_pack/lua
   - mv common.xml kuqpro_pack/data
   - mkdir kuqpro_pack/全局词条的lua脚本
-  - mv Newbe.Mahua.Receiver.Meow/全局词条的lua脚本/* kuqpro_pack/全局词条的lua脚本
+  - mv 全局词条的lua脚本/* kuqpro_pack/全局词条的lua脚本
   - 7za a -t7z -r receiver-meow.7z kuqpro_pack/*
 deploy:
   provider: releases
