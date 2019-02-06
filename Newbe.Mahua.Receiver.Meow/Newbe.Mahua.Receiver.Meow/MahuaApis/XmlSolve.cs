@@ -15,6 +15,21 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
 
         public static string ReplayGroupStatic(string fromGroup, string msg, string fromqq = "")
         {
+            foreach (var f in Directory.GetFiles(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "全局词条的lua脚本/"))
+            {
+                string filename = Path.GetFileName(f);
+                if (msg.IndexOf(filename.Substring(0, filename.IndexOf(".lua"))) != -1)
+                {
+                    msg = HttpUtility.HtmlDecode(msg.Replace("]]", ""));
+                    if (msg.Substring(msg.Length - 1) == "]")
+                        msg += " ";
+                    return Tools.RunLua(File.ReadAllText(f),
+                            "message=[[" + msg + "]]\r\n" +
+                            "fromqq = \"" + fromqq + "\"\r\n" +
+                            "fromgroup = \"" + fromGroup + "\"");
+                }
+            }
+
             string replay_ok = replay_get(fromGroup, msg, fromqq);
             string replay_common = replay_get("common", msg, fromqq, fromGroup);
 
