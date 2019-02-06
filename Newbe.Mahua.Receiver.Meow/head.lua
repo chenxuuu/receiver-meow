@@ -81,10 +81,13 @@ function image(url,ban)
 end
 
 local runCount = 0
+local start = os.time()
 function trace (event, line)
     runCount = runCount + 1
-    if runCount > 5000 then
+    if runCount > 100000 then
         error("运行代码量超过阈值")
+    elseif os.time() - start >=10 then
+        error("运行超时")
     end
 end
 debug.sethook(trace, "l")
