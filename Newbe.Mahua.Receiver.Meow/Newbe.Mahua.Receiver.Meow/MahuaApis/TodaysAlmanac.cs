@@ -52,7 +52,12 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             count = 0;
 
             int allsum = ran.Next(0, 100);
-            ReplayString = string.Format("{0}\r\n你的运势如下~\r\n宜：\r\n{1}\r\n{2}\r\n{3}\r\n{4}\r\n忌：\r\n{5}\r\n{6}\r\n日期：{7}\r\n综合幸运指数：{8}%\r\n当日吉言：{9}",
+            ReplayString = string.Format("{0}\r\n你的运势如下~\r\n" +
+                "[CQ:emoji,id=127569]宜：\r\n{1}\r\n{2}\r\n{3}\r\n{4}\r\n" +
+                "[CQ:emoji,id=127538]忌：\r\n{5}\r\n{6}\r\n" +
+                "[CQ:emoji,id=128197]日期：{7}\r\n" +
+                "[CQ:emoji,id=127919]综合幸运指数：{8}%\r\n" +
+                "[CQ:emoji,id=128221]当日吉言：{9}",
                                         Tools.At(qq),
                                         GoodThings[sum1],
                                         GoodThings[sum2],

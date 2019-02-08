@@ -19,16 +19,16 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
         {
             if (CheckCount(qq))
             {
-                return Tools.At(qq) + "今日抽奖次数已用完！";
+                return Tools.At(qq) + "[CQ:emoji,id=127539]今日抽奖次数已用完！";
             }
             string result = "";
             int need_add = 0;
             Random ran = new Random(System.DateTime.Now.Millisecond);
             int RandKey = ran.Next(1, 22);
             int RandKey2 = ran.Next(0, 10);
-            if (RandKey > 12)
+            if (RandKey > 19)
             {
-                result += Tools.At(qq) + "\r\n恭喜你！什么也没有抽中！";
+                result += Tools.At(qq) + "\r\n[CQ:emoji,id=127881]恭喜你！什么也没有抽中！";
             }
             else if (RandKey == 1 && RandKey2 != 0)
             {
@@ -37,7 +37,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                     need_add += 10;
                     TimeSpan span = new TimeSpan(0, 10, 0, 0);
                     _mahuaApi.BanGroupMember(group, qq, span);
-                    result += Tools.At(qq) + "\r\n恭喜你抽中了超豪华禁言套餐，并附赠10张禁言卡！奖励已发放！";
+                    result += Tools.At(qq) + "\r\n[CQ:emoji,id=127882]恭喜你抽中了超豪华禁言套餐，并附赠10张禁言卡！奖励已发放！";
                 }
                 else
                 {
@@ -51,7 +51,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                     need_add -= 200;
                     TimeSpan span = new TimeSpan(30, 0, 0, 0);
                     _mahuaApi.BanGroupMember(group, qq, span);
-                    result += Tools.At(qq) + "\r\n恭喜你抽中了顶级豪华月卡禁言套餐，并扣除200张禁言卡！奖励已发放！";
+                    result += Tools.At(qq) + "\r\n[CQ:emoji,id=127882]恭喜你抽中了顶级豪华月卡禁言套餐，并扣除200张禁言卡！奖励已发放！";
                 }
                 else
                 {
@@ -63,13 +63,13 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 TimeSpan span = new TimeSpan(0, RandKey, 0, 0);
                 _mahuaApi.BanGroupMember(group, qq, span);
                 need_add -= RandKey;
-                result += Tools.At(qq) + "\r\n恭喜你抽中了禁言" + RandKey + "小时，并扣除" + RandKey + "张禁言卡！奖励已发放到你的QQ~\r\n送我礼物可以提升好感度降低禁言几率哦~";
+                result += Tools.At(qq) + "\r\n[CQ:emoji,id=127882]恭喜你抽中了禁言" + RandKey + "小时，并扣除" + RandKey + "张禁言卡！奖励已发放到你的QQ~\r\n送我礼物可以提升好感度降低禁言几率哦~";
             }
             else
             {
                 int lucky = ran.Next(1, Tools.GetXmlNumber("gift", qq) / 10 + 1);
                 need_add += lucky;
-                result += Tools.At(qq) + "\r\n恭喜你抽中了"+ need_add + "张禁言卡，回复“禁言卡”可以查看使用帮助。";
+                result += Tools.At(qq) + "\r\n[CQ:emoji,id=127873]恭喜你抽中了" + need_add + "张禁言卡，回复“禁言卡”可以查看使用帮助。";
             }
 
             if(need_add != 0)
@@ -93,7 +93,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 fk = int.Parse(fks);
             }
             return Tools.At(qq) +
-            "\r\n禁言卡可用于禁言或解禁他人，如果接待权限足够。\r\n" +
+            "\r\n[CQ:emoji,id=128683]禁言卡可用于禁言或解禁他人，如果接待权限足够。\r\n" +
             "使用方法：发送禁言或解禁加上@那个人\r\n" +
             "禁言时长将为1分钟-10分钟随机\r\n" +
             "获取方式：抽奖时有十分之一的概率获得\r\n" +
@@ -129,7 +129,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                     XmlSolve.del("ban_card", fromqq);
                     XmlSolve.insert("ban_card", fromqq, fk.ToString());
 
-                    return Tools.At(fromqq) + "\r\n已将" + banqq + "禁言" + RandKey + "分钟";
+                    return Tools.At(fromqq) + "\r\n[CQ:emoji,id=128683]已将" + banqq + "禁言" + RandKey + "分钟";
                 }
                 catch
                 {
@@ -138,7 +138,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             }
             else
             {
-                return Tools.At(fromqq) + "\r\n你哪儿有禁言卡？";
+                return Tools.At(fromqq) + "\r\n[CQ:emoji,id=128162]你哪儿有禁言卡？";
             }
         }
 
@@ -168,7 +168,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                     XmlSolve.del("ban_card", fromqq);
                     XmlSolve.insert("ban_card", fromqq, fk.ToString());
 
-                    return Tools.At(fromqq) + "\r\n已将" + banqq + "解除禁言";
+                    return Tools.At(fromqq) + "\r\n[CQ:emoji,id=9989]已将" + banqq + "解除禁言";
                 }
                 catch
                 {
@@ -177,7 +177,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             }
             else
             {
-                return Tools.At(fromqq) + "\r\n你哪儿有禁言卡？";
+                return Tools.At(fromqq) + "\r\n[CQ:emoji,id=128162]你哪儿有禁言卡？";
             }
         }
 
@@ -228,17 +228,17 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             string extra = "";
             int gift = Tools.AddXmlNumber("gift", qq, 1);
             if (gift % 5 == 0)
-                extra += "\r\n每日抽奖次数+1了哦~";
+                extra += "\r\n[CQ:emoji,id=127748]每日抽奖次数+1了哦~";
             if(gift == 10)
-                extra += "\r\n以后的大禁言套餐都由我请客~";
+                extra += "\r\n[CQ:emoji,id=128157]以后的大禁言套餐都由我请客~";
             if (gift % 10 == 0 && gift < 110)
-                extra += "\r\n禁言概率降低了哦~";
+                extra += "\r\n[CQ:emoji,id=9878]禁言概率降低了哦~";
             if (gift % 10 == 0 )
-                extra += "\r\n每次抽中禁言卡数量上限+1~";
+                extra += "\r\n[CQ:emoji,id=127881]每次抽中禁言卡数量上限+1~";
             if (gift == 110)
-                extra += "\r\n再也不会让你抽中禁言啦~";
+                extra += "\r\n[CQ:emoji,id=128150]再也不会让你抽中禁言啦~";
 
-            return "感谢"+Tools.At(qq)+"的礼物~\r\n当前羁绊值："+ gift + extra;
+            return "[CQ:emoji,id=127853]感谢" + Tools.At(qq)+"的礼物~\r\n当前羁绊值："+ gift + extra;
         }
     }
 }
