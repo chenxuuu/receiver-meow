@@ -90,6 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MahuaApis\LotteryEvent.cs" />
+    <Compile Include="MahuaApis\LuaApi.cs" />
     <Compile Include="MahuaApis\MessageSolve.cs" />
     <Compile Include="MahuaApis\MinecraftSolve.cs" />
     <Compile Include="MahuaApis\TodaysAlmanac.cs" />

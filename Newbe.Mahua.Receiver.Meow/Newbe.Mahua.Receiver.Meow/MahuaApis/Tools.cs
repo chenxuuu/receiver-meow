@@ -970,6 +970,11 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 lua.RegisterFunction("setData_row", null, typeof(Tools).GetMethod("LuaSetXml"));
                 lua.RegisterFunction("getData_row", null, typeof(Tools).GetMethod("LuaGetXml"));
                 lua.RegisterFunction("fileDownload", null, typeof(Tools).GetMethod("FileDownload"));
+                lua.RegisterFunction("getImg", null, typeof(LuaApi).GetMethod("GetBitmap"));
+                lua.RegisterFunction("setImgText", null, typeof(LuaApi).GetMethod("PutText"));
+                lua.RegisterFunction("putImgBlock", null, typeof(LuaApi).GetMethod("putBlock"));
+                lua.RegisterFunction("setImgImage", null, typeof(LuaApi).GetMethod("setImage"));
+                lua.RegisterFunction("getImgDir", null, typeof(LuaApi).GetMethod("GetDir"));
                 lua.DoFile(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "lua/head.lua");
                 lua.DoString(Encoding.UTF8.GetBytes(headRun));
                 lua.DoString(Encoding.UTF8.GetBytes(code));

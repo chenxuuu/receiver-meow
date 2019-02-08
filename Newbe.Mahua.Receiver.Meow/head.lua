@@ -80,6 +80,39 @@ function image(url,ban)
     end
 end
 
+--图片对象
+img = {width = 0, height = 0, imageData = nil}
+--新建图片对象
+function img:new (width,height)
+    o = {}
+    setmetatable(o, self)
+    self.__index = self
+    self.width = width or 0
+    self.height = height or 0
+    self.imageData = getImg(self.width,self.height)
+    return o
+end
+--摆放文字
+function img:setText(x,y,text,type1,size,r,g,b)
+    self.imageData = setImgText(self.imageData,x-1,y-1,text,
+    type1 or "微软雅黑", size or 9, r or 0, g or 0, b or 0)
+end
+--摆放矩形
+function img:setBlock(x,y,xx,yy,r,g,b)
+    self.imageData = putImgBlock(self.imageData,x-1,y-1,
+    xx-1>self.width-1 and self.width-1 or xx-1,yy-1>self.height-1 and self.height-1 or yy-1,
+    r,g,b)
+end
+--摆放其他图片
+function img:setImg(x,y,path,xx,yy)
+    self.imageData = setImgImage(self.imageData,x-1,y-1,path,xx and xx-1 or 0, yy and yy-1 or 0)
+end
+--获取图片结果
+function img:get()
+    return "[CQ:image,file="..getImgDir(self.imageData).."]"
+end
+
+
 local runCount = 0
 local start = os.time()
 function trace (event, line)
@@ -94,6 +127,7 @@ debug.sethook(trace, "l")
 
 --安全的函数
 local safeFunctions = {
+    setmetatable = true,
     assert = true,
     error = true,
     ipairs = true,
@@ -130,6 +164,12 @@ local safeFunctions = {
     jsonDecode = true,
     fileDownload = true,
     image = true,
+    img = true,
+    getImg = true,
+    setImgText = true,
+    putImgBlock = true,
+    setImgImage = true,
+    getImgDir = true,
 }
 
 --安全的os函数
