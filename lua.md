@@ -55,6 +55,21 @@ end
 - math
 - 等等等等...
 
+### 图片生成与处理接口
+
+```lua
+--img:new 新建图片对象，传入值为：宽度,高度
+local pic = img:new(1000,1000)
+--img:setBlock 绘制长方形，传入值为：起始x坐标,起始y坐标,结束x坐标,结束y坐标,颜色R值,颜色G值,颜色B值
+pic:setBlock(1,1,1000,1000,255,0,255)
+--img:setImg 附加图片，传入值为：起始x坐标,起始y坐标,图片绝对路径,[图片宽度,图片高度]
+pic:setImg(1,1,[[D:\kuqpro\data\image\00EBED617380C9AE4D815333091E590E.png]])
+--img:setImg 附加文字，传入值为：起始x坐标,起始y坐标,文字内容,[字体名称,字体大小,颜色R值,颜色G值,颜色B值]
+pic:setText(1,1,"测试",nil,25,0,255,255)
+--img:get 获取图片结果
+print(pic:get())
+```
+
 ### at(string) 返回at某人的字符串
 
 举例：
