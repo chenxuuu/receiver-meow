@@ -170,6 +170,7 @@ local safeFunctions = {
     putImgBlock = true,
     setImgImage = true,
     getImgDir = true,
+    getPath = true,
 }
 
 --安全的os函数
