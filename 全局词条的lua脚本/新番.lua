@@ -4,7 +4,7 @@
 
 --初始化新番列表
 function onInitAnime()
-    return parse(get("http://www.dilidili.wang/"))
+    return parse(get("http://www.dilidili.name/"))
 end
 
 --列表项点击事件

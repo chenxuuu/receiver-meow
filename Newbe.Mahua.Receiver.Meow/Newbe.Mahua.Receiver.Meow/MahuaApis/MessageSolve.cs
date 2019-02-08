@@ -12,7 +12,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
 {
     class MessageSolve
     {
-        private static string prem = "你没有权限调教接待喵，权限获取方法请去问开发者";
+        private static string prem = "[CQ:emoji,id=128683]你没有权限调教接待喵，权限获取方法请去问开发者";
         public static string GetReplay(string fromqq,string msg, IMahuaApi _mahuaApi, string fromgroup = "common")
         {
             if (Tools.MessageControl(5))
@@ -23,7 +23,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 {
                     string get_msg = msg.Replace("！ban ", "");
                     XmlSolve.insert(fromgroup, get_msg, "[ban]");
-                    return "已禁用包含关键词" + get_msg + "的所有响应";
+                    return "[CQ:emoji,id=128683]" + get_msg;
                 }
                 else
                 {
@@ -36,7 +36,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 {
                     string get_msg = msg.Replace("！unban ", "");
                     XmlSolve.remove(fromgroup, get_msg, "[ban]");
-                    return "已移除关键词" + get_msg + "的禁用";
+                    return "[CQ:emoji,id=9989]" + get_msg;
                 }
                 else
                 {
@@ -50,31 +50,31 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             if (msg == "赞我" || msg == "点赞")
             {
                 _mahuaApi.SendLike(fromqq);
-                result += Tools.At(fromqq) + "已为你点赞";
+                result += Tools.At(fromqq) + "已为你点赞[CQ:emoji,id=128077]";
             }
             else if (msg.ToUpper() == "HELP" || msg == "帮助" || msg == "菜单")
             {
-                result += @"命令帮助：
-！add 关键词：回答
-！del 关键词：回答
-！list 关键词
-！delall 关键词
-！ban 禁止响应的词
-！unban 恢复响应的词
-坷垃金曲+数字序号（最大71）
-点赞
-今日运势
-查快递 加 单号
-空气质量
-点歌 加 网易云id或歌名
-复读 加 百分比
-查动画 加 没裁剪过的视频截图
-！lua 查看lua工具使用说明
-自己运行/反馈：https://github.com/chenxuuu/receiver-meow";
+                result += @"命令帮助[CQ:emoji,id=128172]
+[CQ:emoji,id=128227]！add 关键词：回答
+[CQ:emoji,id=128465]！del 关键词：回答
+[CQ:emoji,id=128221]！list 关键词
+[CQ:emoji,id=128465]！delall 关键词
+[CQ:emoji,id=128683]！ban 禁止响应的词
+[CQ:emoji,id=9989]！unban 恢复响应的词
+[CQ:emoji,id=127806]坷垃金曲+数字序号（最大71）
+[CQ:emoji,id=128077]点赞
+[CQ:emoji,id=127881]今日运势
+[CQ:emoji,id=128667]查快递 加 单号
+[CQ:emoji,id=128168]空气质量
+[CQ:emoji,id=127932]点歌 加 网易云id或歌名
+[CQ:emoji,id=128252]复读 加 百分比
+[CQ:emoji,id=128444]查动画 加 没裁剪过的视频截图
+[CQ:emoji,id=128295]！lua 查看lua工具使用说明
+[CQ:emoji,id=128483]自己运行/反馈：https://github.com/chenxuuu/receiver-meow";
             }
             else if(msg.ToUpper()=="！LUA")
             {
-                result += @"lua功能使用帮助：
+                result += @"[CQ:emoji,id=128295]lua功能使用帮助：
 lua 加 代码 直接运行
 ！luaadd 关键词：代码
 ！luadel 关键词
@@ -85,13 +85,13 @@ https://github.com/chenxuuu/receiver-meow/blob/master/lua.md";
             }
             else if (msg.IndexOf("！list ") == 0)
             {
-                result += string.Format("当前词条回复如下：\r\n{0}\r\n全局词库内容：\r\n{1}",
+                result += string.Format("[CQ:emoji,id=128221]当前词条回复如下：\r\n{0}\r\n全局词库内容：\r\n{1}",
                                         XmlSolve.list_get(fromgroup, msg.Replace("！list ", "")),
                                         XmlSolve.list_get("common", msg.Replace("！list ", "")));
             }
             else if (msg.IndexOf("！lualist") == 0)
             {
-                result += string.Format("本群脚本：\r\n{0}\r\n全局脚本：\r\n{1}",
+                result += string.Format("[CQ:emoji,id=128295]本群脚本：\r\n{0}\r\n全局脚本：\r\n{1}",
                                         XmlSolve.lua_list_get(fromgroup),
                                         XmlSolve.lua_list_get("common"));
             }
@@ -105,7 +105,7 @@ https://github.com/chenxuuu/receiver-meow/blob/master/lua.md";
                     {
                         string tmsg = luaMsg.Substring(0, len), tans = luaMsg.Substring(len + 1);
                         XmlSolve.insert(fromgroup, tmsg, "[lua]" + fromqq + "." + tans);
-                        result += "添加完成！\r\n词条：" + tmsg + "\r\n回答为一个脚本";
+                        result += "[CQ:emoji,id=9989]添加完成！\r\n词条：" + tmsg + "\r\n回答为一个脚本";
                     }
                     else
                     {
@@ -123,7 +123,7 @@ https://github.com/chenxuuu/receiver-meow/blob/master/lua.md";
                 {
                     string get_msg = msg.Replace("！luadel ", "");
                     XmlSolve.luadel(fromgroup, get_msg);
-                    result += "删除完成！\r\n脚本触发词为：" + get_msg;
+                    result += "[CQ:emoji,id=128465]删除完成！\r\n脚本触发词为：" + get_msg;
                 }
                 else
                 {
@@ -153,7 +153,7 @@ https://github.com/chenxuuu/receiver-meow/blob/master/lua.md";
                     if (len >= 0 && tans.Length > 0)
                     {
                         XmlSolve.insert(fromgroup, tmsg, tans);
-                        result += "添加完成！\r\n词条：" + tmsg + "\r\n回答为：" + tans;
+                        result += "[CQ:emoji,id=9989]添加完成！\r\n词条：" + tmsg + "\r\n回答为：" + tans;
                     }
                     else
                     {
@@ -176,7 +176,7 @@ https://github.com/chenxuuu/receiver-meow/blob/master/lua.md";
                     if (len >= 0 && tans.Length > 0)
                     {
                         XmlSolve.remove(fromgroup, tmsg, tans);
-                        result += "删除完成！\r\n词条：" + tmsg + "\r\n回答为：" + tans;
+                        result += "[CQ:emoji,id=128465]删除完成！\r\n词条：" + tmsg + "\r\n回答为：" + tans;
                     }
                     else
                     {
@@ -196,7 +196,7 @@ https://github.com/chenxuuu/receiver-meow/blob/master/lua.md";
                     if (get_msg.Length > 0)
                     {
                         XmlSolve.del(fromgroup, get_msg);
-                        result += "删除完成！\r\n触发词：" + get_msg;
+                        result += "[CQ:emoji,id=128465]删除完成！\r\n触发词：" + get_msg;
                     }
                     else
                     {
