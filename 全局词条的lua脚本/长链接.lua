@@ -3,7 +3,7 @@ function geturl()
     if not html then return "加载失败" end
     if html:find("网址过长，生成失败！") then return "网址过长，生成失败！" end
     local url = html:match("biubiubiubiubiu.com/(.-)\"")
-    return "26个biu加上点com斜杠"..url
+    return "https://biubiubiubiubiubiubiubiubiubiubiubiubiubiubiubiubiubiubiubiubiu.com/"..url
 end
 
 if message:find("长链接") == 1 and message:len() > 6 then
