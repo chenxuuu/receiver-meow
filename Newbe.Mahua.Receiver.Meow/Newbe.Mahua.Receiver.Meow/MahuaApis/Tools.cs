@@ -961,38 +961,40 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
 
         public void Run(string code)
         {
-            NLua.Lua lua = new NLua.Lua();
-            lua["lua_run_result_var"] = "";
-            try
+            using (NLua.Lua lua = new NLua.Lua())
             {
-                lua.RegisterFunction("httpGet_row", null, typeof(Tools).GetMethod("HttpGet"));
-                lua.RegisterFunction("httpPost_row", null, typeof(Tools).GetMethod("HttpPost"));
-                lua.RegisterFunction("setData_row", null, typeof(Tools).GetMethod("LuaSetXml"));
-                lua.RegisterFunction("getData_row", null, typeof(Tools).GetMethod("LuaGetXml"));
-                lua.RegisterFunction("fileDownload", null, typeof(Tools).GetMethod("FileDownload"));
-                lua.RegisterFunction("getImg", null, typeof(LuaApi).GetMethod("GetBitmap"));
-                lua.RegisterFunction("setImgText", null, typeof(LuaApi).GetMethod("PutText"));
-                lua.RegisterFunction("putImgBlock", null, typeof(LuaApi).GetMethod("putBlock"));
-                lua.RegisterFunction("setImgImage", null, typeof(LuaApi).GetMethod("setImage"));
-                lua.RegisterFunction("getImgDir", null, typeof(LuaApi).GetMethod("GetDir"));
-                lua.RegisterFunction("getPath", null, typeof(LuaApi).GetMethod("GetPath"));
-                lua.DoFile(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "lua/head.lua");
-                lua.DoString(Encoding.UTF8.GetBytes(headRun));
-                lua.DoString(Encoding.UTF8.GetBytes(code));
-                if (Tools.CharNum(lua["lua_run_result_var"].ToString(), "\n") > 40)
-                    result = "行数超过了20行，限制一下吧";
-                else if (lua["lua_run_result_var"].ToString().Length > 2000)
-                    result = "字数超过了2000，限制一下吧";
-                else
-                    result = lua["lua_run_result_var"].ToString();
-            }
-            catch (Exception e)
-            {
-                string err = e.Message;
-                int l = err.IndexOf("lua/");
-                if (l >= 0)
-                    err = err.Substring(l);
-                result = "代码崩掉啦\r\n" + err;
+                lua["lua_run_result_var"] = "";
+                try
+                {
+                    lua.RegisterFunction("httpGet_row", null, typeof(Tools).GetMethod("HttpGet"));
+                    lua.RegisterFunction("httpPost_row", null, typeof(Tools).GetMethod("HttpPost"));
+                    lua.RegisterFunction("setData_row", null, typeof(Tools).GetMethod("LuaSetXml"));
+                    lua.RegisterFunction("getData_row", null, typeof(Tools).GetMethod("LuaGetXml"));
+                    lua.RegisterFunction("fileDownload", null, typeof(Tools).GetMethod("FileDownload"));
+                    lua.RegisterFunction("getImg", null, typeof(LuaApi).GetMethod("GetBitmap"));
+                    lua.RegisterFunction("setImgText", null, typeof(LuaApi).GetMethod("PutText"));
+                    lua.RegisterFunction("putImgBlock", null, typeof(LuaApi).GetMethod("putBlock"));
+                    lua.RegisterFunction("setImgImage", null, typeof(LuaApi).GetMethod("setImage"));
+                    lua.RegisterFunction("getImgDir", null, typeof(LuaApi).GetMethod("GetDir"));
+                    lua.RegisterFunction("getPath", null, typeof(LuaApi).GetMethod("GetPath"));
+                    lua.DoFile(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "lua/head.lua");
+                    lua.DoString(Encoding.UTF8.GetBytes(headRun));
+                    lua.DoString(Encoding.UTF8.GetBytes(code));
+                    if (Tools.CharNum(lua["lua_run_result_var"].ToString(), "\n") > 40)
+                        result = "行数超过了20行，限制一下吧";
+                    else if (lua["lua_run_result_var"].ToString().Length > 2000)
+                        result = "字数超过了2000，限制一下吧";
+                    else
+                        result = lua["lua_run_result_var"].ToString();
+                }
+                catch (Exception e)
+                {
+                    string err = e.Message;
+                    int l = err.IndexOf("lua/");
+                    if (l >= 0)
+                        err = err.Substring(l);
+                    result = "代码崩掉啦\r\n" + err;
+                }
             }
         }
 
