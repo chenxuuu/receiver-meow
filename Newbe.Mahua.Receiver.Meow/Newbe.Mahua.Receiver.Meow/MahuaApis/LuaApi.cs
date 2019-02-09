@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -104,8 +105,8 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
         public static string GetDir(Bitmap bmp)
         {
             string result = Tools.GetRandomString(32, true, false, false, false, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
-            bmp.Save(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "data/image/download/lua" + result + ".png");
-            return "download/lua" + result + ".png";
+            bmp.Save(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "data/image/download/lua" + result + ".jpg", ImageFormat.Jpeg);
+            return "download/lua" + result + ".jpg";
         }
 
         /// <summary>
