@@ -44,6 +44,25 @@ function init(fromqq,anotherqq)
     print("接下来请"..at(anotherqq).."走子")
 end
 
+--显示当前棋盘
+function showNow()
+    local str1 = getData(fromqq,"中国象棋")
+    --获取己方已保存数据
+    if not str1:find(",") then print(at(fromqq).."你没有正在进行的棋局") return end
+    local t1 = str1:split(",")
+    local str2 = getData(t1[1],"中国象棋")
+    --判断对方是否在棋局中
+    if not str2:find(",") then print(at(fromqq).."对手已退出棋局，请重新开局") return end
+    local t2 = str2:split(",")
+    --判断对方的对手qq是否相同，棋盘数据是否相同
+    if t2[1] ~= fromqq or t1[4] ~= t2[4] then print(at(fromqq).."对手已退出棋局，请重新开局") return end
+
+    local pieces = t1[4]:split("/")
+    print(show(pieces))
+    print(at(fromqq).."棋盘状态如上")
+    print("接下来该"..at(t1[3] == "1" and t1[1] or fromqq).."走子")
+end
+
 --走子处理
 function play(moveData)
     local str1 = getData(fromqq,"中国象棋")
@@ -264,18 +283,17 @@ if message:find("象棋") == 1 then
         print("已退出所有棋局")
     elseif message:find("象棋走") == 1 and message:len() == string.len("象棋走A5B5") then
         play(message:sub(string.len("象棋走")))
+    elseif message == "象棋棋盘" then
+        showNow()
     else
         print([[象棋命令帮助[CQ:emoji,id=128161]
 [CQ:emoji,id=128682]象棋开局 开启新一轮棋局
 [CQ:emoji,id=128273]象棋加入 加 对方qq号 加入对方棋局
 [CQ:emoji,id=128228]象棋退出 退出当前棋局
+[CQ:emoji,id=128195]象棋棋盘 查看当前的棋盘状态
 [CQ:emoji,id=128205]象棋走 加 前后坐标 移动棋子
 如：象棋走A5B5
 仅限同群对战]])
     end
 end
-
-
-
-
 
