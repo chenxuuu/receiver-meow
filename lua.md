@@ -70,6 +70,12 @@ pic:setText(1,1,"测试",nil,25,0,255,255)
 print(pic:get())
 ```
 
+### 获取主程序运行目录
+
+```lua
+getPath()
+```
+
 ### at(string) 返回at某人的字符串
 
 举例：
