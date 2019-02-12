@@ -31,6 +31,8 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
         public static string special = XmlSolve.xml_get("settings", "special");
         //whatanime的api
         public static string whatanimeApi = XmlSolve.xml_get("settings", "whatanimeApi");
+        //http代理的网址
+        public static string proxyUrl = XmlSolve.xml_get("settings", "proxy");
         public static int messageCount = 0;
         public static string now = DateTime.Now.ToString();
         /// <summary>
@@ -273,6 +275,8 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                     ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
                 }
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Url + (postDataStr == "" ? "" : "?") + postDataStr);
+                if(proxyUrl!="")
+                    request.Proxy = new WebProxy(proxyUrl);
                 request.Method = "GET";
                 request.ContentType = "text/html;charset=UTF-8";
                 request.Timeout = timeout;
@@ -314,6 +318,8 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                     ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
                 }
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Url);
+                if (proxyUrl != "")
+                    request.Proxy = new WebProxy(proxyUrl);
                 request.Method = "POST";
                 request.Timeout = timeout;
                 request.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";
@@ -359,7 +365,8 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                     ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
                 }
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Url);
-                //request.Method = "GET";
+                if (proxyUrl != "")
+                    request.Proxy = new WebProxy(proxyUrl);
                 request.ContentType = "text/html;charset=UTF-8";
                 request.Timeout = timeout;
                 request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36 Vivaldi/2.2.1388.37";
