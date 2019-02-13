@@ -15,10 +15,12 @@ function getPic(s,ban)
 end
 
 
--- if fromgroup == "115872123" then
---     print(at(fromqq))
---     print(getPic("https://konachan.com/post?page="..tostring(math.random(1,500)).."&tags=order%3Ascore+rating%3Aexplicit",true))
--- else
---     print(at(fromqq).."本群仅显示全年龄图：")
+local lasttime = getData(fromqq,"随机图片")
+lasttime = lasttime == "" and 0 or tonumber(lasttime)
+if os.time() - lasttime > 60*60 then
+    setData(fromqq,"随机图片",tostring(os.time()))
     print(getPic("https://konachan.com/post?page="..tostring(math.random(1,170)).."&tags=order%3Ascore+rating%3Asafe+panties",true))
--- end
+else
+    print(at(fromqq))
+    print("你需要等"..tostring(60*60+lasttime-os.time()).."秒后才能再次使用该功能")
+end

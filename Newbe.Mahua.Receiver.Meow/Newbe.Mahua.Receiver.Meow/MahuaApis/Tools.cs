@@ -387,9 +387,9 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 {
                     FileStream fs = File.OpenRead(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "data/image/download/" + fileName + "old"); //OpenRead
                     int filelength = 0;
-                    filelength = (int)fs.Length; //获得文件长度 
-                    Byte[] image = new Byte[filelength]; //建立一个字节数组 
-                    fs.Read(image, 0, filelength); //按字节流读取 
+                    filelength = (int)fs.Length; //获得文件长度
+                    Byte[] image = new Byte[filelength]; //建立一个字节数组
+                    fs.Read(image, 0, filelength); //按字节流读取
                     System.Drawing.Image r = System.Drawing.Image.FromStream(fs);
                     fs.Close();
                     Bitmap bit = new Bitmap(r);//图片对象
@@ -436,7 +436,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             {
                 Value = false;
             }
-            
+
             return Value;
         }
 
@@ -890,49 +890,6 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
         }
 
         /// <summary>
-        /// 字符串转hex
-        /// </summary>
-        /// <param name="str"></param>
-        /// <param name="space"></param>
-        /// <returns></returns>
-        public static string String2Hex(string str, bool space)
-        {
-            if (space)
-                return BitConverter.ToString(Encoding.Default.GetBytes(str)).Replace("-", " ");
-            else
-                return BitConverter.ToString(Encoding.Default.GetBytes(str)).Replace("-", "");
-        }
-
-        /// <summary>
-        /// hex转字符串
-        /// </summary>
-        /// <param name="mHex"></param>
-        /// <returns></returns>
-        public static string Hex2String(string mHex)
-        {
-            mHex = Regex.Replace(mHex, "[^0-9A-Fa-f]", "");
-            if (mHex.Length % 2 != 0)
-                mHex = mHex.Remove(mHex.Length - 1, 1);
-            if (mHex.Length <= 0) return "";
-            byte[] vBytes = new byte[mHex.Length / 2];
-            for (int i = 0; i < mHex.Length; i += 2)
-                if (!byte.TryParse(mHex.Substring(i, 2), NumberStyles.HexNumber, null, out vBytes[i / 2]))
-                    vBytes[i / 2] = 0;
-            return Encoding.Default.GetString(vBytes);
-        }
-
-
-        /// <summary>
-        /// url编码，lua专用
-        /// </summary>
-        /// <param name="str"></param>
-        /// <returns></returns>
-        public static string UrlEncode(string str)
-        {
-            return HttpUtility.UrlEncode(Hex2String(str));
-        }
-
-        /// <summary>
         /// lua读取数据
         /// </summary>
         /// <param name="name"></param>
@@ -987,7 +944,8 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                     lua.DoFile(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "lua/head.lua");
                     lua.DoString(Encoding.UTF8.GetBytes(headRun));
                     lua.DoString(Encoding.UTF8.GetBytes(code));
-                    if (Tools.CharNum(lua["lua_run_result_var"].ToString(), "\n") > 40)
+                    if (Tools.CharNum(lua["lua_run_result_var"].ToString(), "\n") > 40 ||
+                        Tools.CharNum(lua["lua_run_result_var"].ToString(), "\r") > 40)
                         result = "行数超过了20行，限制一下吧";
                     else if (lua["lua_run_result_var"].ToString().Length > 2000)
                         result = "字数超过了2000，限制一下吧";
@@ -1023,19 +981,6 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             {
                 threadToKill.Abort();
             }
-        }
-
-        public static string Hex2String(string mHex)
-        {
-            mHex = Regex.Replace(mHex, "[^0-9A-Fa-f]", "");
-            if (mHex.Length % 2 != 0)
-                mHex = mHex.Remove(mHex.Length - 1, 1);
-            if (mHex.Length <= 0) return "";
-            byte[] vBytes = new byte[mHex.Length / 2];
-            for (int i = 0; i < mHex.Length; i += 2)
-                if (!byte.TryParse(mHex.Substring(i, 2), NumberStyles.HexNumber, null, out vBytes[i / 2]))
-                    vBytes[i / 2] = 0;
-            return Encoding.Default.GetString(vBytes);
         }
     }
 }
