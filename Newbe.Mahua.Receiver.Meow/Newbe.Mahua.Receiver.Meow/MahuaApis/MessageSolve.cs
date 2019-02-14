@@ -277,28 +277,20 @@ https://github.com/chenxuuu/receiver-meow/blob/master/lua.md";
             }
             else if (msg.IndexOf("lua") == 0 && msg.Length > 4)
             {
-                result += Tools.At(fromqq) + "\r\n" + Tools.RunLua(HttpUtility.HtmlDecode(msg.Substring(4)),
-                    string.Format("fromqq=\"{0}\"\r\nfromgroup=\"{1}\"\r\n", fromqq, fromgroup));
+                if (XmlSolve.AdminCheck(fromqq) >= 1)//管理员才能用
+                {
+                    result += Tools.At(fromqq) + "\r\n" + Tools.RunLua(HttpUtility.HtmlDecode(msg.Substring(4)),
+                        string.Format("fromqq=\"{0}\"\r\nfromgroup=\"{1}\"\r\n", fromqq, fromgroup));
+                }
+                else
+                {
+                    result += prem;
+                }
             }
             else if (fromgroup == "241464054") //糖拌群
                 result += MinecraftSolve.SolvePlayer(fromqq, msg, _mahuaApi);
             else if (fromgroup == "567145439") //分赃群
                 result += MinecraftSolve.SolveAdmin(fromqq, msg, _mahuaApi);
-            else if (fromgroup == "543632048") //基岩版
-            {
-                if (msg.IndexOf("领铁轨") == 0)
-                {
-                    if (msg.Length <= 3)
-                        return Tools.At(fromqq) + "请用格式“领铁轨”加上id，领取铁轨";
-                    else
-                    {
-                        Tools.HttpGet("http://localhost:2333/give " + msg.Replace("领铁轨", "") + " rail 64", "");
-                        Tools.HttpGet("http://localhost:2333/give " + msg.Replace("领铁轨", "") + " golden_rail 64", "");
-                        Tools.HttpGet("http://localhost:2333/give " + msg.Replace("领铁轨", "") + " redstone_torch 10", "");
-                        return Tools.At(fromqq) + "已发放，请查收";
-                    }
-                }
-            }
             if(result == "")
                 result += XmlSolve.ReplayGroupStatic(fromgroup, msg, fromqq);
 

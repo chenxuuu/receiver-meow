@@ -261,7 +261,8 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
         /// <summary>
         /// GET 请求与获取结果
         /// </summary>
-        public static string HttpGet(string Url, string postDataStr = "", int timeout = 5000)
+        public static string HttpGet(string Url, string postDataStr = "", int timeout = 5000,
+            string cookie = "")
         {
             try
             {
@@ -281,6 +282,8 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 request.ContentType = "text/html;charset=UTF-8";
                 request.Timeout = timeout;
                 request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36 Vivaldi/2.2.1388.37";
+                if(cookie!="")
+                    request.Headers.Add("cookie", cookie);
 
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                 string encoding = response.ContentEncoding;
@@ -304,7 +307,8 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
         /// <summary>
         /// POST请求与获取结果
         /// </summary>
-        public static string HttpPost(string Url, string postDataStr, int timeout = 5000)
+        public static string HttpPost(string Url, string postDataStr, int timeout = 5000,
+            string cookie = "")
         {
             try
             {
@@ -325,6 +329,8 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 request.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";
                 request.ContentLength = postDataStr.Length;
                 request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36 Vivaldi/2.2.1388.37";
+                if (cookie != "")
+                    request.Headers.Add("cookie", cookie);
 
                 StreamWriter writer = new StreamWriter(request.GetRequestStream(), Encoding.ASCII);
                 writer.Write(postDataStr);
