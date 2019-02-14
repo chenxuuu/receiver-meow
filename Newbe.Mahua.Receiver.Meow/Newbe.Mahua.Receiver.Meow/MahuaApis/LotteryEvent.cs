@@ -26,23 +26,16 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             Random ran = new Random(System.DateTime.Now.Millisecond);
             int RandKey = ran.Next(1, 22);
             int RandKey2 = ran.Next(0, 10);
-            if (RandKey > 19)
+            if (RandKey > 21)
             {
                 result += Tools.At(qq) + "\r\n[CQ:emoji,id=127881]恭喜你！什么也没有抽中！";
             }
             else if (RandKey == 1 && RandKey2 != 0)
             {
-                if (Tools.GetXmlNumber("gift", qq) < 10)
-                {
-                    need_add += 10;
-                    TimeSpan span = new TimeSpan(0, 10, 0, 0);
-                    _mahuaApi.BanGroupMember(group, qq, span);
-                    result += Tools.At(qq) + "\r\n[CQ:emoji,id=127882]恭喜你抽中了超豪华禁言套餐，并附赠10张禁言卡！奖励已发放！";
-                }
-                else
-                {
-                    result += Tools.At(qq) + "\r\n是超豪华禁言套餐呢。。。这次套餐我请客吧ww";
-                }
+                need_add += 10;
+                TimeSpan span = new TimeSpan(0, 10, 0, 0);
+                _mahuaApi.BanGroupMember(group, qq, span);
+                result += Tools.At(qq) + "\r\n[CQ:emoji,id=127882]恭喜你抽中了超豪华禁言套餐，并附赠10张禁言卡！奖励已发放！";
             }
             else if (RandKey == 1 && RandKey2 == 0)
             {
@@ -58,7 +51,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                     result += Tools.At(qq) + "\r\n是顶级豪华月卡禁言套餐呢。。。这次套餐我请客吧ww";
                 }
             }
-            else if (RandKey < 11 - Tools.GetXmlNumber("gift", qq) / 10)
+            else if (RandKey < 11 - Tools.GetXmlNumber("gift", qq) / 5)
             {
                 TimeSpan span = new TimeSpan(0, RandKey, 0, 0);
                 _mahuaApi.BanGroupMember(group, qq, span);
@@ -231,7 +224,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                 extra += "\r\n[CQ:emoji,id=127748]每日抽奖次数+1了哦~";
             if(gift == 10)
                 extra += "\r\n[CQ:emoji,id=128157]以后的大禁言套餐都由我请客~";
-            if (gift % 10 == 0 && gift < 110)
+            if (gift % 5 == 0 && gift < 110)
                 extra += "\r\n[CQ:emoji,id=9878]禁言概率降低了哦~";
             if (gift % 10 == 0 )
                 extra += "\r\n[CQ:emoji,id=127881]每次抽中禁言卡数量上限+1~";

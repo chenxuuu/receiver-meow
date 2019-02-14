@@ -23,17 +23,19 @@ function at(qq)
 end
 
 --httpGet获取
-function httpGet(url,para,timeout)
+function httpGet(url,para,timeout,cookie)
     if not para then para = "" end
     if not timeout then timeout = 5000 end
+    if not cookie then cookie = "" end
     local result = httpGet_row(url,para,timeout)
     if result ~= "" then return result end
 end
 
 --httpPost获取
-function httpPost(url,para,timeout)
+function httpPost(url,para,timeout,cookie)
     if not para then para = "" end
     if not timeout then timeout = 5000 end
+    if not cookie then cookie = "" end
     local result = httpPost_row(url,para,timeout)
     if result ~= "" then return result end
 end
