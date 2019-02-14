@@ -89,12 +89,14 @@ print(at("123456"))
 - `url`网址，string
 - `para`参数，string，默认空，可留空
 - `timeout`网址，number，默认5000，可留空
+- `cookie`cookie，string，默认空，可留空
 
 举例：
 
 ```lua
 print(httpGet("https://www.baidu.com"):sub(1,300))
 httpGet("https://www.abc.com","aa=123&bb=233&c="..string.urlEncode("中文参数"))
+httpGet("https://qq.com","aa=123&bb=233&c=",5000,"uid=xxxxx;aaa=vvvvv")
 ```
 
 ### httpPost(url,para,timeout) 发起一个http post请求
