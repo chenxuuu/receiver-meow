@@ -214,18 +214,6 @@ https://github.com/chenxuuu/receiver-meow/blob/master/lua.md";
             {
                 result += "当前狗管理如下：\r\n" + XmlSolve.list_get("admin_list", "给我列一下狗管理");
             }
-            else if (msg == "今日黄历" || msg == "今日运势" || msg == "今天运势" || msg == "今天黄历")
-            {
-                result += TodaysAlmanac.GetAlmanac(fromqq, DateTime.Now.DayOfYear);
-            }
-            else if (msg == "昨日黄历" || msg == "昨日运势" || msg == "昨天运势" || msg == "昨天黄历")
-            {
-                result += TodaysAlmanac.GetAlmanac(fromqq, DateTime.Now.DayOfYear - 1);
-            }
-            else if (msg == "明日黄历" || msg == "明日运势" || msg == "明天运势" || msg == "明天黄历")
-            {
-                result += TodaysAlmanac.GetAlmanac(fromqq, DateTime.Now.DayOfYear + 1);
-            }
             else if (msg == "抽奖" && fromgroup != "common")
             {
                 result += LotteryEvent.Lottery(fromqq, _mahuaApi, fromgroup);

@@ -93,7 +93,6 @@
     <Compile Include="MahuaApis\LuaApi.cs" />
     <Compile Include="MahuaApis\MessageSolve.cs" />
     <Compile Include="MahuaApis\MinecraftSolve.cs" />
-    <Compile Include="MahuaApis\TodaysAlmanac.cs" />
     <Compile Include="MahuaApis\Tools.cs" />
     <Compile Include="MahuaApis\WhatAnime.cs" />
     <Compile Include="MahuaApis\XmlSolve.cs" />
