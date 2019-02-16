@@ -175,6 +175,7 @@ local safeFunctions = {
     getPath = true,
     sendGroupMessage = true,
     sendPrivateMessage = true,
+    getImageUrl = true,
 }
 
 --安全的os函数

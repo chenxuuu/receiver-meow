@@ -46,6 +46,7 @@ lua接口文档[点我](https://github.com/chenxuuu/receiver-meow/blob/master/lu
 - 全年龄色图
 - 象棋
 - 查询每日运势
+- 搜p站图片功能
 
 ---
 
