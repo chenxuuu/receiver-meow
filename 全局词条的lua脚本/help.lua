@@ -14,6 +14,7 @@ print([[命令帮助[CQ:emoji,id=128172]
 [CQ:emoji,id=127932]点歌 加 网易云id或歌名
 [CQ:emoji,id=128252]复读 加 百分比
 [CQ:emoji,id=128444]查动画 加 没裁剪过的视频截图
+[CQ:emoji,id=128444]搜图 加 完整p站图片
 [CQ:emoji,id=128195]象棋 查看象棋功能帮助
 [CQ:emoji,id=128295]！lua 查看lua工具使用说明
 [CQ:emoji,id=128483]自己运行/反馈：https://github.com/chenxuuu/receiver-meow]])
