@@ -149,6 +149,12 @@ setData(fromqq,"search_for_kydi","12345678")
 print(image("https://xxx.xxx.xxx/xxx.jpg"))
 ```
 
+### getImageUrl(url) 获取消息中图片的网址，无匹配时为空字符串
+
+```lua
+print(getImageUrl("[CQ:image,file=05B9BBAA2292DDD7C1DEA9379290C00B.jpg]"))
+```
+
 ### string.fromHex(hex)
 
 ```lua
