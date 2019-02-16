@@ -641,8 +641,7 @@ local goodthings =
 "敲代码：虽然不知道写了什么，但是总觉得一定没有bug",
 "网购：好多便宜的东西",
 "早睡：今晚没有人陪你哦",
-"听音乐：和我一起学猫叫~",
-"迷の空缺位"
+"听音乐：和我一起学猫叫~"
 }
 
 local badthings =
@@ -671,25 +670,36 @@ local badthings =
 "敲代码：知道写了什么，但是就是找不出bug的原因",
 "网购：会被坑",
 "早睡：会在半夜醒来，然后失眠",
-"听音乐：软件卡主，文件丢失",
-"迷の空缺位"
+"听音乐：软件卡主，文件丢失"
 }
-
---产生不相同的从m到n，一共cnt个随机数表
-function math.randomx( m,n,cnt,seed)
-    if cnt>n-m+1 then
-        return {}
+--随机数表代码来自http://www.cnblogs.com/slysky/p/5954053.html
+--产生1~~m,若有n的则m~~n的数字表
+function table.fillNum(m,n)
+    local j,k
+    if n then
+       j=m
+       k=n
+    else
+        j=1
+        k=m
     end
-    local t = {}
-    local tmp = {}
+    local t={}
+    for i=j,k do
+        table.insert(t,i)
+    end
+    return t
+end
+--产生不相同的从m到n，一共cnt个随机数表
+function math.randomx(m,n,cnt,seed)
+    local tmp=table.fillNum(m,n)
     math.randomseed(seed)
+    local t={}
     while cnt>0 do
-        local x =math.random(m,n)
-        if not tmp[x] then
-            t[#t+1]=x
-            tmp[x]=1
-            cnt=cnt-1
-        end
+       x=math.random(1,n-m+1)
+       table.insert(t,tmp[x])
+       table.remove(tmp,x)
+       cnt=cnt-1
+       m=m+1
     end
     return t
 end
@@ -698,7 +708,7 @@ end
 function getAlmanac(time,fromqq)
     local day = math.floor(time/(3600*24))--取整，唯一的某一天
     local seed = fromqq..tostring(day)--今日唯一的随机数种子
-    local ran = math.randomx(1,25,6,seed)
+    local ran = math.randomx(1,#goodthings,6,seed)
     print(at(fromqq).."\r\n你的运势如下~\r\n"..
     "[CQ:emoji,id=127569]宜：\r\n"..goodthings[ran[1]]..
     "\r\n"..goodthings[ran[2]]..
@@ -710,13 +720,13 @@ function getAlmanac(time,fromqq)
     "\r\n"..
     "[CQ:emoji,id=128197]日期："..os.date("%Y年%m月%d日").."\r\n"..
     "[CQ:emoji,id=127919]综合幸运指数："..tostring(math.random(0,100)).."%\r\n"..
-    "[CQ:emoji,id=128221]当日吉言："..says[math.random(1,613)])
+    "[CQ:emoji,id=128221]当日吉言："..says[math.random(1,#says)])
 end
 
 if message == "今日运势" then
-    print(os.time(),fromqq)
+    getAlmanac(os.time(),fromqq)
 elseif message == "明日运势" or message == "明天运势" then
-    print(os.time()+3600*24,fromqq)
+    getAlmanac(os.time()+3600*24,fromqq)
 elseif message == "昨日运势" or message == "昨天运势" then
-    print(os.time()-3600*24,fromqq)
+    getAlmanac(os.time()-3600*24,fromqq)
 end

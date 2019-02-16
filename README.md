@@ -26,7 +26,6 @@ lua接口文档[点我](https://github.com/chenxuuu/receiver-meow/blob/master/lu
 
 - 手动点赞
 - 自定义指定关键字词，并进行回复
-- 查询每日运势
 - 抽奖禁言功能
 - 查询空气质量
 - 自助获取词条修改权限
@@ -44,7 +43,9 @@ lua接口文档[点我](https://github.com/chenxuuu/receiver-meow/blob/master/lu
 - 新番查询
 - 开车（随机字符假磁链）
 - 一言
-- ~~色图（全年龄图）~~
+- 全年龄色图
+- 象棋
+- 查询每日运势
 
 ---
 
