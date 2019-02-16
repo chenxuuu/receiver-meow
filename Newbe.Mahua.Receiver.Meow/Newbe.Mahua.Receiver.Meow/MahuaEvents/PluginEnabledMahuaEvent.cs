@@ -27,6 +27,20 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaEvents
             timer.Interval = 1000;// 执行间隔时间, 单位为毫秒  
             timer.Elapsed += new System.Timers.ElapsedEventHandler(Timer1_Elapsed);
             timer.Start();
+
+            System.Timers.Timer luaTimer = new System.Timers.Timer();
+            luaTimer.Enabled = true;
+            luaTimer.Interval = 1000*60;// 执行间隔时间, 单位为毫秒
+            luaTimer.Elapsed += LuaTimer;
+            luaTimer.Start();
+        }
+
+        //lua定时程序，一分钟触发一次
+        private void LuaTimer(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            string path = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "lua/timer.lua";
+            if (File.Exists(path))
+                Tools.RunLua(File.ReadAllText(path));
         }
 
         private void Timer1_Elapsed(object sender, System.Timers.ElapsedEventArgs e)  //定时程序
@@ -60,20 +74,13 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaEvents
             }
             if (intMinute == 0 && intSecond == 10 && intHour == 4 && Tools.special.Length > 0)
             {
-                var _m = MahuaRobotManager.Instance.CreateSession().MahuaApi;
-                _m.SendGroupMessage("567145439", "服务器备份已开始，硬盘可用空间：\r\n" +
-                        "服务器盘剩余空间：" + ((float)Tools.GetHardDiskFreeSpace("D") / 1024).ToString(".00") + "GB\r\n" +
-                        "备份盘剩余空间：" + ((float)Tools.GetHardDiskFreeSpace("E") / 1024).ToString(".00") + "GB");
                 System.Diagnostics.Process.Start(@"D:\backup.bat");
             }
             if (intMinute == 0 && intSecond == 10 && intHour == 5 && Tools.special.Length > 0)
             {
-                var _m = MahuaRobotManager.Instance.CreateSession().MahuaApi;
-                _m.SendGroupMessage("567145439", "服务器备份肯定已经结束了，硬盘可用空间：\r\n" +
-                        "服务器盘剩余空间：" + ((float)Tools.GetHardDiskFreeSpace("D") / 1024).ToString(".00") + "GB\r\n" +
-                        "备份盘剩余空间：" + ((float)Tools.GetHardDiskFreeSpace("E") / 1024).ToString(".00") + "GB");
                 if (Tools.GetHardDiskFreeSpace("E") < 1024 * 10)
                 {
+                    var _m = MahuaRobotManager.Instance.CreateSession().MahuaApi;
                     _m.SendGroupMessage("567145439", Tools.At(Tools.adminNumber) + "警告：服务器备份盘可用空间仅剩余" +
                         ((float)Tools.GetHardDiskFreeSpace("E") / 1024).ToString(".00") + "G！请及时清理多于文件！");
                 }
