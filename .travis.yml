@@ -7,6 +7,7 @@ before_deploy:
   - rm kuqpro_pack.7z
   - mv Newbe.Mahua.Receiver.Meow/Newbe.Mahua.Receiver.Meow/bin/Release/Newbe.Mahua.Receiver.Meow.dll kuqpro_pack/Newbe.Mahua.Receiver.Meow/
   - mv Newbe.Mahua.Receiver.Meow/head.lua kuqpro_pack/lua
+  - mv Newbe.Mahua.Receiver.Meow/timer.lua kuqpro_pack/lua
   - mv Newbe.Mahua.Receiver.Meow/luaRequires/* kuqpro_pack/lua
   - mv common.xml kuqpro_pack/data
   - mkdir kuqpro_pack/全局词条的lua脚本
