@@ -62,7 +62,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             else if(msg.ToUpper()=="！LUA")
             {
                 result += @"[CQ:emoji,id=128295]lua功能使用帮助：
-lua 加 代码 直接运行
+#lua 加 代码 直接运行
 ！luaadd 关键词：代码
 ！luadel 关键词
 ！lualist
@@ -275,7 +275,7 @@ https://github.com/chenxuuu/receiver-meow/blob/master/lua.md";
             {
                 result += Tools.At(fromqq) + Tools.GetAVInfo(msg.Substring(2));
             }
-            else if (msg.IndexOf("lua") == 0 && msg.Length > 4)
+            else if (msg.IndexOf("#lua") == 0 && msg.Length > 4)
             {
                 if (XmlSolve.AdminCheck(fromqq) >= 1)//管理员才能用
                 {

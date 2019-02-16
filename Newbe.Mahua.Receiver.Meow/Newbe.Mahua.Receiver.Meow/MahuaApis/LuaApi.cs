@@ -118,5 +118,31 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             return AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
         }
 
+
+        /// <summary>
+        /// 向某群发送群消息
+        /// </summary>
+        /// <param name="group">群号</param>
+        /// <param name="msg">消息内容</param>
+        public static void SendGroupMessage(string group,string msg)
+        {
+            var _m = MahuaRobotManager.Instance.CreateSession().MahuaApi;
+            _m.SendGroupMessage(group, msg);
+        }
+
+
+        /// <summary>
+        /// 发送私聊消息
+        /// </summary>
+        /// <param name="qq">qq号码</param>
+        /// <param name="msg">消息内容</param>
+        public static void SendPrivateMessage(string qq, string msg)
+        {
+            var _m = MahuaRobotManager.Instance.CreateSession().MahuaApi;
+            _m.SendPrivateMessage(qq, msg);
+        }
+
+
+
     }
 }

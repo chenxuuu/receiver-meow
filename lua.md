@@ -4,7 +4,7 @@
 
 ## lua功能指令（感叹号和冒号为中文符号）：
 
-- lua 脚本，直接测试脚本，如：`lua print(2333)`
+- #lua 脚本，直接测试脚本，如：`#lua print(2333)`
 - ！luaadd 关键词：脚本，添加关键词触发的脚本，如`！luaadd 测试：print("发送者："..at(fromqq).."，群号："..fromgroup.."，消息内容："..message)`
 - ！luadel 关键词，删除关键词触发的脚本
 - ！lualist，查看脚本列表
