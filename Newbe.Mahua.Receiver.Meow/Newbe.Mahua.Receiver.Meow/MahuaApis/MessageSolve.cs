@@ -259,10 +259,6 @@ https://github.com/chenxuuu/receiver-meow/blob/master/lua.md";
             {
                 result += Tools.At(fromqq) + "\r\n" + WhatAnime.GetAnime(msg.Replace("\r", "").Replace("\n", ""));
             }
-            else if (msg.IndexOf("番号") == 0 && msg.Length > 4 && Tools.special.Length > 0)
-            {
-                result += Tools.At(fromqq) + Tools.GetAVInfo(msg.Substring(2));
-            }
             else if (msg.IndexOf("#lua") == 0 && msg.Length > 4)
             {
                 if (XmlSolve.AdminCheck(fromqq) >= 1)//管理员才能用
