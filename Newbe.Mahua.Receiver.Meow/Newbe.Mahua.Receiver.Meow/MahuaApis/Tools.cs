@@ -947,6 +947,8 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                     lua.RegisterFunction("setImgImage", null, typeof(LuaApi).GetMethod("setImage"));
                     lua.RegisterFunction("getImgDir", null, typeof(LuaApi).GetMethod("GetDir"));
                     lua.RegisterFunction("getPath", null, typeof(LuaApi).GetMethod("GetPath"));
+                    lua.RegisterFunction("sendGroupMessage", null, typeof(LuaApi).GetMethod("SendGroupMessage"));
+                    lua.RegisterFunction("sendPrivateMessage", null, typeof(LuaApi).GetMethod("SendPrivateMessage"));
                     lua.DoFile(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "lua/head.lua");
                     lua.DoString(Encoding.UTF8.GetBytes(headRun));
                     lua.DoString(Encoding.UTF8.GetBytes(code));

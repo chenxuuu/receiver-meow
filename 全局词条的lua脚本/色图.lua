@@ -20,7 +20,4 @@ lasttime = lasttime == "" and 0 or tonumber(lasttime)
 if os.time() - lasttime > 60*60 then
     setData(fromqq,"随机图片",tostring(os.time()))
     print(getPic("https://konachan.com/post?page="..tostring(math.random(1,170)).."&tags=order%3Ascore+rating%3Asafe+panties",true))
-else
-    print(at(fromqq))
-    print("你需要等"..tostring(60*60+lasttime-os.time()).."秒后才能再次使用该功能")
 end

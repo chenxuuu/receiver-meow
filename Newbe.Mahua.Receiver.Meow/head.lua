@@ -173,6 +173,8 @@ local safeFunctions = {
     setImgImage = true,
     getImgDir = true,
     getPath = true,
+    sendGroupMessage = true,
+    sendPrivateMessage = true,
 }
 
 --安全的os函数
