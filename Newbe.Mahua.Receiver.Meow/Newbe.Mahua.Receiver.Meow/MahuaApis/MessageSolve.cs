@@ -234,10 +234,6 @@ https://github.com/chenxuuu/receiver-meow/blob/master/lua.md";
             {
                 result += LotteryEvent.ReceiveGift(fromqq);
             }
-            else if (msg.IndexOf("空气质量") == 0)
-            {
-                result += Tools.GetAir(msg, fromqq);
-            }
             else if (msg.IndexOf("cmd ") == 0 && fromqq == Tools.adminNumber)
             {
                 result += Tools.execCMD(HttpUtility.HtmlDecode(msg.Replace("cmd ", "")));

@@ -27,7 +27,6 @@ lua接口文档[点我](https://github.com/chenxuuu/receiver-meow/blob/master/lu
 - 手动点赞
 - 自定义指定关键字词，并进行回复
 - 抽奖禁言功能
-- 查询空气质量
 - 自助获取词条修改权限
 - 复读群消息
 
@@ -47,6 +46,7 @@ lua接口文档[点我](https://github.com/chenxuuu/receiver-meow/blob/master/lu
 - 象棋
 - 查询每日运势
 - 搜p站图片功能
+- 查询空气质量
 
 ---
 
