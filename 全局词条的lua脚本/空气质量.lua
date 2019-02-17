@@ -32,12 +32,12 @@ local function search(name)
     "\r\n使用指令“空气质量”加监测站编号查看数据"
 end
 
-if message:find("空气质量") == 1 then
+if message == "空气质量" then
+    print(at(qq))
+    print("使用帮助：\r\n发送空气质量加城市英文(拼音)，即可查询\r\n如：空气质量harbin")
+elseif message:find("空气质量") == 1 then
     message = message:gsub("空气质量 *","")
-    if message == "空气质量" then
-        print(at(qq))
-        print("使用帮助：\r\n发送空气质量加城市英文(拼音)，即可查询\r\n如：空气质量harbin")
-    elseif tonumber(message) then
+    if tonumber(message) then
         print(at(qq))
         print(getInfo(message))
     else
