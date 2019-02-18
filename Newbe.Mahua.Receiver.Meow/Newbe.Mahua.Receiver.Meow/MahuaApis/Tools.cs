@@ -414,7 +414,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
         /// Save a binary file to disk.
         /// </summary>
         /// <param name="response">The response used to save the file</param>
-        private static bool SaveBinaryFile(WebResponse response, string FileName)
+        public static bool SaveBinaryFile(WebResponse response, string FileName)
         {
             bool Value = true;
             byte[] buffer = new byte[1024];
@@ -607,7 +607,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
             LuaTimeout lua = new LuaTimeout();
             lua.code = text;
             lua.headRun = headRun;
-            lua.CallWithTimeout(8000);
+            lua.CallWithTimeout(15000);
             return lua.result;
         }
 
@@ -666,6 +666,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                     lua.RegisterFunction("sendGroupMessage", null, typeof(LuaApi).GetMethod("SendGroupMessage"));
                     lua.RegisterFunction("sendPrivateMessage", null, typeof(LuaApi).GetMethod("SendPrivateMessage"));
                     lua.RegisterFunction("getImageUrl", null, typeof(LuaApi).GetMethod("GetImageUrl"));
+                    lua.RegisterFunction("httpDownload", null, typeof(LuaApi).GetMethod("HttpDownload"));
                     lua.DoFile(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "lua/head.lua");
                     lua.DoString(Encoding.UTF8.GetBytes(headRun));
                     lua.DoString(Encoding.UTF8.GetBytes(code));

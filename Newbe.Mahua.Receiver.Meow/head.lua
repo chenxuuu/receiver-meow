@@ -82,6 +82,19 @@ function image(url,ban)
     end
 end
 
+--发送语音
+function music(url)
+    str = "1234567890ABCDEFHIJKLMNOPQRSTUVWXYZ"
+    local ret = ""
+    for i = 1, 20 do
+        local rchr = math.random(1, string.len(str))
+        ret = ret .. string.sub(str, rchr, rchr)
+    end
+    if httpDownload(url,"record/"..ret,5000) then
+        return "[CQ:record,file="..ret.."]"
+    end
+end
+
 --图片对象
 img = {width = 0, height = 0, imageData = nil}
 --新建图片对象
@@ -121,7 +134,7 @@ function trace (event, line)
     runCount = runCount + 1
     if runCount > 100000 then
         error("运行代码量超过阈值")
-    elseif os.time() - start >=10 then
+    elseif os.time() - start >=15 then
         error("运行超时")
     end
 end
@@ -176,6 +189,8 @@ local safeFunctions = {
     sendGroupMessage = true,
     sendPrivateMessage = true,
     getImageUrl = true,
+    httpDownload = true,
+    music = true,
 }
 
 --安全的os函数
