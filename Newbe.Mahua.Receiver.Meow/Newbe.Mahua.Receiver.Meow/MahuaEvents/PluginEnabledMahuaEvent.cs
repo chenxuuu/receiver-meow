@@ -50,7 +50,7 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaEvents
             int intMinute = e.SignalTime.Minute;
             int intSecond = e.SignalTime.Second;
 
-            //删除过期文件
+            //删除过期图片文件
             DirectoryInfo downloadDir = new DirectoryInfo(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "data/image/download/");
             FileSystemInfo[] downloadFiles = downloadDir.GetFileSystemInfos();
             for (int i = 0; i < downloadFiles.Length; i++)
@@ -60,7 +60,22 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaEvents
                 if (file != null)
                 {
                     TimeSpan time = DateTime.Now - file.CreationTime;
-                    if(time.TotalSeconds > 30)
+                    if(time.TotalSeconds > 60)
+                        file.Delete();
+                }
+            }
+
+            //删除过期语音文件
+            DirectoryInfo recordDir = new DirectoryInfo(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "data/record/");
+            FileSystemInfo[] recordFiles = recordDir.GetFileSystemInfos();
+            for (int i = 0; i < recordFiles.Length; i++)
+            {
+                FileInfo file = recordFiles[i] as FileInfo;
+                //是文件
+                if (file != null)
+                {
+                    TimeSpan time = DateTime.Now - file.CreationTime;
+                    if (time.TotalSeconds > 60)
                         file.Delete();
                 }
             }
