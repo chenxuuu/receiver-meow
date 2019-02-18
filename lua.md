@@ -155,6 +155,12 @@ setData(fromqq,"search_for_kydi","12345678")
 print(image("https://xxx.xxx.xxx/xxx.jpg"))
 ```
 
+### music(url) 发送指定链接的语音
+
+```lua
+print(music("https://xxx.xxx.xxx/xxx.mp3"))
+```
+
 ### getImageUrl(url) 获取消息中图片的网址，无匹配时为空字符串
 
 ```lua

@@ -4,6 +4,9 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -156,6 +159,50 @@ namespace Newbe.Mahua.Receiver.Meow.MahuaApis
                         @"data\image\" + fileName).Replace("\r", "").Replace("\n", ""),
                         "url=(?<name>.*?)addtime=", "name");//过滤出图片网址
                 return "";//没这个文件
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Url"></param>
+        /// <param name="fileName"></param>
+        /// <param name="path"></param>
+        /// <param name="timeout"></param>
+        /// <returns></returns>
+        public static bool HttpDownload(string Url, string fileName, int timeout = 5000)
+        {
+            fileName = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "data/" + fileName;
+            try
+            {
+                //请求前设置一下使用的安全协议类型 System.Net
+                if (Url.StartsWith("https", StringComparison.OrdinalIgnoreCase))
+                {
+                    ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors) =>
+                    {
+                        return true; //总是接受
+                    });
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+                }
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Url);
+                if (Tools.proxyUrl != "")
+                    request.Proxy = new WebProxy(Tools.proxyUrl);
+                request.ContentType = "text/html;charset=UTF-8";
+                request.Timeout = timeout;
+                request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36 Vivaldi/2.2.1388.37";
+
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                if (response.ContentLength < 1024 * 1024 * 20)//超过20M的文件不下载
+                {
+                    return Tools.SaveBinaryFile(response, fileName);
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch { }
+            return false;
         }
     }
 }
