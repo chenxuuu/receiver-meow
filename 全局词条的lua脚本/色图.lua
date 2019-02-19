@@ -11,13 +11,8 @@ function getPic(s,ban)
         table.insert(urls, url)
     end
     if #urls == 0 then return "未找到匹配图片" end
-    return image(urls[math.random(1,#urls)],ban)
+    local url = urls[math.random(1,#urls)]
+    return "[CQ:music,type=custom,url="..url..",audio=11,title=你要的图片,content=点击查看,image="..url.."]"
 end
 
-
-local lasttime = getData(fromqq,"随机图片")
-lasttime = lasttime == "" and 0 or tonumber(lasttime)
-if os.time() - lasttime > 60*60 then
-    setData(fromqq,"随机图片",tostring(os.time()))
-    print(getPic("https://konachan.com/post?page="..tostring(math.random(1,170)).."&tags=order%3Ascore+rating%3Asafe+panties",true))
-end
+print(getPic("https://konachan.com/post?page="..tostring(math.random(1,170)).."&tags=order%3Ascore+rating%3Asafe+panties",true))

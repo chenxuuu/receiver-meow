@@ -33,15 +33,15 @@ local function search(name)
 end
 
 if message == "空气质量" then
-    print(at(qq))
+    print(at(fromqq))
     print("使用帮助：\r\n发送空气质量加城市英文(拼音)，即可查询\r\n如：空气质量harbin")
 elseif message:find("空气质量") == 1 then
     message = message:gsub("空气质量 *","")
     if tonumber(message) then
-        print(at(qq))
+        print(at(fromqq))
         print(getInfo(message))
     else
-        print(at(qq))
+        print(at(fromqq))
         print(search(message))
     end
 end

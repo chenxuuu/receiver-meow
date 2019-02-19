@@ -4,14 +4,17 @@ if message:find("点歌") == 1 then
     if message:gsub("点歌",""):gsub("%d","") == "" then
         songID = message:gsub("点歌","")
     else
-        local html = httpGet("http://s.music.163.com/search/get/", "type=1&s="..message:gsub("点歌",""):urlEncode())
-        local jo = JSON:decode(html)
-        if jo and jo.result and jo.result.songs and jo.result.songs[1] then
-            songID = jo.result.songs[1].id
+        local html = httpGet("https://c.y.qq.com/soso/fcgi-bin/client_search_cp", "?ct=24&qqmusic_ver=1298&new_json=1&remoteplace=txt.yqq.song&searchid=&t=0&aggr=1&cr=1&catZhida=1&lossless=0&flag_qc=0&p=1&n=20&w="..message:gsub("点歌",""):urlEncode())
+        local str = html:match("callback%((.+)%)")
+        local j,r,e = jsonDecode(str)
+        if r then
+            songID = j.data.song.list[1].id
+        else
+            print("机器人爆炸了，原因："..e)
         end
     end
     if songID then
-        print("[CQ:music,type=163,id="..songID.."]")
+        print("[CQ:music,type=qq,id="..songID.."]")
     else
         print(at(fromqq))
         print("机器人爆炸了，原因：根本没这首歌")
