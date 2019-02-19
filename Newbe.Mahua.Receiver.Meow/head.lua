@@ -132,7 +132,7 @@ local runCount = 0
 local start = os.time()
 function trace (event, line)
     runCount = runCount + 1
-    if runCount > 100000 then
+    if runCount > 1000000 then
         error("运行代码量超过阈值")
     elseif os.time() - start >=15 then
         error("运行超时")
