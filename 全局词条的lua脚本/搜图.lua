@@ -9,7 +9,7 @@ local function getPixivId(pic)
     if not t.results or #t.results==0 then return "未找到结果" end
     local result = ""
     for i=1,#t.results do
-        if t.results[i].header.index_id == 5 and tonumber(t.results[i].header.similarity) > 90 then
+        if t.results[i].header.index_id == 5 and tonumber(t.results[i].header.similarity) > 70 then
             return (t.results[i].header.thumbnail and image(t.results[i].header.thumbnail) or "").."\r\n"..
             (t.results[i].data.title and t.results[i].data.title or "").."\r\n"..
             (t.results[i].data.pixiv_id and "p站id："..t.results[i].data.pixiv_id or "").."\r\n"..
