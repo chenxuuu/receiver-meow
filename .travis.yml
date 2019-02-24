@@ -1,18 +1,7 @@
 language: csharp
-solution: Newbe.Mahua.Receiver.Meow/Newbe.Mahua.Receiver.Meow.sln
+solution: com.papapoi.ReceiverMeow/Native.sln
 before_deploy:
   - sudo apt-get install p7zip-full
-  - wget https://github.com/chenxuuu/receiver-meow/releases/download/initial/kuqpro_pack.7z
-  - 7za x kuqpro_pack.7z -r -o./
-  - rm kuqpro_pack.7z
-  - mv Newbe.Mahua.Receiver.Meow/Newbe.Mahua.Receiver.Meow/bin/Release/Newbe.Mahua.Receiver.Meow.dll kuqpro_pack/Newbe.Mahua.Receiver.Meow/
-  - mv Newbe.Mahua.Receiver.Meow/head.lua kuqpro_pack/lua
-  - mv Newbe.Mahua.Receiver.Meow/timer.lua kuqpro_pack/lua
-  - mv Newbe.Mahua.Receiver.Meow/luaRequires/* kuqpro_pack/lua
-  - mv common.xml kuqpro_pack/data
-  - mkdir kuqpro_pack/全局词条的lua脚本
-  - mv 全局词条的lua脚本/* kuqpro_pack/全局词条的lua脚本
-  - 7za a -t7z -r receiver-meow.7z kuqpro_pack/*
 deploy:
   provider: releases
   api_key: ${GITHUB_TOKEN}
