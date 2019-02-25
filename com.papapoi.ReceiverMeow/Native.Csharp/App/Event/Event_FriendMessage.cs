@@ -58,7 +58,7 @@ namespace Native.Csharp.App.Event
 
             try
             {
-                var lua = LuaEnv.LuaEnv.Initial(e.Msg);
+                LuaEnv.LuaEnv.RunLua(e.Msg);
             }
             catch(Exception er)
             {

@@ -103,6 +103,31 @@ namespace Native.Csharp.App.LuaEnv
             lua.Globals["cqSetGroupBanSpeak"] = (Func<long, long, int, int>)SetGroupBanSpeak;
             //置群员禁言
 
+            lua.Globals["apiGetPath"] = (Func<string>)LuaApi.GetPath;
+            //获取程序运行目录
+
+            lua.Globals["apiGetBitmap"] = (Func<int,int, System.Drawing.Bitmap>)LuaApi.GetBitmap;
+            //获取图片对象
+            lua.Globals["apiPutText"] = (Func<System.Drawing.Bitmap,int,int,string,string,int,int,int,int,System.Drawing.Bitmap>)LuaApi.PutText;
+            //摆放文字
+            lua.Globals["apiPutBlock"] = (Func<System.Drawing.Bitmap, int, int, int,int, int, int, int, System.Drawing.Bitmap>)LuaApi.PutBlock;
+            //填充矩形
+            lua.Globals["apiSetImage"] = (Func<System.Drawing.Bitmap, int, int,string, int, int, System.Drawing.Bitmap>)LuaApi.SetImage;
+            //摆放图片
+            lua.Globals["apiGetDir"] = (Func<System.Drawing.Bitmap, string>)LuaApi.GetDir;
+            //保存并获取图片路径
+
+            lua.Globals["apiGetImageUrl"] = (Func<string, string>)LuaApi.GetImageUrl;
+            //获取qq消息中图片的网址
+
+            lua.Globals["apiHttpDownload"] = (Func<string, string,int,bool>)LuaApi.HttpDownload;
+            //下载文件
+            lua.Globals["apiHttpGet"] = (Func<string, string, int,string,string>)LuaApi.HttpGet;
+            //GET 请求与获取结果
+            lua.Globals["apiHttpPost"] = (Func<string, string, int, string, string>)LuaApi.HttpPost;
+            //POST 请求与获取结果
+
+
             lua.DoFile(Common.AppDirectory + "lua/require/head.lua");
             lua.DoString(code);
             return lua;
@@ -118,14 +143,21 @@ namespace Native.Csharp.App.LuaEnv
         {
             try
             {
-                var lua = Initial(code);
-                if (file != "")
-                    lua.DoFile(Common.AppDirectory + "lua/" + file);
+                //var lua = Initial(code);
+                //if (file != "")
+                //    lua.DoFile(Common.AppDirectory + "lua/" + file);
+                var lua = new NLua.Lua();
+                lua.State.Encoding = Encoding.UTF8;
+                lua["test"] = "";
+                lua.DoString(Encoding.UTF8.GetBytes(code));
+                string a = lua.GetString("test");
+                Common.CqApi.AddLoger(Sdk.Cqp.Enum.LogerLevel.Info, "log", a);
             }
             catch(Exception e)
             {
                 Common.CqApi.AddLoger(Sdk.Cqp.Enum.LogerLevel.Error, "lua脚本错误", e.ToString());
             }
+            return;
         }
     }
 }

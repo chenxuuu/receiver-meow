@@ -61,7 +61,7 @@ namespace Native.Csharp.App.LuaEnv
         /// <param name="g">g</param>
         /// <param name="b">b</param>
         /// <returns>图片对象</returns>
-        public static Bitmap putBlock(Bitmap bmp, int x, int y, int xx, int yy,
+        public static Bitmap PutBlock(Bitmap bmp, int x, int y, int xx, int yy,
             int r = 0, int g = 0, int b = 0)
         {
             Color myColor = Color.FromArgb(r, g, b);
@@ -86,7 +86,7 @@ namespace Native.Csharp.App.LuaEnv
         /// <param name="xx">摆放图片宽度</param>
         /// <param name="yy">摆放图片高度</param>
         /// <returns>图片对象</returns>
-        public static Bitmap setImage(Bitmap bmp, int x, int y, string path, int xx = 0, int yy = 0)
+        public static Bitmap SetImage(Bitmap bmp, int x, int y, string path, int xx = 0, int yy = 0)
         {
             if (!File.Exists(path))
                 return bmp;
@@ -142,12 +142,12 @@ namespace Native.Csharp.App.LuaEnv
         /// 下载文件
         /// </summary>
         /// <param name="Url">文件网址</param>
-        /// <param name="fileName">文件名+路径</param>
+        /// <param name="fileName">路径</param>
         /// <param name="timeout">超时时间</param>
         /// <returns>下载结果</returns>
         public static bool HttpDownload(string Url, string fileName, int timeout = 5000)
         {
-            fileName = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "data/" + fileName;
+            //fileName = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "data/" + fileName;
             try
             {
                 //请求前设置一下使用的安全协议类型 System.Net
