@@ -1,5 +1,4 @@
-﻿using MoonSharp.Interpreter;
-using Native.Csharp.App.Interface;
+﻿using Native.Csharp.App.Interface;
 using Native.Csharp.App.Model;
 using System;
 using System.Collections.Generic;
@@ -53,19 +52,9 @@ namespace Native.Csharp.App.Event
 		{
             // 本子程序会在酷Q【线程】中被调用，请注意使用对象等需要初始化(CoInitialize,CoUninitialize)。
             // 这里处理消息
-
-            //Common.CqApi.SendPrivateMessage (e.FromQQ, Common.CqApi.CqCode_At (e.FromQQ) + "你发送了这样的消息:" + e.Msg);
-
-            try
-            {
-                LuaEnv.LuaEnv.RunLua(e.Msg);
-            }
-            catch(Exception er)
-            {
-                Common.CqApi.AddLoger(Sdk.Cqp.Enum.LogerLevel.Error, "type text", er.ToString());
-            }
-
-            e.Handled = true;
+            e.Handled = LuaEnv.LuaEnv.RunLua(
+                $"fromqq,message,id={e.FromQQ},\"{e.Msg.Replace("\"","\\\"")}\",{e.MsgId}",
+                "envent/ReceiveFriendMessage.lua");
 			// e.Handled 相当于 原酷Q事件的返回值
 			// 如果要回复消息，请调用api发送，并且置 true - 截断本条消息，不再继续处理 //注意：应用优先级设置为"最高"(10000)时，不得置 true
 			// 如果不回复消息，交由之后的应用/过滤器处理，这里置 false  - 忽略本条消息
