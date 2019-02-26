@@ -1,9 +1,9 @@
-﻿using MoonSharp.Interpreter;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Native.Csharp.App;
+using Native.Csharp.Sdk.Cqp.Api;
 
 namespace Native.Csharp.App.LuaEnv
 {
@@ -33,104 +33,101 @@ namespace Native.Csharp.App.LuaEnv
         /// </summary>
         /// <param name="lua"></param>
         /// <returns></returns>
-        public static Script Initial(string code)
+        public static void Initial(NLua.Lua lua)
         {
-            var lua = new Script();
-            lua.Globals["cqCqCode_At"] = (Func<long, bool, string>)Common.CqApi.CqCode_At;
+            lua.RegisterFunction("cqCode_At", null, typeof(CqApi).GetMethod("CqCode_At"));
             //获取酷Q "At某人" 代码
-            lua.Globals["cqCqCode_Emoji"] = (Func<int, string>)Common.CqApi.CqCode_Emoji;
+            lua.RegisterFunction("cqCqCode_Emoji", null, typeof(CqApi).GetMethod("CqCode_Emoji"));
             //获取酷Q "emoji表情" 代码
-            lua.Globals["cqCqCode_Face"] = (Func<Sdk.Cqp.Enum.Face, string>)Common.CqApi.CqCode_Face;
+            lua.RegisterFunction("cqCqCode_Face", null, typeof(CqApi).GetMethod("CqCode_Face"));
             //获取酷Q "表情" 代码
-            lua.Globals["cqCqCode_Shake"] = (Func<string>)Common.CqApi.CqCode_Shake;
+            lua.RegisterFunction("cqCqCode_Shake", null, typeof(CqApi).GetMethod("CqCode_Shake"));
             //获取酷Q "窗口抖动" 代码
-            lua.Globals["cqCqCode_Trope"] = (Func<string, bool, string>)Common.CqApi.CqCode_Trope;
+            lua.RegisterFunction("cqCqCode_Trope", null, typeof(CqApi).GetMethod("CqCode_Trope"));
             //获取字符串的转义形式
-            lua.Globals["cqCqCode_UnTrope"] = (Func<string, string>)Common.CqApi.CqCode_UnTrope;
+            lua.RegisterFunction("cqCqCode_UnTrope", null, typeof(CqApi).GetMethod("CqCode_UnTrope"));
             //获取字符串的非转义形式
-            lua.Globals["cqCqCode_ShareLink"] = (Func<string, string, string, string, string>)Common.CqApi.CqCode_ShareLink;
+            lua.RegisterFunction("cqCqCode_ShareLink", null, typeof(CqApi).GetMethod("CqCode_ShareLink"));
             //获取酷Q "链接分享" 代码
-            lua.Globals["cqCqCode_ShareCard"] = (Func<string, long, string>)Common.CqApi.CqCode_ShareCard;
+            lua.RegisterFunction("cqCqCode_ShareCard", null, typeof(CqApi).GetMethod("CqCode_ShareCard"));
             //获取酷Q "名片分享" 代码
-            lua.Globals["cqCqCode_ShareGPS"] = (Func<string, string, double, double, int, string>)Common.CqApi.CqCode_ShareGPS;
+            lua.RegisterFunction("cqCqCode_ShareGPS", null, typeof(CqApi).GetMethod("CqCode_ShareGPS"));
             //获取酷Q "位置分享" 代码
-            lua.Globals["cqCqCode_Anonymous"] = (Func<bool, string>)Common.CqApi.CqCode_Anonymous;
+            lua.RegisterFunction("cqCqCode_Anonymous", null, typeof(CqApi).GetMethod("CqCode_Anonymous"));
             //获取酷Q "匿名" 代码
-            lua.Globals["cqCqCode_Image"] = (Func<string, string>)Common.CqApi.CqCode_Image;
+            lua.RegisterFunction("cqCqCode_Image", null, typeof(CqApi).GetMethod("CqCode_Image"));
             //获取酷Q "图片" 代码
-            lua.Globals["cqCqCode_Music"] = (Func<long, string, bool, string>)Common.CqApi.CqCode_Music;
+            lua.RegisterFunction("cqCqCode_Music", null, typeof(CqApi).GetMethod("CqCode_Music"));
             //获取酷Q "音乐" 代码
-            lua.Globals["cqCqCode_MusciDIY"] = (Func<string, string, string, string, string, string>)Common.CqApi.CqCode_MusciDIY;
+            lua.RegisterFunction("cqCqCode_MusciDIY", null, typeof(CqApi).GetMethod("CqCode_MusciDIY"));
             //获取酷Q "音乐自定义" 代码
-            lua.Globals["cqCqCode_Record"] = (Func<string, string>)Common.CqApi.CqCode_Record;
+            lua.RegisterFunction("cqCqCode_Record", null, typeof(CqApi).GetMethod("CqCode_Record"));
             //获取酷Q "语音" 代码
-            lua.Globals["cqSendGroupMessage"] = (Func<long, string, int>)Common.CqApi.SendGroupMessage;
+            lua.RegisterFunction("cqSendGroupMessage", null, typeof(CqApi).GetMethod("SendGroupMessage"));
             //发送群消息
-            lua.Globals["cqSendPrivateMessage"] = (Func<long, string, int>)Common.CqApi.SendPrivateMessage;
+            lua.RegisterFunction("cqSendPrivateMessage", null, typeof(CqApi).GetMethod("SendPrivateMessage"));
             //发送私聊消息
-            lua.Globals["cqSendDiscussMessage"] = (Func<long, string, int>)Common.CqApi.SendDiscussMessage;
+            lua.RegisterFunction("cqSendDiscussMessage", null, typeof(CqApi).GetMethod("SendDiscussMessage"));
             //发送讨论组消息
-            lua.Globals["cqSendPraise"] = (Func<long, int, int>)Common.CqApi.SendPraise;
+            lua.RegisterFunction("cqSendPraise", null, typeof(CqApi).GetMethod("SendPraise"));
             //发送赞
-            lua.Globals["cqRepealMessage"] = (Func<long, int>)Common.CqApi.RepealMessage;
+            lua.RegisterFunction("cqRepealMessage", null, typeof(CqApi).GetMethod("RepealMessage"));
             //撤回消息
-            lua.Globals["cqGetLoginQQ"] = (Func<long>)Common.CqApi.GetLoginQQ;
+            lua.RegisterFunction("cqGetLoginQQ", null, typeof(CqApi).GetMethod("GetLoginQQ"));
             //取登录QQ
-            lua.Globals["cqGetLoginNick"] = (Func<string>)Common.CqApi.GetLoginNick;
+            lua.RegisterFunction("cqGetLoginNick", null, typeof(CqApi).GetMethod("GetLoginNick"));
             //获取当前登录QQ的昵称
-            lua.Globals["cqAppDirectory"] = (Func<string>)Common.CqApi.GetAppDirectory;
+            lua.RegisterFunction("cqAppDirectory", null, typeof(CqApi).GetMethod("GetAppDirectory"));
             //取应用目录
-            lua.Globals["cqAddLoger"] = (Func<Sdk.Cqp.Enum.LogerLevel, string, string, int>)Common.CqApi.AddLoger;
+            lua.RegisterFunction("cqAddLoger", null, typeof(CqApi).GetMethod("AddLoger"));
             //添加日志
-            lua.Globals["cqAddFatalError"] = (Func<string, int>)Common.CqApi.AddFatalError;
+            lua.RegisterFunction("cqAddFatalError", null, typeof(CqApi).GetMethod("AddFatalError"));
             //添加致命错误提示
-            lua.Globals["cqSetGroupWholeBanSpeak"] = (Func<long, bool, int>)Common.CqApi.SetGroupWholeBanSpeak;
+            lua.RegisterFunction("cqSetGroupWholeBanSpeak", null, typeof(CqApi).GetMethod("SetGroupWholeBanSpeak"));
             //置全群禁言
-            lua.Globals["cqSetGroupMemberNewCard"] = (Func<long, long, string, int>)Common.CqApi.SetGroupMemberNewCard;
+            lua.RegisterFunction("cqSetGroupMemberNewCard", null, typeof(CqApi).GetMethod("SetGroupMemberNewCard"));
             //置群成员名片
-            lua.Globals["cqSetGroupManager"] = (Func<long, long, bool, int>)Common.CqApi.SetGroupManager;
+            lua.RegisterFunction("cqSetGroupManager", null, typeof(CqApi).GetMethod("SetGroupManager"));
             //置群管理员
-            lua.Globals["cqSetAnonymousStatus"] = (Func<long, bool, int>)Common.CqApi.SetAnonymousStatus;
+            lua.RegisterFunction("cqSetAnonymousStatus", null, typeof(CqApi).GetMethod("SetAnonymousStatus"));
             //置群匿名设置
-            lua.Globals["cqSetGroupMemberRemove"] = (Func<long, long, bool, int>)Common.CqApi.SetGroupMemberRemove;
+            lua.RegisterFunction("cqSetGroupMemberRemove", null, typeof(CqApi).GetMethod("SetGroupMemberRemove"));
             //置群员移除
-            lua.Globals["cqSetDiscussExit"] = (Func<long, int>)Common.CqApi.SetDiscussExit;
+            lua.RegisterFunction("cqSetDiscussExit", null, typeof(CqApi).GetMethod("SetDiscussExit"));
             //置讨论组退出
-            lua.Globals["cqSetGroupSpecialTitle"] = (Func<long, long, string, int, int>)SetGroupSpecialTitle;
+            lua.RegisterFunction("cqSetGroupSpecialTitle", null, typeof(LuaEnv).GetMethod("SetGroupSpecialTitle"));
             //置群成员专属头衔
-            lua.Globals["cqSetGroupAnonymousBanSpeak"] = (Func<long, string, int, int>)SetGroupAnonymousBanSpeak;
+            lua.RegisterFunction("cqSetGroupAnonymousBanSpeak", null, typeof(LuaEnv).GetMethod("SetGroupAnonymousBanSpeak"));
             //置匿名群员禁言
-            lua.Globals["cqSetGroupBanSpeak"] = (Func<long, long, int, int>)SetGroupBanSpeak;
+            lua.RegisterFunction("cqSetGroupBanSpeak", null, typeof(LuaEnv).GetMethod("SetGroupBanSpeak"));
             //置群员禁言
 
-            lua.Globals["apiGetPath"] = (Func<string>)LuaApi.GetPath;
+            lua.RegisterFunction("apiGetPath", null, typeof(LuaApi).GetMethod("GetPath"));
             //获取程序运行目录
 
-            lua.Globals["apiGetBitmap"] = (Func<int,int, System.Drawing.Bitmap>)LuaApi.GetBitmap;
+            lua.RegisterFunction("apiGetBitmap", null, typeof(LuaApi).GetMethod("GetBitmap"));
             //获取图片对象
-            lua.Globals["apiPutText"] = (Func<System.Drawing.Bitmap,int,int,string,string,int,int,int,int,System.Drawing.Bitmap>)LuaApi.PutText;
+            lua.RegisterFunction("apiPutText", null, typeof(LuaApi).GetMethod("PutText"));
             //摆放文字
-            lua.Globals["apiPutBlock"] = (Func<System.Drawing.Bitmap, int, int, int,int, int, int, int, System.Drawing.Bitmap>)LuaApi.PutBlock;
+            lua.RegisterFunction("apiPutBlock", null, typeof(LuaApi).GetMethod("PutBlock"));
             //填充矩形
-            lua.Globals["apiSetImage"] = (Func<System.Drawing.Bitmap, int, int,string, int, int, System.Drawing.Bitmap>)LuaApi.SetImage;
+            lua.RegisterFunction("apiSetImage", null, typeof(LuaApi).GetMethod("SetImage"));
             //摆放图片
-            lua.Globals["apiGetDir"] = (Func<System.Drawing.Bitmap, string>)LuaApi.GetDir;
+            lua.RegisterFunction("apiGetDir", null, typeof(LuaApi).GetMethod("GetDir"));
             //保存并获取图片路径
 
-            lua.Globals["apiGetImageUrl"] = (Func<string, string>)LuaApi.GetImageUrl;
+            lua.RegisterFunction("apiGetImageUrl", null, typeof(LuaApi).GetMethod("GetImageUrl"));
             //获取qq消息中图片的网址
 
-            lua.Globals["apiHttpDownload"] = (Func<string, string,int,bool>)LuaApi.HttpDownload;
+            lua.RegisterFunction("apiHttpDownload", null, typeof(LuaApi).GetMethod("HttpDownload"));
             //下载文件
-            lua.Globals["apiHttpGet"] = (Func<string, string, int,string,string>)LuaApi.HttpGet;
+            lua.RegisterFunction("apiHttpGet", null, typeof(LuaApi).GetMethod("HttpGet"));
             //GET 请求与获取结果
-            lua.Globals["apiHttpPost"] = (Func<string, string, int, string, string>)LuaApi.HttpPost;
+            lua.RegisterFunction("apiHttpPost", null, typeof(LuaApi).GetMethod("HttpPost"));
             //POST 请求与获取结果
 
 
             lua.DoFile(Common.AppDirectory + "lua/require/head.lua");
-            lua.DoString(code);
-            return lua;
         }
 
 
@@ -139,25 +136,26 @@ namespace Native.Csharp.App.LuaEnv
         /// </summary>
         /// <param name="code">提前运行的代码</param>
         /// <param name="file">文件路径（app/xxx.xxx.xx/lua/开头）</param>
-        public static void RunLua(string code,string file = "")
+        public static bool RunLua(string code,string file = "")
         {
-            try
+            using (var lua = new NLua.Lua())
             {
-                //var lua = Initial(code);
-                //if (file != "")
-                //    lua.DoFile(Common.AppDirectory + "lua/" + file);
-                var lua = new NLua.Lua();
-                lua.State.Encoding = Encoding.UTF8;
-                lua["test"] = "";
-                lua.DoString(Encoding.UTF8.GetBytes(code));
-                string a = lua.GetString("test");
-                Common.CqApi.AddLoger(Sdk.Cqp.Enum.LogerLevel.Info, "log", a);
+                try
+                {
+                    lua.State.Encoding = Encoding.UTF8;
+                    lua["Handled"] = false;//处理标志
+                    Initial(lua);
+                    lua.DoString(code);
+                    if (file != "")
+                        lua.DoFile(Common.AppDirectory + "lua/" + file);
+                    return (bool)lua["Handled"];
+                }
+                catch (Exception e)
+                {
+                    Common.CqApi.AddLoger(Sdk.Cqp.Enum.LogerLevel.Error, "lua脚本错误", e.ToString());
+                    return false;
+                }
             }
-            catch(Exception e)
-            {
-                Common.CqApi.AddLoger(Sdk.Cqp.Enum.LogerLevel.Error, "lua脚本错误", e.ToString());
-            }
-            return;
         }
     }
 }
