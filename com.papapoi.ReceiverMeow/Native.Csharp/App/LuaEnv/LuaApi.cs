@@ -267,5 +267,68 @@ namespace Native.Csharp.App.LuaEnv
             { }
             return "";
         }
+
+
+        public static string CqCode_At(long qq) => Common.CqApi.CqCode_At(qq);
+        //获取酷Q "At某人" 代码
+        public static string CqCode_Emoji(int id) => Common.CqApi.CqCode_Emoji(id);
+        //获取酷Q "emoji表情" 代码
+        public static string CqCode_Face(int id) => Common.CqApi.CqCode_Face((Sdk.Cqp.Enum.Face)id);
+        //获取酷Q "表情" 代码
+        public static string CqCode_Shake() => Common.CqApi.CqCode_Shake();
+        //获取酷Q "窗口抖动" 代码
+        public static string CqCode_Trope(string str) => Common.CqApi.CqCode_Trope(str);
+        //获取字符串的转义形式
+        public static string CqCode_UnTrope(string str) => Common.CqApi.CqCode_UnTrope(str);
+        //获取字符串的非转义形式
+        public static string CqCode_ShareLink(string url, string title, string content, string imgUrl) => Common.CqApi.CqCode_ShareLink(url, title, content, imgUrl);
+        //获取酷Q "链接分享" 代码
+        public static string CqCode_ShareCard(string cardType, long id) => Common.CqApi.CqCode_ShareCard(cardType, id);
+        //获取酷Q "名片分享" 代码
+        public static string CqCode_ShareGPS(string site, string detail, double lat, double lon, int zoom) => Common.CqApi.CqCode_ShareGPS(site, detail, lat, lon, zoom);
+        //获取酷Q "位置分享" 代码
+        public static string CqCode_Anonymous(bool forced) => Common.CqApi.CqCode_Anonymous(forced);
+        //获取酷Q "匿名" 代码
+        public static string CqCode_Image(string path) => Common.CqApi.CqCode_Image(path);
+        //获取酷Q "图片" 代码
+        public static string CqCode_Music(long id, string type, bool newStyle) => Common.CqApi.CqCode_Music(id, type, newStyle);
+        //获取酷Q "音乐" 代码
+        public static string CqCode_MusciDIY(string url, string musicUrl, string title, string content, string imgUrl) => Common.CqApi.CqCode_MusciDIY(url, musicUrl, title, content, imgUrl);
+        //获取酷Q "音乐自定义" 代码
+        public static string CqCode_Record(string path) => Common.CqApi.CqCode_Record(path);
+        //获取酷Q "语音" 代码
+        public static int SendGroupMessage(long groupId, string message) => Common.CqApi.SendGroupMessage(groupId, message);
+        //发送群消息
+        public static int SendPrivateMessage(long qqId, string message) => Common.CqApi.SendPrivateMessage(qqId, message);
+        //发送私聊消息
+        public static int SendDiscussMessage(long discussId, string message) => Common.CqApi.SendDiscussMessage(discussId, message);
+        //发送讨论组消息
+        public static int SendPraise(long qqId, int count) => Common.CqApi.SendPraise(qqId, count);
+        //发送赞
+        public static int RepealMessage(long id) => Common.CqApi.RepealMessage(id);
+        //撤回消息
+        public static long GetLoginQQ() => Common.CqApi.GetLoginQQ();
+        //取登录QQ
+        public static string GetLoginNick() => Common.CqApi.GetLoginNick();
+        //获取当前登录QQ的昵称
+        public static string GetAppDirectory() => Common.CqApi.GetAppDirectory();
+        //取应用目录
+        public static int AddLoger(int level, string type, string content) => Common.CqApi.AddLoger((Sdk.Cqp.Enum.LogerLevel)level, type, content);
+        //添加日志
+        public static int AddFatalError(string msg) => Common.CqApi.AddFatalError(msg);
+        //添加致命错误提示
+        public static int SetGroupWholeBanSpeak(long groupId, bool isOpen) => Common.CqApi.SetGroupWholeBanSpeak(groupId, isOpen);
+        //置全群禁言
+        public static int SetGroupMemberNewCard(long groupId, long qqId, string newNick) => Common.CqApi.SetGroupMemberNewCard(groupId, qqId, newNick);
+        //置群成员名片
+        public static int SetGroupManager(long groupId, long qqId, bool isCalcel) => Common.CqApi.SetGroupManager(groupId, qqId, isCalcel);
+        //置群管理员
+        public static int SetAnonymousStatus(long groupId, bool isOpen) => Common.CqApi.SetAnonymousStatus(groupId, isOpen);
+        //置群匿名设置
+        public static int SetGroupMemberRemove(long groupId, long qqId, bool notAccept) => Common.CqApi.SetGroupMemberRemove(groupId, qqId, notAccept);
+        //置群员移除
+        public static int SetDiscussExit(long discussId) => Common.CqApi.SetDiscussExit(discussId);
+        //置讨论组退出
+
     }
 }
