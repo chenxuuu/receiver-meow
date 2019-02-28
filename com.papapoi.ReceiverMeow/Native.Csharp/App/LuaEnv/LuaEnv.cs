@@ -35,65 +35,65 @@ namespace Native.Csharp.App.LuaEnv
         /// <returns></returns>
         public static void Initial(NLua.Lua lua)
         {
-            lua.RegisterFunction("cqCode_At", null, typeof(CqApi).GetMethod("CqCode_At"));
+            lua.RegisterFunction("cqCode_At", null, typeof(LuaApi).GetMethod("CqCode_At"));
             //获取酷Q "At某人" 代码
-            lua.RegisterFunction("cqCqCode_Emoji", null, typeof(CqApi).GetMethod("CqCode_Emoji"));
+            lua.RegisterFunction("cqCqCode_Emoji", null, typeof(LuaApi).GetMethod("CqCode_Emoji"));
             //获取酷Q "emoji表情" 代码
-            lua.RegisterFunction("cqCqCode_Face", null, typeof(CqApi).GetMethod("CqCode_Face"));
+            lua.RegisterFunction("cqCqCode_Face", null, typeof(LuaApi).GetMethod("CqCode_Face"));
             //获取酷Q "表情" 代码
-            lua.RegisterFunction("cqCqCode_Shake", null, typeof(CqApi).GetMethod("CqCode_Shake"));
+            lua.RegisterFunction("cqCqCode_Shake", null, typeof(LuaApi).GetMethod("CqCode_Shake"));
             //获取酷Q "窗口抖动" 代码
-            lua.RegisterFunction("cqCqCode_Trope", null, typeof(CqApi).GetMethod("CqCode_Trope"));
+            lua.RegisterFunction("cqCqCode_Trope", null, typeof(LuaApi).GetMethod("CqCode_Trope"));
             //获取字符串的转义形式
-            lua.RegisterFunction("cqCqCode_UnTrope", null, typeof(CqApi).GetMethod("CqCode_UnTrope"));
+            lua.RegisterFunction("cqCqCode_UnTrope", null, typeof(LuaApi).GetMethod("CqCode_UnTrope"));
             //获取字符串的非转义形式
-            lua.RegisterFunction("cqCqCode_ShareLink", null, typeof(CqApi).GetMethod("CqCode_ShareLink"));
+            lua.RegisterFunction("cqCqCode_ShareLink", null, typeof(LuaApi).GetMethod("CqCode_ShareLink"));
             //获取酷Q "链接分享" 代码
-            lua.RegisterFunction("cqCqCode_ShareCard", null, typeof(CqApi).GetMethod("CqCode_ShareCard"));
+            lua.RegisterFunction("cqCqCode_ShareCard", null, typeof(LuaApi).GetMethod("CqCode_ShareCard"));
             //获取酷Q "名片分享" 代码
-            lua.RegisterFunction("cqCqCode_ShareGPS", null, typeof(CqApi).GetMethod("CqCode_ShareGPS"));
+            lua.RegisterFunction("cqCqCode_ShareGPS", null, typeof(LuaApi).GetMethod("CqCode_ShareGPS"));
             //获取酷Q "位置分享" 代码
-            lua.RegisterFunction("cqCqCode_Anonymous", null, typeof(CqApi).GetMethod("CqCode_Anonymous"));
+            lua.RegisterFunction("cqCqCode_Anonymous", null, typeof(LuaApi).GetMethod("CqCode_Anonymous"));
             //获取酷Q "匿名" 代码
-            lua.RegisterFunction("cqCqCode_Image", null, typeof(CqApi).GetMethod("CqCode_Image"));
+            lua.RegisterFunction("cqCqCode_Image", null, typeof(LuaApi).GetMethod("CqCode_Image"));
             //获取酷Q "图片" 代码
-            lua.RegisterFunction("cqCqCode_Music", null, typeof(CqApi).GetMethod("CqCode_Music"));
+            lua.RegisterFunction("cqCqCode_Music", null, typeof(LuaApi).GetMethod("CqCode_Music"));
             //获取酷Q "音乐" 代码
-            lua.RegisterFunction("cqCqCode_MusciDIY", null, typeof(CqApi).GetMethod("CqCode_MusciDIY"));
+            lua.RegisterFunction("cqCqCode_MusciDIY", null, typeof(LuaApi).GetMethod("CqCode_MusciDIY"));
             //获取酷Q "音乐自定义" 代码
-            lua.RegisterFunction("cqCqCode_Record", null, typeof(CqApi).GetMethod("CqCode_Record"));
+            lua.RegisterFunction("cqCqCode_Record", null, typeof(LuaApi).GetMethod("CqCode_Record"));
             //获取酷Q "语音" 代码
-            lua.RegisterFunction("cqSendGroupMessage", null, typeof(CqApi).GetMethod("SendGroupMessage"));
+            lua.RegisterFunction("cqSendGroupMessage", null, typeof(LuaApi).GetMethod("SendGroupMessage"));
             //发送群消息
-            lua.RegisterFunction("cqSendPrivateMessage", null, typeof(CqApi).GetMethod("SendPrivateMessage"));
+            lua.RegisterFunction("cqSendPrivateMessage", null, typeof(LuaApi).GetMethod("SendPrivateMessage"));
             //发送私聊消息
-            lua.RegisterFunction("cqSendDiscussMessage", null, typeof(CqApi).GetMethod("SendDiscussMessage"));
+            lua.RegisterFunction("cqSendDiscussMessage", null, typeof(LuaApi).GetMethod("SendDiscussMessage"));
             //发送讨论组消息
-            lua.RegisterFunction("cqSendPraise", null, typeof(CqApi).GetMethod("SendPraise"));
+            lua.RegisterFunction("cqSendPraise", null, typeof(LuaApi).GetMethod("SendPraise"));
             //发送赞
-            lua.RegisterFunction("cqRepealMessage", null, typeof(CqApi).GetMethod("RepealMessage"));
+            lua.RegisterFunction("cqRepealMessage", null, typeof(LuaApi).GetMethod("RepealMessage"));
             //撤回消息
-            lua.RegisterFunction("cqGetLoginQQ", null, typeof(CqApi).GetMethod("GetLoginQQ"));
+            lua.RegisterFunction("cqGetLoginQQ", null, typeof(LuaApi).GetMethod("GetLoginQQ"));
             //取登录QQ
-            lua.RegisterFunction("cqGetLoginNick", null, typeof(CqApi).GetMethod("GetLoginNick"));
+            lua.RegisterFunction("cqGetLoginNick", null, typeof(LuaApi).GetMethod("GetLoginNick"));
             //获取当前登录QQ的昵称
-            lua.RegisterFunction("cqAppDirectory", null, typeof(CqApi).GetMethod("GetAppDirectory"));
+            lua.RegisterFunction("cqAppDirectory", null, typeof(LuaApi).GetMethod("GetAppDirectory"));
             //取应用目录
-            lua.RegisterFunction("cqAddLoger", null, typeof(CqApi).GetMethod("AddLoger"));
+            lua.RegisterFunction("cqAddLoger", null, typeof(LuaApi).GetMethod("AddLoger"));
             //添加日志
-            lua.RegisterFunction("cqAddFatalError", null, typeof(CqApi).GetMethod("AddFatalError"));
+            lua.RegisterFunction("cqAddFatalError", null, typeof(LuaApi).GetMethod("AddFatalError"));
             //添加致命错误提示
-            lua.RegisterFunction("cqSetGroupWholeBanSpeak", null, typeof(CqApi).GetMethod("SetGroupWholeBanSpeak"));
+            lua.RegisterFunction("cqSetGroupWholeBanSpeak", null, typeof(LuaApi).GetMethod("SetGroupWholeBanSpeak"));
             //置全群禁言
-            lua.RegisterFunction("cqSetGroupMemberNewCard", null, typeof(CqApi).GetMethod("SetGroupMemberNewCard"));
+            lua.RegisterFunction("cqSetGroupMemberNewCard", null, typeof(LuaApi).GetMethod("SetGroupMemberNewCard"));
             //置群成员名片
-            lua.RegisterFunction("cqSetGroupManager", null, typeof(CqApi).GetMethod("SetGroupManager"));
+            lua.RegisterFunction("cqSetGroupManager", null, typeof(LuaApi).GetMethod("SetGroupManager"));
             //置群管理员
-            lua.RegisterFunction("cqSetAnonymousStatus", null, typeof(CqApi).GetMethod("SetAnonymousStatus"));
+            lua.RegisterFunction("cqSetAnonymousStatus", null, typeof(LuaApi).GetMethod("SetAnonymousStatus"));
             //置群匿名设置
-            lua.RegisterFunction("cqSetGroupMemberRemove", null, typeof(CqApi).GetMethod("SetGroupMemberRemove"));
+            lua.RegisterFunction("cqSetGroupMemberRemove", null, typeof(LuaApi).GetMethod("SetGroupMemberRemove"));
             //置群员移除
-            lua.RegisterFunction("cqSetDiscussExit", null, typeof(CqApi).GetMethod("SetDiscussExit"));
+            lua.RegisterFunction("cqSetDiscussExit", null, typeof(LuaApi).GetMethod("SetDiscussExit"));
             //置讨论组退出
             lua.RegisterFunction("cqSetGroupSpecialTitle", null, typeof(LuaEnv).GetMethod("SetGroupSpecialTitle"));
             //置群成员专属头衔
