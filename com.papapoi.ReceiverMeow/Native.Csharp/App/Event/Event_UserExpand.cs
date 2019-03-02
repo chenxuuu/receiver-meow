@@ -17,11 +17,14 @@ namespace Native.Csharp.App.Event
 		/// <param name="e">附加的参数</param>
 		public void OpenConsoleWindow (object sender, EventArgs e)
 		{
-			// 本事件将会在酷Q【主线程】中被触发, 请注意线程以免卡住酷Q
-
-			// SDK支持载入 WinForm 或 WPF 类型的窗体, 建议您新建一个窗体项目, 引用到本项目中, 
-			// 然后 new 窗口进行载入.
-			// 所有窗体项目请修改 "输出类型" 为 "类库", 再引用到本项目中. 防止出现错误
+            // 本事件将会在酷Q【主线程】中被触发, 请注意线程以免卡住酷Q
+            Common.CqApi.AddLoger(Sdk.Cqp.Enum.LogerLevel.Error, "提示", "请打开你的日志哦~");
+            Common.CqApi.AddLoger(Sdk.Cqp.Enum.LogerLevel.Info, "lua插件提示",
+                "这不是错误提示哦~\r\n" +
+                "懒得给插件写窗口了，就在这里显示详细信息把\r\n" +
+                "软件使用方法/反馈/建议可以到GitHub提交哦\r\n" +
+                "https://github.com/chenxuuu/receiver-meow\r\n" +
+                "右击即可复制到剪贴板");
 		}
 		#endregion
 

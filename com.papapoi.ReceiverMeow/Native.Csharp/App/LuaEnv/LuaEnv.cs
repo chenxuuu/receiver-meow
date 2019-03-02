@@ -101,6 +101,10 @@ namespace Native.Csharp.App.LuaEnv
             //置匿名群员禁言
             lua.RegisterFunction("cqSetGroupBanSpeak", null, typeof(LuaEnv).GetMethod("SetGroupBanSpeak"));
             //置群员禁言
+            lua.RegisterFunction("cqSetFriendAddRequest", null, typeof(LuaEnv).GetMethod("SetFriendAddRequest"));
+            //置好友添加请求
+            lua.RegisterFunction("cqSetGroupAddRequest", null, typeof(LuaEnv).GetMethod("SetGroupAddRequest"));
+            //置群添加请求
 
             lua.RegisterFunction("apiGetPath", null, typeof(LuaApi).GetMethod("GetPath"));
             //获取程序运行目录
@@ -136,19 +140,19 @@ namespace Native.Csharp.App.LuaEnv
         /// </summary>
         /// <param name="code">提前运行的代码</param>
         /// <param name="file">文件路径（app/xxx.xxx.xx/lua/开头）</param>
-        public static bool RunLua(string code,string file = "")
+        public static bool RunLua(string code,string file)
         {
             using (var lua = new NLua.Lua())
             {
                 try
                 {
                     lua.State.Encoding = Encoding.UTF8;
-                    lua["Handled"] = false;//处理标志
+                    lua["handled"] = false;//处理标志
                     Initial(lua);
                     lua.DoString(code);
                     if (file != "")
                         lua.DoFile(Common.AppDirectory + "lua/" + file);
-                    return (bool)lua["Handled"];
+                    return (bool)lua["handled"];
                 }
                 catch (Exception e)
                 {

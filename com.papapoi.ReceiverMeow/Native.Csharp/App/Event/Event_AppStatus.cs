@@ -55,8 +55,8 @@ namespace Native.Csharp.App.Event
 			// 如果酷Q载入时应用已被启用，则在_eventStartup(Type=1001,酷Q启动)被调用后，本函数也将被调用一次。
 			// 如非必要，不建议在这里加载窗口。（可以添加菜单，让用户手动打开窗口）
 			Common.IsRunning = true;
-
-		}
+            LuaEnv.LuaEnv.RunLua("", "envent/AppEnable.lua");
+        }
 
 		/// <summary>
 		/// Type=1004 应用被禁用<para/>

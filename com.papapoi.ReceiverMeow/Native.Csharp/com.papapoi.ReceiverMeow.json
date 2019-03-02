@@ -8,7 +8,7 @@
 	"version": "1.0.0", // 应用版本
 	"version_id": 1, // 应用顺序版本（每次发布时至少+1）
 	"author": "chenxu", // 应用作者
-	"description": "依赖lua来实现逻辑功能的插件",
+	"description": "让lua嵌入万物！",
 	"event": [ // 事件列表，同一事件类型可重复定义（发布前请删除无用事件）
 		{
 			"id": 1, // 事件ID

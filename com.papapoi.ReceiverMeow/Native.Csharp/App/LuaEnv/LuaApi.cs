@@ -319,6 +319,10 @@ namespace Native.Csharp.App.LuaEnv
         //添加致命错误提示
         public static int SetGroupWholeBanSpeak(long groupId, bool isOpen) => Common.CqApi.SetGroupWholeBanSpeak(groupId, isOpen);
         //置全群禁言
+        public static int SetFriendAddRequest(string tag,int respond,string msg) => Common.CqApi.SetFriendAddRequest(tag, (Sdk.Cqp.Enum.ResponseType)respond, msg);
+        //置好友添加请求
+        public static int SetGroupAddRequest(string tag, int request, int respond, string msg) => Common.CqApi.SetGroupAddRequest(tag, (Sdk.Cqp.Enum.RequestType)request, (Sdk.Cqp.Enum.ResponseType)respond, msg);
+        //置群添加请求
         public static int SetGroupMemberNewCard(long groupId, long qqId, string newNick) => Common.CqApi.SetGroupMemberNewCard(groupId, qqId, newNick);
         //置群成员名片
         public static int SetGroupManager(long groupId, long qqId, bool isCalcel) => Common.CqApi.SetGroupManager(groupId, qqId, isCalcel);
