@@ -18,11 +18,16 @@ namespace Native.Csharp.App.Event
 		/// <param name="e">事件的附加参数</param>
 		public void ReceiveDiscussMessage (object sender, DiscussMessageEventArgs e)
 		{
-			// 本子程序会在酷Q【线程】中被调用，请注意使用对象等需要初始化(CoInitialize,CoUninitialize)。
-			// 这里处理消息
+            // 本子程序会在酷Q【线程】中被调用，请注意使用对象等需要初始化(CoInitialize,CoUninitialize)。
+            // 这里处理消息
+            e.Handled = LuaEnv.LuaEnv.RunLua(
+                $"fromqq={e.FromQQ} " +
+                $"fromDiscuss={e.FromDiscuss} " +
+                $"message=\"{e.Msg.Replace("\"", "\\\"")}\" " +
+                $"id={e.MsgId} ",
+                "envent/ReceiveDiscussMessage.lua");
 
-
-			e.Handled = false;   // 关于返回说明, 请参见 "Event_FriendMessage.ReceiveFriendMessage" 方法
+            //e.Handled = false;   // 关于返回说明, 请参见 "Event_FriendMessage.ReceiveFriendMessage" 方法
 		}
 
 		/// <summary>
@@ -33,12 +38,16 @@ namespace Native.Csharp.App.Event
 		/// <param name="e">事件的附加参数</param>
 		public void ReceiveDiscussPrivateMessage (object sender, PrivateMessageEventArgs e)
 		{
-			// 本子程序会在酷Q【线程】中被调用，请注意使用对象等需要初始化(CoInitialize,CoUninitialize)。
-			// 这里处理消息
+            // 本子程序会在酷Q【线程】中被调用，请注意使用对象等需要初始化(CoInitialize,CoUninitialize)。
+            // 这里处理消息
 
+            e.Handled = LuaEnv.LuaEnv.RunLua(
+                $"fromqq={e.FromQQ} " +
+                $"message=\"{e.Msg.Replace("\"", "\\\"")}\" " +
+                $"id={e.MsgId}",
+                "envent/ReceivePrivateMessage.lua");
 
-
-			e.Handled = false;  // 关于返回说明, 请参见 "Event_FriendMessage.ReceiveFriendMessage" 方法
+            //e.Handled = false;  // 关于返回说明, 请参见 "Event_FriendMessage.ReceiveFriendMessage" 方法
 		}
 		#endregion
 	}
