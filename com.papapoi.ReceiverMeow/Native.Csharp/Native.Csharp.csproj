@@ -114,6 +114,7 @@
     <Compile Include="App\LuaEnv\LuaApi.cs" />
     <Compile Include="App\LuaEnv\LuaEnv.cs" />
     <Compile Include="App\LuaEnv\Tools.cs" />
+    <Compile Include="App\LuaEnv\XmlApi.cs" />
     <Compile Include="App\Model\DiscussMessageEventArgs.cs" />
     <Compile Include="App\Model\FileUploadMessageEventArgs.cs" />
     <Compile Include="App\Model\FriendAddRequestEventArgs.cs" />
