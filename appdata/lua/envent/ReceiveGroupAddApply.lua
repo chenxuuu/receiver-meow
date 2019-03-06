@@ -5,6 +5,7 @@
 fromqq      消息的qq号码     number类型
 fromgroup   消息的群号码     number类型
 message     请求加群附加消息 string类型
+tag         反馈标志        string类型
 
 注意：拦截消息后请将变量handled置true，表示消息已被拦截，如：
 handled = true
@@ -13,6 +14,6 @@ handled = true
 详细请参考readme
 ]]
 
---cqSetGroupAddRequest(fromgroup,1,1,"")        --同意加群
---cqSetGroupAddRequest(fromgroup,1,2,"不加新人") --拒绝加群
+--cqSetGroupAddRequest(tag,1,1,"")        --同意加群
+--cqSetGroupAddRequest(tag,1,2,"不加新人") --拒绝加群
 
