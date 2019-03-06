@@ -130,6 +130,9 @@ namespace Native.Csharp.App.LuaEnv
             lua.RegisterFunction("apiHttpPost", null, typeof(LuaApi).GetMethod("HttpPost"));
             //POST 请求与获取结果
 
+            lua.RegisterFunction("apiGetHardDiskFreeSpace", null, typeof(Tools).GetMethod("GetHardDiskFreeSpace"));
+            //获取指定驱动器的剩余空间总大小(单位为MB)
+
 
             lua.DoFile(Common.AppDirectory + "lua/require/head.lua");
         }

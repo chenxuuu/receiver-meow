@@ -198,6 +198,7 @@ namespace Native.Csharp.App.Event
             // 这里处理消息
             e.Handled = LuaEnv.LuaEnv.RunLua(
                 $"fromqq={e.FromQQ} " +
+                $"tag=\"{e.Tag.Replace("\"", "\\\"")}\" " +
                 $"fromgroup={e.FromGroup} " +
                 $"message=\"{e.AppendMsg.Replace("\"", "\\\"")}\"",
                 "envent/ReceiveGroupAddApply.lua");
@@ -217,6 +218,7 @@ namespace Native.Csharp.App.Event
             // 这里处理消息
             e.Handled = LuaEnv.LuaEnv.RunLua(
                 $"fromqq={e.FromQQ} " +
+                $"tag=\"{e.Tag.Replace("\"", "\\\"")}\" " +
                 $"fromgroup={e.FromGroup} ",
                 "envent/ReceiveGroupAddInvitee.lua");
 
