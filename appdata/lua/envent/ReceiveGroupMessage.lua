@@ -16,4 +16,5 @@ handled = true
 详细请参考readme
 ]]
 
-
+local solve = require("messageSolve")
+solve(message,fromqq,fromgroup,id)

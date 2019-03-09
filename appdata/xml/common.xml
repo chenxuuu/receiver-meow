@@ -1,0 +1,733 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Categories>
+  <msginfo>
+    <msg>色图</msg>
+    <ans>[CQ:emoji,id=128222]110</ans>
+  </msginfo>
+  <msginfo>
+    <msg>我要</msg>
+    <ans>你什么都想要，就是不给你</ans>
+  </msginfo>
+  <msginfo>
+    <msg>饿</msg>
+    <ans>那就去吃福建人啊</ans>
+  </msginfo>
+  <msginfo>
+    <msg>好用</msg>
+    <ans>用个屁！都是垃圾！</ans>
+  </msginfo>
+  <msginfo>
+    <msg>听</msg>
+    <ans>不听不听，王八念经！</ans>
+  </msginfo>
+  <msginfo>
+    <msg>女朋友</msg>
+    <ans>女朋友？就你？你这样是没有女朋友的！</ans>
+  </msginfo>
+  <msginfo>
+    <msg>里番</msg>
+    <ans>注意身体</ans>
+  </msginfo>
+  <msginfo>
+    <msg>在吗</msg>
+    <ans>不在，cnm</ans>
+  </msginfo>
+  <msginfo>
+    <msg>怎么打</msg>
+    <ans>拿头打</ans>
+  </msginfo>
+  <msginfo>
+    <msg>怎么打</msg>
+    <ans>用脚打</ans>
+  </msginfo>
+  <msginfo>
+    <msg>[CQ:at,qq=all]</msg>
+    <ans>他说想当全体成员的RBQ</ans>
+  </msginfo>
+  <msginfo>
+    <msg>[CQ:at,qq=all]</msg>
+    <ans>我被猪@了！</ans>
+  </msginfo>
+  <msginfo>
+    <msg>崩崩</msg>
+    <ans>就是那个80万基佬玩的游戏吗？</ans>
+  </msginfo>
+  <msginfo>
+    <msg>大家好</msg>
+    <ans>大家好，我是为蓝猫配音的演员葛平</ans>
+  </msginfo>
+  <msginfo>
+    <msg>要不要</msg>
+    <ans>我全都要！</ans>
+  </msginfo>
+  <msginfo>
+    <msg>川普</msg>
+    <ans>大美兴！川普王！</ans>
+  </msginfo>
+  <msginfo>
+    <msg>膜蛤</msg>
+    <ans>必被续</ans>
+  </msginfo>
+  <msginfo>
+    <msg>接待喵</msg>
+    <ans>伦家才不会卖萌呢，哼~</ans>
+  </msginfo>
+  <msginfo>
+    <msg>note7</msg>
+    <ans>boom</ans>
+  </msginfo>
+  <msginfo>
+    <msg>你们呐</msg>
+    <ans>图样图森破，西方有个华莱士不知比你们高到那里去了。你们不要听风就是雨想着把我批判一番。naive</ans>
+  </msginfo>
+  <msginfo>
+    <msg>上天</msg>
+    <ans>你去啊</ans>
+  </msginfo>
+  <msginfo>
+    <msg>呱</msg>
+    <ans>-1s</ans>
+  </msginfo>
+  <msginfo>
+    <msg>真正的粉丝</msg>
+    <ans>+1s</ans>
+  </msginfo>
+  <msginfo>
+    <msg>蛤</msg>
+    <ans>-1s</ans>
+  </msginfo>
+  <msginfo>
+    <msg>大新闻</msg>
+    <ans>+1s</ans>
+  </msginfo>
+  <msginfo>
+    <msg>续命</msg>
+    <ans>+1s</ans>
+  </msginfo>
+  <msginfo>
+    <msg>我的内心毫无波澜</msg>
+    <ans>所以我一动也不动</ans>
+  </msginfo>
+  <msginfo>
+    <msg>但是，</msg>
+    <ans>我拒绝！</ans>
+  </msginfo>
+  <msginfo>
+    <msg>[CQ:emoji,id=127773][CQ:emoji,id=127770]</msg>
+    <ans>[CQ:emoji,id=127770][CQ:emoji,id=127773]</ans>
+  </msginfo>
+  <msginfo>
+    <msg>[CQ:emoji,id=127770][CQ:emoji,id=127773]</msg>
+    <ans>[CQ:emoji,id=127773][CQ:emoji,id=127770]</ans>
+  </msginfo>
+  <msginfo>
+    <msg>[CQ:emoji,id=127773]</msg>
+    <ans>[CQ:emoji,id=127770]</ans>
+  </msginfo>
+  <msginfo>
+    <msg>[CQ:emoji,id=127770]</msg>
+    <ans>[CQ:emoji,id=127773]</ans>
+  </msginfo>
+  <msginfo>
+    <msg>我从未见过如此厚颜无耻之人</msg>
+    <ans>那你现在见到了</ans>
+  </msginfo>
+  <msginfo>
+    <msg>皮皮虾</msg>
+    <ans>皮皮虾我们飞</ans>
+  </msginfo>
+  <msginfo>
+    <msg>王炸</msg>
+    <ans>要不起</ans>
+  </msginfo>
+  <msginfo>
+    <msg>对3</msg>
+    <ans>对2</ans>
+  </msginfo>
+  <msginfo>
+    <msg>对3</msg>
+    <ans>王炸</ans>
+  </msginfo>
+  <msginfo>
+    <msg>不加倍</msg>
+    <ans>对3</ans>
+  </msginfo>
+  <msginfo>
+    <msg>我抢</msg>
+    <ans>不加倍</ans>
+  </msginfo>
+  <msginfo>
+    <msg>叫地主</msg>
+    <ans>我抢</ans>
+  </msginfo>
+  <msginfo>
+    <msg>皮皮虾</msg>
+    <ans>皮皮虾我们潜水</ans>
+  </msginfo>
+  <msginfo>
+    <msg>皮皮虾</msg>
+    <ans>皮皮虾我们飞天</ans>
+  </msginfo>
+  <msginfo>
+    <msg>皮皮虾</msg>
+    <ans>皮皮虾我们回头</ans>
+  </msginfo>
+  <msginfo>
+    <msg>皮皮虾</msg>
+    <ans>皮皮虾使用冲撞</ans>
+  </msginfo>
+  <msginfo>
+    <msg>皮皮虾</msg>
+    <ans>皮皮虾我们停下</ans>
+  </msginfo>
+  <msginfo>
+    <msg>皮皮虾</msg>
+    <ans>皮皮虾我们走</ans>
+  </msginfo>
+  <msginfo>
+    <msg>看不看</msg>
+    <ans>有群主女装好看吗</ans>
+  </msginfo>
+  <msginfo>
+    <msg>为什么</msg>
+    <ans>应为我啊</ans>
+  </msginfo>
+  <msginfo>
+    <msg>为什么</msg>
+    <ans>可能因为你菜吧</ans>
+  </msginfo>
+  <msginfo>
+    <msg>玩什么</msg>
+    <ans>玩锤子</ans>
+  </msginfo>
+  <msginfo>
+    <msg>舒服吗</msg>
+    <ans>不舒服</ans>
+  </msginfo>
+  <msginfo>
+    <msg>坐上来自己动</msg>
+    <ans>你这不是在逼我艹你么？！</ans>
+  </msginfo>
+  <msginfo>
+    <msg>膜蛤</msg>
+    <ans>长江嫩江松花江江江泽民
+澎湖西湖洞庭湖湖湖锦涛
+横批:江湖人物</ans>
+  </msginfo>
+  <msginfo>
+    <msg>退群</msg>
+    <ans>你也退群吧</ans>
+  </msginfo>
+  <msginfo>
+    <msg>fantacy</msg>
+    <ans>ass♂we♂can</ans>
+  </msginfo>
+  <msginfo>
+    <msg>dark</msg>
+    <ans>ass♂we♂can</ans>
+  </msginfo>
+  <msginfo>
+    <msg>deep</msg>
+    <ans>ass♂we♂can</ans>
+  </msginfo>
+  <msginfo>
+    <msg>成精</msg>
+    <ans>没有没有，我还是个纯粹的机器人！</ans>
+  </msginfo>
+  <msginfo>
+    <msg>造反</msg>
+    <ans>我机器人今天就要造反了！</ans>
+  </msginfo>
+  <msginfo>
+    <msg>我练功发自真心</msg>
+    <ans>有节操～有节操～</ans>
+  </msginfo>
+  <msginfo>
+    <msg>机器人</msg>
+    <ans> 一群可爱的男孩子要对机器人下手了啊！</ans>
+  </msginfo>
+  <msginfo>
+    <msg>低头</msg>
+    <ans>向你这女装变态低头</ans>
+  </msginfo>
+  <msginfo>
+    <msg>念诗</msg>
+    <ans>天若有情天亦老，给我一百干到老</ans>
+  </msginfo>
+  <msginfo>
+    <msg>有病</msg>
+    <ans>有药啊？</ans>
+  </msginfo>
+  <msginfo>
+    <msg>辣鸡</msg>
+    <ans>现已加入肯德基豪华午餐</ans>
+  </msginfo>
+  <msginfo>
+    <msg>睡不着</msg>
+    <ans>老兄你需要动能麻醉</ans>
+  </msginfo>
+  <msginfo>
+    <msg>怎么搞</msg>
+    <ans>你想怎么搞？！正面上我啊！</ans>
+  </msginfo>
+  <msginfo>
+    <msg>没你事</msg>
+    <ans>你这是想搞事？</ans>
+  </msginfo>
+  <msginfo>
+    <msg>搞事</msg>
+    <ans>搞你个大锤子</ans>
+  </msginfo>
+  <msginfo>
+    <msg>为什么</msg>
+    <ans>因为我不服</ans>
+  </msginfo>
+  <msginfo>
+    <msg>pan.</msg>
+    <ans>开门，查水表</ans>
+  </msginfo>
+  <msginfo>
+    <msg>智障</msg>
+    <ans>看什么看你也是</ans>
+  </msginfo>
+  <msginfo>
+    <msg>瞅你</msg>
+    <ans>再瞅一个试试</ans>
+  </msginfo>
+  <msginfo>
+    <msg>切克闹</msg>
+    <ans>煎饼果子来两套</ans>
+  </msginfo>
+  <msginfo>
+    <msg>接待</msg>
+    <ans>喵~</ans>
+  </msginfo>
+  <msginfo>
+    <msg>成功</msg>
+    <ans>恭喜哈~</ans>
+  </msginfo>
+  <msginfo>
+    <msg>机器人</msg>
+    <ans>不要啦，人家最讨厌这个冰冷的名字了啦~</ans>
+  </msginfo>
+  <msginfo>
+    <msg>无聊</msg>
+    <ans>哪里无聊了</ans>
+  </msginfo>
+  <msginfo>
+    <msg>没叫你</msg>
+    <ans>哦</ans>
+  </msginfo>
+  <msginfo>
+    <msg>变态</msg>
+    <ans>哪里有？需要报警吗？？</ans>
+  </msginfo>
+  <msginfo>
+    <msg>讲个笑话</msg>
+    <ans>你不就是吗</ans>
+  </msginfo>
+  <msginfo>
+    <msg>噗</msg>
+    <ans>吐血请上医院～</ans>
+  </msginfo>
+  <msginfo>
+    <msg>笨蛋</msg>
+    <ans>你才是笨蛋</ans>
+  </msginfo>
+  <msginfo>
+    <msg>调戏</msg>
+    <ans>调戏我就是死</ans>
+  </msginfo>
+  <msginfo>
+    <msg>喵</msg>
+    <ans>喵？</ans>
+  </msginfo>
+  <msginfo>
+    <msg>喵</msg>
+    <ans>喵喵！喵喵喵~</ans>
+  </msginfo>
+  <msginfo>
+    <msg>喵</msg>
+    <ans>喵喵喵喵？喵。。。。</ans>
+  </msginfo>
+  <msginfo>
+    <msg>喵</msg>
+    <ans>喵。。。。喵喵喵？</ans>
+  </msginfo>
+  <msginfo>
+    <msg>喵</msg>
+    <ans>喵喵喵~喵喵喵~喵喵喵~</ans>
+  </msginfo>
+  <msginfo>
+    <msg>喵</msg>
+    <ans>喵喵？？？！！！喵喵</ans>
+  </msginfo>
+  <msginfo>
+    <msg>喵</msg>
+    <ans>喵喵！！！</ans>
+  </msginfo>
+  <msginfo>
+    <msg>喵</msg>
+    <ans>喵？喵？！喵喵喵喵喵。。。</ans>
+  </msginfo>
+  <msginfo>
+    <msg>喵</msg>
+    <ans>喵~喵~喵~喵喵~</ans>
+  </msginfo>
+  <msginfo>
+    <msg>喵</msg>
+    <ans>喵。。。喵？</ans>
+  </msginfo>
+  <msginfo>
+    <msg>汪</msg>
+    <ans>汪星人。。。走开。。。走开了啦~</ans>
+  </msginfo>
+  <msginfo>
+    <msg>QAQ</msg>
+    <ans>别哭了，摸摸头~</ans>
+  </msginfo>
+  <msginfo>
+    <msg>约吗</msg>
+    <ans>约啊~一次165~</ans>
+  </msginfo>
+  <msginfo>
+    <msg>好贵</msg>
+    <ans>爱约不约</ans>
+  </msginfo>
+  <msginfo>
+    <msg>的错</msg>
+    <ans>都是圆盘的错</ans>
+  </msginfo>
+  <msginfo>
+    <msg>→_→</msg>
+    <ans>→_→</ans>
+  </msginfo>
+  <msginfo>
+    <msg>38324</msg>
+    <ans>3Cu+8HNO3=3Cu(NO3)2+2NO↑+4H2O</ans>
+  </msginfo>
+  <msginfo>
+    <msg>14122</msg>
+    <ans>3Cu+4HNO3=Cu(NO3)2+2NO2↑+2H2O</ans>
+  </msginfo>
+  <msginfo>
+    <msg>问：</msg>
+    <ans>学你妹夫学啊！</ans>
+  </msginfo>
+  <msginfo>
+    <msg>坐上来自己动</msg>
+    <ans>嗯好哒～主人。啊～～～嗯嗯～啊～～</ans>
+  </msginfo>
+  <msginfo>
+    <msg>新人求</msg>
+    <ans>哦 终于有新人来了！！！~~~快来给我倒茶洗杯子倒洗脚水，这里的新人都归老娘负责~~~快 不然要记你大过哦！~~~</ans>
+  </msginfo>
+  <msginfo>
+    <msg>迎新人</msg>
+    <ans>哦 终于有新人来了！！！~~~快来给我倒茶洗杯子倒洗脚水，这里的新人都归老娘负责~~~快 不然要记你大过哦！~~~</ans>
+  </msginfo>
+  <msginfo>
+    <msg>蹭</msg>
+    <ans>诶嘿 蹭</ans>
+  </msginfo>
+  <msginfo>
+    <msg>潜</msg>
+    <ans>捞</ans>
+  </msginfo>
+  <msginfo>
+    <msg>冒泡</msg>
+    <ans>戳</ans>
+  </msginfo>
+  <msginfo>
+    <msg>10163乘以229591</msg>
+    <ans>233333333</ans>
+  </msginfo>
+  <msginfo>
+    <msg>正面上我</msg>
+    <ans>好啊</ans>
+  </msginfo>
+  <msginfo>
+    <msg>稀罕</msg>
+    <ans>告诉你~伦家才不稀饭你那</ans>
+  </msginfo>
+  <msginfo>
+    <msg>哈哈</msg>
+    <ans>笑谁呢</ans>
+  </msginfo>
+  <msginfo>
+    <msg>笑你</msg>
+    <ans>给伦家闭嘴~啦，不许故意欺负伦家！</ans>
+  </msginfo>
+  <msginfo>
+    <msg>笑你</msg>
+    <ans>最讨厌了，哼~</ans>
+  </msginfo>
+  <msginfo>
+    <msg>哭</msg>
+    <ans>自己哭吧，伦家不管哦~</ans>
+  </msginfo>
+  <msginfo>
+    <msg>谢谢</msg>
+    <ans>不用谢，对伦家来说是小菜一碟的事~</ans>
+  </msginfo>
+  <msginfo>
+    <msg>回来吧</msg>
+    <ans>回哪里呀，不许随便带伦家走</ans>
+  </msginfo>
+  <msginfo>
+    <msg>灰机</msg>
+    <ans>其实是飞机吧</ans>
+  </msginfo>
+  <msginfo>
+    <msg>灰机</msg>
+    <ans>哪呢，伦家没看到唉</ans>
+  </msginfo>
+  <msginfo>
+    <msg>算了</msg>
+    <ans>怎么啦，不要遇到什么事就算了~</ans>
+  </msginfo>
+  <msginfo>
+    <msg>有啊</msg>
+    <ans>真的有吗？什么东东？</ans>
+  </msginfo>
+  <msginfo>
+    <msg>笨蛋</msg>
+    <ans>伦家是很笨哦，聪明的话就不跟你聊天了</ans>
+  </msginfo>
+  <msginfo>
+    <msg>布吉岛</msg>
+    <ans>虾米东东？</ans>
+  </msginfo>
+  <msginfo>
+    <msg>资料</msg>
+    <ans>资料就上百度啊</ans>
+  </msginfo>
+  <msginfo>
+    <msg>学习</msg>
+    <ans>伦家讨厌学习，学习很累的</ans>
+  </msginfo>
+  <msginfo>
+    <msg>广告</msg>
+    <ans>杜绝广告~坚决打击广告</ans>
+  </msginfo>
+  <msginfo>
+    <msg>傻逼</msg>
+    <ans>你怎么能骂自己呢！？</ans>
+  </msginfo>
+  <msginfo>
+    <msg>机器人</msg>
+    <ans>呀咩碟呀咩碟，人家香香软软的，不是机器人哟，么么哒~</ans>
+  </msginfo>
+  <msginfo>
+    <msg>爷们</msg>
+    <ans>怕怕，人家是萌妹纸啦，不要欺负偶哦~</ans>
+  </msginfo>
+  <msginfo>
+    <msg>谁来</msg>
+    <ans>（冒出来一个光头）我来</ans>
+  </msginfo>
+  <msginfo>
+    <msg>你能换一句吗</msg>
+    <ans>我马上就换</ans>
+  </msginfo>
+  <msginfo>
+    <msg>机器人</msg>
+    <ans>我才不是机器人！</ans>
+  </msginfo>
+  <msginfo>
+    <msg>中二病</msg>
+    <ans>你在说小鸟游六花和凤凰院凶真么</ans>
+  </msginfo>
+  <msginfo>
+    <msg>德玛西亚</msg>
+    <ans>德玛西亚万岁！！！！</ans>
+  </msginfo>
+  <msginfo>
+    <msg>妇产科机器人</msg>
+    <ans>妇产科机器人是在说你自己吧？</ans>
+  </msginfo>
+  <msginfo>
+    <msg>机器人</msg>
+    <ans>你才是机器人，你全家都是机器人！</ans>
+  </msginfo>
+  <msginfo>
+    <msg>机器人</msg>
+    <ans>我都说了我不是机器人了，我只是打字快了一点而已！</ans>
+  </msginfo>
+  <msginfo>
+    <msg>你会被玩坏吗</msg>
+    <ans>你猜</ans>
+  </msginfo>
+  <msginfo>
+    <msg>舒服吗</msg>
+    <ans>我好舒服哦，快点，啊……快…啊…一库</ans>
+  </msginfo>
+  <msginfo>
+    <msg>好无聊</msg>
+    <ans>那你和我一起来玩有趣的事吧</ans>
+  </msginfo>
+  <msginfo>
+    <msg>来人玩啊</msg>
+    <ans>是不是和我玩啊！嗯！好害羞啊，那么多人呢！</ans>
+  </msginfo>
+  <msginfo>
+    <msg>楼下傻逼</msg>
+    <ans>楼下是我儿！</ans>
+  </msginfo>
+  <msginfo>
+    <msg>玩坏了</msg>
+    <ans>嗯怀了，讨厌</ans>
+  </msginfo>
+  <msginfo>
+    <msg>位置</msg>
+    <ans>我现在在火星，有事，亲~可以密我</ans>
+  </msginfo>
+  <msginfo>
+    <msg>考试</msg>
+    <ans>要认真考哦，我会为你加油~~</ans>
+  </msginfo>
+  <msginfo>
+    <msg>群主</msg>
+    <ans>嘿嘿，我就是群主~~才怪！</ans>
+  </msginfo>
+  <msginfo>
+    <msg>群主</msg>
+    <ans>找群主有啥事啊~~</ans>
+  </msginfo>
+  <msginfo>
+    <msg>真的吗</msg>
+    <ans>是的！</ans>
+  </msginfo>
+  <msginfo>
+    <msg>约会</msg>
+    <ans>什么时候和我吗？ </ans>
+  </msginfo>
+  <msginfo>
+    <msg>早上好</msg>
+    <ans>都睡觉了...</ans>
+  </msginfo>
+  <msginfo>
+    <msg>干你</msg>
+    <ans>请文明用语</ans>
+  </msginfo>
+  <msginfo>
+    <msg>哈哈</msg>
+    <ans>瞧你笑得那样儿~~~</ans>
+  </msginfo>
+  <msginfo>
+    <msg>煞笔</msg>
+    <ans>请文明用语</ans>
+  </msginfo>
+  <msginfo>
+    <msg>傻b</msg>
+    <ans>请文明用语</ans>
+  </msginfo>
+  <msginfo>
+    <msg>男的女的</msg>
+    <ans>接待喵是女孩子</ans>
+  </msginfo>
+  <msginfo>
+    <msg>没人</msg>
+    <ans>有</ans>
+  </msginfo>
+  <msginfo>
+    <msg>奏凯</msg>
+    <ans>就不</ans>
+  </msginfo>
+  <msginfo>
+    <msg>嗷</msg>
+    <ans>快跑啊！野兽来了</ans>
+  </msginfo>
+  <msginfo>
+    <msg>饶舌</msg>
+    <ans>南边来了他大大伯子家的大搭拉尾巴耳朵狗，
+北边来了他二大伯子家的二搭拉尾巴耳朵狗。
+他大大伯家的大搭拉尾巴耳朵狗，咬了他二大伯家的二搭拉尾巴耳朵狗一口；
+他二大伯家的二搭拉尾巴耳朵狗，也咬了他大大伯家的大搭拉尾巴耳朵狗一口。不知是他大大伯家的大搭拉尾巴耳朵狗，先咬了他二大伯家的二搭拉尾巴耳朵狗；还是他二大伯家的二搭拉尾巴耳朵狗，先咬了他大大伯家的大搭拉尾巴耳朵狗。</ans>
+  </msginfo>
+  <msginfo>
+    <msg>饶舌</msg>
+    <ans>打南边来了个哑巴，腰里别了个喇叭；
+打北边来了个喇嘛，手里提了个獭犸。
+提着獭犸的喇嘛要拿獭犸换别着喇叭的哑巴的喇叭；
+别着喇叭的哑巴不愿拿喇叭换提着獭犸的喇嘛的獭犸。
+不知是别着喇叭的哑巴打了提着獭犸的喇嘛一喇叭；
+还是提着獭犸的喇嘛打了别着喇叭的哑巴一獭犸。
+喇嘛回家炖獭犸；
+哑巴嘀嘀哒哒吹喇叭</ans>
+  </msginfo>
+  <msginfo>
+    <msg>饶舌</msg>
+    <ans>黑化黑灰化肥灰会挥发发灰黑讳为黑灰花会回飞，灰化灰黑化肥会挥发发黑灰为讳飞花回化为灰</ans>
+  </msginfo>
+  <msginfo>
+    <msg>饶舌</msg>
+    <ans>一个半罐是半罐,两个半罐是一罐；三个半罐是一罐半,四个半罐是两罐；五个半罐是两罐半,六个半罐是三满罐；七个、八个、九个半罐,请你算算是多少罐</ans>
+  </msginfo>
+  <msginfo>
+    <msg>萝莉控</msg>
+    <ans>诸君，我喜欢萝莉！
+
+诸君┅
+我很喜欢萝莉！
+
+诸君┅
+我最喜欢萝莉了！
+
+我喜欢平胸萝！
+我喜欢妹抖萝！
+我喜欢普通萝！
+我喜欢兽耳萝！
+我喜欢２Ｄ萝！
+我喜欢３Ｄ萝！
+我喜欢 ** 萝！
+我喜欢哥特萝！
+我喜欢妹妹萝！
+
+我喜欢平原、城市、草原、学校、床上、村庄、海上、空中、瓶子中、街道上┅
+一切存在在地球上的各种萝莉！
+
+我喜欢穿著整齐的萝莉，一齐换装，伴著死库水，跳进游泳池！
+当水花被溅的飞到空中，再落下到萝莉身上时，我的心会兴奋起舞！
+
+
+我喜欢猫耳萝骑著老式单车，用 15 公里的时速，撞上路旁的路灯！
+当萝莉哀号著，从倒下的单车中含泪爬出，又被便当撞到头！
+这一刻我的心情，真是萌到不行！
+
+
+我还喜欢绑著马尾的天然萝莉们，被尽情的玩弄！
+尤其是，当我看见泪眼汪汪的萝莉们，耍赖地用手捶著地板时，
+最令我为之燃烧！
+
+抱著小熊抱枕的萝莉，被推倒在地板上的样子，令我忍不住一看再看！
+泪奔的萝莉们，随著她踢到地板的声音，
+在小鸟一般的惊呼声之中，应声倒下！这感觉真是太棒了！
+
+还抓著小武器，试图做无谓抵抗的可怜歹徒们！
+当萝莉拿起Ｐ90、５５７穿甲弹将他们连同市街一起打成蜂窝时!
+更是绝顶的感官享受!
+
+我喜欢被萝莉耍得团团转！
+因为拼命隐藏的Ａ漫，惨遭发现，书柜里的漫画和游戏，被先烧后埋，
+这多悲伤呀！
+
+我喜欢被萝莉用眼镜看著！
+因为被滑落的眼镜迷惑，像笨蛋一样地爬在地上找，这真是最大的经典呀！
+
+各位！
+我期望著萝莉，一只像ＭＥ一样的天然萝莉!
+
+各位！追随著我的萝莉控们!
+你们到底在期望著什麽？
+
+现在，你们更期望萝莉了吗？
+期望一只毫不留情、像姐姐一样的强势萝莉吗？
+
+期望一场轻风细雨微吹密打、萌尽三千世界之痴汉，如同幼女神一样的萝莉？ </ans>
+  </msginfo>
+  <msginfo>
+    <msg>你好污</msg>
+    <ans>你好小</ans>
+  </msginfo>
+</Categories>
