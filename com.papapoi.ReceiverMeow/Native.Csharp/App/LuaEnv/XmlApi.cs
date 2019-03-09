@@ -13,32 +13,19 @@ namespace Native.Csharp.App.LuaEnv
     {
         public static string path = Common.AppDirectory + "xml/";
 
-        public static string ReplayGroupStatic(string fromGroup, string msg, string fromqq = "")
+        public static void set(string group, string msg,string str)
         {
-            string replay_ok = replay_get(fromGroup, msg, fromqq);
-            string replay_common = replay_get("common", msg, fromqq, fromGroup);
-
-            if (replay_ok != "")
-            {
-                if (replay_common != "")
-                {
-                    Random ran = new Random(System.DateTime.Now.Millisecond);
-                    int RandKey = ran.Next(0, 2);
-                    if (RandKey == 0) { return replay_ok; } else { return replay_common; }
-                }
-                else
-                {
-                    return replay_ok;
-                }
-            }
-            else if (replay_common != "")
-            {
-                return replay_common;
-            }
-            return "";
+            del(group, msg);
+            insert(group, msg, str);
         }
 
-        public static string replay_get(string group, string msg, string fromqq = "", string trueGroup = "")
+        /// <summary>
+        /// 随机获取一条结果
+        /// </summary>
+        /// <param name="group"></param>
+        /// <param name="msg"></param>
+        /// <returns></returns>
+        public static string replay_get(string group, string msg)
         {
             dircheck(group);
             XElement root = XElement.Load(path + group + ".xml");
@@ -55,39 +42,6 @@ namespace Native.Csharp.App.LuaEnv
                 ansall = result[RandKey].Element("ans").Value;
             }
             return ansall;
-        }
-
-        /// <summary>
-        /// 检查是否有该词条的回复
-        /// </summary>
-        /// <param name="group"></param>
-        /// <param name="msg"></param>
-        /// <returns></returns>
-        public static bool IsAnswer(string group, string msg)
-        {
-            dircheck(group);
-            XElement root = XElement.Load(path + group + ".xml");
-            var element = from ee in root.Elements()
-                          where ee.Element("ans").Value.IndexOf(msg) != -1
-                          select ee;
-            return element.Count() > 0;
-        }
-
-        /// <summary>
-        /// 是否已禁止某词条的回复
-        /// </summary>
-        /// <param name="group"></param>
-        /// <param name="msg"></param>
-        /// <returns></returns>
-        public static bool IsBaned(string group, string msg)
-        {
-            dircheck(group);
-            XElement root = XElement.Load(path + group + ".xml");
-            var element = from ee in root.Elements()
-                          where ee.Element("ans").Value == "[ban]"
-                            && msg.IndexOf(ee.Element("msg").Value) != -1
-                          select ee;
-            return element.Count() > 0;
         }
 
         public static string xml_get(string group, string msg)
@@ -177,22 +131,6 @@ namespace Native.Csharp.App.LuaEnv
                    );
                 root.Save(path + group + ".xml");
             }
-        }
-
-        public static int AdminCheck(string fromQQ)
-        {
-            dircheck("admin_list");
-
-            XElement root = XElement.Load(path + "admin_list.xml");
-            int count = 0;
-            foreach (XElement mm in root.Elements("msginfo"))
-            {
-                if (mm.Element("ans").Value == fromQQ.ToString())
-                {
-                    count = 1;
-                }
-            }
-            return count;
         }
     }
 }
