@@ -13,5 +13,5 @@ handled = true
 详细请参考readme
 ]]
 
-
-cqSendPrivateMessage(fromqq,"你发送了"..message)
+local solve = require("messageSolve")
+solve(message,fromqq,nil,id)
