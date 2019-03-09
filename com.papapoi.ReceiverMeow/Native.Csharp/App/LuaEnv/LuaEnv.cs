@@ -35,6 +35,9 @@ namespace Native.Csharp.App.LuaEnv
         /// <returns></returns>
         public static void Initial(NLua.Lua lua)
         {
+            ///////////////
+            //酷q类的接口//
+            //////////////
             lua.RegisterFunction("cqCode_At", null, typeof(LuaApi).GetMethod("CqCode_At"));
             //获取酷Q "At某人" 代码
             lua.RegisterFunction("cqCqCode_Emoji", null, typeof(LuaApi).GetMethod("CqCode_Emoji"));
@@ -101,14 +104,16 @@ namespace Native.Csharp.App.LuaEnv
             //置匿名群员禁言
             lua.RegisterFunction("cqSetGroupBanSpeak", null, typeof(LuaEnv).GetMethod("SetGroupBanSpeak"));
             //置群员禁言
-            lua.RegisterFunction("cqSetFriendAddRequest", null, typeof(LuaEnv).GetMethod("SetFriendAddRequest"));
+            lua.RegisterFunction("cqSetFriendAddRequest", null, typeof(LuaApi).GetMethod("SetFriendAddRequest"));
             //置好友添加请求
-            lua.RegisterFunction("cqSetGroupAddRequest", null, typeof(LuaEnv).GetMethod("SetGroupAddRequest"));
+            lua.RegisterFunction("cqSetGroupAddRequest", null, typeof(LuaApi).GetMethod("SetGroupAddRequest"));
             //置群添加请求
 
+            /////////////
+            //工具类接口//
+            /////////////
             lua.RegisterFunction("apiGetPath", null, typeof(LuaApi).GetMethod("GetPath"));
             //获取程序运行目录
-
             lua.RegisterFunction("apiGetBitmap", null, typeof(LuaApi).GetMethod("GetBitmap"));
             //获取图片对象
             lua.RegisterFunction("apiPutText", null, typeof(LuaApi).GetMethod("PutText"));
@@ -133,6 +138,23 @@ namespace Native.Csharp.App.LuaEnv
             lua.RegisterFunction("apiGetHardDiskFreeSpace", null, typeof(Tools).GetMethod("GetHardDiskFreeSpace"));
             //获取指定驱动器的剩余空间总大小(单位为MB)
 
+            ///////////////
+            //XML操作接口//
+            //////////////
+            lua.RegisterFunction("apiXmlReplayGet", null, typeof(XmlApi).GetMethod("replay_get"));
+            //随机获取一条结果
+            lua.RegisterFunction("apiXmlListGet", null, typeof(XmlApi).GetMethod("list_get"));
+            //获取所有回复的列表
+            lua.RegisterFunction("apiXmlDelete", null, typeof(XmlApi).GetMethod("del"));
+            //删除所有匹配的条目
+            lua.RegisterFunction("apiXmlRemove", null, typeof(XmlApi).GetMethod("remove"));
+            //删除完全匹配的第一个条目
+            lua.RegisterFunction("apiXmlInsert", null, typeof(XmlApi).GetMethod("insert"));
+            //插入一个词条
+            lua.RegisterFunction("apiXmlSet", null, typeof(XmlApi).GetMethod("set"));
+            //更改某条的值
+            lua.RegisterFunction("apiXmlGet", null, typeof(XmlApi).GetMethod("xml_get"));
+            //获取某条的结果
 
             lua.DoFile(Common.AppDirectory + "lua/require/head.lua");
         }

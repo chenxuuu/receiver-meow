@@ -333,6 +333,5 @@ namespace Native.Csharp.App.LuaEnv
         //置群员移除
         public static int SetDiscussExit(long discussId) => Common.CqApi.SetDiscussExit(discussId);
         //置讨论组退出
-
     }
 }
