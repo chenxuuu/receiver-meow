@@ -25,7 +25,7 @@ namespace Native.Csharp.App.Event
             e.Handled = LuaEnv.LuaEnv.RunLua(
                 $"fromqq={e.FromQQ} " +
                 $"fromgroup={e.FromGroup} " +
-                $"message=\"{e.Msg.Replace("\"", "\\\"")}\" " +
+                $"message=[[{e.Msg.Replace("]", "] ")}]] " +
                 $"id={e.MsgId} " +
                 $"fromAnonymous={e.IsAnonymousMsg.ToString().ToLower()}",
                 "envent/ReceiveGroupMessage.lua");
@@ -45,7 +45,7 @@ namespace Native.Csharp.App.Event
             // 这里处理消息
             e.Handled = LuaEnv.LuaEnv.RunLua(
                 $"fromqq={e.FromQQ} " +
-                $"message=\"{e.Msg.Replace("\"", "\\\"")}\" " +
+                $"message=[[{e.Msg.Replace("]", "] ")}]] " +
                 $"id={e.MsgId}",
                 "envent/ReceivePrivateMessage.lua");
 
@@ -67,7 +67,7 @@ namespace Native.Csharp.App.Event
             e.Handled = LuaEnv.LuaEnv.RunLua(
                 $"fromqq={e.FromQQ} " +
                 $"fromgroup={e.FromGroup} " +
-                $"fileName=\"{e.File.Name.Replace("\"", "\\\"")}\" " +
+                $"fileName=[[{e.File.Name.Replace("]", "] ")}]] " +
                 $"id={e.File.Id} " +
                 $"size={e.File.Size}",
                 "envent/ReceiveGroupFileUpload.lua");
@@ -198,9 +198,9 @@ namespace Native.Csharp.App.Event
             // 这里处理消息
             e.Handled = LuaEnv.LuaEnv.RunLua(
                 $"fromqq={e.FromQQ} " +
-                $"tag=\"{e.Tag.Replace("\"", "\\\"")}\" " +
+                $"tag=[[{e.Tag.Replace("]", "] ")}]] " +
                 $"fromgroup={e.FromGroup} " +
-                $"message=\"{e.AppendMsg.Replace("\"", "\\\"")}\"",
+                $"message=[[{e.AppendMsg.Replace("]", "] ")}]]",
                 "envent/ReceiveGroupAddApply.lua");
 
             //e.Handled = false;  // 关于返回说明, 请参见 "Event_FriendMessage.ReceiveFriendMessage" 方法
@@ -218,7 +218,7 @@ namespace Native.Csharp.App.Event
             // 这里处理消息
             e.Handled = LuaEnv.LuaEnv.RunLua(
                 $"fromqq={e.FromQQ} " +
-                $"tag=\"{e.Tag.Replace("\"", "\\\"")}\" " +
+                $"tag=[[{e.Tag.Replace("]", "] ")}]] " +
                 $"fromgroup={e.FromGroup} ",
                 "envent/ReceiveGroupAddInvitee.lua");
 

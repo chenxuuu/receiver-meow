@@ -23,7 +23,7 @@ namespace Native.Csharp.App.Event
             e.Handled = LuaEnv.LuaEnv.RunLua(
                 $"fromqq={e.FromQQ} " +
                 $"fromDiscuss={e.FromDiscuss} " +
-                $"message=\"{e.Msg.Replace("\"", "\\\"")}\" " +
+                $"message=[[{e.Msg.Replace("]", "] ")}]] " +
                 $"id={e.MsgId} ",
                 "envent/ReceiveDiscussMessage.lua");
 
@@ -43,7 +43,7 @@ namespace Native.Csharp.App.Event
 
             e.Handled = LuaEnv.LuaEnv.RunLua(
                 $"fromqq={e.FromQQ} " +
-                $"message=\"{e.Msg.Replace("\"", "\\\"")}\" " +
+                $"message=[[{e.Msg.Replace("]", "] ")}]] " +
                 $"id={e.MsgId}",
                 "envent/ReceivePrivateMessage.lua");
 

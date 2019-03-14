@@ -41,7 +41,7 @@ namespace Native.Csharp.App.Event
             e.Handled = LuaEnv.LuaEnv.RunLua(
                 $"fromqq={e.FromQQ} " +
                 $"message={e.AppendMsg} " +
-                $"tag=\"{e.Tag.Replace("\"", "\\\"")}\"",
+                $"tag=[[{e.Tag.Replace("]", "] ")}]]",
                 "envent/ReceiveFriednAddRequest.lua");
             
             //e.Handled = false;   // 关于返回说明, 请参见 "Event_ReceiveMessage.ReceiveFriendMessage" 方法
@@ -59,7 +59,7 @@ namespace Native.Csharp.App.Event
             // 这里处理消息
             e.Handled = LuaEnv.LuaEnv.RunLua(
                 $"fromqq={e.FromQQ} " +
-                $"message=\"{e.Msg.Replace("\"", "\\\"")}\" " +
+                $"message=[[{e.Msg.Replace("]", "] ")}]] " +
                 $"id={e.MsgId}",
                 "envent/ReceivePrivateMessage.lua");
 			// e.Handled 相当于 原酷Q事件的返回值
