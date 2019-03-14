@@ -17,4 +17,6 @@ handled = true
 ]]
 
 local solve = require("messageSolve")
-solve(message,fromqq,fromgroup,id)
+if solve(message,fromqq,fromgroup,id) then
+    handled = true
+end
