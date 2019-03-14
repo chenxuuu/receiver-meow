@@ -14,7 +14,9 @@ end
 debug.sethook(trace, "l")
 
 --加上需要require的路径
-package.path = package.path..";./data/app/com.papapoi.ReceiverMeow/lua/require/?.lua"
+package.path = package.path..
+";./data/app/com.papapoi.ReceiverMeow/lua/require/?.lua"..
+";./data/app/com.papapoi.ReceiverMeow/lua/require/app/?.lua"
 
 
 JSON = require("JSON")
