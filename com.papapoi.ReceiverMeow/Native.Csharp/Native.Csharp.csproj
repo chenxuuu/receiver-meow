@@ -152,6 +152,7 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>LibExport.cs</LastGenOutput>
     </Content>
+    <EmbeddedResource Include="costura32\lua53.dll" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
