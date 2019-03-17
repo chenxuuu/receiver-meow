@@ -205,6 +205,19 @@ local apps = {
             return "[CQ:emoji,id=128444]搜图 加 完整p站图片"
         end
     },
+    {--象棋
+        check = function ()
+            return msg:find("象棋") == 1
+        end,
+        run = function ()
+            local chess = require("app.chess")
+            sendMessage(chess(qq,msg))
+            return true
+        end,
+        explain = function ()
+            return "[CQ:emoji,id=128195]象棋 查看象棋功能帮助"
+        end
+    },
     {--!addadmin
         check = function ()
             return (msg:find("！ *addadmin *.+") == 1 or msg:find("! *addadmin *.+") == 1) and
