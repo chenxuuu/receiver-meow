@@ -1,6 +1,7 @@
 --统一的消息处理函数
 local msg,qq,group,id
 local handled = false
+local admin = 961726194
 
 --发送消息
 --自动判断群聊与私聊
@@ -28,10 +29,14 @@ local apps = {
             return msg:find("！ *add *.+：.+") == 1 or msg:find("! *add *.+:.+") == 1
         end,
         run = function ()--匹配后进行运行的函数
+            if apiXmlGet("adminList",tostring(qq)) ~= "admin" then
+                sendMessage(cqCode_At(qq).."你不是狗管理，想成为狗管理请找我的主人呢")
+                return true
+            end
             local keyWord,answer = msg:match("！ *add *(.+)：(.+)")
             if not keyWord then keyWord,answer = msg:match("! *add *(.+):(.+)") end
             keyWord = kickSpace(keyWord)
-            answer = kickSpace(keyWord)
+            answer = kickSpace(answer)
             if not keyWord or not answer or keyWord:len() == 0 or answer:len() == 0 then
                 sendMessage(cqCode_At(qq).."格式错误，请检查") return true
             end
@@ -50,10 +55,14 @@ local apps = {
             return msg:find("！ *del *.+：.+") == 1 or msg:find("! *del *.+:.+") == 1
         end,
         run = function ()
+            if apiXmlGet("adminList",tostring(qq)) ~= "admin" then
+                sendMessage(cqCode_At(qq).."你不是狗管理，想成为狗管理请找我的主人呢")
+                return true
+            end
             local keyWord,answer = msg:match("！ *del *(.+)：(.+)")
             if not keyWord then keyWord,answer = msg:match("! *del *(.+):(.+)") end
             keyWord = kickSpace(keyWord)
-            answer = kickSpace(keyWord)
+            answer = kickSpace(answer)
             if not keyWord or not answer or keyWord:len() == 0 or answer:len() == 0 then
                 sendMessage(cqCode_At(qq).."格式错误，请检查") return true
             end
@@ -89,6 +98,10 @@ local apps = {
             return msg:find("！ *delall *.+") == 1 or msg:find("! *delall *.+") == 1
         end,
         run = function ()
+            if apiXmlGet("adminList",tostring(qq)) ~= "admin" then
+                sendMessage(cqCode_At(qq).."你不是狗管理，想成为狗管理请找我的主人呢")
+                return true
+            end
             local keyWord = msg:match("！ *delall *(.+)")
             if not keyWord then keyWord = msg:match("! *delall *(.+)") end
             keyWord = kickSpace(keyWord)
@@ -166,23 +179,57 @@ local apps = {
             return "[CQ:emoji,id=127932]点歌 加 qq音乐id或歌名"
         end
     },
+    {--!addadmin
+        check = function ()
+            return (msg:find("！ *addadmin *.+") == 1 or msg:find("! *addadmin *.+") == 1) and
+             qq == admin
+        end,
+        run = function ()
+            local keyWord = msg:match("(%d+)")
+            if keyWord and apiXmlGet("adminList",keyWord) == "admin" then
+                sendMessage(cqCode_At(qq).."\r\n"..keyWord.."已经是狗管理了")
+            else
+                apiXmlSet("adminList",keyWord,"admin")
+                sendMessage(cqCode_At(qq).."\r\n已添加狗管理"..keyWord)
+            end
+            return true
+        end,
+    },
+    {--!deladmin
+        check = function ()
+            return (msg:find("！ *deladmin *.+") == 1 or msg:find("! *deladmin *.+") == 1) and
+             qq == admin
+        end,
+        run = function ()
+            local keyWord = msg:match("(%d+)")
+            if keyWord and apiXmlGet("adminList",keyWord) == "" then
+                sendMessage(cqCode_At(qq).."\r\n狗管理"..keyWord.."已经挂了")
+            else
+                apiXmlDelete("adminList",keyWord)
+                sendMessage(cqCode_At(qq).."\r\n已宰掉狗管理"..keyWord)
+            end
+            return true
+        end,
+    },
     {--通用回复
-    check = function ()
-        return true
-    end,
-    run = function ()
-        local replyGroup = apiXmlReplayGet(tostring(group),msg)
-        local replyCommon = apiXmlReplayGet("common",msg)
-        if replyGroup == "" and replyCommon ~= "" then
-            sendMessage(replyCommon)
-        elseif replyGroup ~= "" and replyCommon == "" then
-            sendMessage(replyGroup)
-        else
-            sendMessage(math.random(1,10)>=5 and replyCommon or replyGroup)
+        check = function ()
+            return true
+        end,
+        run = function ()
+            local replyGroup = group and apiXmlReplayGet(tostring(group),msg) or ""
+            local replyCommon = apiXmlReplayGet("common",msg)
+            if replyGroup == "" and replyCommon ~= "" then
+                sendMessage(replyCommon)
+            elseif replyGroup ~= "" and replyCommon == "" then
+                sendMessage(replyGroup)
+            elseif replyGroup ~= "" and replyCommon ~= "" then
+                sendMessage(math.random(1,10)>=5 and replyCommon or replyGroup)
+            else
+                return false
+            end
+            return true
         end
-        return true
-    end
-},
+    },
 }
 
 --对外提供的函数接口
@@ -196,7 +243,8 @@ return function (inmsg,inqq,ingroup,inid)
                 table.insert(allApp, appExplain)
             end
         end
-        sendMessage("[CQ:emoji,id=128172]命令帮助\r\n"..table.concat(allApp, "\r\n"))
+        sendMessage("[CQ:emoji,id=128172]命令帮助\r\n"..table.concat(allApp, "\r\n")..
+        "\r\n[CQ:emoji,id=128483]自己运行/反馈：https://github.com/chenxuuu/receiver-meow")
         return true
     end
 
