@@ -30,5 +30,11 @@ function jsonDecode(s)
     end
 end
 
+--修正http接口可选参数
+local oldapiHttpGet = apiHttpGet
+apiHttpGet = function (url,para,timeout,cookie)
+    return oldapiHttpGet(url,para or "",timeout or 5000,cookie or "")
+end
+
 --加载字符串工具包
 require("strings")
