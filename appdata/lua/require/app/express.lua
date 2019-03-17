@@ -3,9 +3,9 @@ function search(expressNo,c,fromqq)
     local comCode = c
     if not comCode then
         if expressNo:len() == 0 then
-            expressNo = apiXmlGet(tostring(fromqq),"express")
+            expressNo = apiXmlGet("express",tostring(fromqq))
         else
-            apiXmlSet(tostring(fromqq),"express",expressNo)
+            apiXmlSet("express",tostring(fromqq),expressNo)
         end
         if expressNo:len() == 0 then
             return cqCode_At(fromqq).."你没有历史查询记录哦"
