@@ -134,6 +134,8 @@ namespace Native.Csharp.App.LuaEnv
             //GET 请求与获取结果
             lua.RegisterFunction("apiHttpPost", null, typeof(LuaApi).GetMethod("HttpPost"));
             //POST 请求与获取结果
+            lua.RegisterFunction("apiBase64File", null, typeof(LuaApi).GetMethod("Base64File"));
+            //获取在线文件的base64结果
 
             lua.RegisterFunction("apiGetHardDiskFreeSpace", null, typeof(Tools).GetMethod("GetHardDiskFreeSpace"));
             //获取指定驱动器的剩余空间总大小(单位为MB)
