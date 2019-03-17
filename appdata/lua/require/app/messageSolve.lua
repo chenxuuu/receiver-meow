@@ -166,6 +166,23 @@ local apps = {
             return "[CQ:emoji,id=127932]点歌 加 qq音乐id或歌名"
         end
     },
+    {--通用回复
+    check = function ()
+        return true
+    end,
+    run = function ()
+        local replyGroup = apiXmlReplayGet(tostring(group),msg)
+        local replyCommon = apiXmlReplayGet("common",msg)
+        if replyGroup == "" and replyCommon ~= "" then
+            sendMessage(replyCommon)
+        elseif replyGroup ~= "" and replyCommon == "" then
+            sendMessage(replyGroup)
+        else
+            sendMessage(math.random(1,10)>=5 and replyCommon or replyGroup)
+        end
+        return true
+    end
+},
 }
 
 --对外提供的函数接口
