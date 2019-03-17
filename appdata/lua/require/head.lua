@@ -35,6 +35,27 @@ local oldapiHttpGet = apiHttpGet
 apiHttpGet = function (url,para,timeout,cookie)
     return oldapiHttpGet(url,para or "",timeout or 5000,cookie or "")
 end
+local oldapiHttpPost = apiHttpPost
+apiHttpPost = function (url,para,timeout,cookie)
+    return oldapiHttpPost(url,para or "",timeout or 5000,cookie or "")
+end
 
 --加载字符串工具包
 require("strings")
+
+function getRandomString(len)
+    local str = "1234567890abcdefhijklmnopqrstuvwxyz"
+    local ret = ""
+    for i = 1, len do
+        local rchr = math.random(1, string.len(str))
+        ret = ret .. string.sub(str, rchr, rchr)
+    end
+    return ret
+end
+
+function image(url)
+    local file = getRandomString(25)..".luatemp"
+    apiHttpDownload(url,"data/image/"..file,5000)
+    return "[CQ:image,file="..file.."]"
+end
+

@@ -179,6 +179,32 @@ local apps = {
             return "[CQ:emoji,id=127932]点歌 加 qq音乐id或歌名"
         end
     },
+    {--查动画
+        check = function ()
+            return msg:find("查动画") or msg:find("搜动画") or msg:find("查番") or msg:find("搜番")
+        end,
+        run = function ()
+            local animeSearch = require("app.animeSearch")
+            sendMessage(cqCode_At(qq).."\r\n"..animeSearch(msg))
+            return true
+        end,
+        explain = function ()
+            return "[CQ:emoji,id=128444]查动画 加 没裁剪过的视频截图"
+        end
+    },
+    {--搜图
+        check = function ()
+            return msg:find("搜图") or msg:find("查图")
+        end,
+        run = function ()
+            local imageSearch = require("app.imageSearch")
+            sendMessage(cqCode_At(qq).."\r\n"..imageSearch(msg))
+            return true
+        end,
+        explain = function ()
+            return "[CQ:emoji,id=128444]搜图 加 完整p站图片"
+        end
+    },
     {--!addadmin
         check = function ()
             return (msg:find("！ *addadmin *.+") == 1 or msg:find("! *addadmin *.+") == 1) and
