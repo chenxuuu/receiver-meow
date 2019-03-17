@@ -16,7 +16,7 @@ handled = true
 详细请参考readme
 ]]
 
-local solve = require("messageSolve")
+local solve = require("app.messageSolve")
 if solve(message,fromqq,fromgroup,id) then
     handled = true
 end
