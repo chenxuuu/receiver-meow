@@ -153,6 +153,19 @@ local apps = {
             return "[CQ:emoji,id=128077]点赞"
         end
     },
+    {--点歌
+        check = function ()
+            return msg:find("点歌") == 1
+        end,
+        run = function ()
+            local qqmusic = require("app.qqmusic")
+            sendMessage(qqmusic(msg))
+            return true
+        end,
+        explain = function ()
+            return "[CQ:emoji,id=127932]点歌 加 qq音乐id或歌名"
+        end
+    },
 }
 
 --对外提供的函数接口
