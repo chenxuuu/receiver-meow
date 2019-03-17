@@ -113,6 +113,7 @@
     <Compile Include="App\Interface\IEvent_UserExpand.cs" />
     <Compile Include="App\LuaEnv\LuaApi.cs" />
     <Compile Include="App\LuaEnv\LuaEnv.cs" />
+    <Compile Include="App\LuaEnv\TimerRun.cs" />
     <Compile Include="App\LuaEnv\Tools.cs" />
     <Compile Include="App\LuaEnv\XmlApi.cs" />
     <Compile Include="App\Model\DiscussMessageEventArgs.cs" />
