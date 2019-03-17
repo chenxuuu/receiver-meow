@@ -101,6 +101,45 @@ local apps = {
             return "[CQ:emoji,id=128465] !delall关键词"
         end
     },
+    {--今日运势
+        check = function ()
+            return msg=="今日运势" or msg=="明日运势" or msg=="昨日运势"
+        end,
+        run = function ()
+            local getAlmanac = require("app.almanac")
+            sendMessage(cqCode_At(qq)..getAlmanac(qq))
+            return true
+        end,
+        explain = function ()
+            return "[CQ:emoji,id=127881]昨日/今日/明日运势"
+        end
+    },
+    {--查快递
+        check = function ()
+            return msg:find("查快递") == 1
+        end,
+        run = function ()
+            local express = require("app.express")
+            sendMessage(express(qq,msg))
+            return true
+        end,
+        explain = function ()
+            return "[CQ:emoji,id=128667]查快递 加 单号"
+        end
+    },
+    {--空气质量
+        check = function ()
+            return msg:find("空气质量") == 1
+        end,
+        run = function ()
+            local air = require("app.air")
+            sendMessage(cqCode_At(qq).."\r\n"..air(msg))
+            return true
+        end,
+        explain = function ()
+            return "[CQ:emoji,id=128168]空气质量"
+        end
+    },
     {--点赞
         check = function ()--检查函数，拦截则返回true
             return msg=="点赞" or msg=="赞我"
