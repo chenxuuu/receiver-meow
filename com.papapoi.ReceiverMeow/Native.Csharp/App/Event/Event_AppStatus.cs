@@ -56,6 +56,7 @@ namespace Native.Csharp.App.Event
 			// 如非必要，不建议在这里加载窗口。（可以添加菜单，让用户手动打开窗口）
 			Common.IsRunning = true;
             LuaEnv.LuaEnv.RunLua("", "envent/AppEnable.lua");
+            LuaEnv.TimerRun.TimerStart();
         }
 
 		/// <summary>
