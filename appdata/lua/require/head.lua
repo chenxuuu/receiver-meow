@@ -43,6 +43,7 @@ end
 --加载字符串工具包
 require("strings")
 
+--获取随机字符串
 function getRandomString(len)
     local str = "1234567890abcdefhijklmnopqrstuvwxyz"
     local ret = ""
@@ -53,9 +54,43 @@ function getRandomString(len)
     return ret
 end
 
+--根据url显示图片
 function image(url)
     local file = getRandomString(25)..".luatemp"
     apiHttpDownload(url,"data/image/"..file,5000)
     return "[CQ:image,file="..file.."]"
 end
 
+
+
+--图片对象
+img = {width = 0, height = 0, imageData = nil}
+--新建图片对象
+function img:new (width,height)
+    o = {}
+    setmetatable(o, self)
+    self.__index = self
+    self.width = width or 0
+    self.height = height or 0
+    self.imageData = apiGetBitmap(self.width,self.height)
+    return o
+end
+--摆放文字
+function img:setText(x,y,text,type1,size,r,g,b)
+    self.imageData = apiPutText(self.imageData,x-1,y-1,text,
+    type1 or "微软雅黑", size or 9, r or 0, g or 0, b or 0)
+end
+--摆放矩形
+function img:setBlock(x,y,xx,yy,r,g,b)
+    self.imageData = apiPutBlock(self.imageData,x-1,y-1,
+    xx-1>self.width-1 and self.width-1 or xx-1,yy-1>self.height-1 and self.height-1 or yy-1,
+    r,g,b)
+end
+--摆放其他图片
+function img:setImg(x,y,path,xx,yy)
+    self.imageData = apiSetImage(self.imageData,x-1,y-1,path,xx and xx-1 or 0, yy and yy-1 or 0)
+end
+--获取图片结果
+function img:get()
+    return "[CQ:image,file="..apiGetDir(self.imageData).."]"
+end

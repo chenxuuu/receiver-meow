@@ -107,8 +107,8 @@ namespace Native.Csharp.App.LuaEnv
         public static string GetDir(Bitmap bmp)
         {
             string result = Tools.GetRandomString(32, true, false, false, false, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
-            bmp.Save(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "data/image/download/lua" + result + ".jpg", ImageFormat.Jpeg);
-            return "download/lua" + result + ".jpg";
+            bmp.Save(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "data/image/" + result + ".luatemp", ImageFormat.Jpeg);
+            return result + ".luatemp";
         }
 
 
