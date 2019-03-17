@@ -174,7 +174,10 @@ namespace Native.Csharp.App.LuaEnv
                     return false;
                 }
             }
-            catch { }
+            catch (Exception e)
+            {
+                Common.CqApi.AddLoger(Sdk.Cqp.Enum.LogerLevel.Error, "下载文件错误", e.ToString());
+            }
             return false;
         }
 
@@ -220,7 +223,10 @@ namespace Native.Csharp.App.LuaEnv
 
                 return retString;
             }
-            catch { }
+            catch (Exception e)
+            {
+                Common.CqApi.AddLoger(Sdk.Cqp.Enum.LogerLevel.Error, "get错误", e.ToString());
+            }
             return "";
         }
 
@@ -264,10 +270,51 @@ namespace Native.Csharp.App.LuaEnv
                 return retString;
             }
             catch (Exception e)
-            { }
+            {
+                Common.CqApi.AddLoger(Sdk.Cqp.Enum.LogerLevel.Error, "post错误", e.ToString());
+            }
             return "";
         }
 
+        /// <summary>
+        /// 获取在线文件的base64结果
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public static string Base64File(string url)
+        {
+            try
+            {
+                //请求前设置一下使用的安全协议类型 System.Net
+                if (url.StartsWith("https", StringComparison.OrdinalIgnoreCase))
+                {
+                    ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors) =>
+                    {
+                        return true; //总是接受
+                    });
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+                }
+                //获取网址里的图片
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                WebResponse response = request.GetResponse();
+                request.Timeout = 15000;
+                Stream stream = response.GetResponseStream();
+
+                Bitmap bmp = new Bitmap(stream);
+                MemoryStream ms = new MemoryStream();
+                bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                byte[] arr = new byte[ms.Length];
+                ms.Position = 0;
+                ms.Read(arr, 0, (int)ms.Length);
+                ms.Close();
+                return Convert.ToBase64String(arr);
+            }
+            catch (Exception e)
+            {
+                Common.CqApi.AddLoger(Sdk.Cqp.Enum.LogerLevel.Error, "base64错误", e.ToString());
+            }
+            return "";
+        }
 
         public static string CqCode_At(long qq) => Common.CqApi.CqCode_At(qq);
         //获取酷Q "At某人" 代码
