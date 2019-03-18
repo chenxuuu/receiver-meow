@@ -218,6 +218,19 @@ local apps = {
             return "[CQ:emoji,id=128195]象棋 查看象棋功能帮助"
         end
     },
+    {--抽奖
+        check = function ()
+            return msg == "抽奖"
+        end,
+        run = function ()
+            local banPlay = require("app.banPlay")
+            sendMessage(banPlay(qq,group))
+            return true
+        end,
+        explain = function ()
+            return "[CQ:emoji,id=128142]抽奖"
+        end
+    },
     {--!addadmin
         check = function ()
             return (msg:find("！ *addadmin *.+") == 1 or msg:find("! *addadmin *.+") == 1) and
