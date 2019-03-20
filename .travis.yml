@@ -1,12 +1,8 @@
 language: csharp
 solution: com.papapoi.ReceiverMeow/Native.sln
-before_deploy:
+install:
+  - cd com.papapoi.ReceiverMeow
   - sudo apt-get install p7zip-full
-deploy:
-  provider: releases
-  api_key: ${GITHUB_TOKEN}
-  file:
-  - receiver-meow.7z
-  skip_cleanup: true
-  on:
-    tags: true
+  - wget https://github.com/chenxuuu/receiver-meow/releases/download/v0.0/packages.7z
+  - 7za x packages.7z -r -o./
+
