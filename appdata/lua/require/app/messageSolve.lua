@@ -29,7 +29,7 @@ local apps = {
             return msg:find("！ *add *.+：.+") == 1 or msg:find("! *add *.+:.+") == 1
         end,
         run = function ()--匹配后进行运行的函数
-            if apiXmlGet("adminList",tostring(qq)) ~= "admin" then
+            if apiXmlGet("adminList",tostring(qq)) ~= "admin" and group or qq == admin then
                 sendMessage(cqCode_At(qq).."你不是狗管理，想成为狗管理请找我的主人呢")
                 return true
             end
@@ -55,7 +55,7 @@ local apps = {
             return msg:find("！ *del *.+：.+") == 1 or msg:find("! *del *.+:.+") == 1
         end,
         run = function ()
-            if apiXmlGet("adminList",tostring(qq)) ~= "admin" then
+            if apiXmlGet("adminList",tostring(qq)) ~= "admin" and group or qq == admin then
                 sendMessage(cqCode_At(qq).."你不是狗管理，想成为狗管理请找我的主人呢")
                 return true
             end
@@ -98,7 +98,7 @@ local apps = {
             return msg:find("！ *delall *.+") == 1 or msg:find("! *delall *.+") == 1
         end,
         run = function ()
-            if apiXmlGet("adminList",tostring(qq)) ~= "admin" then
+            if apiXmlGet("adminList",tostring(qq)) ~= "admin" and group or qq == admin then
                 sendMessage(cqCode_At(qq).."你不是狗管理，想成为狗管理请找我的主人呢")
                 return true
             end
