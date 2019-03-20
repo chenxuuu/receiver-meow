@@ -5,4 +5,4 @@ install:
   - sudo apt-get install p7zip-full
   - wget https://github.com/chenxuuu/receiver-meow/releases/download/v0.0/packages.7z
   - 7za x packages.7z -r -o./
-
+  - cd ..
