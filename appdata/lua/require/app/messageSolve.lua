@@ -270,6 +270,10 @@ local apps = {
             return true
         end,
         run = function ()
+            if qq ~= 1000000 and (group == 241464054 or group == 567145439) and--mc群消息处理
+                require("app.minecraftGroup")(msg,qq,group) then
+                return true
+            end
             local replyGroup = group and apiXmlReplayGet(tostring(group),msg) or ""
             local replyCommon = apiXmlReplayGet("common",msg)
             if replyGroup == "" and replyCommon ~= "" then
