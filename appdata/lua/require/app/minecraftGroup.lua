@@ -46,7 +46,7 @@ return function (msg,qq,group)
         elseif msg == "激活" then--激活
             if step == "pass" then
                 cqSendGroupMessage(241464054,cqCode_At(qq).."已私聊发送激活码")
-                cqSendPrivateMessage(qq,"获取权限，请在游戏内输入命令/giftCode "..pickCode())
+                cqSendPrivateMessage(qq,"获取权限，请在游戏内输入命令/giftCode use "..pickCode())
                 apiXmlSet("bindStep",tostring(qq),"done")
             elseif step == "waiting" then
                 cqSendGroupMessage(241464054,cqCode_At(qq).."你还没通过审核呢")
