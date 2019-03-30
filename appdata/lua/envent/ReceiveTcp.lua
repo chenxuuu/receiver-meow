@@ -50,6 +50,10 @@ local solve = {
     m = function (msg)
         cqSendGroupMessage(241464054,cqCqCode_Trope(msg))
     end,
+    c = function (msg)
+        cqSendGroupMessage(241464054,"服务器已启动完成")
+        apiXmlSet("minecraftData","[online]","")
+    end,
 }
 
 if solve[messageType] then
