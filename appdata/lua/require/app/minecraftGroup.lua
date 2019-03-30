@@ -1,4 +1,4 @@
-local codePath = [[C:\Users\chenx\Desktop\code.txt]]
+local codePath = [[D:\kuqpro\data\app\com.papapoi.ReceiverMeow\lua\require\app\code.txt]]
 
 --取一条激活码
 local function pickCode()
@@ -13,7 +13,7 @@ local function pickCode()
         local code = table.remove(all,1)
         file:write(table.concat(all, "\n"))
         file:close()
-        return code
+        return code,true
     end
     file:close()
     return "数据读取出错啦，请联系服主"
@@ -21,7 +21,7 @@ end
 
 local oldapiTcpSend = apiTcpSend
 apiTcpSend = function (msg)
-    msg = msg:gsub("%[CQ:.-%] ","[特殊]")
+    msg = msg:gsub("%[CQ:.-%]","[特殊]"):gsub("\r","")
     oldapiTcpSend(msg)
 end
 
@@ -70,8 +70,13 @@ return function (msg,qq,group)
         elseif msg == "激活" then--激活
             if step == "pass" then
                 cqSendGroupMessage(241464054,cqCode_At(qq).."已私聊发送激活码")
-                cqSendPrivateMessage(qq,"获取权限，请在游戏内输入命令/giftCode use "..pickCode())
-                apiXmlSet("bindStep",tostring(qq),"done")
+                local code,r = pickCode()
+                if r then
+                    cqSendPrivateMessage(qq,"获取权限，请在游戏内输入命令/giftCode use "..code)
+                    apiXmlSet("bindStep",tostring(qq),"done")
+                else
+                    cqSendGroupMessage(241464054,cqCode_At(961726194).."激活码获取失败了，快出来修你的垃圾代码")
+                end
             elseif step == "waiting" then
                 cqSendGroupMessage(241464054,cqCode_At(qq).."你还没通过审核呢")
             elseif step == "done" then
@@ -130,6 +135,9 @@ return function (msg,qq,group)
                             "你的id："..player)
             end
             return true
+        elseif msg == "清空在线" then
+            apiXmlSet("minecraftData","[online]","")
+            cqSendGroupMessage(567145439,cqCode_At(qq).."已清空所有在线信息")
         end
     end
 end
