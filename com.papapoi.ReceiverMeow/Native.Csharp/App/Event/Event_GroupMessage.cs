@@ -68,7 +68,7 @@ namespace Native.Csharp.App.Event
                 $"fromqq={e.FromQQ} " +
                 $"fromgroup={e.FromGroup} " +
                 $"fileName=[[{e.File.Name.Replace("]", "] ")}]] " +
-                $"id={e.File.Id} " +
+                $"id=[[{e.File.Id.Replace("]", "] ")}]] " +
                 $"size={e.File.Size}",
                 "envent/ReceiveGroupFileUpload.lua");
 

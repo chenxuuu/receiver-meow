@@ -61,11 +61,14 @@
       <Private>False</Private>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="KeraLua, Version=1.0.4.0, Culture=neutral, PublicKeyToken=6a194c04b9c89217, processorArchitecture=MSIL">
-      <HintPath>..\packages\KeraLua.1.0.4\lib\net45\KeraLua.dll</HintPath>
+    <Reference Include="KeraLua, Version=1.0.5.0, Culture=neutral, PublicKeyToken=6a194c04b9c89217, processorArchitecture=MSIL">
+      <HintPath>..\packages\KeraLua.1.0.5\lib\net45\KeraLua.dll</HintPath>
     </Reference>
-    <Reference Include="NLua, Version=1.4.9.0, Culture=neutral, PublicKeyToken=6a194c04b9c89217, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLua.1.4.9\lib\net45\NLua.dll</HintPath>
+    <Reference Include="NLua, Version=1.4.12.0, Culture=neutral, PublicKeyToken=6a194c04b9c89217, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLua.1.4.12\lib\net45\NLua.dll</HintPath>
+    </Reference>
+    <Reference Include="SimpleTCP, Version=1.0.24.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SimpleTCP.1.0.24\lib\net45\SimpleTCP.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -113,6 +116,7 @@
     <Compile Include="App\Interface\IEvent_UserExpand.cs" />
     <Compile Include="App\LuaEnv\LuaApi.cs" />
     <Compile Include="App\LuaEnv\LuaEnv.cs" />
+    <Compile Include="App\LuaEnv\TcpServer.cs" />
     <Compile Include="App\LuaEnv\TimerRun.cs" />
     <Compile Include="App\LuaEnv\Tools.cs" />
     <Compile Include="App\LuaEnv\XmlApi.cs" />
@@ -128,6 +132,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="com.papapoi.ReceiverMeow.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -161,7 +166,7 @@
   <ImportGroup Label=".NET DllExport">
     <Import Project="$(SolutionDir)packages\DllExport.1.6.1\tools\net.r_eg.DllExport.targets" Condition="Exists('$(SolutionDir)packages\DllExport.1.6.1\tools\net.r_eg.DllExport.targets')" Label="8337224c9ad9e356" />
     <Import Project="..\packages\Fody.3.3.3\build\Fody.targets" Condition="Exists('..\packages\Fody.3.3.3\build\Fody.targets')" />
-    <Import Project="..\packages\KeraLua.1.0.4\build\net45\KeraLua.targets" Condition="Exists('..\packages\KeraLua.1.0.4\build\net45\KeraLua.targets')" />
+    <Import Project="..\packages\KeraLua.1.0.5\build\net45\KeraLua.targets" Condition="Exists('..\packages\KeraLua.1.0.5\build\net45\KeraLua.targets')" />
   </ImportGroup>
   <Target Name="DllExportRestorePkg" BeforeTargets="PrepareForBuild">
     <Warning Condition="!Exists('$(SolutionDir)DllExport.bat')" Text="We can't find 'DllExport.bat' in '$(SolutionDir)' - https://github.com/3F/DllExport" />
@@ -176,6 +181,6 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Fody.3.3.3\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.3.3.3\build\Fody.targets'))" />
     <Error Condition="!Exists('..\packages\Costura.Fody.3.2.1\build\Costura.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.3.2.1\build\Costura.Fody.props'))" />
-    <Error Condition="!Exists('..\packages\KeraLua.1.0.4\build\net45\KeraLua.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\KeraLua.1.0.4\build\net45\KeraLua.targets'))" />
+    <Error Condition="!Exists('..\packages\KeraLua.1.0.5\build\net45\KeraLua.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\KeraLua.1.0.5\build\net45\KeraLua.targets'))" />
   </Target>
 </Project>
