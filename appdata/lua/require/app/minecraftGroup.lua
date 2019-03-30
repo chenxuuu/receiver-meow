@@ -23,6 +23,12 @@ return function (msg,qq,group)
     if group == 241464054 then --玩家群
         local player = apiXmlGet("bindQq",tostring(qq))
         local step = apiXmlGet("bindStep",tostring(qq))
+        apiTcpSend("[群消息]["..(player == "" and "无名氏"..tostring(qq) or player).."]"..msg)
+        local oldcqSendGroupMessage = cqSendGroupMessage
+        cqSendGroupMessage = function (g,m)
+            oldcqSendGroupMessage(241464054,m)
+            apiTcpSend("[群消息][接待喵]"..m)
+        end
         if msg:find("绑定") == 1 and player == "" then--绑定命令
             local player = msg:match("([a-zA-Z0-9_]+)")
             if player then

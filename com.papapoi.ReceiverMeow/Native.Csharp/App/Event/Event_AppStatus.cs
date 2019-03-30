@@ -57,6 +57,7 @@ namespace Native.Csharp.App.Event
 			Common.IsRunning = true;
             LuaEnv.LuaEnv.RunLua("", "envent/AppEnable.lua");
             LuaEnv.TimerRun.TimerStart();
+            LuaEnv.TcpServer.Start();
         }
 
 		/// <summary>
