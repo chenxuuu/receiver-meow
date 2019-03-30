@@ -1,6 +1,8 @@
 # receiver-meow
 
-[![Build Status](https://travis-ci.com/chenxuuu/receiver-meow.svg?branch=master)](https://travis-ci.com/chenxuuu/receiver-meow)
+![MIT](https://img.shields.io/github/license/chenxuuu/receiver-meow.svg)
+![Native.SDK](https://img.shields.io/badge/dependencies-Native.SDK-blueviolet.svg)
+![code-size](https://img.shields.io/github/languages/code-size/chenxuuu/receiver-meow.svg)
 
 能运行`lua`脚本的接待喵qq机器人
 
@@ -11,6 +13,20 @@
 - 酷Q接口基本全部提供给了lua层，接口丰富
 - 自带了http(s) post/get、2D图片处理、数据存储(xml)等接口
 - 底层使用C#开发，.net framework 4.5版本
+
+## 脚本已有功能
+
+- 关键词回复及设置
+- 今日运势
+- 查快递
+- 空气质量
+- 点赞
+- qq音乐点歌
+- 根据截图查动画
+- 根据图片查p站id
+- 下象棋
+- 抽奖禁言
+- minecraft消息联通功能（需配合相应插件使用）
 
 ## 说明
 
