@@ -8,13 +8,43 @@ message 消息内容     string类型
 详细请参考readme
 ]]
 
+--添加在线的人
+local function onlineAdd(p)
+    local onlineData = apiXmlGet("minecraftData","[online]")
+    local online = {}--存储在线所有人id
+    if onlineData ~= "" then
+        online = onlineData:split(",")
+    end
+    table.insert(online,p)
+    apiXmlSet("minecraftData","[online]",table.concat(online,","))
+end
+
+--删除在线的人
+local function onlineDel(p)
+    local onlineData = apiXmlGet("minecraftData","[online]")
+    local online = {}--存储在线所有人id
+    if onlineData ~= "" then
+        online = onlineData:split(",")
+    end
+    local onlineResult = {}
+    while #online > 0 do
+        local player = table.remove(online,1)
+        if player ~= p then
+            table.insert(onlineResult,player)
+        end
+    end
+    apiXmlSet("minecraftData","[online]",table.concat(onlineResult,","))
+end
+
 local messageType = message:sub(1,1)
 
 local solve = {
     l = function (msg)
+        onlineAdd(msg)
         cqSendGroupMessage(241464054,msg.."上线了")
     end,
     d = function (msg)
+        onlineDel(msg)
         cqSendGroupMessage(241464054,msg.."掉线了")
     end,
     m = function (msg)
