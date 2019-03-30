@@ -4,6 +4,7 @@ local key = apiXmlGet("settings","trace.moe")
 
 return function (msg)
     local imageUrl = apiGetImageUrl(msg)--获取图片链接
+    if imageUrl == "" then return "未在消息中过滤出图片" end
     local base64 = apiBase64File(imageUrl)--获取base64结果
     local html = apiHttpPost("https://trace.moe/api/search?token="..key,
     "image=data:image/jpeg;base64,"..base64,15000)
