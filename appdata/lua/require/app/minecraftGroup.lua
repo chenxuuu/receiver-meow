@@ -19,6 +19,12 @@ local function pickCode()
     return "数据读取出错啦，请联系服主"
 end
 
+local oldapiTcpSend = apiTcpSend
+apiTcpSend = function (msg)
+    msg = msg:gsub("%[CQ:.-%] ","[特殊]")
+    oldapiTcpSend(msg)
+end
+
 return function (msg,qq,group)
     if group == 241464054 then --玩家群
         local player = apiXmlGet("bindQq",tostring(qq))
