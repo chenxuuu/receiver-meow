@@ -140,6 +140,9 @@ namespace Native.Csharp.App.LuaEnv
             lua.RegisterFunction("apiGetHardDiskFreeSpace", null, typeof(Tools).GetMethod("GetHardDiskFreeSpace"));
             //获取指定驱动器的剩余空间总大小(单位为MB)
 
+            lua.RegisterFunction("apiTcpSend", null, typeof(TcpServer).GetMethod("Send"));
+            //获取指定驱动器的剩余空间总大小(单位为MB)
+
             ///////////////
             //XML操作接口//
             //////////////
