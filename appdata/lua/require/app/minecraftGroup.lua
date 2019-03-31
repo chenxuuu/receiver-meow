@@ -59,6 +59,30 @@ return function (msg,qq,group)
         elseif player == "" then--没绑定id
             cqSendGroupMessage(241464054,cqCode_At(qq).."你没有绑定游戏id，请发送“绑定”加上id，来绑定自己的id")
             return true
+        elseif msg:find("查询.+") == 1 or msg == "查询" then--查询某玩家在线信息
+            local p = msg == "查询" and player or msg:match("查询(%w+)")
+            local onlineData = apiXmlGet("minecraftData",p)
+            if onlineData == "" then
+                local tempqq = msg:match("%d+")
+                if tempqq then
+                    p = apiXmlGet("bindQq",tostring(tempqq))
+                    onlineData = apiXmlGet("minecraftData",p)
+                end
+                if onlineData == "" then
+                    cqSendGroupMessage(241464054,cqCode_At(qq).."未查询到该玩家信息")
+                    return true
+                end
+            end
+            local data = jsonDecode(onlineData)
+            if data.last == "online" then
+                data.time = data.time + os.time() - data.ltime
+            end
+            cqSendGroupMessage(241464054,cqCode_At(qq)..
+                p.."\r\n"..
+                "当前状态："..(data.last == "online" and "在线" or "离线").."\r\n"..
+                "累计在线："..string.format("%d小时%d分钟", math.floor(data.time/(60*60)), math.floor(data.time/60)%60)..
+                (data.last == "online" and "" or "\r\n上次在线时间："..os.date("%Y年%m月%d日",data.ltime)))
+            return true
         elseif msg == "在线" then
             local onlineData = apiXmlGet("minecraftData","[online]")
             local online = {}--存储在线所有人id
@@ -67,6 +91,7 @@ return function (msg,qq,group)
             end
             cqSendGroupMessage(241464054,cqCode_At(qq).."当前在线人数"..tostring(#online).."人："..
                                 (onlineData=="" and "" or "\r\n"..onlineData))
+            return true
         elseif msg == "激活" then--激活
             if step == "pass" then
                 cqSendGroupMessage(241464054,cqCode_At(qq).."已私聊发送激活码")
