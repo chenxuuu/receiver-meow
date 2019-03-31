@@ -48,7 +48,13 @@ local solve = {
         cqSendGroupMessage(241464054,msg.."掉线了")
     end,
     m = function (msg)
-        cqSendGroupMessage(241464054,cqCqCode_Trope(msg))
+        if msg:find("%[主世界%]") or
+           msg:find("%[旧世界%]") or
+           msg:find("%[创造界%]") or
+           msg:find("%[下界%]") or
+           msg:find("%[末地%]") then
+            cqSendGroupMessage(241464054,cqCqCode_Trope(msg))
+        end
     end,
     c = function (msg)
         cqSendGroupMessage(241464054,"服务器已启动完成")
