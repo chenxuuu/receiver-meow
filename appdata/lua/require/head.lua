@@ -29,6 +29,14 @@ function jsonDecode(s)
         return {}, false, info
     end
 end
+function jsonEncode(t)
+    local result, info = pcall(function(t) return JSON:encode(t) end, t)
+    if result then
+        return info, true
+    else
+        return "", false, info
+    end
+end
 
 --修正http接口可选参数
 local oldapiHttpGet = apiHttpGet
