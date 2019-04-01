@@ -1,33 +1,19 @@
 local codePath = [[D:\kuqpro\data\app\com.papapoi.ReceiverMeow\lua\require\app\code.txt]]
 
---取一条激活码
-local function pickCode()
-    local file = io.open(codePath, "r")
-    if not file then
-        return "数据读取出错啦，请联系服主"
-    end
-    local all = file:read("*a"):split("\n")
-    file:close()
-    file = io.open(codePath, "w")
-    if all and #all > 0 then
-        local code = table.remove(all,1)
-        file:write(table.concat(all, "\n"))
-        file:close()
-        return code,true
-    end
-    file:close()
-    return "数据读取出错啦，请联系服主"
-end
-
 local oldapiTcpSend = apiTcpSend
 apiTcpSend = function (msg,cmd)
-    if cmd then oldapiTcpSend("cmd"..msg) end
+    if cmd then oldapiTcpSend("cmd"..msg) return end
     msg = msg:gsub("%[CQ:.-%]","[特殊]"):gsub("\r","")
     oldapiTcpSend(msg)
 end
 
 return function (msg,qq,group)
-    if group == 241464054 then --玩家群
+    if msg:find("命令") == 1 and qq == 961726194 then
+        local cmd = msg:sub(("命令"):len()+1)
+        apiTcpSend(cmd,true)
+        cqSendGroupMessage(group,cqCode_At(qq).."命令"..cmd.."已执行")
+        return true
+    elseif group == 241464054 then --玩家群
         local player = apiXmlGet("bindQq",tostring(qq))
         local step = apiXmlGet("bindStep",tostring(qq))
         apiTcpSend("[群消息]["..(player == "" and "无名氏"..tostring(qq) or player).."]"..msg)
@@ -94,19 +80,15 @@ return function (msg,qq,group)
                                 (onlineData=="" and "" or "\r\n"..onlineData))
             return true
         elseif msg == "激活" then--激活
-            if step == "pass" then
-                cqSendGroupMessage(241464054,cqCode_At(qq).."已私聊发送激活码")
-                local code,r = pickCode()
-                if r then
-                    cqSendPrivateMessage(qq,"获取权限，请在游戏内输入命令/giftCode use "..code)
+            if step == "pass" or step == "done" then
+                cqSendGroupMessage(241464054,cqCode_At(qq).."已给予玩家"..player.."权限")
+                apiTcpSend("lp user "..player.." permission set group.whitelist",true)
+                apiTcpSend("lp user "..player.." permission unset group.default",true)
+                if step == "pass" then
                     apiXmlSet("bindStep",tostring(qq),"done")
-                else
-                    cqSendGroupMessage(241464054,cqCode_At(961726194).."激活码获取失败了，快出来修你的垃圾代码")
                 end
             elseif step == "waiting" then
                 cqSendGroupMessage(241464054,cqCode_At(qq).."你还没通过审核呢")
-            elseif step == "done" then
-                cqSendGroupMessage(241464054,cqCode_At(qq).."你已经领过激活码了")
             end
             return true
         elseif msg == "催促审核" and step == "waiting" then--催促审核
@@ -141,7 +123,7 @@ return function (msg,qq,group)
                 apiXmlSet("bindStep",tostring(qq),"pass")
                 cqSendGroupMessage(567145439,"已通过"..player.."的白名单申请")
                 cqSendGroupMessage(241464054,cqCode_At(qq).."你的白名单申请已经通过了哟~\r\n"..
-                            "在群里发送“激活”即可获取激活账号的方法哦~\r\n"..
+                            "游戏上线后，在群里发送“激活”即可获取权限~\r\n"..
                             "你的id："..player)
             end
             return true
@@ -164,6 +146,7 @@ return function (msg,qq,group)
         elseif msg == "清空在线" then
             apiXmlSet("minecraftData","[online]","")
             cqSendGroupMessage(567145439,cqCode_At(qq).."已清空所有在线信息")
+            return true
         end
     end
 end
