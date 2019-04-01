@@ -20,7 +20,8 @@ local function pickCode()
 end
 
 local oldapiTcpSend = apiTcpSend
-apiTcpSend = function (msg)
+apiTcpSend = function (msg,cmd)
+    if cmd then oldapiTcpSend("cmd"..msg) end
     msg = msg:gsub("%[CQ:.-%]","[特殊]"):gsub("\r","")
     oldapiTcpSend(msg)
 end
