@@ -233,6 +233,22 @@ local apps = {
             return "[CQ:emoji,id=128142]抽奖"
         end
     },
+    {--测试代码
+        check = function ()
+            return msg:find("#lua") == 1 and qq == admin
+        end,
+        run = function ()
+            local result, info = pcall(function ()
+                load(msg:sub(5))()
+            end)
+            if result then
+                sendMessage(cqCode_At(qq).."成功运行")
+            else
+                sendMessage(cqCode_At(qq).."运行失败\r\n"..info)
+            end
+            return true
+        end
+    },
     {--!addadmin
         check = function ()
             return (msg:find("！ *addadmin *.+") == 1 or msg:find("! *addadmin *.+") == 1) and
