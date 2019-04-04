@@ -1,5 +1,3 @@
-local codePath = [[D:\kuqpro\data\app\com.papapoi.ReceiverMeow\lua\require\app\code.txt]]
-
 local oldapiTcpSend = apiTcpSend
 apiTcpSend = function (msg,cmd)
     if cmd then oldapiTcpSend("cmd"..msg) return end
@@ -122,7 +120,7 @@ return function (msg,qq,group)
             else
                 apiXmlSet("bindStep",tostring(qq),"pass")
                 cqSendGroupMessage(567145439,"已通过"..player.."的白名单申请")
-                cqSendGroupMessage(241464054,cqCode_At(qq).."你的白名单申请已经通过了哟~\r\n"..
+                cqSendGroupMessage(241464054,cqCode_At(tonumber(qq)).."你的白名单申请已经通过了哟~\r\n"..
                             "游戏上线后，在群里发送“激活”即可获取权限~\r\n"..
                             "你的id："..player)
             end
@@ -137,7 +135,7 @@ return function (msg,qq,group)
                 cqSendGroupMessage(567145439,"玩家"..player.."不在待审核名单中")
             else
                 cqSendGroupMessage(567145439,"已打回"..player.."的白名单申请，原因："..reason)
-                cqSendGroupMessage(241464054,cqCode_At(qq).."你的白名单申请并没有通过。\r\n"..
+                cqSendGroupMessage(241464054,cqCode_At(tonumber(qq)).."你的白名单申请并没有通过。\r\n"..
                             "原因："..reason.."\r\n"..
                             "请按照原因重新填写白名单：https://wj.qq.com/s/1308067/143c\r\n"..
                             "你的id："..player)
