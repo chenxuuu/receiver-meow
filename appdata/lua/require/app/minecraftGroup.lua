@@ -79,11 +79,22 @@ return function (msg,qq,group)
             return true
         elseif msg == "激活" then--激活
             if step == "pass" or step == "done" then
-                cqSendGroupMessage(241464054,cqCode_At(qq).."已给予玩家"..player.."权限")
-                apiTcpSend("lp user "..player.." permission set group.whitelist",true)
-                apiTcpSend("lp user "..player.." permission unset group.default",true)
-                if step == "pass" then
-                    apiXmlSet("bindStep",tostring(qq),"done")
+                local onlineData = apiXmlGet("minecraftData",player)
+                local data = onlineData == "" and
+                {
+                    time = 0,
+                    last = "offline",
+                    ltime = os.time(),
+                } or jsonDecode(onlineData)
+                if data.last == "offline" then
+                    cqSendGroupMessage(241464054,cqCode_At(qq).."请上线后再操作")
+                else
+                    cqSendGroupMessage(241464054,cqCode_At(qq).."已给予玩家"..player.."权限")
+                    apiTcpSend("lp user "..player.." permission set group.whitelist",true)
+                    apiTcpSend("lp user "..player.." permission unset group.default",true)
+                    if step == "pass" then
+                        apiXmlSet("bindStep",tostring(qq),"done")
+                    end
                 end
             elseif step == "waiting" then
                 cqSendGroupMessage(241464054,cqCode_At(qq).."你还没通过审核呢")
@@ -104,6 +115,8 @@ return function (msg,qq,group)
             if player ~= "" then
                 apiXmlDelete("bindStep",tostring(qq))
                 apiXmlDelete("bindQq",tostring(qq))
+                apiTcpSend("lp user "..player.." permission set group.default",true)
+                apiTcpSend("lp user "..player.." permission unset group.whitelist",true)
                 cqSendGroupMessage(567145439,"已删除玩家"..player.."的绑定信息")
             else
                 cqSendGroupMessage(567145439,"没找到这个玩家")
