@@ -105,7 +105,8 @@ local solve = {
            msg:find("%[旧世界%]") or
            msg:find("%[创造界%]") or
            msg:find("%[下界%]") or
-           msg:find("%[末地%]") then
+           msg:find("%[末地%]") or
+           msg:find("%[二周目%]") then
             cqSendGroupMessage(241464054,cqCqCode_Trope(msg))
         end
     end,
