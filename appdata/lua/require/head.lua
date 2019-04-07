@@ -4,14 +4,17 @@
 --加强随机数随机性
 math.randomseed(tostring(os.time()):reverse():sub(1, 6))
 
---防止跑死循环，超时15秒自动结束
+--防止跑死循环，超时设置秒数自动结束，-1表示禁用
+local maxSeconds = -1
 local start = os.time()
 function trace (event, line)
-    if os.time() - start >=15 then
-        error("代码运行超时，超过15秒")
+    if os.time() - start >=maxSeconds then
+        error("代码运行超时")
     end
 end
-debug.sethook(trace, "l")
+if maxSeconds > 0 then
+    debug.sethook(trace, "l")
+end
 
 --加上需要require的路径
 package.path = package.path..
