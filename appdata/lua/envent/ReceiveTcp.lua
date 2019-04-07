@@ -110,13 +110,15 @@ local solve = {
            msg:find("%[三周目%]") or
            msg:find("%[三周目雪世界%]") or
            msg:find("%[四周目%]") or
-           msg:find("%[四周目雪世界%]") then
+           msg:find("%[四周目雪世界%]") or
+           msg:find("%[资源世界%]") then
             cqSendGroupMessage(241464054,cqCqCode_Trope(msg))
         end
     end,
     c = function (msg)
         cqSendGroupMessage(241464054,"服务器已启动完成")
         onlineClear()
+        apiTcpSend("cmdworld create mine")
     end,
 }
 

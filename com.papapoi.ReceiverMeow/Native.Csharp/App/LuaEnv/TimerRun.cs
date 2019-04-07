@@ -29,6 +29,9 @@ namespace Native.Csharp.App.LuaEnv
             int intMinute = e.SignalTime.Minute;
             int intSecond = e.SignalTime.Second;
 
+            if (intSecond == 0)//每分钟执行脚本
+                LuaEnv.RunLua("", "envent/TimerMinute.lua");
+
             //删除过期图片文件
             DirectoryInfo downloadDir = new DirectoryInfo(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "data/image/");
             FileSystemInfo[] downloadFiles = downloadDir.GetFileSystemInfos();
