@@ -1,8 +1,9 @@
 # receiver-meow
 
-![MIT](https://img.shields.io/github/license/chenxuuu/receiver-meow.svg)
-![Native.SDK](https://img.shields.io/badge/dependencies-Native.SDK-blueviolet.svg)
-![code-size](https://img.shields.io/github/languages/code-size/chenxuuu/receiver-meow.svg)
+[![MIT](https://img.shields.io/github/license/chenxuuu/receiver-meow.svg)](https://github.com/chenxuuu/receiver-meow/blob/master/LICENSE)
+[![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
+[![Native.SDK](https://img.shields.io/badge/dependencies-Native.SDK-blueviolet.svg)](https://github.com/Jie2GG/Native.Csharp.Frame)
+[![code-size](https://img.shields.io/github/languages/code-size/chenxuuu/receiver-meow.svg)](https://github.com/chenxuuu/receiver-meow/archive/master.zip)
 
 能运行`lua`脚本的接待喵qq机器人
 
@@ -47,5 +48,3 @@ lua代码全部在`appdata`文件夹中
 ## 结尾
 
 插件基于[Native.SDK](https://github.com/Jie2GG/Native.Csharp.Frame)
-
-MIT协议
