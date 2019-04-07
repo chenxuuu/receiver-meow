@@ -4,7 +4,7 @@
 [![Native.SDK](https://img.shields.io/badge/dependencies-Native.SDK-blueviolet.svg)](https://github.com/Jie2GG/Native.Csharp.Frame)
 [![code-size](https://img.shields.io/github/languages/code-size/chenxuuu/receiver-meow.svg)](https://github.com/chenxuuu/receiver-meow/archive/master.zip)
 
-能运行`lua`脚本的接待喵qq机器人
+能运行`lua`脚本的接待喵qq机器人，欢迎加入交流群`931546484`
 
 ## 功能特点
 
