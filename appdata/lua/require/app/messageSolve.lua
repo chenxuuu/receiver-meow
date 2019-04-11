@@ -222,15 +222,15 @@ local apps = {
     },
     {--抽奖
         check = function ()
-            return msg == "抽奖"
+            return msg == "抽奖" or msg:find("禁言") == 1
         end,
         run = function ()
             local banPlay = require("app.banPlay")
-            sendMessage(banPlay(qq,group))
+            sendMessage(banPlay(msg,qq,group))
             return true
         end,
         explain = function ()
-            return "[CQ:emoji,id=128142]抽奖"
+            return "[CQ:emoji,id=128142]抽奖/禁言卡"
         end
     },
     {--测试代码
