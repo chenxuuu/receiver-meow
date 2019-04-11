@@ -21,12 +21,12 @@ return function (msg,qq,g)
     elseif msg == "禁言卡" then
 
         return cqCode_At(qq).."当前禁言卡数量："..tostring(cards)
-    elseif msg:find("%d") then
+    elseif msg:find("%d+") then
         if cards <= 0 then
             return cqCode_At(qq).."你只有"..tostring(cards).."张禁言卡，无法操作"
         end
         apiXmlSet("banCard",tostring(qq),tostring(cards-1))
-        local v = tonumber(msg:match("%d"))
+        local v = tonumber(msg:match("(%d+)"))
         local banTime = math.random(1,60)
         cqSetGroupBanSpeak(g,v,banTime*60)
         return cqCode_At(qq).."已将"..tostring(v).."禁言"..tostring(banTime).."分钟"
