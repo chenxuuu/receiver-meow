@@ -1,11 +1,11 @@
 --统一的消息处理函数
-local msg,qq,group,id
+msg,qq,group,id = nil,nil,nil,nil
 local handled = false
 local admin = 961726194
 
 --发送消息
 --自动判断群聊与私聊
-local function sendMessage(s)
+function sendMessage(s)
     if group then
         cqSendGroupMessage(group,s)
     else
@@ -239,6 +239,9 @@ local apps = {
         end,
         run = function ()
             local result, info = pcall(function ()
+                print = function (s)
+                    sendMessage(tostring(s))
+                end
                 load(msg:sub(5))()
             end)
             if result then
