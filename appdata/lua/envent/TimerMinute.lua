@@ -31,3 +31,27 @@ end
 if time.min == 0 and time.hour == 5 then
     apiTcpSend("cmdworld create mine")
 end
+
+--检查GitHub项目是否有更新
+local githubRss = apiHttpGet("https://github.com/chenxuuu/receiver-meow/commits/master.atom")
+if githubRss or githubRss ~= "" then--获取成功的话
+    local xml2lua = require("xml2lua")
+    --Uses a handler that converts the XML to a Lua table
+    local handler = require("xmlhandler.tree")
+    local parser = xml2lua.parser(handler)
+    parser:parse(githubRss)
+    local lastUpdate = handler.root.feed.updated
+    if lastUpdate and lastUpdate ~= apiXmlGet("settings","githubLastUpdate") then
+        apiXmlSet("settings","githubLastUpdate",lastUpdate)
+        for i,j in pairs(handler.root.feed.entry) do
+            local toSend = "接待喵lua插件在GitHub上有更新啦\r\n"..
+            "更新时间："..(lastUpdate):gsub("T"," "):gsub("Z"," ").."\r\n"..
+            "提交内容："..j.title.."\r\n"..
+            "查看变动代码："..j.link._attr.href
+            cqSendGroupMessage(931546484, toSend)
+            break
+        end
+    end
+end
+
+
