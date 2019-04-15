@@ -44,7 +44,7 @@ if time.min % 10 == 0 then--十分钟检查一次
         local parser = xml2lua.parser(handler)
         parser:parse(githubRss)
         local lastUpdate = handler.root.feed.updated
-        if lastUpdate and lastUpdate == apiXmlGet("settings","githubLastUpdate") then
+        if lastUpdate and lastUpdate ~= apiXmlGet("settings","githubLastUpdate") then
             apiXmlSet("settings","githubLastUpdate",lastUpdate)
             for i,j in pairs(handler.root.feed.entry) do
                 --缩短网址
