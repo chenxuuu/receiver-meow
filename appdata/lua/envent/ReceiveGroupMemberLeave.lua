@@ -13,4 +13,4 @@ handled = true
 详细请参考readme
 ]]
 
-
+cqSendGroupMessage(fromgroup,tostring(fromqq).."永远地离开了这个世界。。")

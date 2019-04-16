@@ -4,7 +4,6 @@
 提前收到的声明数据为：
 fromqq      被操作qq号码    number类型
 fromgroup   消息的群号码    number类型
-fileName    文件名          string类型
 
 注意：拦截消息后请将变量handled置true，表示消息已被拦截，如：
 handled = true
@@ -13,5 +12,5 @@ handled = true
 详细请参考readme
 ]]
 
-
-
+cqSendGroupMessage(fromgroup,"欢迎"..cqCode_At(fromqq).."加入本群！")
+cqSetGroupMemberNewCard(fromgroup,fromqq,"没有名字的笨蛋")
