@@ -233,6 +233,19 @@ local apps = {
             return "[CQ:emoji,id=128142]抽奖/禁言卡"
         end
     },
+    {--直链
+        check = function ()
+            return msg:find("直链") == 1
+        end,
+        run = function ()
+            local reply = apiGetImageUrl(msg)
+            sendMessage(reply == "" and "未过滤出图片" or reply)
+            return true
+        end,
+        explain = function ()
+            return "[CQ:emoji,id=128247]直链+图片"
+        end
+    },
     {--测试代码
         check = function ()
             return msg:find("#lua") == 1 and qq == admin
