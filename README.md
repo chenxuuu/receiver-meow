@@ -28,6 +28,14 @@
 - 抽奖禁言
 - minecraft消息联通功能（需配合相应插件使用）
 
+## lua接口列表
+
+请见[api.md](api.md)
+
+## 自行编写lua功能的教程（供初学者使用）
+
+[接待喵lua插件教程](https://www.chenxublog.com/?s=%E6%8E%A5%E5%BE%85%E5%96%B5lua%E6%8F%92%E4%BB%B6%E6%95%99%E7%A8%8B&submit=%E6%90%9C%E7%B4%A2)
+
 ## 说明
 
 lua代码全部在`appdata`文件夹中
