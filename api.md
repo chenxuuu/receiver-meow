@@ -148,72 +148,73 @@ string.toHex("123abc"," ") --> "31 32 33 61 62 63 " 6
 
 ## 酷q接口
 
-### cqCode_At(long qq)
+### cqCqCode_At(long qq)
 
 - 获取酷Q "At某人" 代码
 - 返回值：string
 
-### cqCode_Emoji(int id)
+### cqCqCode_Emoji(int id)
 
 - 获取酷Q "emoji表情" 代码
 - 返回值：string
 
-### cqCode_Face(int id)
+### cqCqCode_Face(int id)
 
 - 获取酷Q "表情" 代码
 - 返回值：string
 
-### cqCode_Shake()
+### cqCqCode_Shake()
 
 - 获取酷Q "窗口抖动" 代码
 - 返回值：string
 
-### cqCode_Trope(string str)
+### cqCqCode_Trope(string str)
 
 - 获取字符串的转义形式
 - 返回值：string
 
-### cqCode_UnTrope(string str)
+### cqCqCode_UnTrope(string str)
 
 - 获取字符串的非转义形式
 - 返回值：string
 
-### cqCode_ShareLink(string url, string title, string content, string imgUrl)
+### cqCqCode_ShareLink(string url, string title, string content, string imgUrl)
 
 - 获取酷Q "链接分享" 代码
 - 返回值：string
 
-### cqCode_ShareCard(string cardType, long id)
+### cqCqCode_ShareCard(string cardType, long id)
 
 - 获取酷Q "名片分享" 代码
+- cardType：qq或group
 - 返回值：string
 
-### cqCode_ShareGPS(string site, string detail, double lat, double lon, int zoom)
+### cqCqCode_ShareGPS(string site, string detail, double lat, double lon, int zoom)
 
 - 获取酷Q "位置分享" 代码
 - 返回值：string
 
-### cqCode_Anonymous(bool forced)
+### cqCqCode_Anonymous(bool forced)
 
 - 获取酷Q "匿名" 代码
 - 返回值：string
 
-### cqCode_Image(string path)
+### cqCqCode_Image(string path)
 
 - 获取酷Q "图片" 代码
 - 返回值：string
 
-### cqCode_Music(long id, string type, bool newStyle)
+### cqCqCode_Music(long id, string type, bool newStyle)
 
 - 获取酷Q "音乐" 代码
 - 返回值：string
 
-### cqCode_MusciDIY(string url, string musicUrl, string title, string content, string imgUrl)
+### cqCqCode_MusciDIY(string url, string musicUrl, string title, string content, string imgUrl)
 
 - 获取酷Q "音乐自定义" 代码
 - 返回值：string
 
-### cqCode_Record(string path)
+### cqCqCode_Record(string path)
 
 - 获取酷Q "语音" 代码
 - 返回值：string
