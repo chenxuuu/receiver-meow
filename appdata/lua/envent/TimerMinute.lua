@@ -56,8 +56,10 @@ if time.min % 10 == 0 then--十分钟检查一次
                 "更新时间："..(lastUpdate):gsub("T"," "):gsub("Z"," ").."\r\n"..
                 "提交内容："..j.title.."\r\n"..
                 "查看变动代码："..shortUrl
-                print(toSend)
-                --cqSendGroupMessage(931546484, toSend)
+                --print(toSend)
+                cqSendGroupMessage(931546484, toSend)
+				cqSendGroupMessage(567145439, toSend)
+				cqSendGroupMessage(454493790, toSend)
                 break
             end
         end
