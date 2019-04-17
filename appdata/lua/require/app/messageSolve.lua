@@ -7,7 +7,10 @@ local admin = 961726194
 --自动判断群聊与私聊
 function sendMessage(s)
     if group then
-        cqSendGroupMessage(group,s)
+        if cqSendGroupMessage(group,s) == -34 then
+            --在群内被禁言了，打上标记
+            apiXmlSet("ban",tostring(group),tostring(os.time()))
+        end
     else
         cqSendPrivateMessage(qq,s)
     end
@@ -363,6 +366,17 @@ local apps = {
 
 --对外提供的函数接口
 return function (inmsg,inqq,ingroup,inid)
+    --禁言锁，最长持续一个月
+    if (tonumber(apiXmlGet("ban",tostring(ingroup))) or 0) > os.time() - 3600 * 24 * 30 then
+        if inmsg:find("%("..tostring(cqGetLoginQQ()).."%) 被管理员解除禁言") then
+            apiXmlDelete("ban",tostring(ingroup))
+        else
+            return false
+        end
+    elseif inmsg:find("%("..tostring(cqGetLoginQQ()).."%) 被管理员禁言") then
+        apiXmlSet("ban",tostring(group),tostring(os.time()))
+    end
+
     msg,qq,group,id = inmsg,inqq,ingroup,inid
     if msg:lower()=="help" or msg=="帮助" or msg=="菜单" then
         local allApp = {}
