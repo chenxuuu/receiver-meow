@@ -97,7 +97,7 @@ else
 end
 ```
 
-### jsonEncode(string) json编码
+### jsonEncode(table) json编码
 
 参考上面用法
 
