@@ -59,7 +59,7 @@ if time.min % 10 == 0 then--十分钟检查一次
                 --print(toSend)
                 cqSendGroupMessage(931546484, toSend)
 				cqSendGroupMessage(567145439, toSend)
-				cqSendGroupMessage(454493790, toSend)
+				--cqSendGroupMessage(454493790, toSend)
                 break
             end
         end
