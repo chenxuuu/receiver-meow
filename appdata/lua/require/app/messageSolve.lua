@@ -246,6 +246,45 @@ local apps = {
             return "[CQ:emoji,id=128247]直链+图片"
         end
     },
+    {--b站av号解析
+        check = function ()
+            return msg:find("av%d+")
+        end,
+        run = function ()
+            local av = require("app.av")
+            sendMessage(av(msg))
+            return true
+        end,
+        explain = function ()
+            return "[CQ:emoji,id=127902]b站av号解析"
+        end
+    },
+    {--一言
+        check = function ()
+            return msg == "一言"
+        end,
+        run = function ()
+            local hitokoto = require("app.hitokoto")
+            sendMessage(hitokoto())
+            return true
+        end,
+        explain = function ()
+            return "[CQ:emoji,id=128226]一言"
+        end
+    },
+    {--必应美图
+        check = function ()
+            return msg:find("必应") == 1 and (message:find("美图") or message:find("壁纸"))
+        end,
+        run = function ()
+            local bing = require("app.bing")
+            sendMessage(bing())
+            return true
+        end,
+        explain = function ()
+            return "[CQ:emoji,id=127964]必应壁纸"
+        end
+    },
     {--测试代码
         check = function ()
             return msg:find("#lua") == 1 and qq == admin
