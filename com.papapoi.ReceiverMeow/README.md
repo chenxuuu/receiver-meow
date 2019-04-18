@@ -45,6 +45,46 @@
 > 4. ~~对于接收消息时, 颜文字表情, 特殊符号乱码, 当前正在寻找转换方式~~ <font color=#FF0000>(已修复)</font>
 
 ## Native.SDK 更新日志
+> 2019年04月09日 版本: V2.7.3
+
+	1. 修复 CqMsg 类针对 VS2012 的兼容问题
+	2. 修复 HttpWebClient 类在增加 Cookies 时, 参数 "{0}" 为空字符串的异常
+	3. 新增 HttpWebClient 类属性 "KeepAlive", 允许指定 HttpWebClient 在做请求时是否建立持续型的 Internal 连接
+
+> 2019年04月06日 版本: V2.7.2
+
+	1. 优化 Native.Csharp.Sdk 项目的结构, 修改类: CqApi 的命名空间
+	2. 新增 消息解析类: CqMsg
+	
+``` C#
+// 使用方法如下, 例如在群消息接受方法中
+public void ReceiveGroupMessage (object sender, GroupMessageEventArgs e)
+{
+	var parseResult = CqMsg.Parse (e.Msg);		// 使用消息解析
+	List<CqCode> cqCodes =  parseResult.Contents;	// 获取消息中所有的 CQ码
+	
+	// 此时, 获取到的 cqCodes 中就包含此条消息所有的 CQ码
+}
+```
+
+> 2019年03月12日 版本: V2.7.1
+
+	1. 新增 Sex 枚举中未知性别, 值为 255
+	2. 优化 IOC 容器在获取对象时, 默认拉取所有注入的对象, 简化消息类接口的注入流程.
+
+> 2019年03月03日 版本: V2.7.0
+
+	本次更新于响应 "酷Q" 官方 "易语言 SDK" 的迭代更新
+	
+	1. 新增 CqApi.ReceiveImage (用于获取消息中 "图片" 的绝对路径)
+	2. 新增 CqApi.GetSendRecordSupport (用于获取 "是否支持发送语音", 即用于区别 Air 和 Pro 版本之间的区别)
+	3. 新增 CqApi.GetSendImageSupport (用于获取 "是否支持发送图片", 即用于区别 Air 和 Pro 版本指间的区别)
+	4. 优化 CqApi.ReceiveRecord 方法, 使其获取到的语音路径为绝对路径, 而非相对路径
+
+> 2019年02月26日 版本: V2.6.4
+
+	1. 默认注释 Event_GroupMessage 中 ReceiveGroupMessage 方法的部分代码, 防止因为机器人复读群消息而禁言
+
 > 2019年02月20日 版本: V2.6.3
 
 	1. 还原 Event_AppMain.Resolvebackcall 方法的执行, 防止偶尔获取不到注入的类
