@@ -22,7 +22,7 @@ local pic = img:new(1000,1000)
 pic:setBlock(1,1,1000,1000,255,0,255)
 --img:setImg 附加图片，传入值为：起始x坐标,起始y坐标,图片绝对路径,[图片宽度,图片高度]
 pic:setImg(1,1,[[D:\kuqpro\data\image\00EBED617380C9AE4D815333091E590E.png]])
---img:setImg 附加文字，传入值为：起始x坐标,起始y坐标,文字内容,[字体名称,字体大小,颜色R值,颜色G值,颜色B值]
+--img:setText 附加文字，传入值为：起始x坐标,起始y坐标,文字内容,[字体名称,字体大小,颜色R值,颜色G值,颜色B值]
 pic:setText(1,1,"测试",nil,25,0,255,255)
 --img:get 获取图片结果
 cqSendGroupMessage(group,pic:get())
