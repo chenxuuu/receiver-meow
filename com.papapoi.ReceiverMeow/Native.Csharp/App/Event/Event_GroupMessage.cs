@@ -1,4 +1,4 @@
-﻿using Native.Csharp.Sdk.Cqp.Api;
+﻿using Native.Csharp.Sdk.Cqp;
 using Native.Csharp.Sdk.Cqp.Model;
 using System;
 using System.Collections.Generic;
@@ -30,7 +30,6 @@ namespace Native.Csharp.App.Event
                 $"fromAnonymous={e.IsAnonymousMsg.ToString().ToLower()}",
                 "envent/ReceiveGroupMessage.lua");
 
-            //e.Handled = true;   // 关于返回说明, 请参见 "Event_FriendMessage.ReceiveFriendMessage" 方法
 		}
 
 		/// <summary>
