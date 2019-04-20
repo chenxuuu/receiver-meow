@@ -4,7 +4,7 @@ local key = apiXmlGet("settings","saucenao")
 
 local function getPixivId(pic)
     local html = apiHttpGet("https://saucenao.com/search.php?"..(key and "api_key="..key.."&" or "")..
-        "db=999&output_type=2&numres=16&url="..pic:urlEncode())
+        "db=999&output_type=2&numres=16&url="..pic:urlEncode(),"",30000)
     local t,r,_ = jsonDecode(html)
     if not r or not t then return "查找失败" end
     if not t.results or #t.results==0 then return "未找到结果" end
@@ -15,6 +15,9 @@ local function getPixivId(pic)
             (t.results[i].data.title and t.results[i].data.title or "").."\r\n"..
             (t.results[i].data.pixiv_id and "p站id："..t.results[i].data.pixiv_id or "").."\r\n"..
             (t.results[i].data.member_name and "画师："..t.results[i].data.member_name or "").."\r\n"..
+            (t.results[i].data.ext_urls[1] and t.results[i].data.ext_urls[1] or "")
+        elseif tonumber(t.results[i].header.similarity) > 70 then
+            return (t.results[i].header.thumbnail and image(t.results[i].header.thumbnail) or "").."\r\n"..
             (t.results[i].data.ext_urls[1] and t.results[i].data.ext_urls[1] or "")
         end
     end

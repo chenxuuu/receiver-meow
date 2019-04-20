@@ -13,5 +13,11 @@ handled = true
 详细请参考readme
 ]]
 
---cqSetGroupAddRequest(tag,2,1,"")        --同意邀请
---cqSetGroupAddRequest(tag,2,2,"不加新群") --拒绝邀请
+if fromqq == admin then--管理员邀请
+    cqSetGroupAddRequest(tag,2,1,"同意邀请操作")        --同意邀请
+end
+
+
+cqSetGroupAddRequest(tag,2,2,"不加新群"..tostring(fromqq)) --拒绝邀请
+
+handled = true
