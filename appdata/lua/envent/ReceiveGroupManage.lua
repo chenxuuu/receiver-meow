@@ -13,5 +13,5 @@ handled = true
 详细请参考readme
 ]]
 
-
-
+cqSendGroupMessage(fromgroup,"群成员"..cqCode_At(fromqq)..(manager and "成为了狗管理！" or "变成了普通人"))
+handled = true

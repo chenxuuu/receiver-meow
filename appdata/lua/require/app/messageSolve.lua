@@ -1,7 +1,6 @@
 --统一的消息处理函数
 msg,qq,group,id = nil,nil,nil,nil
 local handled = false
-local admin = 961726194
 
 --发送消息
 --自动判断群聊与私聊
@@ -387,7 +386,7 @@ return function (inmsg,inqq,ingroup,inid)
             end
         end
         sendMessage("[CQ:emoji,id=128172]命令帮助\r\n"..table.concat(allApp, "\r\n")..
-        "\r\n[CQ:emoji,id=128483]自己运行/反馈：https://github.com/chenxuuu/receiver-meow")
+        "\r\n[CQ:emoji,id=128483]开源代码：https://github.com/chenxuuu/receiver-meow")
         return true
     end
 

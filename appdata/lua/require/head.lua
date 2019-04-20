@@ -1,6 +1,9 @@
 --提前运行的脚本
 --用于提前声明某些要用到的函数
 
+--管理员账号，注意修改
+admin = 961726194
+
 --加强随机数随机性
 math.randomseed(tostring(os.time()):reverse():sub(1, 6))
 
