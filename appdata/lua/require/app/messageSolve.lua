@@ -235,6 +235,19 @@ local apps = {
             return "[CQ:emoji,id=128142]抽奖/禁言卡"
         end
     },
+    {--签到
+        check = function ()
+            return msg == "签到" or msg:find("%[CQ:sign,") == 1
+        end,
+        run = function ()
+            local sign = require("app.sign")
+            sendMessage(cqCode_At(qq)..sign(qq))
+            return true
+        end,
+        explain = function ()
+            return "[CQ:emoji,id=9728]签到"
+        end
+    },
     {--直链
         check = function ()
             return msg:find("直链") == 1
