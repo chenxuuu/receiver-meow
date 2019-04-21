@@ -382,7 +382,7 @@ return function (inmsg,inqq,ingroup,inid)
     if (tonumber(apiXmlGet("ban",tostring(ingroup))) or 0) > os.time() - 3600 * 24 * 30 then
         if inmsg:find("%("..tostring(cqGetLoginQQ()).."%) 被管理员解除禁言") then
             apiXmlDelete("ban",tostring(ingroup))
-        else
+        elseif ingroup then
             return false
         end
     elseif inmsg:find("%("..tostring(cqGetLoginQQ()).."%) 被管理员禁言") then
