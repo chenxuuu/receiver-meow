@@ -390,16 +390,31 @@ return function (inmsg,inqq,ingroup,inid)
     end
 
     msg,qq,group,id = inmsg,inqq,ingroup,inid
-    if msg:lower()=="help" or msg=="帮助" or msg=="菜单" then
+    --帮助列表每页最多显示数量
+    local maxEachPage = 8
+    --匹配是否需要获取帮助
+    if msg:lower():find("help *%d*") or msg:find("帮助 *%d*") or msg:find("菜单 *%d*") then
+        local page = msg:lower():match("help *(%d+)") or msg:match("帮助 *(%d+)") or
+                     msg:find("菜单 *(%d+)") or 1
+        page = tonumber(page)--获取页码
+        local maxPage = math.ceil(#apps/maxEachPage)
+        page = page > maxPage and maxPage or page
+
+        --开始与结束序号
+        local fromApp = (page - 1) * maxEachPage + 1
+        local endApp = fromApp + maxEachPage - 1
+        endApp = endApp > #apps and #apps or endApp
+
         local allApp = {}
-        for i=1,#apps do
+        for i=fromApp,endApp do
             local appExplain = apps[i].explain and apps[i].explain()
             if appExplain then
                 table.insert(allApp, appExplain)
             end
         end
-        sendMessage("[CQ:emoji,id=128172]命令帮助\r\n"..table.concat(allApp, "\r\n")..
-        "\r\n[CQ:emoji,id=128483]开源代码：https://github.com/chenxuuu/receiver-meow")
+        sendMessage("[CQ:emoji,id=128172]命令帮助("..tostring(page).."/"..tostring(maxPage)..")\r\n"..
+        table.concat(allApp, "\r\n").."\r\n"..
+        "[CQ:emoji,id=128483]开源代码：https://github.com/chenxuuu/receiver-meow")
         return true
     end
 
