@@ -1,7 +1,7 @@
 --签到
 
 return function (qq)
-    local day = math.floor(os.time()/(3600*24))--取整，今天
+    local day = os.date("%Y年%m月%d日")--今天
     local signData = apiXmlGet("sign",tostring(qq))
     local data = signData == "" and
     {
@@ -13,7 +13,7 @@ return function (qq)
         return "你已经签过到啦"
     end
 
-    if data.last == day - 1 then
+    if data.last == os.date("%Y年%m月%d日",os.time()-3600*24) then
         data.count = data.count + 1
     else
         data.count = 1

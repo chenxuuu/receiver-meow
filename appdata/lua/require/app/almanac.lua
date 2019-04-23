@@ -718,7 +718,7 @@ function getAlmanac(time,fromqq)
     "[CQ:emoji,id=127538]忌：\r\n"..badthings[ran[5]]..
     "\r\n"..badthings[ran[6]]..
     "\r\n"..
-    "[CQ:emoji,id=128197]日期："..os.date("%Y年%m月%d日").."\r\n"..
+    "[CQ:emoji,id=128197]日期："..os.date("%Y年%m月%d日",time).."\r\n"..
     "[CQ:emoji,id=127919]综合幸运指数："..tostring(math.random(0,100)).."%\r\n"..
     "[CQ:emoji,id=128221]当日吉言："..says[math.random(1,#says)])
 end
