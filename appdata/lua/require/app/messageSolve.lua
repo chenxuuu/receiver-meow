@@ -309,7 +309,7 @@ local apps = {
                 print = function (s)
                     sendMessage(tostring(s))
                 end
-                load(msg:sub(5))()
+                load(cqCqCode_UnTrope(msg:sub(5)))()
             end)
             if result then
                 sendMessage(cqCode_At(qq).."成功运行")
@@ -349,6 +349,47 @@ local apps = {
                 sendMessage(cqCode_At(qq).."\r\n已宰掉狗管理"..keyWord)
             end
             return true
+        end,
+    },
+    {--@触发图灵机器人
+        check = function ()
+            return msg:find("%[CQ:at,qq="..cqGetLoginQQ().."%]") and msg:gsub("%[CQ:.-%]",""):len() > 2
+        end,
+        run = function ()
+            local requestData =
+            {
+                reqType = 0,
+                perception = {
+                    inputText = {
+                        text = msg:gsub("%[CQ:.-%]",""):gsub(" ","")
+                    }
+                },
+                userInfo = {
+                    apiKey = apiXmlGet("settings","tuling"),--请自己申请接口，在setting.xml里设置
+                    userId = tostring(qq),
+                    groupId = tostring(group),
+                    userIdName = tostring(qq),
+                },
+            }
+            requestData = jsonEncode(requestData)
+            cqAddLoger(0, "lua图灵接口", requestData)
+            local rr = apiHttpPost("http://openapi.tuling123.com/openapi/api/v2",
+                        requestData,nil,nil,"application/json")
+            cqAddLoger(0, "lua图灵接口", rr)
+            if not rr or rr == "" then return end--没获取到数据
+            local d,r,e = jsonDecode(rr)
+            if not r then cqAddLoger(30, "lua图灵接口", e) return end
+            if d and d.intent and d.intent.code and d.intent.code > 9000 and d.results then
+                for i=1,#d.results do
+                    cqAddLoger(0, "lua图灵接口", d.results[i].resultType)
+                    if d.results[i].resultType == "text" then
+                        cqAddLoger(0, "lua图灵接口", d.results[i].values.text)
+                        sendMessage(cqCode_At(qq)..d.results[i].values.text)
+                        return true
+                    end
+                end
+            end
+            cqAddLoger(30, "lua图灵接口", rr)
         end,
     },
     {--通用回复
@@ -421,8 +462,10 @@ return function (inmsg,inqq,ingroup,inid)
     --遍历所有功能
     for i=1,#apps do
         if apps[i].check and apps[i].check() then
-            handled = apps[i].run()
-            break
+            if apps[i].run() then
+                handled = true
+                break
+            end
         end
     end
     return handled
