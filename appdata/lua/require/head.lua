@@ -50,8 +50,8 @@ apiHttpGet = function (url,para,timeout,cookie)
     return oldapiHttpGet(url,para or "",timeout or 5000,cookie or "")
 end
 local oldapiHttpPost = apiHttpPost
-apiHttpPost = function (url,para,timeout,cookie)
-    return oldapiHttpPost(url,para or "",timeout or 5000,cookie or "")
+apiHttpPost = function (url,para,timeout,cookie,contentType)
+    return oldapiHttpPost(url,para or "",timeout or 5000,cookie or "",contentType or "application/x-www-form-urlencoded")
 end
 
 --加载字符串工具包
@@ -108,3 +108,18 @@ end
 function img:get()
     return "[CQ:image,file="..apiGetDir(self.imageData).."]"
 end
+
+--重写存取数据接口
+local oldapiGetData = apiGetData
+apiGetData = function (name)
+    local temp = oldapiGetData() or {}
+    return temp[name]
+end
+local oldapiSaveData = apiSaveData
+apiSaveData = function (name,data)
+    local temp = oldapiGetData() or {}
+    temp[name] = data
+    oldapiSaveData(temp)
+end
+
+
