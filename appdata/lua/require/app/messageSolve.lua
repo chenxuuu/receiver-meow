@@ -302,21 +302,28 @@ local apps = {
     },
     {--测试代码
         check = function ()
-            return msg:find("#lua") == 1 and qq == admin
+            return msg:find("#lua") == 1
         end,
         run = function ()
-            local result, info = pcall(function ()
-                print = function (s)
-                    sendMessage(tostring(s))
+            if qq == admin then
+                local result, info = pcall(function ()
+                    print = function (s)
+                        sendMessage(tostring(s))
+                    end
+                    load(cqCqCode_UnTrope(msg:sub(5)))()
+                end)
+                if result then
+                    sendMessage(cqCode_At(qq).."成功运行")
+                else
+                    sendMessage(cqCode_At(qq).."运行失败\r\n"..info)
                 end
-                load(cqCqCode_UnTrope(msg:sub(5)))()
-            end)
-            if result then
-                sendMessage(cqCode_At(qq).."成功运行")
             else
-                sendMessage(cqCode_At(qq).."运行失败\r\n"..info)
+                sendMessage(cqCode_At(qq).."\r\n"..apiSandBox(cqCqCode_UnTrope(msg:sub(5))))
             end
             return true
+        end,
+        explain = function ()
+            return "[CQ:emoji,id=9000]测试lua代码"
         end
     },
     {--!addadmin
