@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -234,7 +235,7 @@ namespace Native.Csharp.App.LuaEnv
         /// POST请求与获取结果
         /// </summary>
         public static string HttpPost(string Url, string postDataStr, int timeout = 5000,
-            string cookie = "")
+            string cookie = "",string contentType = "application/x-www-form-urlencoded")
         {
             try
             {
@@ -250,15 +251,16 @@ namespace Native.Csharp.App.LuaEnv
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Url);
                 request.Method = "POST";
                 request.Timeout = timeout;
-                request.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";
-                request.ContentLength = postDataStr.Length;
+                request.ContentType = contentType + "; charset=UTF-8";
+                byte[] byteResquest = Encoding.UTF8.GetBytes(postDataStr);
+                request.ContentLength = byteResquest.Length;
                 request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36 Vivaldi/2.2.1388.37";
                 if (cookie != "")
                     request.Headers.Add("cookie", cookie);
 
-                StreamWriter writer = new StreamWriter(request.GetRequestStream(), Encoding.ASCII);
-                writer.Write(postDataStr);
-                writer.Flush();
+                Stream stream = request.GetRequestStream();
+                stream.Write(byteResquest, 0, byteResquest.Length);
+                stream.Close();
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                 string encoding = response.ContentEncoding;
                 if (encoding == null || encoding.Length < 1)
@@ -315,6 +317,26 @@ namespace Native.Csharp.App.LuaEnv
             }
             return "";
         }
+
+        //用于存储临时变量
+        private static NLua.LuaTable Vars;
+        /// <summary>
+        /// 存储临时数据，仅存在ram中
+        /// </summary>
+        /// <param name="t"></param>
+        public static void SaveData(NLua.LuaTable t)
+        {
+            Vars = t;
+        }
+        /// <summary>
+        /// 取出ram中的临时数据
+        /// </summary>
+        /// <returns></returns>
+        public static NLua.LuaTable GetData()
+        {
+            return Vars;
+        }
+
 
         public static string CqCode_At(long qq) => Common.CqApi.CqCode_At(qq);
         //获取酷Q "At某人" 代码
