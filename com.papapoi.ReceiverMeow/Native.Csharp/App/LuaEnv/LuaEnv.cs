@@ -142,6 +142,13 @@ namespace Native.Csharp.App.LuaEnv
             lua.RegisterFunction("apiTcpSend", null, typeof(TcpServer).GetMethod("Send"));
             //发送tcp广播数据
 
+            lua.RegisterFunction("apiSaveData", null, typeof(LuaApi).GetMethod("SaveData"));
+            //存储数据，仅存在ram中
+            lua.RegisterFunction("apiGetData", null, typeof(LuaApi).GetMethod("GetData"));
+            //取数据
+
+            lua.RegisterFunction("apiSandBox", null, typeof(LuaEnv).GetMethod("RunSandBox"));
+
             ///////////////
             //XML操作接口//
             //////////////
@@ -176,6 +183,7 @@ namespace Native.Csharp.App.LuaEnv
                 try
                 {
                     lua.State.Encoding = Encoding.UTF8;
+                    lua.LoadCLRPackage();
                     lua["handled"] = false;//处理标志
                     Initial(lua);
                     lua.DoString(code);
@@ -187,6 +195,31 @@ namespace Native.Csharp.App.LuaEnv
                 {
                     Common.CqApi.AddLoger(Sdk.Cqp.Enum.LogerLevel.Error, "lua脚本错误", e.ToString());
                     return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 在沙盒中运行代码，仅允许安全地运行
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        public static string RunSandBox(string code)
+        {
+            using (var lua = new NLua.Lua())
+            {
+                try
+                {
+                    lua.State.Encoding = Encoding.UTF8;
+                    lua["lua_run_result_var"] = "";//返回值所在的变量
+                    lua.DoFile(Common.AppDirectory + "lua/require/sandbox/head.lua");
+                    lua.DoString(code);
+                    return lua["lua_run_result_var"].ToString();
+                }
+                catch (Exception e)
+                {
+                    Common.CqApi.AddLoger(Sdk.Cqp.Enum.LogerLevel.Error, "沙盒lua脚本错误", e.ToString());
+                    return "运行错误：" + e.ToString();
                 }
             }
         }
