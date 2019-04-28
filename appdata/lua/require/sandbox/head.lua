@@ -11,11 +11,12 @@ nvm = require("nvm")
 --加强随机数随机性
 math.randomseed(tostring(os.time()):reverse():sub(1, 6))
 
-local lineCount = 0
+local less = false
+local maxLine = 10
+local maxLen = 500
 --重写print函数
 function print(...)
-    local maxLine = 10
-    if lineCount >= maxLine then return end
+    if less then return end
     if lua_run_result_var ~= "" then
         lua_run_result_var = lua_run_result_var.."\r\n"
     end
@@ -25,9 +26,14 @@ function print(...)
             lua_run_result_var = lua_run_result_var.."\t"
         end
     end
-    lineCount = lineCount + 1
-    if lineCount == maxLine then
+    local _, count = lua_run_result_var:gsub("\n", "\n")
+    if count >= maxLine then
         lua_run_result_var = lua_run_result_var.."\r\n...\r\n余下输出过多，自动省略"
+        less = true
+    end
+    if lua_run_result_var:len() >= maxLen then
+        lua_run_result_var = lua_run_result_var:sub(maxLen).."\r\n...\r\n余下输出过多，自动省略"
+        less = true
     end
 end
 
