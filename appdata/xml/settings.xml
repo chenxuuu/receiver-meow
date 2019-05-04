@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Categories>
+  <msginfo>
+    <msg>trace.moe</msg><!-- 可选，看图搜番的key，需求大的时候要用到 -->
+    <ans></ans>
+  </msginfo>
+  <msginfo>
+    <msg>saucenao</msg><!-- saucenao搜图的key，请自己申请 -->
+    <ans></ans>
+  </msginfo>
+  <msginfo>
+    <msg>tuling</msg><!-- 图灵机器人的key，请自己去官网申请 -->
+    <ans></ans>
+  </msginfo>
+</Categories>

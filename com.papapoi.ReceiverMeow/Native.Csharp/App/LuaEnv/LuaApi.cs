@@ -374,7 +374,7 @@ namespace Native.Csharp.App.LuaEnv
         //发送讨论组消息
         public static int SendPraise(long qqId, int count) => Common.CqApi.SendPraise(qqId, count);
         //发送赞
-        public static int RepealMessage(long id) => Common.CqApi.RepealMessage(id);
+        public static int RepealMessage(int id) => Common.CqApi.RepealMessage(id);
         //撤回消息
         public static long GetLoginQQ() => Common.CqApi.GetLoginQQ();
         //取登录QQ
