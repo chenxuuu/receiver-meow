@@ -323,7 +323,7 @@ local apps = {
             return true
         end,
         explain = function ()
-            return "[CQ:emoji,id=9000]测试lua代码"
+            return "[CQ:emoji,id=9000]#lua运行lua代码"
         end
     },
     {--!addadmin
