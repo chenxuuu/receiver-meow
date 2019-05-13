@@ -135,6 +135,10 @@ namespace Native.Csharp.App.LuaEnv
             //POST 请求与获取结果
             lua.RegisterFunction("apiBase64File", null, typeof(LuaApi).GetMethod("Base64File"));
             //获取在线文件的base64结果
+            lua.RegisterFunction("apiSetVar", null, typeof(LuaApi).GetMethod("SetVar"));
+            //设置某值存入ram
+            lua.RegisterFunction("apiGetVar", null, typeof(LuaApi).GetMethod("GetVar"));
+            //取出某缓存的值
 
             lua.RegisterFunction("apiGetHardDiskFreeSpace", null, typeof(Tools).GetMethod("GetHardDiskFreeSpace"));
             //获取指定驱动器的剩余空间总大小(单位为MB)
@@ -142,12 +146,8 @@ namespace Native.Csharp.App.LuaEnv
             lua.RegisterFunction("apiTcpSend", null, typeof(TcpServer).GetMethod("Send"));
             //发送tcp广播数据
 
-            lua.RegisterFunction("apiSaveData", null, typeof(LuaApi).GetMethod("SaveData"));
-            //存储数据，仅存在ram中
-            lua.RegisterFunction("apiGetData", null, typeof(LuaApi).GetMethod("GetData"));
-            //取数据
-
             lua.RegisterFunction("apiSandBox", null, typeof(LuaEnv).GetMethod("RunSandBox"));
+            //沙盒环境
 
             ///////////////
             //XML操作接口//

@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Security;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
@@ -318,25 +319,28 @@ namespace Native.Csharp.App.LuaEnv
             return "";
         }
 
-        //用于存储临时变量
-        private static NLua.LuaTable Vars;
+        private static Dictionary<string, string> luaTemp = new Dictionary<string, string>();
         /// <summary>
-        /// 存储临时数据，仅存在ram中
+        /// 把值存入ram
         /// </summary>
-        /// <param name="t"></param>
-        public static void SaveData(NLua.LuaTable t)
+        /// <param name="n"></param>
+        /// <param name="d"></param>
+        public static void SetVar(string n,string d)
         {
-            Vars = t;
+            luaTemp[n] = d;
         }
         /// <summary>
-        /// 取出ram中的临时数据
+        /// 取出某值
         /// </summary>
+        /// <param name="n"></param>
         /// <returns></returns>
-        public static NLua.LuaTable GetData()
+        public static string GetVar(string n)
         {
-            return Vars;
+            if (luaTemp.ContainsKey(n))
+                return luaTemp[n];
+            else
+                return "";
         }
-
 
         public static string CqCode_At(long qq) => Common.CqApi.CqCode_At(qq);
         //获取酷Q "At某人" 代码
