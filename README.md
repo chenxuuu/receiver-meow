@@ -53,8 +53,6 @@ lua代码全部在`appdata`文件夹中
 
 然后，请**务必**将`appdata`文件夹内的所有文件夹与文件(目前只有`lua`与`xml`两个文件夹)，复制到酷q的`酷Q Air\data\app\com.papapoi.ReceiverMeow\`文件夹下，可以[点我下载](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/chenxuuu/receiver-meow/tree/master/appdata)
 
-> 注意，如果提示找不到xxx.lua，请先检查文件夹是否正确，如果正确，请尝试保证所有路径都不包含中文和空格。
-
 ## 结尾
 
 插件基于[Native.SDK](https://github.com/Jie2GG/Native.Csharp.Frame)
