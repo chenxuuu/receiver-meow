@@ -107,6 +107,10 @@ end
 print(image("https://xxx.xxx.xxx/xxx.jpg"))
 ```
 
+### getRandomString(len)
+
+获取随机字符串
+
 ### string.fromHex(hex)
 
 ```lua
@@ -147,6 +151,18 @@ string.toHex("123abc"," ") --> "31 32 33 61 62 63 " 6
 ### apiSandBox(codeString)
 
 在沙盒中安全地运行lua脚本
+
+### apiSetVar(string n,string d)
+
+把值存入ram
+
+### apiGetVar(string n)
+
+取出某值
+
+### apiGetAsciiHex(string str)
+
+获取字符串ascii编码的hex串
 
 ---
 

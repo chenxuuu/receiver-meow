@@ -59,8 +59,6 @@ namespace Native.Csharp.App.Event
             LuaEnv.TimerRun.TimerStart();
             if(Common.CqApi.GetLoginQQ() == 751323264)//默认不开启tcp服务器
                 LuaEnv.TcpServer.Start();
-            if (System.Text.RegularExpressions.Regex.IsMatch(Common.AppDirectory, "[\u4e00-\u9fa5]"))
-                Common.CqApi.AddFatalError("lua插件警告：请保证路径不包含中文！");
         }
 
 		/// <summary>
