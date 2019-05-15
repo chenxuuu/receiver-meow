@@ -139,6 +139,8 @@ namespace Native.Csharp.App.LuaEnv
             //设置某值存入ram
             lua.RegisterFunction("apiGetVar", null, typeof(LuaApi).GetMethod("GetVar"));
             //取出某缓存的值
+            lua.RegisterFunction("apiGetAsciiHex", null, typeof(LuaApi).GetMethod("GetAsciiHex"));
+            //获取字符串ascii编码的hex串
 
             lua.RegisterFunction("apiGetHardDiskFreeSpace", null, typeof(Tools).GetMethod("GetHardDiskFreeSpace"));
             //获取指定驱动器的剩余空间总大小(单位为MB)
@@ -211,6 +213,10 @@ namespace Native.Csharp.App.LuaEnv
                 try
                 {
                     lua.State.Encoding = Encoding.UTF8;
+                    lua.RegisterFunction("apiGetPath", null, typeof(LuaApi).GetMethod("GetPath"));
+                    //获取程序运行目录
+                    lua.RegisterFunction("apiGetAsciiHex", null, typeof(LuaApi).GetMethod("GetAsciiHex"));
+                    //获取字符串ascii编码的hex串
                     lua["lua_run_result_var"] = "";//返回值所在的变量
                     lua.DoFile(Common.AppDirectory + "lua/require/sandbox/head.lua");
                     lua.DoString(code);

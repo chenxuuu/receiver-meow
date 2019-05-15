@@ -342,6 +342,16 @@ namespace Native.Csharp.App.LuaEnv
                 return "";
         }
 
+        /// <summary>
+        /// 获取字符串ascii编码的hex串
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string GetAsciiHex(string str)
+        {
+            return BitConverter.ToString(Encoding.Default.GetBytes(str)).Replace("-", "");
+        }
+
         public static string CqCode_At(long qq) => Common.CqApi.CqCode_At(qq);
         //获取酷Q "At某人" 代码
         public static string CqCode_Emoji(int id) => Common.CqApi.CqCode_Emoji(id);
