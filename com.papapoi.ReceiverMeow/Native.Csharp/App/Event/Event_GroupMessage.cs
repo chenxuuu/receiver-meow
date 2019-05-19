@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using Native.Csharp.App.Model;
 using Native.Csharp.App.Interface;
+using System.Collections;
 
 namespace Native.Csharp.App.Event
 {
@@ -20,8 +21,8 @@ namespace Native.Csharp.App.Event
 		/// <param name="e">事件的附加参数</param>
 		public void ReceiveGroupMessage (object sender, GroupMessageEventArgs e)
 		{
-			// 本子程序会在酷Q【线程】中被调用，请注意使用对象等需要初始化(CoInitialize,CoUninitialize)。
-			// 这里处理消息
+            // 本子程序会在酷Q【线程】中被调用，请注意使用对象等需要初始化(CoInitialize,CoUninitialize)。
+            // 这里处理消息
             e.Handled = LuaEnv.LuaEnv.RunLua(
                 $"fromqq={e.FromQQ} " +
                 $"fromgroup={e.FromGroup} " +
