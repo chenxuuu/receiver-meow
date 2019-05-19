@@ -441,7 +441,7 @@ return function (inmsg,inqq,ingroup,inid)
     --帮助列表每页最多显示数量
     local maxEachPage = 8
     --匹配是否需要获取帮助
-    if msg:lower():find("help *%d*") or msg:find("帮助 *%d*") == 1 or msg:find("菜单 *%d*") == 1 then
+    if msg:lower():find("help *%d*") == 1 or msg:find("帮助 *%d*") == 1 or msg:find("菜单 *%d*") == 1 then
         local page = msg:lower():match("help *(%d+)") or msg:match("帮助 *(%d+)") or
                      msg:find("菜单 *(%d+)") or 1
         page = tonumber(page)--获取页码
