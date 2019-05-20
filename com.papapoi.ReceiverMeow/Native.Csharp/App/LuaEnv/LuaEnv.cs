@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -178,7 +179,7 @@ namespace Native.Csharp.App.LuaEnv
         /// </summary>
         /// <param name="code">提前运行的代码</param>
         /// <param name="file">文件路径（app/xxx.xxx.xx/lua/开头）</param>
-        public static bool RunLua(string code,string file)
+        public static bool RunLua(string code,string file,ArrayList args = null)
         {
             using (var lua = new NLua.Lua())
             {
@@ -188,6 +189,11 @@ namespace Native.Csharp.App.LuaEnv
                     lua.LoadCLRPackage();
                     lua["handled"] = false;//处理标志
                     Initial(lua);
+                    if(args != null)
+                        for(int i=0;i<args.Count;i+=2)
+                        {
+                            lua[(string)args[i]] = args[i + 1];
+                        }
                     lua.DoString(code);
                     if (file != "")
                         lua.DoFile(Common.AppDirectory + "lua/" + file);
