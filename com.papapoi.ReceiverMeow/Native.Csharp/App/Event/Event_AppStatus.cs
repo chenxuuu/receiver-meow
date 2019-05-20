@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using Native.Csharp.App.Interface;
@@ -59,6 +60,11 @@ namespace Native.Csharp.App.Event
             LuaEnv.TimerRun.TimerStart();
             if(Common.CqApi.GetLoginQQ() == 751323264)//默认不开启tcp服务器
                 LuaEnv.TcpServer.Start();
+            if (!File.Exists(LuaEnv.LuaApi.GetPath()+ @"data\app\com.papapoi.ReceiverMeow\lua\require\head.lua"))
+                Common.CqApi.AddFatalError(
+                    "lua插件警告：未在正确位置检测到lua脚本！\r\n" +
+                    "请确认你的脚本在如下路径正确存在：\r\n" +
+                    LuaEnv.LuaApi.GetPath() + @"data\app\com.papapoi.ReceiverMeow\");
         }
 
 		/// <summary>

@@ -24,12 +24,15 @@ namespace Native.Csharp.App.Event
             // 本子程序会在酷Q【线程】中被调用，请注意使用对象等需要初始化(CoInitialize,CoUninitialize)。
             // 这里处理消息
             e.Handled = LuaEnv.LuaEnv.RunLua(
-                $"fromqq={e.FromQQ} " +
-                $"fromgroup={e.FromGroup} " +
-                $"message=[[{e.Msg.Replace("]", "] ")}]] " +
-                $"id={e.MsgId} " +
-                $"fromAnonymous={e.IsAnonymousMsg.ToString().ToLower()}",
-                "envent/ReceiveGroupMessage.lua");
+                "",
+                "envent/ReceiveGroupMessage.lua",
+                new ArrayList() {
+                    "fromqq", e.FromQQ,
+                    "fromgroup",e.FromGroup,
+                    "message",e.Msg,
+                    "id",e.MsgId,
+                    "fromAnonymous",e.IsAnonymousMsg,
+                });
 
 		}
 
@@ -44,10 +47,13 @@ namespace Native.Csharp.App.Event
             // 本子程序会在酷Q【线程】中被调用，请注意使用对象等需要初始化(CoInitialize,CoUninitialize)。
             // 这里处理消息
             e.Handled = LuaEnv.LuaEnv.RunLua(
-                $"fromqq={e.FromQQ} " +
-                $"message=[[{e.Msg.Replace("]", "] ")}]] " +
-                $"id={e.MsgId}",
-                "envent/ReceivePrivateMessage.lua");
+                "",
+                "envent/ReceivePrivateMessage.lua",
+                new ArrayList() {
+                    "fromqq", e.FromQQ,
+                    "message",e.Msg,
+                    "id",e.MsgId,
+                });
 
             //e.Handled = false;  // 关于返回说明, 请参见 "Event_FriendMessage.ReceiveFriendMessage" 方法
 		}
@@ -65,12 +71,15 @@ namespace Native.Csharp.App.Event
             // 关于文件信息, 触发事件时已经转换完毕, 请直接使用
 
             e.Handled = LuaEnv.LuaEnv.RunLua(
-                $"fromqq={e.FromQQ} " +
-                $"fromgroup={e.FromGroup} " +
-                $"fileName=[[{e.File.Name.Replace("]", "] ")}]] " +
-                $"id=[[{e.File.Id.Replace("]", "] ")}]] " +
-                $"size={e.File.Size}",
-                "envent/ReceiveGroupFileUpload.lua");
+                "",
+                "envent/ReceiveGroupFileUpload.lua",
+                new ArrayList() {
+                    "fromqq", e.FromQQ,
+                    "fromgroup",e.FromGroup,
+                    "fileName",e.File.Name,
+                    "id",e.File.Id,
+                    "size",e.File.Size,
+                });
 
             //e.Handled = false;   // 关于返回说明, 请参见 "Event_FriendMessage.ReceiveFriendMessage" 方法
         }
@@ -86,10 +95,13 @@ namespace Native.Csharp.App.Event
             // 本子程序会在酷Q【线程】中被调用，请注意使用对象等需要初始化(CoInitialize,CoUninitialize)。
             // 这里处理消息
             e.Handled = LuaEnv.LuaEnv.RunLua(
-                $"fromqq={e.BeingOperateQQ} " +
-                $"fromgroup={e.FromGroup} " +
-                $"manager=true",
-                "envent/ReceiveGroupManage.lua");
+                "",
+                "envent/ReceiveGroupManage.lua",
+                new ArrayList() {
+                    "fromqq", e.BeingOperateQQ,
+                    "fromgroup",e.FromGroup,
+                    "manager",true,
+                });
 
             //e.Handled = false;  // 关于返回说明, 请参见 "Event_FriendMessage.ReceiveFriendMessage" 方法
 		}
@@ -105,10 +117,13 @@ namespace Native.Csharp.App.Event
             // 本子程序会在酷Q【线程】中被调用，请注意使用对象等需要初始化(CoInitialize,CoUninitialize)。
             // 这里处理消息
             e.Handled = LuaEnv.LuaEnv.RunLua(
-                $"fromqq={e.BeingOperateQQ} " +
-                $"fromgroup={e.FromGroup} " +
-                $"manager=false",
-                "envent/ReceiveGroupManage.lua");
+                "",
+                "envent/ReceiveGroupManage.lua",
+                new ArrayList() {
+                    "fromqq", e.BeingOperateQQ,
+                    "fromgroup",e.FromGroup,
+                    "manager",false,
+                });
 
             //e.Handled = false;  // 关于返回说明, 请参见 "Event_FriendMessage.ReceiveFriendMessage" 方法
 		}
@@ -124,9 +139,12 @@ namespace Native.Csharp.App.Event
             // 本子程序会在酷Q【线程】中被调用，请注意使用对象等需要初始化(CoInitialize,CoUninitialize)。
             // 这里处理消息
             e.Handled = LuaEnv.LuaEnv.RunLua(
-                $"fromqq={e.BeingOperateQQ} " +
-                $"fromgroup={e.FromGroup}",
-                "envent/ReceiveGroupMemberJoin.lua");
+                "",
+                "envent/ReceiveGroupMemberJoin.lua",
+                new ArrayList() {
+                    "fromqq", e.BeingOperateQQ,
+                    "fromgroup",e.FromGroup,
+                });
             
             //e.Handled = false;  // 关于返回说明, 请参见 "Event_FriendMessage.ReceiveFriendMessage" 方法
 		}
@@ -142,9 +160,12 @@ namespace Native.Csharp.App.Event
             // 本子程序会在酷Q【线程】中被调用, 请注意使用对象等需要初始化(ConIntialize, CoUninitialize).
             // 这里处理消息
             e.Handled = LuaEnv.LuaEnv.RunLua(
-                $"fromqq={e.BeingOperateQQ} " +
-                $"fromgroup={e.FromGroup}",
-                "envent/ReceiveGroupMemberJoin.lua");
+                "",
+                "envent/ReceiveGroupMemberJoin.lua",
+                new ArrayList() {
+                    "fromqq", e.BeingOperateQQ,
+                    "fromgroup",e.FromGroup,
+                });
             
             //e.Handled = false;  // 关于返回说明, 请参见 "Event_FriendMessage.ReceiveFriendMessage" 方法
 		}
@@ -160,9 +181,12 @@ namespace Native.Csharp.App.Event
             // 本子程序会在酷Q【线程】中被调用, 请注意使用对象等需要初始化(ConIntialize, CoUninitialize).
             // 这里处理消息
             e.Handled = LuaEnv.LuaEnv.RunLua(
-                $"fromqq={e.BeingOperateQQ} " +
-                $"fromgroup={e.FromGroup}",
-                "envent/ReceiveGroupMemberLeave.lua");
+                "",
+                "envent/ReceiveGroupMemberLeave.lua",
+                new ArrayList() {
+                    "fromqq", e.BeingOperateQQ,
+                    "fromgroup",e.FromGroup,
+                });
             
             //e.Handled = false;  // 关于返回说明, 请参见 "Event_FriendMessage.ReceiveFriendMessage" 方法
 		}
@@ -178,10 +202,13 @@ namespace Native.Csharp.App.Event
             // 本子程序会在酷Q【线程】中被调用, 请注意使用对象等需要初始化(ConIntialize, CoUninitialize).
             // 这里处理消息
             e.Handled = LuaEnv.LuaEnv.RunLua(
-                $"fromqq={e.BeingOperateQQ} " +
-                $"fromgroup={e.FromGroup} " +
-                $"doqq={e.FromQQ}",
-                "envent/ReceiveGroupMemberLeave.lua");
+                "",
+                "envent/ReceiveGroupMemberLeave.lua",
+                new ArrayList() {
+                    "fromqq", e.BeingOperateQQ,
+                    "fromgroup",e.FromGroup,
+                    "doqq",e.FromQQ,
+                });
 
             //e.Handled = false;  // 关于返回说明, 请参见 "Event_FriendMessage.ReceiveFriendMessage" 方法
 		}
@@ -197,11 +224,14 @@ namespace Native.Csharp.App.Event
             // 本子程序会在酷Q【线程】中被调用, 请注意使用对象等需要初始化(ConIntialize, CoUninitialize).
             // 这里处理消息
             e.Handled = LuaEnv.LuaEnv.RunLua(
-                $"fromqq={e.FromQQ} " +
-                $"tag=[[{e.Tag.Replace("]", "] ")}]] " +
-                $"fromgroup={e.FromGroup} " +
-                $"message=[[{e.AppendMsg.Replace("]", "] ")}]]",
-                "envent/ReceiveGroupAddApply.lua");
+                "",
+                "envent/ReceiveGroupAddApply.lua",
+                new ArrayList() {
+                    "fromqq", e.FromQQ,
+                    "message",e.AppendMsg,
+                    "tag",e.Tag,
+                    "fromgroup",e.FromGroup,
+                });
 
             //e.Handled = false;  // 关于返回说明, 请参见 "Event_FriendMessage.ReceiveFriendMessage" 方法
         }
@@ -217,10 +247,14 @@ namespace Native.Csharp.App.Event
             // 本子程序会在酷Q【线程】中被调用, 请注意使用对象等需要初始化(ConIntialize, CoUninitialize).
             // 这里处理消息
             e.Handled = LuaEnv.LuaEnv.RunLua(
-                $"fromqq={e.FromQQ} " +
-                $"tag=[[{e.Tag.Replace("]", "] ")}]] " +
-                $"fromgroup={e.FromGroup} ",
-                "envent/ReceiveGroupAddInvitee.lua");
+                "",
+                "envent/ReceiveGroupAddInvitee.lua",
+                new ArrayList() {
+                    "fromqq", e.FromQQ,
+                    "message",e.AppendMsg,
+                    "tag",e.Tag,
+                    "fromgroup",e.FromGroup,
+                });
 
             //e.Handled = false;  // 关于返回说明, 请参见 "Event_FriendMessage.ReceiveFriendMessage" 方法
         }

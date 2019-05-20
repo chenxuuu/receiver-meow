@@ -1,6 +1,7 @@
 ﻿using Native.Csharp.App.Interface;
 using Native.Csharp.App.Model;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,8 +22,11 @@ namespace Native.Csharp.App.Event
             // 本子程序会在酷Q【线程】中被调用，请注意使用对象等需要初始化(CoInitialize,CoUninitialize)。
             // 这里处理消息
             e.Handled = LuaEnv.LuaEnv.RunLua(
-                $"fromqq={e.FromQQ} ",
-                "envent/ReceiveFriendIncrease.lua");
+                "",
+                "envent/ReceiveFriendIncrease.lua",
+                new ArrayList() {
+                    "fromqq", e.FromQQ,
+                });
 
 
             //e.Handled = false;   // 关于返回说明, 请参见 "Event_FriendMessage.ReceiveFriendMessage" 方法
@@ -39,10 +43,13 @@ namespace Native.Csharp.App.Event
             // 本子程序会在酷Q【线程】中被调用，请注意使用对象等需要初始化(CoInitialize,CoUninitialize)。
             // 这里处理消息
             e.Handled = LuaEnv.LuaEnv.RunLua(
-                $"fromqq={e.FromQQ} " +
-                $"message={e.AppendMsg} " +
-                $"tag=[[{e.Tag.Replace("]", "] ")}]]",
-                "envent/ReceiveFriednAddRequest.lua");
+                "",
+                "envent/ReceiveFriednAddRequest.lua",
+                new ArrayList() {
+                    "fromqq", e.FromQQ,
+                    "message",e.AppendMsg,
+                    "tag",e.Tag,
+                });
             
             //e.Handled = false;   // 关于返回说明, 请参见 "Event_ReceiveMessage.ReceiveFriendMessage" 方法
         }
@@ -58,10 +65,13 @@ namespace Native.Csharp.App.Event
             // 本子程序会在酷Q【线程】中被调用，请注意使用对象等需要初始化(CoInitialize,CoUninitialize)。
             // 这里处理消息
             e.Handled = LuaEnv.LuaEnv.RunLua(
-                $"fromqq={e.FromQQ} " +
-                $"message=[[{e.Msg.Replace("]", "] ")}]] " +
-                $"id={e.MsgId}",
-                "envent/ReceivePrivateMessage.lua");
+                "",
+                "envent/ReceivePrivateMessage.lua",
+                new ArrayList() {
+                    "fromqq", e.FromQQ,
+                    "message",e.Msg,
+                    "id",e.MsgId,
+                });
 			// e.Handled 相当于 原酷Q事件的返回值
 			// 如果要回复消息，请调用api发送，并且置 true - 截断本条消息，不再继续处理 //注意：应用优先级设置为"最高"(10000)时，不得置 true
 			// 如果不回复消息，交由之后的应用/过滤器处理，这里置 false  - 忽略本条消息
