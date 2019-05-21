@@ -95,6 +95,10 @@ local solve = {
     l = function (msg)
         onlineAdd(msg)
         cqSendGroupMessage(241464054,msg.."上线了")
+        if apiXmlRow("bindQq",msg) == "" then--自动撤销没在群里的人的白名单
+            apiTcpSend("lp user "..msg.." permission set group.default",true)
+            apiTcpSend("lp user "..msg.." permission unset group.whitelist",true)
+        end
     end,
     d = function (msg)
         onlineDel(msg)

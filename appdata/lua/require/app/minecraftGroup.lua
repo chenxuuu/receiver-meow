@@ -26,7 +26,10 @@ return function (msg,qq,group)
         end
         if msg:find("绑定") == 1 and player == "" then--绑定命令
             local player = msg:match("([a-zA-Z0-9_]+)")
-            if player then
+            player = apiXmlRow("bindQq",player) ~= "" and "" or player
+            if player == "" then
+                cqSendGroupMessage(241464054,cqCode_At(qq).."id重复，换个吧")
+            elseif player then
                 apiXmlSet("bindQq",tostring(qq),player)
                 apiXmlSet("bindStep",tostring(qq),"waiting")
                 cqSendGroupMessage(241464054,cqCode_At(qq).."绑定"..player.."成功！\r\n"..
