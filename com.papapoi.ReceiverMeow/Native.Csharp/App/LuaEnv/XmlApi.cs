@@ -57,6 +57,19 @@ namespace Native.Csharp.App.LuaEnv
             return ansall;
         }
 
+        public static string xml_row(string group, string msg)
+        {
+            dircheck(group);
+            XElement root = XElement.Load(path + group + ".xml");
+            string ansall = "";
+            var element = from ee in root.Elements()
+                          where ee.Element("ans").Value == msg
+                          select ee;
+            if (element.Count() > 0)
+                ansall = element.First().Element("msg").Value;
+            return ansall;
+        }
+
         public static string list_get(string group, string msg)
         {
             dircheck(group);

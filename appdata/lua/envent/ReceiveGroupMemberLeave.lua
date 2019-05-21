@@ -14,3 +14,12 @@ handled = true
 ]]
 
 cqSendGroupMessage(fromgroup,tostring(fromqq).."永远地离开了这个世界。。")
+if fromgroup == 241464054 then
+    local player = apiXmlGet("bindQq",tostring(fromqq))
+    if player ~= "" then
+        apiTcpSend("lp user "..player.." permission set group.default",true)
+        apiTcpSend("lp user "..player.." permission unset group.whitelist",true)
+    end
+    apiXmlDelete("bindStep",tostring(fromqq))
+    apiXmlDelete("bindQq",tostring(fromqq))
+end

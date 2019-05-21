@@ -86,7 +86,6 @@ if time.min % 10 == 0 then--十分钟检查一次
     local r,t = checkGitHub("https://github.com/chenxuuu/receiver-meow/commits/master.atom","githubLastUpdate")
     if r and t then
         local text = "接待喵lua插件在GitHub上有更新啦\r\n"..t
-        cqSendGroupMessage(931546484, text)
         cqSendGroupMessage(567145439, text)
     end
 
