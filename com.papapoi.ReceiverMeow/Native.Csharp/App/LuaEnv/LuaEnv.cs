@@ -169,6 +169,8 @@ namespace Native.Csharp.App.LuaEnv
             //更改某条的值
             lua.RegisterFunction("apiXmlGet", null, typeof(XmlApi).GetMethod("xml_get"));
             //获取某条的结果
+            lua.RegisterFunction("apiXmlRow", null, typeof(XmlApi).GetMethod("xml_row"));
+            //按结果查源头（反查）
 
             lua.DoFile(Common.AppDirectory + "lua/require/head.lua");
         }
