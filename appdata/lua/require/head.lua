@@ -125,17 +125,4 @@ function img:get()
     return "[CQ:image,file="..apiGetDir(self.imageData).."]"
 end
 
---重写存取数据接口
-local oldapiGetData = apiGetData
-apiGetData = function (name)
-    local temp = oldapiGetData() or {}
-    return temp[name]
-end
-local oldapiSaveData = apiSaveData
-apiSaveData = function (name,data)
-    local temp = oldapiGetData() or {}
-    temp[name] = data
-    oldapiSaveData(temp)
-end
-
 
