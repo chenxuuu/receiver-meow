@@ -196,19 +196,6 @@ local apps = {
             return "[CQ:emoji,id=128444]查动画 加 没裁剪过的视频截图"
         end
     },
-    {--搜图
-        check = function ()
-            return msg:find("搜图") or msg:find("查图")
-        end,
-        run = function ()
-            local imageSearch = require("app.imageSearch")
-            sendMessage(cqCode_At(qq).."\r\n"..imageSearch(msg))
-            return true
-        end,
-        explain = function ()
-            return "[CQ:emoji,id=128444]搜图 加 完整p站图片"
-        end
-    },
     {--象棋
         check = function ()
             return msg:find("象棋") == 1
@@ -246,19 +233,6 @@ local apps = {
         end,
         explain = function ()
             return "[CQ:emoji,id=9728]签到"
-        end
-    },
-    {--直链
-        check = function ()
-            return msg:find("直链") == 1
-        end,
-        run = function ()
-            local reply = apiGetImageUrl(msg)
-            sendMessage(reply == "" and "未过滤出图片" or reply)
-            return true
-        end,
-        explain = function ()
-            return "[CQ:emoji,id=128247]直链+图片"
         end
     },
     {--b站av号解析

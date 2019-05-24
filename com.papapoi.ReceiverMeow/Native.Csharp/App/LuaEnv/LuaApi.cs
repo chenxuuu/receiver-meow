@@ -124,19 +124,16 @@ namespace Native.Csharp.App.LuaEnv
         }
 
         /// <summary>
-        /// 获取qq消息中图片的网址
+        /// 获取qq消息中图片的路径
         /// </summary>
         /// <param name="image">图片字符串，如“[CQ:image,file=123123]”</param>
         /// <returns>网址</returns>
-        public static string GetImageUrl(string image)
+        public static string GetImagePath(string image)
         {
-            string fileName = Tools.Reg_get(image, "\\[CQ:image,file=(?<name>.*?)\\]", "name") + ".cqimg";//获取文件名
-            if (File.Exists(AppDomain.CurrentDomain.SetupInformation.ApplicationBase +
-                        @"data\image\" + fileName))
-                return Tools.Reg_get(File.ReadAllText(AppDomain.CurrentDomain.SetupInformation.ApplicationBase +
-                        @"data\image\" + fileName).Replace("\r", "").Replace("\n", ""),
-                        "url=(?<name>.*?)addtime=", "name");//过滤出图片网址
-            return "";//没这个文件
+            string fileName = Tools.Reg_get(image, "\\[CQ:image,file=(?<name>.*?)\\]", "name");//获取文件
+            if (fileName == "")
+                return "";
+            return Common.CqApi.ReceiveImage(fileName);
         }
 
 
@@ -284,26 +281,11 @@ namespace Native.Csharp.App.LuaEnv
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        public static string Base64File(string url)
+        public static string Base64File(string path)
         {
             try
             {
-                //请求前设置一下使用的安全协议类型 System.Net
-                if (url.StartsWith("https", StringComparison.OrdinalIgnoreCase))
-                {
-                    ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors) =>
-                    {
-                        return true; //总是接受
-                    });
-                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
-                }
-                //获取网址里的图片
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-                WebResponse response = request.GetResponse();
-                request.Timeout = 15000;
-                Stream stream = response.GetResponseStream();
-
-                Bitmap bmp = new Bitmap(stream);
+                Bitmap bmp = new Bitmap(path);
                 MemoryStream ms = new MemoryStream();
                 bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
                 byte[] arr = new byte[ms.Length];
