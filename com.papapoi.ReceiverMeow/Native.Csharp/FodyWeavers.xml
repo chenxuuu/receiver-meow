@@ -10,4 +10,5 @@
       lua53
     </Unmanaged32Assemblies>
 	</Costura>
-	<ModuleInit /></Weavers>
+	<ModuleInit />
+</Weavers>
