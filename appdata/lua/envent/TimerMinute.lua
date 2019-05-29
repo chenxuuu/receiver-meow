@@ -64,7 +64,7 @@ end
 function checkGitRelease(url,save)
     local release = apiHttpGet(url)
     local d,r,e = jsonDecode(release)
-    if not r then return end
+    if not r or not d then return end
     if d.id and tostring(d.id) ~= apiXmlGet("settings",save) then
         apiXmlSet("settings",save,tostring(d.id))
         --缩短网址
@@ -96,3 +96,45 @@ if time.min % 10 == 0 then--十分钟检查一次
     end
 end
 
+
+
+--臭dd检查youtube是否开播
+function v2b(channel)
+    local html = apiHttpGet("https://y2b.wvvwvw.com/youtube/v3/search?part=snippet&"..
+    "channelId="..channel..
+    "&eventType=live&maxResults=1&type=video&key=AIzaSyDQ47QNh2t_YhXFwkU_s_9g2gT7EXKcleM")
+    local d,r,e = jsonDecode(html)
+    if not r or not d then return end--获取失败了
+    local lastStatus = apiXmlGet("settings","youtuber_"..channel)--获取上次状态
+    if d.pageInfo.totalResults == 1 then
+        if lastStatus == "live" then return end--上次提醒过了
+        apiXmlSet("settings","youtuber_"..channel,"live")
+        return {
+            title = d.items[1].snippet.title,
+            description = d.items[1].snippet.description,
+            url = "https://www.youtube.com/watch?v="..d.items[1].id.videoId,
+            name = d.items[1].snippet.channelTitle,
+        }
+    else--没开播
+        apiXmlSet("settings","youtuber_"..channel,"close live")
+    end
+end
+
+function checkdd(channel)
+    local v = v2b(channel)
+    if v then
+        cqSendGroupMessage(261037783, v.name.."\r\n"..
+        v.title.."\r\n"..
+        v.description.."\r\n"..
+        v.url)
+    end
+end
+--要监控的y2b频道
+checkdd("UCWCc8tO-uUl_7SJXIKJACMw")
+checkdd("UCQ0UDLQCjY0rmuxCDE38FGg")
+checkdd("UC1opHUrw8rvnsadT-iGp7Cg")
+checkdd("UCrhx4PaF3uIo9mDcTxHnmIg")
+checkdd("UChN7P9OhRltW3w9IesC92PA")
+checkdd("UC8NZiqKx6fsDT3AVcMiVFyA")
+checkdd("UCH0ObmokE-zUOeihkKwWySA")
+checkdd("UCIaC5td9nGG6JeKllWLwFLA")
