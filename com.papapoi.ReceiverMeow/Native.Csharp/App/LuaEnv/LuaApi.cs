@@ -47,6 +47,7 @@ namespace Native.Csharp.App.LuaEnv
             Font font = new Font(type, size);
             Color myColor = Color.FromArgb(r, g, b);
             SolidBrush myBrush = new SolidBrush(myColor);
+            pic.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
             pic.DrawString(text, font, myBrush, new PointF() { X = x, Y = y });
             return bmp;
         }
