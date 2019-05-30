@@ -97,49 +97,52 @@ if time.min % 10 == 0 then--十分钟检查一次
 end
 
 
+if time.min % 5 == 0 then--5分钟检查一次
+    --臭dd检查youtube是否开播
+    function v2b(channel)
+        local html = apiHttpGet("https://y2b.wvvwvw.com/channel/"..channel.."/featured")
+        if not html or html == "" then return end--获取失败了
+        local isclose = html:find("Upcoming live streams")
+        local isopen = html:find("LIVE NOW")
+        if not isopen and not isclose then return end --啥都没匹配到
+        local lastStatus = apiXmlGet("settings","youtuber_"..channel)--获取上次状态
+        if isopen or not isclose then
+            if lastStatus == "live" then return end--上次提醒过了
+            local title,description,name,url = html:match([[,"simpleText":"(.-)"},"descriptionSnippet":{"simpleText":"(.-)"},"longBylineText":{"runs":%[{"text":"(.-)","navigationEndpoint":{"click.-"watchEndpoint":{"videoId":"(.-)"}}.-LIVE NOW"]])
+            apiXmlSet("settings","youtuber_"..channel,"live")
+            return {
+                name = name or "获取失败",
+                title = title or "获取失败",
+                description = description and description:gsub("\\n","\n") or "获取失败",
+                url = url and "https://www.youtube.com/watch?v="..url or "获取失败",
+            }
+        else--没开播
+            apiXmlSet("settings","youtuber_"..channel,"close live")
+        end
+    end
 
---臭dd检查youtube是否开播
-function v2b(channel)
-    local html = apiHttpGet("https://y2b.wvvwvw.com/youtube/v3/search?part=snippet&"..
-    "channelId="..channel..
-    "&eventType=live&maxResults=1&type=video&key="..apiXmlGet("settings","y2b_api"))
-    local d,r,e = jsonDecode(html)
-    if not r or not d then return end--获取失败了
-    local lastStatus = apiXmlGet("settings","youtuber_"..channel)--获取上次状态
-    if d.pageInfo.totalResults == 1 then
-        if lastStatus == "live" then return end--上次提醒过了
-        apiXmlSet("settings","youtuber_"..channel,"live")
-        return {
-            title = d.items[1].snippet.title,
-            description = d.items[1].snippet.description,
-            url = "https://www.youtube.com/watch?v="..d.items[1].id.videoId,
-            name = d.items[1].snippet.channelTitle,
-        }
-    else--没开播
-        apiXmlSet("settings","youtuber_"..channel,"close live")
+    function checkdd(channel)
+        local v = v2b(channel)
+        if v then
+            cqSendGroupMessage(261037783, v.name.."\r\n"..
+            v.title.."\r\n"..
+            v.description.."\r\n"..
+            v.url)
+        end
+    end
+    local ddList = {
+    --要监控的y2b频道
+    "UCWCc8tO-uUl_7SJXIKJACMw",
+    "UCQ0UDLQCjY0rmuxCDE38FGg",
+    "UC1opHUrw8rvnsadT-iGp7Cg",
+    "UCrhx4PaF3uIo9mDcTxHnmIg",
+    "UChN7P9OhRltW3w9IesC92PA",
+    "UC8NZiqKx6fsDT3AVcMiVFyA",
+    "UCH0ObmokE-zUOeihkKwWySA",
+    "UCIaC5td9nGG6JeKllWLwFLA",
+    }
+
+    for i=1,#ddList do
+        checkdd(ddList[i])
     end
 end
-
-function checkdd(channel)
-    local v = v2b(channel)
-    if v then
-        cqSendGroupMessage(261037783, v.name.."\r\n"..
-        v.title.."\r\n"..
-        v.description.."\r\n"..
-        v.url)
-    end
-end
-local ddList = {
---要监控的y2b频道
-"UCWCc8tO-uUl_7SJXIKJACMw",
-"UCQ0UDLQCjY0rmuxCDE38FGg",
-"UC1opHUrw8rvnsadT-iGp7Cg",
-"UCrhx4PaF3uIo9mDcTxHnmIg",
-"UChN7P9OhRltW3w9IesC92PA",
-"UC8NZiqKx6fsDT3AVcMiVFyA",
-"UCH0ObmokE-zUOeihkKwWySA",
-"UCIaC5td9nGG6JeKllWLwFLA",
-}
-
-checkdd(ddList[math.floor(os.time()/60) % #ddList + 1])
-
