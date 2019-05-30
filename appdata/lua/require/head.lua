@@ -8,7 +8,7 @@ admin = 961726194
 math.randomseed(tostring(os.time()):reverse():sub(1, 6))
 
 --防止跑死循环，超时设置秒数自动结束，-1表示禁用
-local maxSeconds = 30
+local maxSeconds = -1
 local start = os.time()
 function trace (event, line)
     if os.time() - start >=maxSeconds then
