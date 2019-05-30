@@ -102,7 +102,7 @@ end
 function v2b(channel)
     local html = apiHttpGet("https://y2b.wvvwvw.com/youtube/v3/search?part=snippet&"..
     "channelId="..channel..
-    "&eventType=live&maxResults=1&type=video&key=AIzaSyDQ47QNh2t_YhXFwkU_s_9g2gT7EXKcleM")
+    "&eventType=live&maxResults=1&type=video&key="..apiXmlGet("settings","y2b_api"))
     local d,r,e = jsonDecode(html)
     if not r or not d then return end--获取失败了
     local lastStatus = apiXmlGet("settings","youtuber_"..channel)--获取上次状态
@@ -129,12 +129,17 @@ function checkdd(channel)
         v.url)
     end
 end
+local ddList = {
 --要监控的y2b频道
-checkdd("UCWCc8tO-uUl_7SJXIKJACMw")
-checkdd("UCQ0UDLQCjY0rmuxCDE38FGg")
-checkdd("UC1opHUrw8rvnsadT-iGp7Cg")
-checkdd("UCrhx4PaF3uIo9mDcTxHnmIg")
-checkdd("UChN7P9OhRltW3w9IesC92PA")
-checkdd("UC8NZiqKx6fsDT3AVcMiVFyA")
-checkdd("UCH0ObmokE-zUOeihkKwWySA")
-checkdd("UCIaC5td9nGG6JeKllWLwFLA")
+"UCWCc8tO-uUl_7SJXIKJACMw",
+"UCQ0UDLQCjY0rmuxCDE38FGg",
+"UC1opHUrw8rvnsadT-iGp7Cg",
+"UCrhx4PaF3uIo9mDcTxHnmIg",
+"UChN7P9OhRltW3w9IesC92PA",
+"UC8NZiqKx6fsDT3AVcMiVFyA",
+"UCH0ObmokE-zUOeihkKwWySA",
+"UCIaC5td9nGG6JeKllWLwFLA",
+}
+
+checkdd(ddList[math.floor(os.time()/60) % #ddList + 1])
+
