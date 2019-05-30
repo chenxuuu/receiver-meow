@@ -116,7 +116,7 @@ if time.min % 5 == 0 then--5分钟检查一次
                 description = description and description:gsub("\\n","\n") or "获取失败",
                 url = url and "https://www.youtube.com/watch?v="..url or "获取失败",
             }
-        else--没开播
+        elseif lastStatus == "live" then--没开播
             apiXmlSet("settings","youtuber_"..channel,"close live")
         end
     end
@@ -124,11 +124,13 @@ if time.min % 5 == 0 then--5分钟检查一次
     function checkdd(channel)
         local v = v2b(channel)
         if v then
-            cqSendGroupMessage(261037783, v.name.."\r\n"..
-            v.title.."\r\n"..
-            v.description.."\r\n"..
-            v.url)
+            cqSendGroupMessage(261037783,
+            "频道："..v.name.."\r\n"..
+            "标题："..v.title.."\r\n"..
+            "简介："..v.description.."\r\n"..
+            "前往查看："..v.url)
         end
+        cqAddLoger(0, "直播检查", channel .. (v and "状态更新" or "状态不变"))
     end
     local ddList = {
     --要监控的y2b频道
@@ -140,9 +142,65 @@ if time.min % 5 == 0 then--5分钟检查一次
     "UC8NZiqKx6fsDT3AVcMiVFyA",
     "UCH0ObmokE-zUOeihkKwWySA",
     "UCIaC5td9nGG6JeKllWLwFLA",
+    "UCvEX2UICvFAa_T6pqizC20g",
     }
 
     for i=1,#ddList do
         checkdd(ddList[i])
+    end
+end
+
+if time.min % 5 == 0 then--5分钟检查一次
+    function blive(id)
+        id = tostring(id)
+        html = apiHttpGet("https://api.live.bilibili.com/room/v1/Room/get_info?room_id="..id)
+        if not html or html == "" then return end--获取失败了
+        local d,r,e = jsonDecode(html)
+        if not r or not d then return end --获取失败了
+        local lastStatus = apiXmlGet("settings","bilibili_live_"..id)--获取上次状态
+        if d.data.live_status == 1 then
+            if lastStatus == "live" then return end--上次提醒过了
+            apiXmlSet("settings","bilibili_live_"..id,"live")
+            return {
+                title = d.data.title,
+                image = d.data.user_cover,
+                tag = d.data.tags,
+                url = "https://live.bilibili.com/"..id,
+            }
+        elseif lastStatus == "live" then--没开播
+            apiXmlSet("settings","bilibili_live_"..id,"close live")
+        end
+    end
+
+    function checkb(id)
+        local v = blive(id)
+        if v then
+            cqSendGroupMessage(261037783,
+            image(v.image).."\r\n"..
+            "标题："..v.title.."\r\n"..
+            "tag："..v.tag.."\r\n"..
+            "前往查看："..v.url)
+        end
+        cqAddLoger(0, "直播检查", tostring(id) .. (v and "状态更新" or "状态不变"))
+    end
+
+    local bList = {
+        --要监控的bilibili频道
+        14917277,
+        4634167,
+        4895312,
+        14052636,
+        7962050,
+        13946381,
+        3822389,
+        10545,
+        92613,
+        24317,
+        291,
+        12235923,
+    }
+
+    for i=1,#bList do
+        checkb(bList[i])
     end
 end

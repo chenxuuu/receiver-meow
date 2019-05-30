@@ -38,7 +38,7 @@ cqSendGroupMessage(group,pic:get())
 - 下载文件
 - 返回值：bool下载结果
 
-### apiHttpGet(url,para,timeout) 发起一个http get请求
+### apiHttpGet(url,para,timeout,cookie) 发起一个http get请求
 
 - `url`网址，string
 - `para`参数，string，默认空，可留空
@@ -53,7 +53,7 @@ apiHttpGet("https://www.abc.com","aa=123&bb=233&c="..string.urlEncode("中文参
 apiHttpGet("https://qq.com","aa=123&bb=233&c=",5000,"uid=xxxxx;aaa=vvvvv")
 ```
 
-### apiHttpPost(url,para,timeout) 发起一个http post请求
+### apiHttpPost(url,para,timeout,cookie) 发起一个http post请求
 
 请参考get，用法一样
 
