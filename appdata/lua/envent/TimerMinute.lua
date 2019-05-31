@@ -96,9 +96,9 @@ if time.min % 10 == 0 then--十分钟检查一次
     end
 end
 
-
-if apiGetVar("liveGetting") ~= "running" then--循环检查
-    apiSetVar("liveGetting","running")
+local lastLive = tonumber(apiGetVar("liveGetting")) or 0
+if lastLive < os.time() then--循环检查
+    apiSetVar("liveGetting",tostring(os.time()+240))--超时时间最大240秒，防止卡死
 
     --臭dd检查youtube是否开播
     function v2b(channel)
@@ -163,7 +163,7 @@ if apiGetVar("liveGetting") ~= "running" then--循环检查
         local d,r,e = jsonDecode(html)
         if not r or not d then return end --获取失败了
         local lastStatus = apiXmlGet("settings","bilibili_live_"..id)--获取上次状态
-        if d.data.live_status == 1 then
+        if d and d.data and d.data.live_status == 1 then
             if lastStatus == "live" then return end--上次提醒过了
             apiXmlSet("settings","bilibili_live_"..id,"live")
             return {
@@ -205,5 +205,5 @@ if apiGetVar("liveGetting") ~= "running" then--循环检查
         checkb(bList[i])
     end
 
-    apiSetVar("liveGetting","stop")
+    apiSetVar("liveGetting","0")
 end
