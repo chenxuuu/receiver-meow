@@ -434,7 +434,7 @@ return function (inmsg,inqq,ingroup,inid)
                 table.insert(allApp, appExplain)
             end
         end
-        sendMessage("[CQ:emoji,id=128172]命令帮助("..tostring(page).."/"..tostring(maxPage)..")\r\n"..
+        sendMessage("[CQ:emoji,id=128172]命令帮助("..tostring(page).."/"..tostring(maxPage).."页)\r\n"..
         table.concat(allApp, "\r\n").."\r\n"..
         "[CQ:emoji,id=128483]开源代码：https://github.com/chenxuuu/receiver-meow")
         return true
