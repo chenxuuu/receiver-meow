@@ -97,7 +97,9 @@ if time.min % 10 == 0 then--十分钟检查一次
 end
 
 
-if time.min % 5 == 0 then--5分钟检查一次
+if apiGetVar("liveGetting") ~= "running" then--循环检查
+    apiSetVar("liveGetting","running")
+
     --臭dd检查youtube是否开播
     function v2b(channel)
         local html = apiHttpGet("https://y2b.wvvwvw.com/channel/"..channel.."/featured")
@@ -109,6 +111,10 @@ if time.min % 5 == 0 then--5分钟检查一次
         if isopen then
             if lastStatus == "live" then return end--上次提醒过了
             local title,description,name,url = html:match([[,"simpleText":"(.-)"},"descriptionSnippet":{"simpleText":"(.-)"},"longBylineText":{"runs":%[{"text":"(.-)","navigationEndpoint":{"click.-"watchEndpoint":{"videoId":"(.-)"}}.-LIVE NOW"]])
+            if not title or not description or not name or not url then--信息获取失败
+                cqAddLoger(0, "直播检查", channel .. "过滤失败")
+                return
+            end
             apiXmlSet("settings","youtuber_"..channel,"live")
             return {
                 name = name or "获取失败",
@@ -129,8 +135,8 @@ if time.min % 5 == 0 then--5分钟检查一次
             "标题："..v.title.."\r\n"..
             "简介："..v.description.."\r\n"..
             "前往查看："..v.url)
+            cqAddLoger(0, "直播检查", channel .. "状态更新")
         end
-        cqAddLoger(0, "直播检查", channel .. (v and "状态更新" or "状态不变"))
     end
     local ddList = {
     --要监控的y2b频道
@@ -148,9 +154,8 @@ if time.min % 5 == 0 then--5分钟检查一次
     for i=1,#ddList do
         checkdd(ddList[i])
     end
-end
 
-if time.min % 5 == 0 then--5分钟检查一次
+    --b站
     function blive(id)
         id = tostring(id)
         html = apiHttpGet("https://api.live.bilibili.com/room/v1/Room/get_info?room_id="..id)
@@ -180,8 +185,8 @@ if time.min % 5 == 0 then--5分钟检查一次
             "标题："..v.title.."\r\n"..
             "tag："..v.tag.."\r\n"..
             "前往查看："..v.url)
+            cqAddLoger(0, "直播检查", tostring(id) .. "状态更新")
         end
-        cqAddLoger(0, "直播检查", tostring(id) .. (v and "状态更新" or "状态不变"))
     end
 
     local bList = {
@@ -199,4 +204,6 @@ if time.min % 5 == 0 then--5分钟检查一次
     for i=1,#bList do
         checkb(bList[i])
     end
+
+    apiSetVar("liveGetting","stop")
 end
