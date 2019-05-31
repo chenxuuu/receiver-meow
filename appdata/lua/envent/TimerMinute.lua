@@ -102,11 +102,11 @@ if time.min % 5 == 0 then--5分钟检查一次
     function v2b(channel)
         local html = apiHttpGet("https://y2b.wvvwvw.com/channel/"..channel.."/featured")
         if not html or html == "" then return end--获取失败了
-        local isclose = html:find("Upcoming live streams")
-        local isopen = html:find("LIVE NOW")
-        if not isopen and not isclose then return end --啥都没匹配到
+        --local isclose = html:find("Upcoming live streams")
+        local isopen = html:find("LIVE NOW\"")
+        --if not isopen and not isclose then return end --啥都没匹配到
         local lastStatus = apiXmlGet("settings","youtuber_"..channel)--获取上次状态
-        if isopen or not isclose then
+        if isopen then
             if lastStatus == "live" then return end--上次提醒过了
             local title,description,name,url = html:match([[,"simpleText":"(.-)"},"descriptionSnippet":{"simpleText":"(.-)"},"longBylineText":{"runs":%[{"text":"(.-)","navigationEndpoint":{"click.-"watchEndpoint":{"videoId":"(.-)"}}.-LIVE NOW"]])
             apiXmlSet("settings","youtuber_"..channel,"live")
@@ -187,15 +187,11 @@ if time.min % 5 == 0 then--5分钟检查一次
     local bList = {
         --要监控的bilibili频道
         14917277,
-        4634167,
         4895312,
-        14052636,
         7962050,
         13946381,
-        3822389,
         10545,
         92613,
-        24317,
         291,
         12235923,
     }
