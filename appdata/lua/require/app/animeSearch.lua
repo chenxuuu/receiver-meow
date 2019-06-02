@@ -5,6 +5,13 @@ local key = apiXmlGet("settings","trace.moe")
 return function (msg)
     local imagePath = apiGetImagePath(msg)--获取图片路径
     if imagePath == "" then return "未在消息中过滤出图片" end
+    imagePath = apiGetAsciiHex(imagePath):fromHex()--转码路径，以免乱码找不到文件
+
+    local pCheck = apiGetPictureWidth(imagePath) / apiGetPictureHeight(imagePath)
+    if pCheck < 1.4 or pCheck > 1.8 then
+        return "请换一张完整的、没有裁剪过的动画视频截图"
+    end
+
     local base64 = apiBase64File(imagePath)--获取base64结果
     local html = apiHttpPost("https://trace.moe/api/search?token="..key,
     "image=data:image/jpeg;base64,"..base64,15000)
