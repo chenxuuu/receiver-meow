@@ -278,7 +278,7 @@ namespace Native.Csharp.App.LuaEnv
         }
 
         /// <summary>
-        /// 获取在线文件的base64结果
+        /// 获取本地图片的base64结果，会转成jpeg
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
@@ -300,6 +300,42 @@ namespace Native.Csharp.App.LuaEnv
                 Common.CqApi.AddLoger(Sdk.Cqp.Enum.LogerLevel.Error, "base64错误", e.ToString());
             }
             return "";
+        }
+
+        /// <summary>
+        /// 获取图片宽度
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static int GetPictureWidth(string path)
+        {
+            try
+            {
+                Bitmap bmp = new Bitmap(path);
+                return bmp.Width;
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
+        /// <summary>
+        /// 获取图片高度
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static int GetPictureHeight(string path)
+        {
+            try
+            {
+                Bitmap bmp = new Bitmap(path);
+                return bmp.Height;
+            }
+            catch
+            {
+                return 0;
+            }
         }
 
         private static Dictionary<string, string> luaTemp = new Dictionary<string, string>();

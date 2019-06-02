@@ -12,5 +12,5 @@ handled = true
 详细请参考readme
 ]]
 
-cqSendGroupMessage(fromgroup,"欢迎"..cqCode_At(fromqq).."加入本群！")
+--cqSendGroupMessage(fromgroup,"欢迎"..cqCode_At(fromqq).."加入本群！")
 cqSetGroupMemberNewCard(fromgroup,fromqq,"没有名字的笨蛋")
