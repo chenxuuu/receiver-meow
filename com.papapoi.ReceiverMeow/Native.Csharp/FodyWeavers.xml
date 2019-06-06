@@ -8,6 +8,7 @@
 		--><!--在这里填写以 bin\x86\Debug(Release) 为基础的非托管dll的相对路径-->
 		<Unmanaged32Assemblies>
       lua53
+      git2-dd2d538
     </Unmanaged32Assemblies>
 	</Costura>
 	<ModuleInit />

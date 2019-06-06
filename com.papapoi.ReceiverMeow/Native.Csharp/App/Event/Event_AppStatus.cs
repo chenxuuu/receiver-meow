@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using LibGit2Sharp;
 using Native.Csharp.App.Interface;
+using Native.Csharp.App.LuaEnv;
 using Native.Csharp.Sdk.Cqp;
 
 namespace Native.Csharp.App.Event
@@ -60,11 +63,32 @@ namespace Native.Csharp.App.Event
             LuaEnv.TimerRun.TimerStart();
             if(Common.CqApi.GetLoginQQ() == 751323264)//默认不开启tcp服务器
                 LuaEnv.TcpServer.Start();
-            if (!File.Exists(LuaEnv.LuaApi.GetPath()+ @"data\app\com.papapoi.ReceiverMeow\lua\require\head.lua"))
-                Common.CqApi.AddFatalError(
-                    "lua插件警告：未在正确位置检测到lua脚本！\r\n" +
-                    "请确认你的脚本在如下路径正确存在：\r\n" +
-                    LuaEnv.LuaApi.GetPath() + @"data\app\com.papapoi.ReceiverMeow\");
+
+            //第一次启动，clone下来整个项目
+            Task.Run(() => {
+                Common.CqApi.AddLoger(Sdk.Cqp.Enum.LogerLevel.Warning, "第一次启动的提示", "这不是错误提示\r\n" +
+                    "正在下载初始脚本，请稍后");
+                string gitPath = Common.AppDirectory + "git/";
+                if (Repository.IsValid(gitPath))
+                    return;//已存在工程，不用再初始化了
+                try
+                {
+                    Repository.Clone("https://gitee.com/chenxuuu/receiver-meow.git", gitPath);
+                }
+                catch
+                {
+                    Common.CqApi.AddFatalError("lua插件警告：无法下载git项目，请检查网络然后重启酷Q！");
+                    return;//clone失败，还原
+                }
+                if(!Directory.Exists(Common.AppDirectory + "lua"))//如果已有这俩文件夹，那么就不用管了
+                {
+                    Tools.CopyDirectory(gitPath + "appdata/lua", Common.AppDirectory + "lua");
+                    Tools.CopyDirectory(gitPath + "appdata/xml", Common.AppDirectory + "xml");
+                }
+                Common.CqApi.AddLoger(Sdk.Cqp.Enum.LogerLevel.Warning, "第一次启动的提示", "这不是错误提示\r\n" +
+                    "初始脚本下载完成，可以使用了\r\n" +
+                    "请注意更改初始配置");
+            });
         }
 
 		/// <summary>

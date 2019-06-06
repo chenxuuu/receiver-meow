@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LibGit2Sharp;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -37,6 +38,12 @@ namespace Native.Csharp.App.LuaEnv
 
             if (intSecond == 0)//每分钟执行脚本
                 LuaEnv.RunLua("", "envent/TimerMinute.lua");
+
+            //检查升级
+            if(intSecond == 0 && intMinute==0 && intHour == 3)
+            {
+
+            }
         }
 
         public static void Timer2_Elapsed(object sender, System.Timers.ElapsedEventArgs e)  //1m定时程序
