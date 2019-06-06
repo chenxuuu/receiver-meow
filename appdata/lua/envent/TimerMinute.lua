@@ -149,6 +149,7 @@ if lastLive < os.time() then--循环检查
     "UCH0ObmokE-zUOeihkKwWySA",
     "UCIaC5td9nGG6JeKllWLwFLA",
     "UCvEX2UICvFAa_T6pqizC20g",
+    "UCIaC5td9nGG6JeKllWLwFLA",
     }
 
     for i=1,#ddList do
@@ -192,13 +193,15 @@ if lastLive < os.time() then--循环检查
     local bList = {
         --要监控的bilibili频道
         14917277,
+        14052636,
+        12235923,
         4895312,
         7962050,
         13946381,
         10545,
-        92613,
-        291,
-        12235923,
+        10345,
+        3822389,
+        4634167,
     }
 
     for i=1,#bList do
