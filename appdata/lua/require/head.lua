@@ -1,8 +1,17 @@
 --提前运行的脚本
 --用于提前声明某些要用到的函数
 
---管理员账号，注意修改
-admin = 961726194
+--管理员账号，从xml中读取
+--只会在启动第一次执行的时候读一次，后面都不读
+admin = tonumber(apiGetVar("adminqq")) or -1
+if admin == -1 then
+    admin = apiXmlGet("settings","adminqq")
+    apiSetVar("adminqq",admin)
+    admin = tonumber(admin) or -1
+end
+if admin == -1 then
+    cqAddLoger(20, "lua插件警告", "请去"..apiGetPath().."data/app/com.papapoi.ReceiverMeow/lua/xml/settings.xml文件，设置管理员qq！")
+end
 
 --加强随机数随机性
 math.randomseed(tostring(os.time()):reverse():sub(1, 6))
