@@ -153,5 +153,39 @@ namespace Native.Csharp.App.LuaEnv
         }
 
 
+        /// <summary>
+        /// 复制文件夹中的所有内容
+        /// </summary>
+        /// <param name="sourceDirPath">源文件夹目录</param>
+        /// <param name="saveDirPath">指定文件夹目录</param>
+        public static void CopyDirectory(string sourceDirPath, string saveDirPath)
+        {
+            try
+            {
+                if (!Directory.Exists(saveDirPath))
+                {
+                    Directory.CreateDirectory(saveDirPath);
+                }
+                string[] files = Directory.GetFiles(sourceDirPath);
+                foreach (string file in files)
+                {
+                    string pFilePath = saveDirPath + "\\" + Path.GetFileName(file);
+                    if (File.Exists(pFilePath))
+                        continue;
+                    File.Copy(file, pFilePath, true);
+                }
+
+                string[] dirs = Directory.GetDirectories(sourceDirPath);
+                foreach (string dir in dirs)
+                {
+                    CopyDirectory(dir, saveDirPath + "\\" + Path.GetFileName(dir));
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
     }
 }
