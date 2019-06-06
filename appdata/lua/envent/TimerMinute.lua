@@ -120,7 +120,7 @@ if lastLive < os.time() then--循环检查
                 name = name or "获取失败",
                 title = title or "获取失败",
                 description = description and description:gsub("\\n","\n") or "获取失败",
-                url = url and "https://www.youtube.com/watch?v="..url or "获取失败",
+                url = url or "获取失败",
             }
         elseif lastStatus == "live" then--没开播
             apiXmlSet("settings","youtuber_"..channel,"close live")
@@ -133,8 +133,8 @@ if lastLive < os.time() then--循环检查
             cqSendGroupMessage(261037783,
             "频道："..v.name.."\r\n"..
             "标题："..v.title.."\r\n"..
-            "简介："..v.description.."\r\n"..
-            "前往查看："..v.url)
+            --"简介："..v.description.."\r\n"..
+            "y2b视频id："..v.url)
             cqAddLoger(0, "直播检查", channel .. "状态更新")
         end
     end
@@ -184,7 +184,7 @@ if lastLive < os.time() then--循环检查
             image(v.image).."\r\n"..
             "标题："..v.title.."\r\n"..
             "tag："..v.tag.."\r\n"..
-            "前往查看："..v.url)
+            "b站房间id："..v.url)
             cqAddLoger(0, "直播检查", tostring(id) .. "状态更新")
         end
     end
