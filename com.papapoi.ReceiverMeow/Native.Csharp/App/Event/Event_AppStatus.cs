@@ -66,11 +66,11 @@ namespace Native.Csharp.App.Event
 
             //第一次启动，clone下来整个项目
             Task.Run(() => {
-                Common.CqApi.AddLoger(Sdk.Cqp.Enum.LogerLevel.Warning, "第一次启动的提示", "这不是错误提示\r\n" +
-                    "正在下载初始脚本，请稍后");
                 string gitPath = Common.AppDirectory + "git/";
                 if (Repository.IsValid(gitPath))
                     return;//已存在工程，不用再初始化了
+                Common.CqApi.AddLoger(Sdk.Cqp.Enum.LogerLevel.Warning, "第一次启动的提示", "这不是错误提示\r\n" +
+                    "正在下载初始脚本，请稍后");
                 try
                 {
                     Repository.Clone("https://gitee.com/chenxuuu/receiver-meow.git", gitPath);
