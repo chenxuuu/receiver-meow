@@ -46,13 +46,19 @@ lua代码全部在`appdata`文件夹中
 
 所有lua接口可以参考`com.papapoi.ReceiverMeow\Native.Csharp\App\LuaEnv\LuaEnv.cs`文件中的函数定义
 
-如想自己编译，请注意需要将[package压缩包](https://github.com/chenxuuu/receiver-meow/releases/download/v0.0/packages.7z)，下载并解压到vs项目的文件夹处
+如想自己编译，请注意需要将[package压缩包](https://github.com/chenxuuu/receiver-meow/releases/download/v0.0/packages.zip)，下载并解压到vs项目的文件夹处
 
 ## 食用
 
 实际使用时，只需要将cpk文件放入酷q的app文件夹，cpk文件可以去[这里下载](https://github.com/chenxuuu/receiver-meow/releases/latest)，或者自行编译（自行编译注意打开开发者模式，删掉生成后的lua53.dll）
 
 然后，请**务必**将`appdata`文件夹内的所有文件夹与文件(目前只有`lua`与`xml`两个文件夹)，复制到酷q的`酷Q Air\data\app\com.papapoi.ReceiverMeow\`文件夹下，可以[点我下载](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/chenxuuu/receiver-meow/tree/master/appdata)
+
+打开`酷Q Air\data\app\com.papapoi.ReceiverMeow\xml\settings.xml`更改设置，尤其是管理员qq号
+
+打开酷q，启用即可
+
+向机器人发送`帮助`或`help`加上页数，可以查看指令说明
 
 ## 结尾
 
