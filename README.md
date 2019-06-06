@@ -52,7 +52,7 @@ lua代码全部在`appdata`文件夹中
 
 实际使用时，只需要将cpk文件放入酷q的app文件夹，cpk文件可以去[这里下载](https://github.com/chenxuuu/receiver-meow/releases/latest)，或者自行编译（自行编译注意打开开发者模式，删掉生成后的lua53.dll）
 
-然后，请**务必**将`appdata`文件夹内的所有文件夹与文件(目前只有`lua`与`xml`两个文件夹)，复制到酷q的`酷Q Air\data\app\com.papapoi.ReceiverMeow\`文件夹下，可以[点我下载](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/chenxuuu/receiver-meow/tree/master/appdata)
+然后，等待插件提示，自动下载必要的lua脚本文件，等待提示脚本下载完成，进行下一步
 
 打开`酷Q Air\data\app\com.papapoi.ReceiverMeow\xml\settings.xml`更改设置，尤其是管理员qq号
 
