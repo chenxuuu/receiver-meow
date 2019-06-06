@@ -171,6 +171,7 @@
       <LastGenOutput>LibExport.cs</LastGenOutput>
     </Content>
     <EmbeddedResource Include="costura32\lua53.dll" />
+    <EmbeddedResource Include="costura32\git2-dd2d538.dll" />
     <Content Include="FodyWeavers.xml" />
   </ItemGroup>
   <ItemGroup />
