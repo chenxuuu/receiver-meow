@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using Native.Csharp.App;
@@ -187,6 +188,10 @@ namespace Native.Csharp.App.LuaEnv
         /// <param name="file">文件路径（app/xxx.xxx.xx/lua/开头）</param>
         public static bool RunLua(string code,string file,ArrayList args = null)
         {
+            //还没下载lua脚本，先不响应消息
+            if (!File.Exists(Common.AppDirectory + "lua/require/head.lua"))
+                return false;
+
             using (var lua = new NLua.Lua())
             {
                 try
