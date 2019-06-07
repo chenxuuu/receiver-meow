@@ -110,6 +110,12 @@ return function (msg,qq,group)
                                 "\r\n如果不符合要求，请回复“不通过"..tostring(qq).."原因”来给打回去重填")
             cqSendGroupMessage(241464054,cqCode_At(qq).."催促成功")
             return true
+        elseif msg:find("重置密码") == 1 and (step == "pass" or step == "done") then
+            local password = getRandomString(6)
+            apiTcpSend("flexiblelogin resetpw "..player.." "..password,true)
+            cqSendGroupMessage(241464054,cqCode_At(qq).."已重置，请看私聊")
+            cqSendPrivateMessage(qq,"密码重置成功，初始密码为："..password.."\r\n"..
+            "请在登陆后使用命令/changepassword [密码] [确认密码]来修改密码")
         end
     elseif group == 567145439 then --管理群
         if msg:find("删除 *%d+") == 1 then
