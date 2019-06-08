@@ -289,7 +289,7 @@ local apps = {
                 if result then
                     sendMessage(cqCode_At(qq).."成功运行")
                 else
-                    sendMessage(cqCode_At(qq).."运行失败\r\n"..info)
+                    sendMessage(cqCode_At(qq).."运行失败\r\n"..tostring(info))
                 end
             else
                 sendMessage(cqCode_At(qq).."\r\n"..apiSandBox(cqCqCode_UnTrope(msg:sub(5))))
