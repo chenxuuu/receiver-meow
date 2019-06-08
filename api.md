@@ -338,6 +338,24 @@ string.toHex("123abc"," ") --> "31 32 33 61 62 63 " 6
 - 置讨论组退出
 - 返回值：int
 
+### cqGetMemberInfo(long group, long qq, bool notCache = false)
+
+- 获取群成员信息
+- 传入值`notCache`：是否不缓存结果，如为true则不缓存，默认false
+- 返回值：table
+  - number Age 年龄
+  - string Area 所在地区
+  - bool BadRecord 是否有不良记录
+  - string Card 群名片
+  - number JoiningTime 加群时间的时间戳
+  - number LastDateTime 最后发言时间的时间戳
+  - string Level 群等级
+  - string Nick qq昵称
+  - number PermitType 成员在群内的权限等级，1群员，2管理，3群主
+  - number Sex 成员性别，0男，1女，255未知
+  - string SpecialTitle 专属头衔
+  - number SpecialTitleDurationTime 专属头衔过期时间的时间戳
+
 ---
 
 ## XML操作类接口，通常用于存取少量数据，不能当作大数据库使用
