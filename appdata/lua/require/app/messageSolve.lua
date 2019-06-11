@@ -37,7 +37,7 @@ local apps = {
                 return true
             end
             local keyWord,answer = msg:match("！ *add *(.+)：(.+)")
-            if not keyWord then keyWord,answer = msg:match("! *add *(.+):(.+)") end
+            if not keyWord then keyWord,answer = msg:match("! *add *(.-):(.+)") end
             keyWord = kickSpace(keyWord)
             answer = kickSpace(answer)
             if not keyWord or not answer or keyWord:len() == 0 or answer:len() == 0 then
@@ -53,6 +53,27 @@ local apps = {
             return "[CQ:emoji,id=128227] !add关键词:回答"
         end
     },
+    {--!delall
+        check = function ()
+            return msg:find("！ *delall *.+") == 1 or msg:find("! *delall *.+") == 1
+        end,
+        run = function ()
+            if (apiXmlGet("adminList",tostring(qq)) ~= "admin" or not group) and qq ~= admin then
+                sendMessage(cqCode_At(qq).."你不是狗管理，想成为狗管理请找我的主人呢")
+                return true
+            end
+            local keyWord = msg:match("！ *delall *(.+)")
+            if not keyWord then keyWord = msg:match("! *delall *(.+)") end
+            keyWord = kickSpace(keyWord)
+            apiXmlDelete(tostring(group or "common"),keyWord)
+            sendMessage(cqCode_At(qq).."\r\n[CQ:emoji,id=128465]删除完成！\r\n"..
+            "词条："..keyWord)
+            return true
+        end,
+        explain = function ()
+            return "[CQ:emoji,id=128465] !delall关键词"
+        end
+    },
     {--!del
         check = function ()
             return (msg:find("！ *del *.+：.+") == 1 or msg:find("! *del *.+:.+") == 1)
@@ -64,7 +85,7 @@ local apps = {
                 return true
             end
             local keyWord,answer = msg:match("！ *del *(.+)：(.+)")
-            if not keyWord then keyWord,answer = msg:match("! *del *(.+):(.+)") end
+            if not keyWord then keyWord,answer = msg:match("! *del *(.-):(.+)") end
             keyWord = kickSpace(keyWord)
             answer = kickSpace(answer)
             if not keyWord or not answer or keyWord:len() == 0 or answer:len() == 0 then
@@ -95,27 +116,6 @@ local apps = {
         end,
         explain = function ()
             return "[CQ:emoji,id=128221] !list关键词"
-        end
-    },
-    {--!delall
-        check = function ()
-            return msg:find("！ *delall *.+") == 1 or msg:find("! *delall *.+") == 1
-        end,
-        run = function ()
-            if (apiXmlGet("adminList",tostring(qq)) ~= "admin" or not group) and qq ~= admin then
-                sendMessage(cqCode_At(qq).."你不是狗管理，想成为狗管理请找我的主人呢")
-                return true
-            end
-            local keyWord = msg:match("！ *delall *(.+)")
-            if not keyWord then keyWord = msg:match("! *delall *(.+)") end
-            keyWord = kickSpace(keyWord)
-            apiXmlDelete(tostring(group or "common"),keyWord)
-            sendMessage(cqCode_At(qq).."\r\n[CQ:emoji,id=128465]删除完成！\r\n"..
-            "词条："..keyWord)
-            return true
-        end,
-        explain = function ()
-            return "[CQ:emoji,id=128465] !delall关键词"
         end
     },
     {--今日运势
