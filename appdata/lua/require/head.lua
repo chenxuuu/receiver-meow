@@ -17,7 +17,7 @@ end
 math.randomseed(tostring(os.time()):reverse():sub(1, 6))
 
 --防止跑死循环，超时设置秒数自动结束，-1表示禁用
-local maxSeconds = -1
+local maxSeconds = 15
 local start = os.time()
 function trace (event, line)
     if os.time() - start >=maxSeconds then
@@ -35,7 +35,7 @@ rootPath = rootPath:gsub("%x%x", function(c)
                                     return string.char(tonumber(c, 16))
                                 end)
 package.path = package.path..
-";"..rootPath.."/data/app/com.papapoi.ReceiverMeow/lua/require/?.lua"
+";"..rootPath.."data/app/com.papapoi.ReceiverMeow/lua/require/?.lua"
 
 --加载字符串工具包
 require("strings")
