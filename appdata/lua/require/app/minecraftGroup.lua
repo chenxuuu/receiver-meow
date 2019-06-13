@@ -45,7 +45,14 @@ return function (msg,qq,group)
             end
             return true
         elseif player == "" then--没绑定id
-            cqSendGroupMessage(241464054,cqCode_At(qq).."你没有绑定游戏id，请发送“绑定”加上id，来绑定自己的id")
+            step = tonumber(step) or 0
+            if step >= 3 then
+                cqSetGroupBanSpeak(241464054,qq,10*60)
+                cqSendGroupMessage(241464054,cqCode_At(qq).."你没有绑定游戏id，请在十分钟后，发送“绑定”加上id，来绑定自己的id")
+            else
+                cqSendGroupMessage(241464054,cqCode_At(qq).."你没有绑定游戏id，请发送“绑定”加上id，来绑定自己的id")
+                apiXmlSet("bindStep",tostring(qq),tostring(step+1))
+            end
             return true
         elseif msg:find("查询.+") == 1 or msg == "查询" then--查询某玩家在线信息
             local p = msg == "查询" and player or msg:match("查询(%w+)")

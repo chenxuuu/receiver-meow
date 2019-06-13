@@ -20,4 +20,12 @@
     <msg>tuling</msg><!-- 图灵机器人的key，请自己去官网申请 -->
     <ans></ans>
   </msginfo>
+  <msginfo>
+    <msg>qqai_APPID</msg><!-- 腾讯ai开放平台APPID -->
+    <ans></ans>
+  </msginfo>
+  <msginfo>
+    <msg>qqai_APPKEY</msg><!-- 腾讯ai开放平台APPKEY -->
+    <ans></ans>
+  </msginfo>
 </Categories>
