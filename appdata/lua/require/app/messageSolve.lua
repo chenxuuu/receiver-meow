@@ -346,9 +346,14 @@ local apps = {
                             "question="..text:urlEncode().."&"..
                             "session="..tostring(qq).."&"..
                             "time_stamp="..tostring(os.time())
+            local sign
             --加载MD5需要的库
-            local md5 = require 'md5'
-            local sign  = md5.sumhexa(rawBody.."&app_key="..appkey)
+            if not apiMD5Encrypt then--兼容老版本插件，不过会很慢
+                local md5 = require 'md5'
+                sign = md5.sumhexa(rawBody.."&app_key="..appkey)
+            else
+                sign = apiMD5Encrypt(rawBody.."&app_key="..appkey)
+            end
             rawBody = rawBody.."&sign="..sign:upper()
             local http = apiHttpGet("https://api.ai.qq.com/fcgi-bin/nlp/nlp_textchat?"..rawBody)
             local d,r = jsonDecode(http)

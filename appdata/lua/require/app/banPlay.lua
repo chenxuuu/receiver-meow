@@ -7,6 +7,10 @@ return function (msg,qq,g)
     local cards = apiXmlGet("banCard",tostring(qq))
     cards = cards == "" and 0 or tonumber(cards) or 0
     if msg == "抽奖" then
+        if cqGetMemberInfo(g,cqGetLoginQQ()).PermitType == 1 or
+            (cqGetMemberInfo(g,qq).PermitType ~= 1) then
+            return cqCode_At(qq).."权限不足，抽奖功能无效"
+        end
         if math.random() > 0.9 then
             local banTime = math.random(1,60)
             cqSetGroupBanSpeak(g,qq,banTime*60)
