@@ -149,9 +149,11 @@ namespace Native.Csharp.App.LuaEnv
             //取出某缓存的值
             lua.RegisterFunction("apiGetAsciiHex", null, typeof(LuaApi).GetMethod("GetAsciiHex"));
             //获取字符串ascii编码的hex串
-
+            
             lua.RegisterFunction("apiGetHardDiskFreeSpace", null, typeof(Tools).GetMethod("GetHardDiskFreeSpace"));
             //获取指定驱动器的剩余空间总大小(单位为MB)
+            lua.RegisterFunction("apiMD5Encrypt", null, typeof(Tools).GetMethod("MD5Encrypt"));
+            //计算MD5
 
             lua.RegisterFunction("apiTcpSend", null, typeof(TcpServer).GetMethod("Send"));
             //发送tcp广播数据
