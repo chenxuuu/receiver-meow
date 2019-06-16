@@ -157,19 +157,6 @@ local apps = {
             return "[CQ:emoji,id=128168]空气质量"
         end
     },
-    {--点赞
-        check = function ()--检查函数，拦截则返回true
-            return msg=="点赞" or msg=="赞我"
-        end,
-        run = function ()--匹配后进行运行的函数
-            cqSendPraise(qq,1)
-            sendMessage(cqCode_At(qq).."已为你点赞[CQ:emoji,id=128077]")
-            return true
-        end,
-        explain = function ()--功能解释，返回为字符串，若无需显示解释，返回nil即可
-            return "[CQ:emoji,id=128077]点赞"
-        end
-    },
     {--点歌
         check = function ()
             return msg:find("点歌") == 1
