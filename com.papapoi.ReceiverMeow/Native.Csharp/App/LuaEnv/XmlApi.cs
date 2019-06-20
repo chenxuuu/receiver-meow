@@ -131,11 +131,20 @@ namespace Native.Csharp.App.LuaEnv
 
                 XElement read = root.Element(keyNode);
 
-                read.AddBeforeSelf(new XElement(keyNode,
-                       new XElement(keyName, msg),
-                       new XElement(valueName, ans)
-                       ));
-
+                if (read == null)
+                {
+                    root.Add(new XElement(keyNode,
+                      new XElement(keyName, msg),
+                      new XElement(valueName, ans)
+                      ));
+                }
+                else
+                {
+                    read.AddBeforeSelf(new XElement(keyNode,
+                      new XElement(keyName, msg),
+                      new XElement(valueName, ans)
+                      ));
+                }
                 root.Save(path + group + ".xml");
             }
         }
