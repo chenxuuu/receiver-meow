@@ -10,7 +10,7 @@ if admin == -1 then
     admin = tonumber(admin) or -1
 end
 if admin == -1 then
-    cqAddLoger(20, "lua插件警告", "请去"..apiGetPath().."data/app/com.papapoi.ReceiverMeow/lua/xml/settings.xml文件，设置管理员qq！")
+    cqAddLoger(20, "lua插件警告", "请去"..apiGetPath().."data/app/com.papapoi.ReceiverMeow/xml/settings.xml文件，设置管理员qq！")
 end
 
 --加强随机数随机性
