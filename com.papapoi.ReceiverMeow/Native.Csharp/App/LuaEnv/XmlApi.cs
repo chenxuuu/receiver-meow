@@ -20,10 +20,7 @@ namespace Native.Csharp.App.LuaEnv
 
         public static void set(string group, string msg, string str)
         {
-            if (xml_get(group, msg) != "")
-            {
-                del(group, msg);
-            }
+            del(group, msg);
             insert(group, msg, str);
         }
 
