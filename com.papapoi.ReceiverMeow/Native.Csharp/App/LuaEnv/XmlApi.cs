@@ -11,9 +11,14 @@ namespace Native.Csharp.App.LuaEnv
 {
     class XmlApi
     {
+        public const string rootNode = "Categories";
+        public const string keyNode = "msginfo";
+        public const string keyName = "msg";
+        public const string valueName = "ans";
+
         public static string path = Common.AppDirectory + "xml/";
 
-        public static void set(string group, string msg,string str)
+        public static void set(string group, string msg, string str)
         {
             del(group, msg);
             insert(group, msg, str);
@@ -33,13 +38,13 @@ namespace Native.Csharp.App.LuaEnv
             int RandKey;
             string ansall = "";
             var element = from ee in root.Elements()
-                          where msg.IndexOf(ee.Element("msg").Value) != -1
+                          where msg.IndexOf(ee.Element(keyName).Value) != -1
                           select ee;
             XElement[] result = element.ToArray();
             if (result.Count() > 0)
             {
                 RandKey = ran.Next(0, result.Count());
-                ansall = result[RandKey].Element("ans").Value;
+                ansall = result[RandKey].Element(valueName).Value;
             }
             return ansall;
         }
@@ -50,10 +55,10 @@ namespace Native.Csharp.App.LuaEnv
             XElement root = XElement.Load(path + group + ".xml");
             string ansall = "";
             var element = from ee in root.Elements()
-                          where ee.Element("msg").Value == msg
+                          where ee.Element(keyName).Value == msg
                           select ee;
             if (element.Count() > 0)
-                ansall = element.First().Element("ans").Value;
+                ansall = element.First().Element(valueName).Value;
             return ansall;
         }
 
@@ -63,10 +68,10 @@ namespace Native.Csharp.App.LuaEnv
             XElement root = XElement.Load(path + group + ".xml");
             string ansall = "";
             var element = from ee in root.Elements()
-                          where ee.Element("ans").Value == msg
+                          where ee.Element(valueName).Value == msg
                           select ee;
             if (element.Count() > 0)
-                ansall = element.First().Element("msg").Value;
+                ansall = element.First().Element(keyName).Value;
             return ansall;
         }
 
@@ -76,11 +81,11 @@ namespace Native.Csharp.App.LuaEnv
             XElement root = XElement.Load(path + group + ".xml");
             string ansall = "";
             var element = from ee in root.Elements()
-                          where ee.Element("msg").Value == msg
+                          where ee.Element(keyName).Value == msg
                           select ee;
             XElement[] result = element.ToArray();
             foreach (XElement mm in result)
-                ansall = ansall + mm.Element("ans").Value + "\r\n";
+                ansall = ansall + mm.Element(valueName).Value + "\r\n";
             ansall = ansall + "一共有" + element.Count() + "条回复";
             return ansall;
         }
@@ -92,7 +97,7 @@ namespace Native.Csharp.App.LuaEnv
             XElement root = XElement.Load(path + group + ".xml");
 
             var element = from ee in root.Elements()
-                          where (string)ee.Element("msg") == msg
+                          where (string)ee.Element(keyName) == msg
                           select ee;
             if (element.Count() > 0)
                 element.Remove();
@@ -106,7 +111,7 @@ namespace Native.Csharp.App.LuaEnv
             XElement root = XElement.Load(path + group + ".xml");
 
             var element = from ee in root.Elements()
-                          where (string)ee.Element("msg") == msg && (string)ee.Element("ans") == ans
+                          where (string)ee.Element(keyName) == msg && (string)ee.Element(valueName) == ans
                           select ee;
             if (element.Count() > 0)
                 element.First().Remove();
@@ -121,13 +126,22 @@ namespace Native.Csharp.App.LuaEnv
                 dircheck(group);
                 XElement root = XElement.Load(path + group + ".xml");
 
-                XElement read = root.Element("msginfo");
+                XElement read = root.Element(keyNode);
 
-                read.AddBeforeSelf(new XElement("msginfo",
-                       new XElement("msg", msg),
-                       new XElement("ans", ans)
-                       ));
-
+                if (read == null)
+                {
+                    root.Add(new XElement(keyNode,
+                      new XElement(keyName, msg),
+                      new XElement(valueName, ans)
+                      ));
+                }
+                else
+                {
+                    read.AddBeforeSelf(new XElement(keyNode,
+                      new XElement(keyName, msg),
+                      new XElement(valueName, ans)
+                      ));
+                }
                 root.Save(path + group + ".xml");
             }
         }
@@ -136,10 +150,10 @@ namespace Native.Csharp.App.LuaEnv
         {
             if (!File.Exists(path + group + ".xml"))
             {
-                XElement root = new XElement("Categories",
-                    new XElement("msginfo",
-                        new XElement("msg", "初始问题"),
-                        new XElement("ans", "初始回答")
+                XElement root = new XElement(rootNode,
+                    new XElement(keyNode,
+                        new XElement(keyName, "初始问题"),
+                        new XElement(valueName, "初始回答")
                         )
                    );
                 root.Save(path + group + ".xml");
