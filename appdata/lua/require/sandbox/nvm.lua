@@ -1,20 +1,23 @@
+local nvm = {}
+
 local data = {}
 
-function set(a,b)
+function nvm.set(a,b)
     data[a] = b
 end
 
-function get(a)
+function nvm.get(a)
     return data[a]
 end
 
-function sett(a,b,c)
+function nvm.sett(a,b,c)
     if not data[a] then data[a] = {} end
     data[a][b] = c
 end
 
-function gett(a,b,c)
+function nvm.gett(a,b,c)
     if not data[a] then data[a] = {} end
     return data[a][b]
 end
 
+return nvm
