@@ -1,12 +1,14 @@
 --加上需要require的路径
+local rootPath = apiGetAsciiHex(apiGetPath())
+rootPath = rootPath:gsub("[%s%p]", ""):upper()
+rootPath = rootPath:gsub("%x%x", function(c)
+                                    return string.char(tonumber(c, 16))
+                                end)
 package.path = package.path..
-";./data/app/com.papapoi.ReceiverMeow/lua/require/sandbox/?.lua"
+";"..rootPath.."/data/app/com.papapoi.ReceiverMeow/lua/require/sandbox/?.lua"
 
 JSONLIB = require("JSON")
 utils = require("utils")
-struct = require("struct")
-BIT = require("bit")
-nvm = require("nvm")
 
 --加强随机数随机性
 math.randomseed(tostring(os.time()):reverse():sub(1, 6))
@@ -38,6 +40,7 @@ function print(...)
 end
 
 json = {
+    null = "\0",
     decode = function (s)--安全的，带解析结果返回的json解析函数
         local result, info = pcall(function(t) return JSONLIB:decode(t) end, s)
         if result then
@@ -47,7 +50,7 @@ json = {
         end
     end,
     encode = function (t)
-        return JSONLIB:encode(t)
+        return JSONLIB:encode(t,nil,{null=json.null})
     end
 }
 
@@ -66,20 +69,36 @@ debug.sethook(trace, "l")
 
 loadstring = load
 
+struct = require("struct")
 pack = {
     pack = struct.pack,
     unpack = struct.unpack,
 }
 
+BIT = require("bit")
 bit = BIT.bit32
 bit.bit = function(b) return bit.lshift(1,b) end
 bit.isset = function(v,p) return bit.rshift(v,p) % 2 == 1 end
 bit.isclear = function(v,p) return not bit.isset(v,p) end
 
+nvm = require("nvm")
+
+log = {
+    info = print,
+    trace = print,
+    debug = print,
+    warn = print,
+    error = print,
+    fatal = print,
+}
+
+misc = require("misc")
+
 --安全的函数
 local safeFunctions = {
     assert = true,
     setmetatable = true,
+    getmetatable = true,
     error = true,
     ipairs = true,
     next = true,
@@ -108,6 +127,8 @@ local safeFunctions = {
     crypto = true,
     bit = true,
     nvm = true,
+    log = true,
+    misc = true,
 }
 
 --安全的os函数
