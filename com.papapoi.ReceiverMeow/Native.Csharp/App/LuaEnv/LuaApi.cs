@@ -415,28 +415,6 @@ namespace Native.Csharp.App.LuaEnv
         //获取当前登录QQ的昵称
         public static string GetAppDirectory() => Common.AppDirectory;
         //取应用目录
-        public static NLua.LuaTable GetMemberInfo(NLua.LuaTable t, long g, long q, bool a)
-        {
-            // 当地时区
-            System.DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1));
-
-            Sdk.Cqp.Model.GroupMember m;
-            Common.CqApi.GetMemberInfo(g, q, out m, a);
-            t["Age"] = m.Age;
-            t["Area"] = m.Area;
-            t["BadRecord"] = m.BadRecord;
-            t["Card"] = m.Card;
-            t["JoiningTime"] = (long)(m.JoiningTime - startTime).TotalSeconds;
-            t["LastDateTime"] = (long)(m.LastDateTime - startTime).TotalSeconds;
-            t["Level"] = m.Level;
-            t["Nick"] = m.Nick;
-            t["PermitType"] = (int)m.PermitType;
-            t["Sex"] = (int)m.Sex;
-            t["SpecialTitle"] = m.SpecialTitle;
-            t["SpecialTitleDurationTime"] = (long)(m.SpecialTitleDurationTime - startTime).TotalSeconds;
-            return t;
-        }
-        //获取群成员信息
         public static int AddLoger(int level, string type, string content) => Common.CqApi.AddLoger((Sdk.Cqp.Enum.LogerLevel)level, type, content);
         //添加日志
         public static int AddFatalError(string msg) => Common.CqApi.AddFatalError(msg);

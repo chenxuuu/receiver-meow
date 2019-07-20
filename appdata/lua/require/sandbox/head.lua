@@ -1,12 +1,3 @@
---加上需要require的路径
-local rootPath = apiGetAsciiHex(apiGetPath())
-rootPath = rootPath:gsub("[%s%p]", ""):upper()
-rootPath = rootPath:gsub("%x%x", function(c)
-                                    return string.char(tonumber(c, 16))
-                                end)
-package.path = package.path..
-";"..rootPath.."/data/app/com.papapoi.ReceiverMeow/lua/require/sandbox/?.lua"
-
 JSONLIB = require("JSON")
 utils = require("utils")
 
