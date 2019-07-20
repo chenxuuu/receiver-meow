@@ -1,5 +1,5 @@
 --统一的消息处理函数
-msg,qq,group,id = nil,nil,nil,nil
+local msg,qq,group,id = nil,nil,nil,nil
 local handled = false
 
 --发送消息
