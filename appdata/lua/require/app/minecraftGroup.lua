@@ -124,9 +124,6 @@ return function (msg,qq,group)
             cqSendPrivateMessage(qq,"密码重置成功，初始密码为："..password.."\r\n"..
             "请在登陆后使用命令/changepassword [密码] [确认密码]来修改密码")
             return true
-        elseif cqGetMemberInfo(group,qq,true).Card ~= player then
-            --群备注和实际名字不匹配
-            cqSetGroupMemberNewCard(group, qq, player)
         end
     elseif group == 567145439 then --管理群
         if msg:find("删除 *%d+") == 1 then
