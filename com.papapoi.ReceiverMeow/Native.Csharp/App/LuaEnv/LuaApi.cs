@@ -371,6 +371,12 @@ namespace Native.Csharp.App.LuaEnv
             return BitConverter.ToString(Encoding.Default.GetBytes(str)).Replace("-", "");
         }
 
+        /// <summary>
+        /// 设置定时脚本运行间隔时间
+        /// </summary>
+        /// <param name="wait"></param>
+        public static void SetTimerScriptWait(int wait) => TimerRun.luaWait = wait;
+
         public static string CqCode_At(long qq) => Common.CqApi.CqCode_At(qq);
         //获取酷Q "At某人" 代码
         public static string CqCode_Emoji(int id) => Common.CqApi.CqCode_Emoji(id);
