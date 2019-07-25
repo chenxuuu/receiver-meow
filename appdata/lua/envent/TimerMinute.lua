@@ -140,16 +140,15 @@ if lastLive < os.time() then--循环检查
     end
     local ddList = {
     --要监控的y2b频道
-    "UCWCc8tO-uUl_7SJXIKJACMw",
-    "UCQ0UDLQCjY0rmuxCDE38FGg",
-    "UC1opHUrw8rvnsadT-iGp7Cg",
-    "UCrhx4PaF3uIo9mDcTxHnmIg",
-    "UChN7P9OhRltW3w9IesC92PA",
-    "UC8NZiqKx6fsDT3AVcMiVFyA",
-    "UCH0ObmokE-zUOeihkKwWySA",
-    "UCIaC5td9nGG6JeKllWLwFLA",
-    "UCvEX2UICvFAa_T6pqizC20g",
-    "UCIaC5td9nGG6JeKllWLwFLA",
+    "UCWCc8tO-uUl_7SJXIKJACMw", --mea
+    "UCQ0UDLQCjY0rmuxCDE38FGg", --祭
+    "UC1opHUrw8rvnsadT-iGp7Cg", --aqua
+    "UCrhx4PaF3uIo9mDcTxHnmIg", --paryi
+    "UChN7P9OhRltW3w9IesC92PA", --miu
+    "UC8NZiqKx6fsDT3AVcMiVFyA", --犬山
+    "UCH0ObmokE-zUOeihkKwWySA", --大姐
+    "UCIaC5td9nGG6JeKllWLwFLA", --mana
+    "UCn14Z641OthNps7vppBvZFA", --hana
     }
 
     for i=1,#ddList do
@@ -192,16 +191,17 @@ if lastLive < os.time() then--循环检查
 
     local bList = {
         --要监控的bilibili频道
-        14917277,
-        14052636,
-        12235923,
-        4895312,
-        7962050,
-        13946381,
-        10545,
-        10345,
-        3822389,
-        4634167,
+        14917277, --夸哥
+        14052636, --大姐
+        12235923, --吊人
+        4895312, --帕里
+        7962050, --森永
+        13946381, --祭
+        10545, --adogsama
+        43067, --hana
+        3822389, --mana
+        4634167, --犬山
+        43067, --han佬
     }
 
     for i=1,#bList do
