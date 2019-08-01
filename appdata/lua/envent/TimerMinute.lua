@@ -106,7 +106,7 @@ if lastLive < os.time() then--循环检查
     --臭dd检查youtube是否开播
     function v2b(channel)
         --cqAddLoger(0, "直播检查", channel .. "开始获取html")
-        local html = apiHttpGet("https://y2b.wvvwvw.com/channel/"..channel.."/featured")
+        local html = apiHttpGet("https://tcy2b.papapoi.com/channel/"..channel.."/featured")
         --cqAddLoger(0, "直播检查", channel .. "获取html结束")
         if not html or html == "" then return end--获取失败了
         --local isclose = html:find("Upcoming live streams")
@@ -115,17 +115,18 @@ if lastLive < os.time() then--循环检查
         local lastStatus = apiXmlGet("settings","youtuber_"..channel)--获取上次状态
         if isopen then
             if lastStatus == "live" then return end--上次提醒过了
-            local title,description,name,url = html:match([[,"simpleText":"(.-)"},"descriptionSnippet":{"simpleText":"(.-)"},"longBylineText":{"runs":%[{"text":"(.-)","navigationEndpoint":{"click.-"watchEndpoint":{"videoId":"(.-)"}}.-LIVE NOW"]])
-            if not title or not description or not name or not url then--信息获取失败
+            local cover,title,description,name,url = html:match([[","thumbnail":{"thumbnails":%[{"url":"(https://i%.ytimg%.com.-live%.jpg)%?.-,"simpleText":"(.-)"},"descriptionSnippet":{"simpleText":"(.-)"},"longBylineText":{"runs":%[{"text":"(.-)","navigationEndpoint":{"click.-"watchEndpoint":{"videoId":"(.-)"}}.-LIVE NOW"]])
+            if not cover or not title or not description or not name or not url then--信息获取失败
                 cqAddLoger(0, "直播检查", channel .. "过滤失败")
                 return
             end
             apiXmlSet("settings","youtuber_"..channel,"live")
             return {
-                name = name or "获取失败",
-                title = title or "获取失败",
-                description = description and description:gsub("\\n","\n") or "获取失败",
-                url = url or "获取失败",
+                cover = cover:gsub("i.ytimg.com","tcy2b.papapoi.com"),
+                name = name,
+                title = title,
+                description = description and description:gsub("\\n","\n"),
+                url = url,
             }
         elseif lastStatus == "live" then--没开播
             apiXmlSet("settings","youtuber_"..channel,"close live")
@@ -136,6 +137,7 @@ if lastLive < os.time() then--循环检查
         local v = v2b(channel)
         if v then
             cqSendGroupMessage(261037783,
+            image(v.cover).."\r\n"..
             "频道："..v.name.."\r\n"..
             "标题："..v.title.."\r\n"..
             --"简介："..v.description.."\r\n"..
