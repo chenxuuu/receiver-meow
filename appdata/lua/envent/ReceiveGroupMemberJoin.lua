@@ -13,4 +13,8 @@ handled = true
 ]]
 
 --cqSendGroupMessage(fromgroup,"欢迎"..cqCode_At(fromqq).."加入本群！")
+if fromgroup == 261037783 then
+    cqSetGroupMemberNewCard(fromgroup,fromqq,"可能是单推")
+    return
+end
 cqSetGroupMemberNewCard(fromgroup,fromqq,"没有名字的笨蛋")

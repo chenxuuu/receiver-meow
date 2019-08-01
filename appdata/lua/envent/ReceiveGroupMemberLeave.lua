@@ -12,7 +12,7 @@ handled = true
 下面的代码为我当前接待喵逻辑使用的代码，可以重写也可以按自己需求进行更改
 详细请参考readme
 ]]
-
+if fromgroup == 261037783 then return end--dd提醒群不提醒这种东西
 cqSendGroupMessage(fromgroup,tostring(fromqq).."永远地离开了这个世界。。")
 if fromgroup == 241464054 then
     local player = apiXmlGet("bindQq",tostring(fromqq))
