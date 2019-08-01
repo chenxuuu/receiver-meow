@@ -149,6 +149,7 @@ if lastLive < os.time() then--循环检查
     "UCH0ObmokE-zUOeihkKwWySA", --大姐
     "UCIaC5td9nGG6JeKllWLwFLA", --mana
     "UCn14Z641OthNps7vppBvZFA", --hana
+    "UC0g1AE0DOjBYnLhkgoRWN1w", --葵
     }
 
     for i=1,#ddList do
@@ -202,6 +203,7 @@ if lastLive < os.time() then--循环检查
         3822389, --mana
         4634167, --犬山
         43067, --han佬
+        21302477, --葵
     }
 
     for i=1,#bList do
