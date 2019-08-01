@@ -150,6 +150,8 @@ if lastLive < os.time() then--循环检查
     "UCIaC5td9nGG6JeKllWLwFLA", --mana
     "UCn14Z641OthNps7vppBvZFA", --hana
     "UC0g1AE0DOjBYnLhkgoRWN1w", --葵
+    "UCNMG8dXjgqxS94dHljP9duQ",--yyut
+    "UCL9dLCVvHyMiqjp2RDgowqQ",--律
     }
 
     for i=1,#ddList do
@@ -204,6 +206,7 @@ if lastLive < os.time() then--循环检查
         4634167, --犬山
         43067, --han佬
         21302477, --葵
+        947447,--律
     }
 
     for i=1,#bList do
