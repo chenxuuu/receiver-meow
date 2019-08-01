@@ -98,11 +98,14 @@ end
 
 local lastLive = tonumber(apiGetVar("liveGetting")) or 0
 if lastLive < os.time() then--循环检查
-    apiSetVar("liveGetting",tostring(os.time()+240))--超时时间最大240秒，防止卡死
+    setMaxSecond(300)--更改超时时间
+    apiSetVar("liveGetting",tostring(os.time()+300))--超时时间最大240秒，防止卡死
 
     --臭dd检查youtube是否开播
     function v2b(channel)
+        cqAddLoger(0, "直播检查", channel .. "开始获取html")
         local html = apiHttpGet("https://y2b.wvvwvw.com/channel/"..channel.."/featured")
+        cqAddLoger(0, "直播检查", channel .. "获取html结束")
         if not html or html == "" then return end--获取失败了
         --local isclose = html:find("Upcoming live streams")
         local isopen = html:find("LIVE NOW\"")
@@ -161,7 +164,9 @@ if lastLive < os.time() then--循环检查
     --b站
     function blive(id)
         id = tostring(id)
-        html = apiHttpGet("https://api.live.bilibili.com/room/v1/Room/get_info?room_id="..id)
+        cqAddLoger(0, "直播检查", id .. "开始获取html")
+        local html = apiHttpGet("https://api.live.bilibili.com/room/v1/Room/get_info?room_id="..id)
+        cqAddLoger(0, "直播检查", id .. "获取html结束")
         if not html or html == "" then return end--获取失败了
         local d,r,e = jsonDecode(html)
         if not r or not d then return end --获取失败了

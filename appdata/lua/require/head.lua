@@ -19,13 +19,17 @@ math.randomseed(tostring(os.time()):reverse():sub(1, 6))
 --防止跑死循环，超时设置秒数自动结束，-1表示禁用
 local maxSeconds = 15
 local start = os.time()
-function trace (event, line)
-    if os.time() - start >=maxSeconds then
+local function trace (event, line)
+    if os.time() - start >= maxSeconds and maxSeconds > 0 then
         error("代码运行超时")
     end
 end
 if maxSeconds > 0 then
     debug.sethook(trace, "l")
+end
+--设置最长运行的超时时间，-1表示禁用
+function setMaxSecond(max)
+    maxSeconds = max
 end
 
 --加上需要require的路径
