@@ -157,6 +157,9 @@ if lastLive < os.time() then--循环检查
     "UC0g1AE0DOjBYnLhkgoRWN1w", --葵
     "UCNMG8dXjgqxS94dHljP9duQ",--yyut
     "UCL9dLCVvHyMiqjp2RDgowqQ",--律
+    "UCkPIfBOLoO0hVPG-tI2YeGg",--兔鞠mari
+    "UCIdEIHpS0TdkqRkHL5OkLtA",--名取纱那
+
     }
 
     for i=1,#ddList do
@@ -179,7 +182,6 @@ if lastLive < os.time() then--循环检查
             return {
                 title = d.data.title,
                 image = d.data.user_cover,
-                tag = d.data.tags,
                 url = "https://live.bilibili.com/"..id,
             }
         elseif lastStatus == "live" then--没开播
@@ -187,13 +189,13 @@ if lastLive < os.time() then--循环检查
         end
     end
 
-    function checkb(id)
+    function checkb(id,name)
         local v = blive(id)
         if v then
             cqSendGroupMessage(261037783,
             image(v.image).."\r\n"..
+            "频道："..name..
             "标题："..v.title.."\r\n"..
-            "tag："..v.tag.."\r\n"..
             "b站房间："..v.url)
             cqAddLoger(0, "直播检查", tostring(id) .. "状态更新")
         end
@@ -201,23 +203,23 @@ if lastLive < os.time() then--循环检查
 
     local bList = {
         --要监控的bilibili频道
-        14917277, --夸哥
-        14052636, --大姐
-        12235923, --吊人
-        4895312, --帕里
-        7962050, --森永
-        13946381, --祭
-        10545, --adogsama
-        43067, --hana
-        3822389, --mana
-        4634167, --犬山
-        43067, --han佬
-        21302477, --葵
-        947447,--律
+        {14917277,"湊-阿库娅"}, --夸哥
+        {14052636,"ユメノシオリ"}, --大姐
+        {12235923,"屑女仆"}, --吊人
+        {4895312,"pari"}, --帕里
+        {7962050,"森永みう"}, --森永
+        {13946381,"儿童卫士"}, --祭
+        {10545,"adogsama"}, --adogsama
+        {12770821,"千草はな"}, --hana
+        {3822389,"有栖マナ"}, --mana
+        {4634167,"犬山"}, --犬山
+        {43067,"HAN_Alter"}, --han佬
+        {21302477,"本间向日葵"}, --葵
+        {947447,"高槻律"},--律
     }
 
     for i=1,#bList do
-        checkb(bList[i])
+        checkb(bList[i][1],bList[i][2])
     end
 
     apiSetVar("liveGetting","0")
