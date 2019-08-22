@@ -41,8 +41,8 @@ namespace Native.Csharp.App.LuaEnv
             count++;
             if (count >= luaWait)//每分钟执行脚本
             {
-                LuaEnv.RunLua("", "envent/TimerMinute.lua");
                 count = 0;
+                LuaEnv.RunLua("", "envent/TimerMinute.lua");
             }
 
             //检查升级
