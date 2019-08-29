@@ -131,13 +131,12 @@ if lastLive < os.time() then--循环检查
         if v then
             cqSendGroupMessage(261037783,
             image(v.cover).."\r\n"..
-            "频道："..name[2].."\r\n"..
+            "频道："..channel[2].."\r\n"..
             "标题："..v.title.."\r\n"..
             "y2b："..v.url)
             cqAddLoger(0, "直播检查", channel[1].. "状态更新")
         end
     end
-
     --b站
     function blive(id)
         id = tostring(id)
@@ -219,7 +218,8 @@ if lastLive < os.time() then--循环检查
         {"UCL9dLCVvHyMiqjp2RDgowqQ","高槻律🚺"}, --律
         {"UCkPIfBOLoO0hVPG-tI2YeGg","兔鞠mari🥕"}, --兔鞠mari
         {"UCIdEIHpS0TdkqRkHL5OkLtA","名取纱那🍆"}, --名取纱那
-        {"UCBAopGXGGatkiB1-qFRG9WA","兔纱"}, --兔纱
+        {"UCBAopGXGGatkiB1-qFRG9WA","兔纱🎀"}, --兔纱
+        {"UCZ1WJDkMNiZ_QwHnNrVf7Pw","饼叽🐥"}, --饼叽
     }
 
 
@@ -238,6 +238,8 @@ if lastLive < os.time() then--循环检查
         {43067,"HAN佬🦊"}, --han佬
         {21302477,"本间向日葵🌻"}, --葵
         {947447,"高槻律🚺"}, --律
+        {3657657,"饼叽🐥"},   --饼叽
+        {7408249,"兔纱🎀"}, --兔纱
     }
 
     local tList = {
