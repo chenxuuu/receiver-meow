@@ -137,28 +137,6 @@ if lastLive < os.time() then--循环检查
             cqAddLoger(0, "直播检查", channel[1].. "状态更新")
         end
     end
-    local ddList = {
-    --要监控的y2b频道
-    {"UCWCc8tO-uUl_7SJXIKJACMw","那吊人🍥"}, --mea
-    {"UCQ0UDLQCjY0rmuxCDE38FGg","夏色祭🏮"}, --祭
-    {"UC1opHUrw8rvnsadT-iGp7Cg","湊-阿库娅⚓"}, --aqua
-    {"UCrhx4PaF3uIo9mDcTxHnmIg","paryi🐇"}, --paryi
-    {"UChN7P9OhRltW3w9IesC92PA","森永みう🍫"}, --miu
-    {"UC8NZiqKx6fsDT3AVcMiVFyA","犬山💙"}, --犬山
-    {"UCH0ObmokE-zUOeihkKwWySA","夢乃栞-Yumeno_Shiori🍄"}, --大姐
-    {"UCIaC5td9nGG6JeKllWLwFLA","有栖マナ🐾"}, --mana
-    {"UCn14Z641OthNps7vppBvZFA","千草はな🌼"}, --hana
-    {"UC0g1AE0DOjBYnLhkgoRWN1w","本间向日葵🌻"}, --葵
-    {"UCNMG8dXjgqxS94dHljP9duQ","yyut🎹"}, --yyut
-    {"UCL9dLCVvHyMiqjp2RDgowqQ","高槻律🚺"}, --律
-    {"UCkPIfBOLoO0hVPG-tI2YeGg","兔鞠mari🥕"}, --兔鞠mari
-    {"UCIdEIHpS0TdkqRkHL5OkLtA","名取纱那🍆"}, --名取纱那
-    {"UCBAopGXGGatkiB1-qFRG9WA","兔纱"}, --兔纱
-    }
-
-    for i=1,#ddList do
-        checkdd(ddList[i])
-    end
 
     --b站
     function blive(id)
@@ -195,6 +173,56 @@ if lastLive < os.time() then--循环检查
         end
     end
 
+    --twitcasting
+    function twitcasting(id)
+        local html = apiHttpGet("https://twitcasting.tv/"..id)
+        if not html or html == "" then return end--获取失败了
+        local info = html:match([[TwicasPlayer.start%((.-})%);]])
+        local d,r,e = jsonDecode(info)
+        if not r or not d then return end --获取信息失败了
+
+        local lastStatus = apiXmlGet("settings","twitcasting_live_"..id)--获取上次状态
+
+        if d.isOnlive then
+            if lastStatus == "live" then return end--上次提醒过了
+            apiXmlSet("settings","twitcasting_live_"..id,"live")
+            return "https:"..d.posterImage
+        elseif lastStatus == "live" then--没开播
+            apiXmlSet("settings","twitcasting_live_"..id,"close live")
+        end
+    end
+
+    function checkt(id,name)
+        local v = twitcasting(id)
+        if v then
+            cqSendGroupMessage(261037783,
+            image(v).."\r\n"..
+            "频道："..name.."\r\n"..
+            "twitcasting：https://twitcasting.tv/"..id)
+            cqAddLoger(0, "直播检查", tostring(id) .. "状态更新")
+        end
+    end
+
+    local ddList = {
+        --要监控的y2b频道
+        {"UCWCc8tO-uUl_7SJXIKJACMw","那吊人🍥"}, --mea
+        {"UCQ0UDLQCjY0rmuxCDE38FGg","夏色祭🏮"}, --祭
+        {"UC1opHUrw8rvnsadT-iGp7Cg","湊-阿库娅⚓"}, --aqua
+        {"UCrhx4PaF3uIo9mDcTxHnmIg","paryi🐇"}, --paryi
+        {"UChN7P9OhRltW3w9IesC92PA","森永みう🍫"}, --miu
+        {"UC8NZiqKx6fsDT3AVcMiVFyA","犬山💙"}, --犬山
+        {"UCH0ObmokE-zUOeihkKwWySA","夢乃栞-Yumeno_Shiori🍄"}, --大姐
+        {"UCIaC5td9nGG6JeKllWLwFLA","有栖マナ🐾"}, --mana
+        {"UCn14Z641OthNps7vppBvZFA","千草はな🌼"}, --hana
+        {"UC0g1AE0DOjBYnLhkgoRWN1w","本间向日葵🌻"}, --葵
+        {"UCNMG8dXjgqxS94dHljP9duQ","yyut🎹"}, --yyut
+        {"UCL9dLCVvHyMiqjp2RDgowqQ","高槻律🚺"}, --律
+        {"UCkPIfBOLoO0hVPG-tI2YeGg","兔鞠mari🥕"}, --兔鞠mari
+        {"UCIdEIHpS0TdkqRkHL5OkLtA","名取纱那🍆"}, --名取纱那
+        {"UCBAopGXGGatkiB1-qFRG9WA","兔纱"}, --兔纱
+    }
+
+
     local bList = {
         --要监控的bilibili频道
         {14917277,"湊-阿库娅⚓"}, --夸哥
@@ -212,8 +240,20 @@ if lastLive < os.time() then--循环检查
         {947447,"高槻律🚺"}, --律
     }
 
+    local tList = {
+        --要监控的twitcasting频道
+        {"kaguramea_vov","那吊人🍥"}, --吊人
+    }
+
+    --遍历查询
+    for i=1,#ddList do
+        checkdd(ddList[i])
+    end
     for i=1,#bList do
         checkb(bList[i][1],bList[i][2])
+    end
+    for i=1,#tList do
+        checkt(bList[i][1],bList[i][2])
     end
 
     apiSetVar("liveGetting","0")
