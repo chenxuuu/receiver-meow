@@ -106,27 +106,20 @@ if lastLive < os.time() then--循环检查
     --臭dd检查youtube是否开播
     function v2b(channel)
         --cqAddLoger(0, "直播检查", channel .. "开始获取html")
-        local html = apiHttpGet("https://tcy2b.papapoi.com/channel/"..channel.."/featured")
-        --cqAddLoger(0, "直播检查", channel .. "获取html结束")
+        local html = apiHttpGet("https://tcy2b.papapoi.com/api?c="..channel)
         if not html or html == "" then return end--获取失败了
-        --local isclose = html:find("Upcoming live streams")
-        local isopen = html:find("LIVE NOW\"")
+        local liveInfo = jsonDecode(html)--解析接口结果
+
+        local isopen = liveInfo.live
         --if not isopen and not isclose then return end --啥都没匹配到
         local lastStatus = apiXmlGet("settings","youtuber_"..channel)--获取上次状态
         if isopen then
             if lastStatus == "live" then return end--上次提醒过了
-            local cover,title,description,name,url = html:match([[","thumbnail":{"thumbnails":%[{"url":"(https://i%.ytimg%.com.-live%.jpg)%?.-,"simpleText":"(.-)"},"descriptionSnippet":{"simpleText":"(.-)"},"longBylineText":{"runs":%[{"text":"(.-)","navigationEndpoint":{"click.-"watchEndpoint":{"videoId":"(.-)"}}.-LIVE NOW"]])
-            if not cover or not title or not description or not name or not url then--信息获取失败
-                cqAddLoger(0, "直播检查", channel .. "过滤失败")
-                return
-            end
             apiXmlSet("settings","youtuber_"..channel,"live")
             return {
-                cover = cover:gsub("i.ytimg.com","tcy2b.papapoi.com"),
-                name = name,
-                title = title,
-                description = description and description:gsub("\\n","\n"),
-                url = url,
+                cover = liveInfo.thumbnail:gsub("i.ytimg.com","tcy2b.papapoi.com"),
+                title = liveInfo.title,
+                url = liveInfo.url,
             }
         elseif lastStatus == "live" then--没开播
             apiXmlSet("settings","youtuber_"..channel,"close live")
@@ -134,34 +127,33 @@ if lastLive < os.time() then--循环检查
     end
 
     function checkdd(channel)
-        local v = v2b(channel)
+        local v = v2b(channel[1])
         if v then
             cqSendGroupMessage(261037783,
             image(v.cover).."\r\n"..
-            "频道："..v.name.."\r\n"..
+            "频道："..name[2].."\r\n"..
             "标题："..v.title.."\r\n"..
-            --"简介："..v.description.."\r\n"..
-            "y2b视频id："..v.url)
-            cqAddLoger(0, "直播检查", channel .. "状态更新")
+            "y2b："..v.url)
+            cqAddLoger(0, "直播检查", channel[1].. "状态更新")
         end
     end
     local ddList = {
     --要监控的y2b频道
-    "UCWCc8tO-uUl_7SJXIKJACMw", --mea
-    "UCQ0UDLQCjY0rmuxCDE38FGg", --祭
-    "UC1opHUrw8rvnsadT-iGp7Cg", --aqua
-    "UCrhx4PaF3uIo9mDcTxHnmIg", --paryi
-    "UChN7P9OhRltW3w9IesC92PA", --miu
-    "UC8NZiqKx6fsDT3AVcMiVFyA", --犬山
-    "UCH0ObmokE-zUOeihkKwWySA", --大姐
-    "UCIaC5td9nGG6JeKllWLwFLA", --mana
-    "UCn14Z641OthNps7vppBvZFA", --hana
-    "UC0g1AE0DOjBYnLhkgoRWN1w", --葵
-    "UCNMG8dXjgqxS94dHljP9duQ", --yyut
-    "UCL9dLCVvHyMiqjp2RDgowqQ", --律
-    "UCkPIfBOLoO0hVPG-tI2YeGg", --兔鞠mari
-    "UCIdEIHpS0TdkqRkHL5OkLtA", --名取纱那
-    "UCBAopGXGGatkiB1-qFRG9WA", --兔纱
+    {"UCWCc8tO-uUl_7SJXIKJACMw","那吊人🍥"}, --mea
+    {"UCQ0UDLQCjY0rmuxCDE38FGg","夏色祭🏮"}, --祭
+    {"UC1opHUrw8rvnsadT-iGp7Cg","湊-阿库娅⚓"}, --aqua
+    {"UCrhx4PaF3uIo9mDcTxHnmIg","paryi🐇"}, --paryi
+    {"UChN7P9OhRltW3w9IesC92PA","森永みう🍫"}, --miu
+    {"UC8NZiqKx6fsDT3AVcMiVFyA","犬山💙"}, --犬山
+    {"UCH0ObmokE-zUOeihkKwWySA","夢乃栞-Yumeno_Shiori🍄"}, --大姐
+    {"UCIaC5td9nGG6JeKllWLwFLA","有栖マナ🐾"}, --mana
+    {"UCn14Z641OthNps7vppBvZFA","千草はな🌼"}, --hana
+    {"UC0g1AE0DOjBYnLhkgoRWN1w","本间向日葵🌻"}, --葵
+    {"UCNMG8dXjgqxS94dHljP9duQ","yyut🎹"}, --yyut
+    {"UCL9dLCVvHyMiqjp2RDgowqQ","高槻律🚺"}, --律
+    {"UCkPIfBOLoO0hVPG-tI2YeGg","兔鞠mari🥕"}, --兔鞠mari
+    {"UCIdEIHpS0TdkqRkHL5OkLtA","名取纱那🍆"}, --名取纱那
+    {"UCBAopGXGGatkiB1-qFRG9WA","兔纱"}, --兔纱
     }
 
     for i=1,#ddList do
