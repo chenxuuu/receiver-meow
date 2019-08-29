@@ -161,7 +161,7 @@ if lastLive < os.time() then--循环检查
     "UCL9dLCVvHyMiqjp2RDgowqQ", --律
     "UCkPIfBOLoO0hVPG-tI2YeGg", --兔鞠mari
     "UCIdEIHpS0TdkqRkHL5OkLtA", --名取纱那
-
+    "UCBAopGXGGatkiB1-qFRG9WA", --兔纱
     }
 
     for i=1,#ddList do
