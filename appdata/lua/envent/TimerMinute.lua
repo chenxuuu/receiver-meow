@@ -131,7 +131,7 @@ if lastLive < os.time() then--循环检查
         if v then
             cqSendGroupMessage(261037783,
             image(v.cover).."\r\n"..
-            "频道："..name[2].."\r\n"..
+            "频道："..channel[2].."\r\n"..
             "标题："..v.title.."\r\n"..
             "y2b："..v.url)
             cqAddLoger(0, "直播检查", channel[1].. "状态更新")
