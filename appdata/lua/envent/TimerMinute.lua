@@ -202,6 +202,43 @@ if lastLive < os.time() then--循环检查
         end
     end
 
+
+    --臭dd检查fc2是否开播
+    function fc2(channel)
+        --cqAddLoger(0, "直播检查", channel .. "开始获取html")
+        local html = apiHttpGet("https://tcy2b.papapoi.com/fc2?c="..channel)
+        if not html or html == "" then return end--获取失败了
+        local liveInfo = jsonDecode(html)--解析接口结果
+
+        local isopen = liveInfo.live
+        --if not isopen and not isclose then return end --啥都没匹配到
+        local lastStatus = apiXmlGet("settings","fc2_"..channel)--获取上次状态
+        if isopen then
+            if lastStatus == "live" then return end--上次提醒过了
+            apiXmlSet("settings","fc2_"..channel,"live")
+            return {
+                --cover = --不敢上图
+                name = liveInfo.name,
+                --url = liveInfo.url,--不敢上链接
+            }
+        elseif lastStatus == "live" then--没开播
+            apiXmlSet("settings","fc2_"..channel,"close live")
+        end
+    end
+
+    function checkfc2(channel)
+        local v = fc2(channel[1])
+        if v then
+            cqSendGroupMessage(261037783,
+            "频道："..channel[2].."\r\n"..
+            "标题："..v.name.."\r\n"..
+            "fc2："..channel[1])
+            cqAddLoger(0, "直播检查", channel[1].. "状态更新")
+        end
+    end
+
+
+
     local ddList = {
         --要监控的y2b频道
         {"UCWCc8tO-uUl_7SJXIKJACMw","那吊人🍥"}, --mea
@@ -247,6 +284,11 @@ if lastLive < os.time() then--循环检查
         {"kaguramea_vov","那吊人🍥"}, --吊人
     }
 
+    local fc2List = {
+        --要监控的fc2频道
+        {"78847652","shiori🍄"}, --大姐
+    }
+
     --遍历查询
     for i=1,#ddList do
         checkdd(ddList[i])
@@ -256,6 +298,9 @@ if lastLive < os.time() then--循环检查
     end
     for i=1,#tList do
         checkt(bList[i][1],bList[i][2])
+    end
+    for i=1,#fc2List do
+        checkfc2(ddList[i])
     end
 
     apiSetVar("liveGetting","0")
