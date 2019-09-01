@@ -282,6 +282,13 @@ if lastLive < os.time() then--循环检查
     local tList = {
         --要监控的twitcasting频道
         {"kaguramea_vov","那吊人🍥"}, --吊人
+        {"morinaga_miu","森永miu🍫"}, --miu
+        {"norioo_","海苔男🍡"}, --海苔男
+        {"natsuiromatsuri","夏色祭🏮"},--夏色祭
+        {"kagura_pepper","神乐七奈🌶"}, --狗妈
+        {"c:yumeno_shiori","shiori大姐"}, --p家大姐
+        {"jgzt2","test"}, --test
+        --{"",""}, --
     }
 
     local fc2List = {
