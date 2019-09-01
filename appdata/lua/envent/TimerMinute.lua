@@ -304,7 +304,7 @@ if lastLive < os.time() then--循环检查
         checkb(bList[i][1],bList[i][2])
     end
     for i=1,#tList do
-        checkt(bList[i][1],bList[i][2])
+        checkt(tList[i][1],tList[i][2])
     end
     for i=1,#fc2List do
         checkfc2(ddList[i])
