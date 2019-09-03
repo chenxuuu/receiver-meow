@@ -307,7 +307,7 @@ if lastLive < os.time() then--循环检查
         checkt(tList[i][1],tList[i][2])
     end
     for i=1,#fc2List do
-        checkfc2(ddList[i])
+        checkfc2(fc2List[i])
     end
 
     apiSetVar("liveGetting","0")
