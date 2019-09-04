@@ -257,6 +257,7 @@ if lastLive < os.time() then--循环检查
         {"UCIdEIHpS0TdkqRkHL5OkLtA","名取纱那🍆"}, --名取纱那
         {"UCBAopGXGGatkiB1-qFRG9WA","兔纱🎀"}, --兔纱
         {"UCZ1WJDkMNiZ_QwHnNrVf7Pw","饼叽🐥"}, --饼叽
+        {"UC8gSN9D-1FL0BGBQt7p8gFQ","森永みう🍫小号"}, --森永
     }
 
 
@@ -286,8 +287,9 @@ if lastLive < os.time() then--循环检查
         {"norioo_","海苔男🍡"}, --海苔男
         {"natsuiromatsuri","夏色祭🏮"},--夏色祭
         {"kagura_pepper","神乐七奈🌶"}, --狗妈
-        {"c:yumeno_shiori","shiori大姐"}, --p家大姐
-        {"jgzt2","test"}, --test
+        {"c:yumeno_shiori","shiori大姐🍄"}, --p家大姐
+        {"maturin_love221","爱小姐☂︎"}, --test
+        {"nana_kaguraaa","神乐七奈🌶"}, --狗妈
         --{"",""}, --
     }
 
