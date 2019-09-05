@@ -103,34 +103,6 @@ if lastLive < os.time() then--循环检查
     apiSetVar("liveGetting",tostring(os.time()+300))--超时时间最大240秒，防止卡死
     cqAddLoger(0, "直播检查", "开始")
 
-    --臭dd检查youtube是否开播
-    function v2b(channel)
-        cqAddLoger(0, "直播检查", channel .. "开始获取html")
-        local html = apiHttpGet("https://tcy2b.papapoi.com/api?c="..channel)
-        if not html or html == "" then return end--获取失败了
-        local liveInfo,r,e = jsonDecode(html)--解析接口结果
-        if not r or not liveInfo then return end --获取失败了
-
-        if liveInfo.error then
-            cqAddLoger(0, "y2b检查返回错误", liveInfo.error)
-            return
-        end
-
-        local isopen = liveInfo.live
-        --if not isopen and not isclose then return end --啥都没匹配到
-        local lastStatus = apiXmlGet("settings","youtuber_"..channel)--获取上次状态
-        if isopen then
-            if lastStatus == "live" then return end--上次提醒过了
-            apiXmlSet("settings","youtuber_"..channel,"live")
-            return {
-                cover = liveInfo.thumbnail:gsub("i.ytimg.com","tcy2b.papapoi.com"),
-                title = liveInfo.title,
-                url = liveInfo.url,
-            }
-        elseif lastStatus == "live" then--没开播
-            apiXmlSet("settings","youtuber_"..channel,"close live")
-        end
-    end
 
     function v2bAll(channels)
         local cs = {}
@@ -139,7 +111,7 @@ if lastLive < os.time() then--循环检查
             table.insert(cs,channels[i][1])
             ds[channels[i][1]] = channels[i][2]
         end
-        local html = apiHttpGet("https://tcy2b.papapoi.com/mapi?c="..table.concat(cs,","),nil,60000)
+        local html = apiHttpGet("https://y2b.papapoi.com/mapi?c="..table.concat(cs,","),nil,60000)
 
         if not html or html == "" then return end--获取失败了
         local liveInfos,r,e = jsonDecode(html)--解析接口结果
@@ -159,12 +131,16 @@ if lastLive < os.time() then--循环检查
                 if isopen then
                     if lastStatus == "live" then break end--上次提醒过了
                     apiXmlSet("settings","youtuber_"..i,"live")
+                    local html = apiHttpGet("https://y2b.papapoi.com/bot?pw="..apiXmlGet("settings","tgbotpw").."&t=image"..
+                                "&text="..string.urlEncode("频道："..ds[i].."，"..
+                                "标题："..j.title.."，"..
+                                "youtube："..j.url).."&image="..string.urlEncode(j.thumbnail))
                     cqSendGroupMessage(261037783,
-                    image(j.thumbnail:gsub("i.ytimg.com","tcy2b.papapoi.com")).."\r\n"..
+                    image(j.thumbnail:gsub("i.ytimg.com","y2b.papapoi.com")).."\r\n"..
                     "频道："..ds[i].."\r\n"..
                     "标题："..j.title.."\r\n"..
                     "y2b："..j.url)
-                    cqAddLoger(0, "直播检查", channel[1].. "状态更新")
+                    cqAddLoger(0, "直播检查", i.. "状态更新")
                 elseif lastStatus == "live" then--没开播
                     apiXmlSet("settings","youtuber_"..i,"close live")
                 end
@@ -173,17 +149,6 @@ if lastLive < os.time() then--循环检查
         end
     end
 
-    function checkdd(channel)
-        local v = v2b(channel[1])
-        if v then
-            cqSendGroupMessage(261037783,
-            image(v.cover).."\r\n"..
-            "频道："..channel[2].."\r\n"..
-            "标题："..v.title.."\r\n"..
-            "y2b："..v.url)
-            cqAddLoger(0, "直播检查", channel[1].. "状态更新")
-        end
-    end
     --b站
     function blive(id)
         id = tostring(id)
@@ -210,6 +175,10 @@ if lastLive < os.time() then--循环检查
     function checkb(id,name)
         local v = blive(id)
         if v then
+            apiHttpGet("https://y2b.papapoi.com/bot?pw="..apiXmlGet("settings","tgbotpw").."&t=image"..
+                        "&text="..string.urlEncode("频道："..name.."，"..
+                        "标题："..v.title.."，"..
+                        "b站房间："..v.url).."&image="..string.urlEncode(v.image))
             cqSendGroupMessage(261037783,
             image(v.image).."\r\n"..
             "频道："..name.."\r\n"..
@@ -241,6 +210,9 @@ if lastLive < os.time() then--循环检查
     function checkt(id,name)
         local v = twitcasting(id)
         if v then
+            apiHttpGet("https://y2b.papapoi.com/bot?pw="..apiXmlGet("settings","tgbotpw").."&t=image"..
+                        "&text="..string.urlEncode("频道："..name.."，"..
+                        "twitcasting：https://twitcasting.tv/"..id).."&image="..string.urlEncode(v))
             cqSendGroupMessage(261037783,
             image(v).."\r\n"..
             "频道："..name.."\r\n"..
@@ -253,7 +225,7 @@ if lastLive < os.time() then--循环检查
     --臭dd检查fc2是否开播
     function fc2(channel)
         --cqAddLoger(0, "直播检查", channel .. "开始获取html")
-        local html = apiHttpGet("https://tcy2b.papapoi.com/fc2?c="..channel)
+        local html = apiHttpGet("https://y2b.papapoi.com/fc2?c="..channel)
         if not html or html == "" then return end--获取失败了
         local liveInfo,r,e = jsonDecode(html)--解析接口结果
         if not r or not liveInfo then return end --获取失败了
@@ -276,6 +248,10 @@ if lastLive < os.time() then--循环检查
     function checkfc2(channel)
         local v = fc2(channel[1])
         if v then
+            apiHttpGet("https://y2b.papapoi.com/bot?pw="..apiXmlGet("settings","tgbotpw").."&t=text"..
+                        "&text="..string.urlEncode("频道："..channel[2].."，"..
+                        "标题："..v.name.."，"..
+                        "fc2："..channel[1]))
             cqSendGroupMessage(261037783,
             "频道："..channel[2].."\r\n"..
             "标题："..v.name.."\r\n"..
@@ -347,9 +323,6 @@ if lastLive < os.time() then--循环检查
 
     --遍历查询
     v2bAll(ddList)
-    -- for i=1,#ddList do
-    --     checkdd(ddList[i])
-    -- end
     for i=1,#bList do
         checkb(bList[i][1],bList[i][2])
     end
