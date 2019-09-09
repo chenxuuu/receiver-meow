@@ -313,8 +313,8 @@ if lastLive < os.time() then--循环检查
         {"c:yumeno_shiori","shiori大姐🍄"}, --p家大姐
         {"maturin_love221","爱小姐☂︎"}, --test
         {"nana_kaguraaa","神乐七奈🌶"}, --狗妈
-        {"re2_takatsuki","高槻律🚺"}--律
-        {"hukkatunoyuyuta","ゆゆうた🎹"}--yyut
+        {"re2_takatsuki","高槻律🚺"},--律
+        {"hukkatunoyuyuta","ゆゆうた🎹"},--yyut
         --{"",""}, --
     }
 
