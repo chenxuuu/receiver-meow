@@ -69,10 +69,18 @@ debug.sethook(trace, "l")
 
 loadstring = load
 
-struct = require("struct")
 pack = {
-    pack = struct.pack,
-    unpack = struct.unpack,
+    pack = string.pack,
+    unpack = function (s,f,h)
+        local t
+        if h then
+            t = table.pack(string.unpack(f,s:sub(h)))
+        else
+            t = table.pack(string.unpack(f,s))
+        end
+        table.insert(t,1,table.remove(t,#t))
+        return table.unpack(t)
+    end,
 }
 
 BIT = require("bit")
