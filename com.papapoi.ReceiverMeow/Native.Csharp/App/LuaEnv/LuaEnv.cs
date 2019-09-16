@@ -10,6 +10,8 @@ namespace Native.Csharp.App.LuaEnv
 {
     class LuaEnv
     {
+        private static readonly object objLock = new object();
+        
         public static int SetGroupSpecialTitle(long groupId, long qqId, string specialTitle, int time)
         {
             TimeSpan span = new TimeSpan(time/60/60/24, time/60/60%60, time/60%60, time%60);
@@ -205,29 +207,35 @@ package.path = package.path..
             if (!File.Exists(Common.AppDirectory + "lua/require/head.lua"))
                 return false;
 
-            bool handled = false;
-            var lua = new XLua.LuaEnv();
-            try
+            //只许实例化一个
+            lock (objLock)
             {
-                lua.Global.SetInPath("handled", false);//处理标志
-                Initial(lua);
-                if (args != null)
-                    for (int i = 0; i < args.Count; i += 2)
+                using (var lua = new XLua.LuaEnv())
+                {
+                    bool handled = false;
+                    try
                     {
-                        lua.Global.SetInPath((string)args[i], args[i + 1]);
+                        lua.Global.SetInPath("handled", false);//处理标志
+                        Initial(lua);
+                        if (args != null)
+                            for (int i = 0; i < args.Count; i += 2)
+                            {
+                                lua.Global.SetInPath((string)args[i], args[i + 1]);
+                            }
+                        lua.DoString(code);
+                        if (file != "")
+                            lua.DoString($"require('{file.Replace("/", ".").Replace("\\", ".").Substring(0, file.Length - 4)}')");
+                        handled = lua.Global.GetInPath<bool>("handled");
                     }
-                lua.DoString(code);
-                if (file != "")
-                    lua.DoString($"require('{file.Replace("/", ".").Replace("\\", ".").Substring(0, file.Length - 4)}')");
-                handled = lua.Global.GetInPath<bool>("handled");
-                lua.Dispose();
+                    catch (Exception e)
+                    {
+                        Common.CqApi.AddLoger(Sdk.Cqp.Enum.LogerLevel.Error, "lua脚本错误", e.ToString());
+
+                    }
+                    return handled;
+                }
+                
             }
-            catch (Exception e)
-            {
-                Common.CqApi.AddLoger(Sdk.Cqp.Enum.LogerLevel.Error, "lua脚本错误", e.ToString());
-                return false;
-            }
-            return handled;
         }
 
         /// <summary>
@@ -237,35 +245,41 @@ package.path = package.path..
         /// <returns></returns>
         public static string RunSandBox(string code)
         {
-            string r = "";
-            var lua = new XLua.LuaEnv();
-            try
+            lock (objLock)
             {
-                lua.DoString("apiGetPath = CS.Native.Csharp.App.LuaEnv.LuaApi.GetPath");
-                //获取程序运行目录
-                lua.DoString("apiGetAsciiHex = CS.Native.Csharp.App.LuaEnv.LuaApi.GetAsciiHex");
-                //获取字符串ascii编码的hex串
-                lua.Global.SetInPath("lua_run_result_var", "");//返回值所在的变量
-                lua.DoString(@"--加上需要require的路径
+                using (var lua = new XLua.LuaEnv())
+                {
+                    string r = "";
+                    try
+                    {
+                        lua.DoString("apiGetPath = CS.Native.Csharp.App.LuaEnv.LuaApi.GetPath");
+                        //获取程序运行目录
+                        lua.DoString("apiGetAsciiHex = CS.Native.Csharp.App.LuaEnv.LuaApi.GetAsciiHex");
+                        //获取字符串ascii编码的hex串
+                        lua.Global.SetInPath("lua_run_result_var", "");//返回值所在的变量
+                        lua.DoString(@"--加上需要require的路径
 local rootPath = apiGetAsciiHex(apiGetPath())
 rootPath = rootPath:gsub('[%s%p]', ''):upper()
 rootPath = rootPath:gsub('%x%x', function(c)
                                     return string.char(tonumber(c, 16))
                                 end)
 package.path = package.path..
-';'..rootPath..'data/app/com.papapoi.ReceiverMeow/lua/require/?.lua'
+';'..rootPath..'data/app/com.papapoi.ReceiverMeow/lua/require/sandbox/?.lua'
 ");
-                lua.DoString("require('sandbox.head')");
-                lua.DoString(code);
-                r = lua.Global.GetInPath<string>("lua_run_result_var");
-                lua.Dispose();
+                        lua.DoString("require('sandbox.head')");
+                        lua.DoString(code);
+                        r = lua.Global.GetInPath<string>("lua_run_result_var");
+
+                    }
+                    catch (Exception e)
+                    {
+                        Common.CqApi.AddLoger(Sdk.Cqp.Enum.LogerLevel.Error, "沙盒lua脚本错误", e.ToString());
+                        r = "运行错误：" + e.ToString();
+
+                    }
+                    return r;
+                }
             }
-            catch (Exception e)
-            {
-                Common.CqApi.AddLoger(Sdk.Cqp.Enum.LogerLevel.Error, "沙盒lua脚本错误", e.ToString());
-                return "运行错误：" + e.ToString();
-            }
-            return r;
         }
     }
 }
