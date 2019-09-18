@@ -281,6 +281,8 @@ if lastLive < os.time() then--循环检查
         {"UCBAopGXGGatkiB1-qFRG9WA","兔纱🎀"}, --兔纱
         {"UCZ1WJDkMNiZ_QwHnNrVf7Pw","饼叽🐥"}, --饼叽
         {"UC8gSN9D-1FL0BGBQt7p8gFQ","森永みう🍫小号"}, --森永
+        {"UCzAxQCoeJrmYkHr0cHfD0Nw","yua🔯"},--yua
+        {"UCerH0KOGyPaC5WueExiicZQ","杏💣🍠"},--Anzu
     }
 
 
@@ -316,7 +318,6 @@ if lastLive < os.time() then--循环检查
         {"nana_kaguraaa","神乐七奈🌶"}, --狗妈
         {"re2_takatsuki","高槻律🚺"},--律
         {"hukkatunoyuyuta","ゆゆうた🎹"},--yyut
-        --{"",""}, --
     }
 
     local fc2List = {
