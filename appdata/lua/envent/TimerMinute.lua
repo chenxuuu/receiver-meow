@@ -283,6 +283,7 @@ if lastLive < os.time() then--循环检查
         {"UC8gSN9D-1FL0BGBQt7p8gFQ","森永みう🍫小号"}, --森永
         {"UCzAxQCoeJrmYkHr0cHfD0Nw","yua🔯"},--yua
         {"UCerH0KOGyPaC5WueExiicZQ","杏💣🍠"},--Anzu
+        {"UCPf-EnX70UM7jqjKwhDmS8g","玛格罗那🐟"},--魔王
     }
 
 
