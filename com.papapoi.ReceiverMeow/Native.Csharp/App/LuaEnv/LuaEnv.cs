@@ -12,20 +12,20 @@ namespace Native.Csharp.App.LuaEnv
     {
         public static int SetGroupSpecialTitle(long groupId, long qqId, string specialTitle, int time)
         {
-            TimeSpan span = new TimeSpan(time/60/60/24, time/60/60%60, time/60%60, time%60);
+            TimeSpan span = new TimeSpan(time/60/60/24, time/60/60%24, time/60%60, time%60);
             return Common.CqApi.SetGroupSpecialTitle(groupId, qqId, specialTitle, span);
         }
 
 
         public static int SetGroupAnonymousBanSpeak(long groupId, string anonymous, int time)
         {
-            TimeSpan span = new TimeSpan(time / 60 / 60 / 24, time / 60 / 60 % 60, time / 60 % 60, time % 60);
+            TimeSpan span = new TimeSpan(time / 60 / 60 / 24, time / 60 / 60 % 24, time / 60 % 60, time % 60);
             return Common.CqApi.SetGroupAnonymousBanSpeak(groupId, anonymous, span);
         }
 
         public static int SetGroupBanSpeak(long groupId, long qqId, int time)
         {
-            TimeSpan span = new TimeSpan(time / 60 / 60 / 24, time / 60 / 60 % 60, time / 60 % 60, time % 60);
+            TimeSpan span = new TimeSpan(time / 60 / 60 / 24, time / 60 / 60 % 24, time / 60 % 60, time % 60);
             return Common.CqApi.SetGroupBanSpeak(groupId, qqId, span);
         }
 
