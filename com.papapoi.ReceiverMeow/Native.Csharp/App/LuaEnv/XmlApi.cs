@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -18,6 +18,8 @@ namespace Native.Csharp.App.LuaEnv
 
         public static string path = Common.AppDirectory + "xml/";
 
+        private static readonly object objLock = new object();
+
         public static void set(string group, string msg, string str)
         {
             del(group, msg);
@@ -33,7 +35,9 @@ namespace Native.Csharp.App.LuaEnv
         public static string replay_get(string group, string msg)
         {
             dircheck(group);
-            XElement root = XElement.Load(path + group + ".xml");
+            XElement root;
+            lock(objLock)
+                root = XElement.Load(path + group + ".xml");
             Random ran = new Random(System.DateTime.Now.Millisecond);
             int RandKey;
             string ansall = "";
@@ -52,7 +56,9 @@ namespace Native.Csharp.App.LuaEnv
         public static string xml_get(string group, string msg)
         {
             dircheck(group);
-            XElement root = XElement.Load(path + group + ".xml");
+            XElement root;
+            lock(objLock)
+                root = XElement.Load(path + group + ".xml");
             string ansall = "";
             var element = from ee in root.Elements()
                           where ee.Element(keyName).Value == msg
@@ -65,7 +71,9 @@ namespace Native.Csharp.App.LuaEnv
         public static string xml_row(string group, string msg)
         {
             dircheck(group);
-            XElement root = XElement.Load(path + group + ".xml");
+            XElement root;
+            lock (objLock)
+                root = XElement.Load(path + group + ".xml");
             string ansall = "";
             var element = from ee in root.Elements()
                           where ee.Element(valueName).Value == msg
@@ -78,7 +86,9 @@ namespace Native.Csharp.App.LuaEnv
         public static string list_get(string group, string msg)
         {
             dircheck(group);
-            XElement root = XElement.Load(path + group + ".xml");
+            XElement root;
+            lock (objLock)
+                root = XElement.Load(path + group + ".xml");
             string ansall = "";
             var element = from ee in root.Elements()
                           where ee.Element(keyName).Value == msg
@@ -94,28 +104,34 @@ namespace Native.Csharp.App.LuaEnv
         {
             dircheck(group);
             string gg = group.ToString();
-            XElement root = XElement.Load(path + group + ".xml");
+            XElement root;
+            lock (objLock)
+                root = XElement.Load(path + group + ".xml");
 
             var element = from ee in root.Elements()
                           where (string)ee.Element(keyName) == msg
                           select ee;
             if (element.Count() > 0)
                 element.Remove();
-            root.Save(path + group + ".xml");
+            lock (objLock)
+                root.Save(path + group + ".xml");
         }
 
         public static void remove(string group, string msg, string ans)
         {
             dircheck(group);
             string gg = group.ToString();
-            XElement root = XElement.Load(path + group + ".xml");
+            XElement root;
+            lock (objLock)
+                root = XElement.Load(path + group + ".xml");
 
             var element = from ee in root.Elements()
                           where (string)ee.Element(keyName) == msg && (string)ee.Element(valueName) == ans
                           select ee;
             if (element.Count() > 0)
                 element.First().Remove();
-            root.Save(path + group + ".xml");
+            lock (objLock)
+                root.Save(path + group + ".xml");
         }
 
 
@@ -124,7 +140,9 @@ namespace Native.Csharp.App.LuaEnv
             if (msg.IndexOf("\r\n") < 0 & msg != "")
             {
                 dircheck(group);
-                XElement root = XElement.Load(path + group + ".xml");
+                XElement root;
+                lock (objLock)
+                    root = XElement.Load(path + group + ".xml");
 
                 XElement read = root.Element(keyNode);
 
@@ -142,7 +160,8 @@ namespace Native.Csharp.App.LuaEnv
                       new XElement(valueName, ans)
                       ));
                 }
-                root.Save(path + group + ".xml");
+                lock(objLock)
+                    root.Save(path + group + ".xml");
             }
         }
 
@@ -156,7 +175,8 @@ namespace Native.Csharp.App.LuaEnv
                         new XElement(valueName, "初始回答")
                         )
                    );
-                root.Save(path + group + ".xml");
+                lock (objLock)
+                    root.Save(path + group + ".xml");
             }
         }
     }
