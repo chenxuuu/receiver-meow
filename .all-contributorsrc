@@ -15,6 +15,16 @@
         "code",
         "ideas"
       ]
+    },
+    {
+      "login": "morinoyuki",
+      "name": "morinoyuki",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/37149715?v=4",
+      "profile": "https://github.com/morinoyuki",
+      "contributions": [
+        "code",
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
