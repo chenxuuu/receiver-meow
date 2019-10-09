@@ -73,7 +73,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- prettier-ignore -->
 <table>
   <tr>
-    <td align="center"><a href="https://github.com/NAGATOYUKl"><img src="https://avatars3.githubusercontent.com/u/42117627?v=4" width="100px;" alt="一般通过吃瓜群众"/><br /><sub><b>一般通过吃瓜群众</b></sub></a><br /><a href="#maintenance-NAGATOYUKl" title="Maintenance">🚧</a></td>
+    <td align="center"><a href="https://github.com/NAGATOYUKl"><img src="https://avatars3.githubusercontent.com/u/42117627?v=4" width="100px;" alt="一般通过吃瓜群众"/><br /><sub><b>一般通过吃瓜群众</b></sub></a><br /><a href="#maintenance-NAGATOYUKl" title="Maintenance">🚧</a> <a href="https://github.com/chenxuuu/receiver-meow/commits?author=NAGATOYUKl" title="Code">💻</a> <a href="#ideas-NAGATOYUKl" title="Ideas, Planning, & Feedback">🤔</a></td>
   </tr>
 </table>
 
