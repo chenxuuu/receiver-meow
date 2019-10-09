@@ -1,0 +1,23 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "NAGATOYUKl",
+      "name": "一般通过吃瓜群众",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/42117627?v=4",
+      "profile": "https://github.com/NAGATOYUKl",
+      "contributions": [
+        "maintenance"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "receiver-meow",
+  "projectOwner": "chenxuuu",
+  "repoType": "github",
+  "repoHost": "https://github.com"
+}
