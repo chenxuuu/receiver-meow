@@ -1,5 +1,5 @@
 # receiver-meow
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors)
 
 [![appveyor](https://ci.appveyor.com/api/projects/status/46tmg2sh60l7kekf?svg=true)](https://ci.appveyor.com/project/chenxuuu/receiver-meow)
 [![MIT](https://img.shields.io/static/v1.svg?label=license&message=MIT&color=green)](https://github.com/chenxuuu/receiver-meow/blob/master/LICENSE)
@@ -74,6 +74,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <table>
   <tr>
     <td align="center"><a href="https://github.com/NAGATOYUKl"><img src="https://avatars3.githubusercontent.com/u/42117627?v=4" width="100px;" alt="一般通过吃瓜群众"/><br /><sub><b>一般通过吃瓜群众</b></sub></a><br /><a href="#maintenance-NAGATOYUKl" title="Maintenance">🚧</a> <a href="https://github.com/chenxuuu/receiver-meow/commits?author=NAGATOYUKl" title="Code">💻</a> <a href="#ideas-NAGATOYUKl" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="https://github.com/morinoyuki"><img src="https://avatars1.githubusercontent.com/u/37149715?v=4" width="100px;" alt="morinoyuki"/><br /><sub><b>morinoyuki</b></sub></a><br /><a href="https://github.com/chenxuuu/receiver-meow/commits?author=morinoyuki" title="Code">💻</a> <a href="https://github.com/chenxuuu/receiver-meow/issues?q=author%3Amorinoyuki" title="Bug reports">🐛</a></td>
   </tr>
 </table>
 
