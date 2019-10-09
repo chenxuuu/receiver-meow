@@ -319,6 +319,7 @@ if lastLive < os.time() then--循环检查
         {"nana_kaguraaa","神乐七奈🌶"}, --狗妈
         {"re2_takatsuki","高槻律🚺"},--律
         {"hukkatunoyuyuta","ゆゆうた🎹"},--yyut
+        {"merrysan_cas_","球王🏀"},--球王
     }
 
     local fc2List = {
