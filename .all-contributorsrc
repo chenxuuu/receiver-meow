@@ -1,0 +1,45 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "NAGATOYUKl",
+      "name": "一般通过吃瓜群众",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/42117627?v=4",
+      "profile": "https://github.com/NAGATOYUKl",
+      "contributions": [
+        "maintenance",
+        "code",
+        "ideas"
+      ]
+    },
+    {
+      "login": "littlecxm",
+      "name": "CXM",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/16154023?v=4",
+      "profile": "https://github.com/littlecxm",
+      "contributions": [
+        "code",
+        "bug"
+      ]
+    },
+    {
+      "login": "morinoyuki",
+      "name": "morinoyuki",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/37149715?v=4",
+      "profile": "https://github.com/morinoyuki",
+      "contributions": [
+        "code",
+        "bug"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "receiver-meow",
+  "projectOwner": "chenxuuu",
+  "repoType": "github",
+  "repoHost": "https://github.com"
+}
