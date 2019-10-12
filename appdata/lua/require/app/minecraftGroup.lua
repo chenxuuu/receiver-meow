@@ -6,12 +6,7 @@ apiTcpSend = function (msg,cmd)
 end
 
 return function (msg,qq,group)
-    if msg:find("命令") == 1 and qq == 961726194 then
-        local cmd = msg:sub(("命令"):len()+1)
-        apiTcpSend(cmd,true)
-        cqSendGroupMessage(group,cqCode_At(qq).."命令"..cmd.."已执行")
-        return true
-    elseif group == 241464054 then --玩家群
+    if group == 241464054 then --玩家群
         local player = apiXmlGet("bindQq",tostring(qq))
         local step = apiXmlGet("bindStep",tostring(qq))
         apiTcpSend("[群消息]["..(player == "" and "无名氏"..tostring(qq) or player).."]"..msg)
@@ -129,7 +124,12 @@ return function (msg,qq,group)
             cqSetGroupMemberNewCard(group, qq, player)
         end
     elseif group == 567145439 then --管理群
-        if msg:find("删除 *%d+") == 1 then
+        if msg:find("命令") == 1 then
+            local cmd = msg:sub(("命令"):len()+1)
+            apiTcpSend(cmd,true)
+            cqSendGroupMessage(group,cqCode_At(qq).."命令"..cmd.."已执行")
+            return true
+        elseif msg:find("删除 *%d+") == 1 then
             local qq = msg:match("删除 *(%d+)")
             local player = apiXmlGet("bindQq",tostring(qq))
             if player ~= "" then
