@@ -3,15 +3,30 @@
 local key = apiXmlGet("settings","trace.moe")
 
 return function (msg)
-    local pCheck = apiGetPictureWidth(msg) / apiGetPictureHeight(msg)
-    if pCheck < 1.35 or pCheck > 2 then
-        return "别拿表情忽悠我、请换一张完整的、没有裁剪过的动画视频截图"
-    elseif pCheck ~= pCheck then --0/0 == IND
-        return "未在消息中过滤出图片"
+    if apiGetRawPictureWidth then--兼容新版本插件
+        local pCheck = apiGetPictureWidth(msg) / apiGetPictureHeight(msg)
+        if pCheck < 1.35 or pCheck > 2 then
+            return "别拿表情忽悠我、请换一张完整的、没有裁剪过的动画视频截图"
+        elseif pCheck ~= pCheck then --0/0 == IND
+            return "未在消息中过滤出图片"
+        end
     end
 
     local imagePath = apiGetImagePath(msg)--获取图片路径
+
+    if not apiGetRawPictureWidth then--兼容老版本插件
+        if imagePath == "" then return "未在消息中过滤出图片" end
+    end
+
     imagePath = apiGetAsciiHex(imagePath):fromHex()--转码路径，以免乱码找不到文件
+
+    if not apiGetRawPictureWidth then--兼容老版本插件
+        local pCheck = apiGetPictureWidth(imagePath) / apiGetPictureHeight(imagePath)
+        if pCheck < 1.4 or pCheck > 1.8 then
+            return "请换一张完整的、没有裁剪过的动画视频截图"
+        end
+    end
+
     local base64 = apiBase64File(imagePath)--获取base64结果
     local html = apiHttpPost("https://trace.moe/api/search?token="..key,
     "image=data:image/jpeg;base64,"..base64,15000)
