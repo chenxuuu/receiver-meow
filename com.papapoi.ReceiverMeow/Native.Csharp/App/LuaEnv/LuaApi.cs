@@ -10,6 +10,7 @@ using System.Net.Security;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using Native.Csharp.Tool.IniConfig.Linq;
 
 namespace Native.Csharp.App.LuaEnv
 {
@@ -305,37 +306,38 @@ namespace Native.Csharp.App.LuaEnv
         /// <summary>
         /// 获取图片宽度
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="image"></param>
         /// <returns></returns>
-        public static int GetPictureWidth(string path)
+        public static int GetPictureWidth(string image)
         {
-            try
+            string fileName = Tools.Reg_get(image, "\\[CQ:image,file=(?<name>.*?)\\]", "name") + ".cqimg";//获取文件名
+            string filePath = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + @"data\image\" + fileName;
+            if (File.Exists(filePath))
             {
-                Bitmap bmp = new Bitmap(path);
-                return bmp.Width;
+                IniObject iObject = IniObject.Load(filePath, Encoding.Default);
+                return iObject["image"]["width"].ToInt32();
+
             }
-            catch
-            {
-                return 0;
-            }
+            return 0;//没这个文件
+
         }
 
         /// <summary>
         /// 获取图片高度
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="image"></param>
         /// <returns></returns>
-        public static int GetPictureHeight(string path)
+        public static int GetPictureHeight(string image)
         {
-            try
+            string fileName = Tools.Reg_get(image, "\\[CQ:image,file=(?<name>.*?)\\]", "name") + ".cqimg";//获取文件名
+            string filePath = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + @"data\image\" + fileName;
+            if (File.Exists(filePath))
             {
-                Bitmap bmp = new Bitmap(path);
-                return bmp.Height;
+                IniObject iObject = IniObject.Load(filePath, Encoding.Default);
+                return iObject["image"]["height"].ToInt32();
+
             }
-            catch
-            {
-                return 0;
-            }
+            return 0;//没这个文件
         }
 
         private static Dictionary<string, string> luaTemp = new Dictionary<string, string>();
