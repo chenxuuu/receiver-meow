@@ -142,9 +142,13 @@ namespace Native.Csharp.App.LuaEnv
             lua.RegisterFunction("apiBase64File", null, typeof(LuaApi).GetMethod("Base64File"));
             //获取在线文件的base64结果
             lua.RegisterFunction("apiGetPictureWidth", null, typeof(LuaApi).GetMethod("GetPictureWidth"));
-            //获取在线文件的base64结果
+            //获取图片宽度
             lua.RegisterFunction("apiGetPictureHeight", null, typeof(LuaApi).GetMethod("GetPictureHeight"));
-            //获取在线文件的base64结果
+            //获取图片高度
+            lua.RegisterFunction("apiGetRawPictureWidth", null, typeof(LuaApi).GetMethod("GetRawPictureWidth"));
+            //获取图片源文件宽度
+            lua.RegisterFunction("apiGetRawPictureHeight", null, typeof(LuaApi).GetMethod("GetRawPictureHeight"));
+            //获取图片源文件高度
             lua.RegisterFunction("apiSetVar", null, typeof(LuaApi).GetMethod("SetVar"));
             //设置某值存入ram
             lua.RegisterFunction("apiGetVar", null, typeof(LuaApi).GetMethod("GetVar"));

@@ -383,6 +383,42 @@ namespace Native.Csharp.App.LuaEnv
         }
 
         /// <summary>
+        /// 获取图片源文件宽度
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static int GetRawPictureWidth(string path)
+        {
+            try
+            {
+                using (Bitmap bmp = new Bitmap(path))
+                    return bmp.Width;
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
+        /// <summary>
+        /// 获取图片源文件高度
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static int GetRawPictureHeight(string path)
+        {
+            try
+            {
+                using (Bitmap bmp = new Bitmap(path))
+                    return bmp.Height;
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
+        /// <summary>
         /// 获取图片宽度
         /// </summary>
         /// <param name="image"></param>
