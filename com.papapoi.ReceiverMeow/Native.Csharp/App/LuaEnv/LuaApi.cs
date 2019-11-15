@@ -279,6 +279,85 @@ namespace Native.Csharp.App.LuaEnv
         }
 
         /// <summary>
+        /// 模拟multipart/form-data文件上传
+        /// </summary>
+        public static string HttpUploadFile(string Url, string paramName, string path, int timeout = 5000, string cookie = "")
+        {
+            HttpWebRequest request = null;
+            if (path == null || path.Length < 1)
+            {
+                return null;
+            }
+            try
+            {
+                //请求前设置一下使用的安全协议类型 System.Net
+                if (Url.StartsWith("https", StringComparison.OrdinalIgnoreCase))
+                {
+                    ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors) =>
+                    {
+                        return true; //总是接受
+                    });
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+                }
+
+                string boundary = "---------------------------" + Tools.GetRandomString(16, true, true, true, false);
+                string headerTemplate = "Content-Disposition: form-data; name=\"{0}\"; filename=\"{1}\"\r\n" +
+                    "Content-Type: application/octet-stream\r\n\r\n";
+                string header = string.Format(headerTemplate, paramName, Path.GetFileName(path));
+                byte[] headerbytes = Encoding.UTF8.GetBytes(header);
+                byte[] boundarybytes = Encoding.ASCII.GetBytes("\r\n--" + boundary + "\r\n");
+                byte[] endbytes = Encoding.ASCII.GetBytes("\r\n--" + boundary + "--\r\n");
+                request = (HttpWebRequest)WebRequest.Create(Url);
+                request.Method = "POST";
+                request.Timeout = timeout;
+                request.ContentType = "multipart/form-data; boundary=" + boundary;
+                request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36 Vivaldi/2.2.1388.37";
+                if (cookie != "")
+                    request.Headers.Add("cookie", cookie);
+
+                using (FileStream fileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+                {
+                    request.ContentLength = boundarybytes.Length + headerbytes.Length + fileStream.Length + endbytes.Length;
+                    using (Stream stream = request.GetRequestStream())
+                    {
+                        stream.Write(boundarybytes, 0, boundarybytes.Length);
+                        stream.Write(headerbytes, 0, headerbytes.Length);
+                        byte[] buffer = new byte[4096];
+                        int bytesRead = 0;
+                        while ((bytesRead = fileStream.Read(buffer, 0, buffer.Length)) > 0)
+                        {
+                            stream.Write(buffer, 0, bytesRead);//将字节写入
+                        }
+                        stream.Write(endbytes, 0, endbytes.Length);
+                    }
+
+                }
+                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                {
+                    string encoding = response.ContentEncoding;
+                    if (encoding == null || encoding.Length < 1)
+                    {
+                        encoding = "UTF-8"; //默认编码
+                    }
+                    using (StreamReader reader = new StreamReader(response.GetResponseStream(), Encoding.GetEncoding(encoding)))
+                    {
+                        string retString = reader.ReadToEnd();
+                        return retString;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Common.CqApi.AddLoger(Sdk.Cqp.Enum.LogerLevel.Error, "上传错误", e.ToString());
+            }
+            finally
+            {
+                if (request != null)
+                    request.Abort();
+            }
+            return null;
+        }
+        /// <summary>
         /// 获取本地图片的base64结果，会转成jpeg
         /// </summary>
         /// <param name="url"></param>
