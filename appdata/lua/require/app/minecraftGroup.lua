@@ -171,7 +171,7 @@ return function (msg,qq,group)
                 cqSendGroupMessage(241464054,cqCode_At(tonumber(qq)).."你的白名单申请并没有通过。\r\n"..
                             "原因："..reason.."\r\n"..
                             "请按照原因重新填写白名单：https://wj.qq.com/s/1308067/143c\r\n"..
-                            "你的id："..player)
+                            "你的id："..player.."\r\n如果重新填完了，请发送“催促审核”来让管理重审")
             end
             return true
         elseif msg == "清空在线" then
