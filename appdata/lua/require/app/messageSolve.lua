@@ -131,6 +131,19 @@ local apps = {
             return "[CQ:emoji,id=127881]昨日/今日/明日运势"
         end
     },
+    {--抽象话
+        check = function ()
+            return msg:find("抽象话") == 1
+        end,
+        run = function ()
+            local chouxiang = require("app.chouxiang.chouxiang")
+            sendMessage(chouxiang(msg:sub(("抽象话"):len())))
+            return true
+        end,
+        explain = function ()
+            return "[CQ:emoji,id=128024]抽象话 加 抽象话"
+        end
+    },
     {--查快递
         check = function ()
             return msg:find("查快递") == 1
@@ -382,8 +395,8 @@ local apps = {
 
 --对外提供的函数接口
 return function (inmsg,inqq,ingroup,inid)
-    --禁言锁，最长持续一个月
-    if (tonumber(apiXmlGet("ban",tostring(ingroup))) or 0) > os.time() - 3600 * 24 * 30 then
+    --禁言锁，最长持续一个天
+    if (tonumber(apiXmlGet("ban",tostring(ingroup))) or 0) > os.time() - 3600 * 24 then
         if inmsg:find("%("..tostring(cqGetLoginQQ()).."%) 被管理员解除禁言") then
             apiXmlDelete("ban",tostring(ingroup))
         elseif ingroup then
