@@ -271,6 +271,7 @@ if lastLive < os.time() then--循环检查
         {"UChN7P9OhRltW3w9IesC92PA","森永みう🍫"}, --miu
         {"UC8NZiqKx6fsDT3AVcMiVFyA","犬山💙"}, --犬山
         {"UCH0ObmokE-zUOeihkKwWySA","夢乃栞-Yumeno_Shiori🍄"}, --大姐
+        {"UCjCrzObDrkYN-mELiCiSPAQ","夢乃栞II-Yumeno_Shiori🍄II"}, --大姐新频道
         {"UCIaC5td9nGG6JeKllWLwFLA","有栖マナ🐾"}, --mana
         {"UCn14Z641OthNps7vppBvZFA","千草はな🌼"}, --hana
         {"UC0g1AE0DOjBYnLhkgoRWN1w","本间向日葵🌻"}, --葵
