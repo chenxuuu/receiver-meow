@@ -285,6 +285,7 @@ if lastLive < os.time() then--循环检查
         {"UCzAxQCoeJrmYkHr0cHfD0Nw","yua🔯"},--yua
         {"UCerH0KOGyPaC5WueExiicZQ","杏💣🍠"},--Anzu
         {"UCPf-EnX70UM7jqjKwhDmS8g","玛格罗那🐟"},--魔王
+        {"UCGcD5iUDG8xiywZeeDxye-A","织田信姬🍡"},--织田信
     }
 
 
@@ -306,6 +307,7 @@ if lastLive < os.time() then--循环检查
         {3657657,"饼叽🐥"},   --饼叽
         {7408249,"兔纱🎀"}, --兔纱
         {21602686,"新科娘☭"},--新科娘
+        {80387576,"织田信姬🍡"},--织田信
     }
 
     local tList = {
