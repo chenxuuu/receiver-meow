@@ -224,15 +224,17 @@ local apps = {
     },
     {--签到
         check = function ()
-            return msg == "签到" or msg:find("%[CQ:sign,") == 1
+            return ((msg == "签到" or msg:find("%[CQ:sign,") == 1 or msg == "关闭签到")
+                and apiXmlGet("settings","sign_open"..tostring(group)) ~= "close") or
+                (msg == "开启签到" and qq == admin )
         end,
         run = function ()
             local sign = require("app.sign")
-            sendMessage(cqCode_At(qq)..sign(qq))
+            sendMessage(cqCode_At(qq)..sign(qq,msg,group))
             return true
         end,
         explain = function ()
-            return "[CQ:emoji,id=9728]签到"
+            return "[CQ:emoji,id=9728][开启/关闭]签到"
         end
     },
     {--b站av号解析
