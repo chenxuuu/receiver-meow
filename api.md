@@ -33,6 +33,16 @@ cqSendGroupMessage(group,pic:get())
 - 获取qq消息中图片的网址
 - 返回值：string
 
+### apiGetImagePath(string message)
+
+- 下载qq消息中图片的并返回路径
+- 返回值：string
+
+### apiConvertBase64(string message)
+
+- 字符串转为base64
+- 返回值：string
+
 ### apiHttpDownload(string Url, string fileName, int timeout)
 
 - 下载文件

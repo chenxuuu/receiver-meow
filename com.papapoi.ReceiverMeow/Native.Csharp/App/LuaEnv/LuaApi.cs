@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
@@ -486,6 +486,32 @@ namespace Native.Csharp.App.LuaEnv
         public static string GetAsciiHex(string str)
         {
             return BitConverter.ToString(Encoding.Default.GetBytes(str)).Replace("-", "");
+        }
+
+        /// <summary>
+        /// 获取qq消息中图片的网址
+        /// </summary>
+        /// <param name="image">图片字符串，如“[CQ:image,file=123123]”</param>
+        /// <returns>网址</returns>
+        public static string GetImageUrl(string image)
+        {
+            string fileName = Tools.Reg_get(image, "\\[CQ:image,file=(?<name>.*?)\\]", "name") + ".cqimg";//获取文件名
+            if (File.Exists(AppDomain.CurrentDomain.SetupInformation.ApplicationBase +
+                        @"data\image\" + fileName))
+                return Tools.Reg_get(File.ReadAllText(AppDomain.CurrentDomain.SetupInformation.ApplicationBase +
+                        @"data\image\" + fileName).Replace("\r", "").Replace("\n", ""),
+                        "url=(?<name>.*?)addtime=", "name");//过滤出图片网址
+            return "";//没这个文件
+        }
+
+        /// <summary>
+        /// 将字符串转为base64
+        /// </summary>
+        /// <param name="s">输入</param>
+        /// <returns>base64结果</returns>
+        public static string ConvertBase64(string s)
+        {
+            return Convert.ToBase64String(Encoding.UTF8.GetBytes(s));
         }
 
         /// <summary>
