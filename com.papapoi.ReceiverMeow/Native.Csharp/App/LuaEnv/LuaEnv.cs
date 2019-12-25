@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -129,7 +129,11 @@ namespace Native.Csharp.App.LuaEnv
             //保存并获取图片路径
 
             lua.RegisterFunction("apiGetImagePath", null, typeof(LuaApi).GetMethod("GetImagePath"));
+            //下载qq消息中图片的并返回路径
+            lua.RegisterFunction("apiGetImageUrl", null, typeof(LuaApi).GetMethod("GetImageUrl"));
             //获取qq消息中图片的网址
+            lua.RegisterFunction("apiConvertBase64", null, typeof(LuaApi).GetMethod("ConvertBase64"));
+            //字符串转为base64
 
             lua.RegisterFunction("apiHttpDownload", null, typeof(LuaApi).GetMethod("HttpDownload"));
             //下载文件
