@@ -10,7 +10,7 @@ using System.Web;
 namespace Native.Csharp.Tool.Http
 {
     /// <summary>
-    /// HttpWebClient 操作类
+    /// 提供用于将数据发送到和接收来自通过 URI 确认的资源数据丰富的常用方法。
     /// </summary>
     public class HttpWebClient : WebClient
     {
@@ -38,7 +38,7 @@ namespace Native.Csharp.Tool.Http
         /// </summary>
         public string Accept { get; set; }
         /// <summary>
-        /// 获取或设置与此请求关联的 Cookie
+        /// 获取或设置与此请求关联的 <see cref="CookieContainer"/>
         /// </summary>
         public CookieCollection CookieCollection { get; set; }
         /// <summary>
@@ -58,14 +58,26 @@ namespace Native.Csharp.Tool.Http
         /// 获取或设置一个值, 该值指示是否与 Internal 建立持续型的连接
         /// </summary>
         public bool KeepAlive { get; set; }
+        /// <summary>
+        /// 获取或设置一个值, 该值指示是否获取 Internet 资源后自动合并关联的 <see cref="CookieContainer"/>
+        /// </summary>
+        public bool AutoCookieMerge { get; set; }
+        /// <summary>
+        /// 获取或设置一个值, 该值指示仅用 HTTPS 请求时客户端的安全验证类型
+        /// <para/>
+        /// 验证类型为: SSL3.0 (48), TLS1.0 (192), TLS1.1 (768), TLS1.2 (3072), TLS1.3 (12288)
+        /// </summary>
+        public SecurityProtocolType ServiceSecurityType { get; set; }
         #endregion
 
         #region --构造函数--
         /// <summary>
-        /// 初始化 HttpWebClient 实例对象
+        /// 初始化 <see cref="HttpWebClient"/> 类的一个实例对象
         /// </summary>
         public HttpWebClient ()
-        { }
+        {
+            this.ServiceSecurityType = GetSecurityAllValue ();
+        }
         #endregion
 
         #region --公开方法--
@@ -84,16 +96,16 @@ namespace Native.Csharp.Tool.Http
         /// <param name="accept">Accept HTTP 标头</param>
         /// <param name="timeout">超时时间</param>
         /// <param name="cookies">请求附带的 Cookies
-        ///		<para>此参数支持自动更新 Cookies, 若 cookieMerge 参数为True, 将合并新旧Cookie</para>
+        ///		<para>此参数支持自动更新 <see cref="CookieContainer"/>, 若 <see cref="AutoCookieMerge"/> 参数为 True, 将合并新旧 Cookie</para>
         /// </param>
         /// <param name="headers">请求附带的 Headers
-        ///		<para>此参数支持自动更新 Headers</para>
+        ///		<para>此参数支持自动更新 <see cref="WebHeaderCollection"/></para>
         /// </param>
-        /// <param name="proxy">代理 HttpWebClient 的 WebProxy 实例</param>
+        /// <param name="proxy">代理 <see cref="HttpWebClient"/> 的 <see cref="WebProxy"/> 实例</param>
         /// <param name="encoding">文本编码</param>
         /// <param name="allowAutoRedirect">跟随重定向响应</param>
-        /// <param name="autoCookieMerge">自动Cookie合并</param>
-        /// <returns></returns>
+        /// <param name="autoCookieMerge">指定自动 <see cref="CookieContainer"/> 合并</param>
+        /// <returns>返回从 Internal 读取的 <see cref="byte"/> 数组</returns>
         public static byte[] Get (string url, string referer, string userAgent, string accept, int timeout, ref CookieCollection cookies, ref WebHeaderCollection headers, WebProxy proxy, Encoding encoding, bool allowAutoRedirect = true, bool autoCookieMerge = true)
         {
             HttpWebClient httpWebClient = new HttpWebClient ();
@@ -106,16 +118,10 @@ namespace Native.Csharp.Tool.Http
             httpWebClient.Encoding = encoding;
             httpWebClient.Proxy = proxy;
             httpWebClient.AllowAutoRedirect = allowAutoRedirect;
+            httpWebClient.AutoCookieMerge = autoCookieMerge;
             byte[] result = httpWebClient.DownloadData (new Uri (url));
             headers = httpWebClient.ResponseHeaders;
-            if (autoCookieMerge)
-            {
-                cookies = UpdateCookie (cookies, httpWebClient.CookieCollection);
-            }
-            else
-            {
-                cookies = httpWebClient.CookieCollection;
-            }
+            cookies = httpWebClient.CookieCollection;
             return result;
         }
         /// <summary>
@@ -128,16 +134,16 @@ namespace Native.Csharp.Tool.Http
         ///		<para>告知服务器, 访问时的来源地址</para>
         /// </param>
         /// <param name="cookies">请求附带的 Cookies
-        ///		<para>此参数支持自动更新 Cookies, 若 cookieMerge 参数为True, 将合并新旧Cookie</para>
+        ///		<para>此参数支持自动更新 <see cref="CookieContainer"/>, 若 <see cref="AutoCookieMerge"/> 参数为 True, 将合并新旧 Cookie</para>
         /// </param>
         /// <param name="headers">请求附带的 Headers
-        ///		<para>此参数支持自动更新 Headers</para>
+        ///		<para>此参数支持自动更新 <see cref="WebHeaderCollection"/></para>
         /// </param>
-        /// <param name="proxy">代理 HttpWebClient 的 WebProxy 实例</param>
+        /// <param name="proxy">代理 <see cref="HttpWebClient"/> 的 <see cref="WebProxy"/> 实例</param>
         /// <param name="encoding">文本编码</param>
         /// <param name="allowAutoRedirect">跟随重定向响应</param>
-        /// <param name="autoCookieMerge">自动Cookie合并</param>
-        /// <returns></returns>
+        /// <param name="autoCookieMerge">指定自动 <see cref="CookieContainer"/> 合并</param>
+        /// <returns>返回从 Internal 读取的 <see cref="byte"/> 数组</returns>
         public static byte[] Get (string url, string referer, ref CookieCollection cookies, ref WebHeaderCollection headers, WebProxy proxy, Encoding encoding, bool allowAutoRedirect = true, bool autoCookieMerge = true)
         {
             return Get (url, referer, string.Empty, string.Empty, 0, ref cookies, ref headers, proxy, encoding, allowAutoRedirect, autoCookieMerge);
@@ -152,15 +158,15 @@ namespace Native.Csharp.Tool.Http
         ///		<para>告知服务器, 访问时的来源地址</para>
         /// </param>
         /// <param name="cookies">请求附带的 Cookies
-        ///		<para>此参数支持自动更新 Cookies, 若 cookieMerge 参数为True, 将合并新旧Cookie</para>
+        ///		<para>此参数支持自动更新 <see cref="CookieContainer"/>, 若 <see cref="AutoCookieMerge"/> 参数为 True, 将合并新旧 Cookie</para>
         /// </param>
         /// <param name="headers">请求附带的 Headers
-        ///		<para>此参数支持自动更新 Headers</para>
+        ///		<para>此参数支持自动更新 <see cref="WebHeaderCollection"/></para>
         /// </param>
         /// <param name="encoding">文本编码</param>
         /// <param name="allowAutoRedirect">跟随重定向响应</param>
-        /// <param name="autoCookieMerge">自动Cookie合并</param>
-        /// <returns></returns>
+        /// <param name="autoCookieMerge">指定自动 <see cref="CookieContainer"/> 合并</param>
+        /// <returns>返回从 Internal 读取的 <see cref="byte"/> 数组</returns>
         public static byte[] Get (string url, string referer, ref CookieCollection cookies, ref WebHeaderCollection headers, Encoding encoding, bool allowAutoRedirect = true, bool autoCookieMerge = true)
         {
             return Get (url, referer, ref cookies, ref headers, null, encoding, allowAutoRedirect, autoCookieMerge);
@@ -175,14 +181,14 @@ namespace Native.Csharp.Tool.Http
         ///		<para>告知服务器, 访问时的来源地址</para>
         /// </param>
         /// <param name="cookies">请求附带的 Cookies
-        ///		<para>此参数支持自动更新 Cookies, 若 cookieMerge 参数为True, 将合并新旧Cookie</para>
+        ///		<para>此参数支持自动更新 <see cref="CookieContainer"/>, 若 <see cref="AutoCookieMerge"/> 参数为 True, 将合并新旧 Cookie</para>
         /// </param>
         /// <param name="headers">请求附带的 Headers
-        ///		<para>此参数支持自动更新 Headers</para>
+        ///		<para>此参数支持自动更新 <see cref="WebHeaderCollection"/></para>
         /// </param>
         /// <param name="allowAutoRedirect">跟随重定向响应</param>
-        /// <param name="autoCookieMerge">自动Cookie合并</param>
-        /// <returns></returns>
+        /// <param name="autoCookieMerge">指定自动 <see cref="CookieContainer"/> 合并</param>
+        /// <returns>返回从 Internal 读取的 <see cref="byte"/> 数组</returns>
         public static byte[] Get (string url, string referer, ref CookieCollection cookies, ref WebHeaderCollection headers, bool allowAutoRedirect = true, bool autoCookieMerge = true)
         {
             return Get (url, referer, ref cookies, ref headers, null, Encoding.UTF8, allowAutoRedirect, autoCookieMerge);
@@ -195,33 +201,13 @@ namespace Native.Csharp.Tool.Http
         ///	</param>
         /// <param name="referer">参考页链接
         ///		<para>告知服务器, 访问时的来源地址</para>
-        ///	</param>
-        /// <param name="headers">请求附带的 Headers
-        ///		<para>此参数支持自动更新 Headers</para>
-        /// </param>
-        /// <param name="allowAutoRedirect">跟随重定向响应</param>
-        /// <param name="autoCookieMerge">自动Cookie合并</param>
-        /// <returns></returns>
-        public static byte[] Get (string url, string referer, ref WebHeaderCollection headers, bool allowAutoRedirect = true, bool autoCookieMerge = true)
-        {
-            CookieCollection cookies = new CookieCollection ();
-            return Get (url, referer, ref cookies, ref headers, null, Encoding.UTF8, allowAutoRedirect, autoCookieMerge);
-        }
-        /// <summary>
-        /// 向服务器发送 HTTP GET 请求
-        /// </summary>
-        /// <param name="url">完整的网页地址
-        ///		<para>必须包含 "http://" 或 "https://"</para>
-        ///	</param>
-        /// <param name="referer">参考页链接
-        ///		<para>告知服务器, 访问时的来源地址</para>
         /// </param>
         /// <param name="cookies">请求附带的 Cookies
-        ///		<para>此参数支持自动更新 Cookies, 若 cookieMerge 参数为True, 将合并新旧Cookie</para>
+        ///		<para>此参数支持自动更新 <see cref="CookieContainer"/>, 若 <see cref="AutoCookieMerge"/> 参数为 True, 将合并新旧 Cookie</para>
         /// </param>
         /// <param name="allowAutoRedirect">跟随重定向响应</param>
-        /// <param name="autoCookieMerge">自动Cookie合并</param>
-        /// <returns></returns>
+        /// <param name="autoCookieMerge">指定自动 <see cref="CookieContainer"/> 合并</param>
+        /// <returns>返回从 Internal 读取的 <see cref="byte"/> 数组</returns>
         public static byte[] Get (string url, string referer, ref CookieCollection cookies, bool allowAutoRedirect = true, bool autoCookieMerge = true)
         {
             WebHeaderCollection headers = new WebHeaderCollection ();
@@ -235,34 +221,16 @@ namespace Native.Csharp.Tool.Http
         ///	</param>
         /// <param name="referer">参考页链接
         ///		<para>告知服务器, 访问时的来源地址</para>
-        ///	</param>
+        /// </param>
         /// <param name="headers">请求附带的 Headers
-        ///		<para>此参数支持自动更新 Headers</para>
+        ///		<para>此参数支持自动更新 <see cref="WebHeaderCollection"/></para>
         /// </param>
         /// <param name="allowAutoRedirect">跟随重定向响应</param>
-        /// <param name="autoCookieMerge">自动Cookie合并</param>
-        /// <returns></returns>
-        public static byte[] Get (string url, ref WebHeaderCollection headers, bool allowAutoRedirect = true, bool autoCookieMerge = true)
+        /// <returns>返回从 Internal 读取的 <see cref="byte"/> 数组</returns>
+        public static byte[] Get (string url, string referer, ref WebHeaderCollection headers, bool allowAutoRedirect = true)
         {
             CookieCollection cookies = new CookieCollection ();
-            return Get (url, string.Empty, ref cookies, ref headers, null, Encoding.UTF8, allowAutoRedirect, autoCookieMerge);
-        }
-        /// <summary>
-        /// 向服务器发送 HTTP GET 请求
-        /// </summary>
-        /// <param name="url">完整的网页地址
-        ///		<para>必须包含 "http://" 或 "https://"</para>
-        ///	</param>
-        /// <param name="cookies">请求附带的 Cookies
-        ///		<para>此参数支持自动更新 Cookies, 若 cookieMerge 参数为True, 将合并新旧Cookie</para>
-        /// </param>
-        /// <param name="allowAutoRedirect">跟随重定向响应</param>
-        /// <param name="autoCookieMerge">自动Cookie合并</param>
-        /// <returns></returns>
-        public static byte[] Get (string url, ref CookieCollection cookies, bool allowAutoRedirect = true, bool autoCookieMerge = true)
-        {
-            WebHeaderCollection headers = new WebHeaderCollection ();
-            return Get (url, string.Empty, ref cookies, ref headers, null, Encoding.UTF8, allowAutoRedirect, autoCookieMerge);
+            return Get (url, referer, ref cookies, ref headers, null, Encoding.UTF8, allowAutoRedirect, false);
         }
         /// <summary>
         /// 向服务器发送 HTTP GET 请求
@@ -274,13 +242,44 @@ namespace Native.Csharp.Tool.Http
         ///		<para>告知服务器, 访问时的来源地址</para>
         /// </param>
         /// <param name="allowAutoRedirect">跟随重定向响应</param>
-        /// <param name="autoCookieMerge">自动Cookie合并</param>
-        /// <returns></returns>
-        public static byte[] Get (string url, string referer, bool allowAutoRedirect = true, bool autoCookieMerge = true)
+        /// <returns>返回从 Internal 读取的 <see cref="byte"/> 数组</returns>
+        public static byte[] Get (string url, string referer, bool allowAutoRedirect = true)
         {
             WebHeaderCollection headers = new WebHeaderCollection ();
+            return Get (url, referer, ref headers, allowAutoRedirect);
+        }
+        /// <summary>
+        /// 向服务器发送 HTTP GET 请求
+        /// </summary>
+        /// <param name="url">完整的网页地址
+        ///		<para>必须包含 "http://" 或 "https://"</para>
+        ///	</param>
+        /// <param name="cookies">请求附带的 Cookies
+        ///		<para>此参数支持自动更新 <see cref="CookieContainer"/>, 若 <see cref="AutoCookieMerge"/> 参数为 True, 将合并新旧 Cookie</para>
+        /// </param>
+        /// <param name="allowAutoRedirect">跟随重定向响应</param>
+        /// <param name="autoCookieMerge">指定自动 <see cref="CookieContainer"/> 合并</param>
+        /// <returns>返回从 Internal 读取的 <see cref="byte"/> 数组</returns>
+        public static byte[] Get (string url, ref CookieCollection cookies, bool allowAutoRedirect = true, bool autoCookieMerge = true)
+        {
+            WebHeaderCollection headers = new WebHeaderCollection ();
+            return Get (url, string.Empty, ref cookies, ref headers, null, Encoding.UTF8, allowAutoRedirect, autoCookieMerge);
+        }
+        /// <summary>
+        /// 向服务器发送 HTTP GET 请求
+        /// </summary>
+        /// <param name="url">完整的网页地址
+        ///		<para>必须包含 "http://" 或 "https://"</para>
+        ///	</param>
+        /// <param name="headers">请求附带的 Headers
+        ///		<para>此参数支持自动更新 <see cref="WebHeaderCollection"/></para>
+        /// </param>
+        /// <param name="allowAutoRedirect">跟随重定向响应</param>
+        /// <returns>返回从 Internal 读取的 <see cref="byte"/> 数组</returns>
+        public static byte[] Get (string url, ref WebHeaderCollection headers, bool allowAutoRedirect = true)
+        {
             CookieCollection cookies = new CookieCollection ();
-            return Get (url, referer, ref cookies, ref headers, null, Encoding.UTF8, allowAutoRedirect, autoCookieMerge);
+            return Get (url, string.Empty, ref cookies, ref headers, null, Encoding.UTF8, allowAutoRedirect, false);
         }
         /// <summary>
         /// 向服务器发送 HTTP GET 请求
@@ -289,11 +288,10 @@ namespace Native.Csharp.Tool.Http
         ///		<para>必须包含 "http://" 或 "https://"</para>
         ///	</param>
         /// <param name="allowAutoRedirect">跟随重定向响应</param>
-        /// <param name="autoCookieMerge">自动Cookie合并</param>
-        /// <returns></returns>
-        public static byte[] Get (string url, bool allowAutoRedirect = true, bool autoCookieMerge = true)
+        /// <returns>返回从 Internal 读取的 <see cref="byte"/> 数组</returns>
+        public static byte[] Get (string url, bool allowAutoRedirect = true)
         {
-            return Get (url, string.Empty, allowAutoRedirect, autoCookieMerge);
+            return Get (url, string.Empty, allowAutoRedirect);
         }
         #endregion
 
@@ -313,16 +311,16 @@ namespace Native.Csharp.Tool.Http
         /// <param name="accept">Accept HTTP 标头</param>
         /// <param name="timeout">超时时间</param>
         /// <param name="cookies">请求附带的 Cookies
-        ///		<para>此参数支持自动更新 Cookies, 若 cookieMerge 参数为True, 将合并新旧Cookie</para>
+        ///		<para>此参数支持自动更新 <see cref="CookieContainer"/>, 若 <see cref="AutoCookieMerge"/> 参数为 True, 将合并新旧 Cookie</para>
         /// </param>
         /// <param name="headers">请求附带的 Headers
-        ///		<para>此参数支持自动更新 Headers</para>
+        ///		<para>此参数支持自动更新 <see cref="WebHeaderCollection"/></para>
         /// </param>
-        /// <param name="proxy">代理 HttpWebClient 的 WebProxy 实例</param>
+        /// <param name="proxy">代理 <see cref="HttpWebClient"/> 的 <see cref="WebProxy"/> 实例</param>
         /// <param name="encoding">文本编码</param>
         /// <param name="allowAutoRedirect">跟随重定向响应</param>
-        /// <param name="autoCookieMerge">自动Cookie合并</param>
-        /// <returns></returns>
+        /// <param name="autoCookieMerge">指定自动 <see cref="CookieContainer"/> 合并</param>
+        /// <returns>返回从 Internal 读取的 <see cref="byte"/> 数组</returns>
         public static byte[] Post (string url, byte[] data, string contentType, string referer, string userAgent, string accept, int timeout, ref CookieCollection cookies, ref WebHeaderCollection headers, WebProxy proxy, Encoding encoding, bool allowAutoRedirect = true, bool autoCookieMerge = true)
         {
             HttpWebClient httpWebClient = new HttpWebClient ();
@@ -334,17 +332,11 @@ namespace Native.Csharp.Tool.Http
             httpWebClient.CookieCollection = cookies;
             httpWebClient.Headers = headers;
             httpWebClient.Proxy = proxy;
+            httpWebClient.AutoCookieMerge = autoCookieMerge;
             httpWebClient.AllowAutoRedirect = allowAutoRedirect;
             byte[] result = httpWebClient.UploadData (new Uri (url), data);
             headers = httpWebClient.ResponseHeaders;
-            if (autoCookieMerge)
-            {
-                cookies = UpdateCookie (cookies, httpWebClient.CookieCollection);
-            }
-            else
-            {
-                cookies = httpWebClient.CookieCollection;
-            }
+            cookies = httpWebClient.CookieCollection;
             return result;
         }
         /// <summary>
@@ -359,16 +351,16 @@ namespace Native.Csharp.Tool.Http
         ///		<para>告知服务器, 访问时的来源地址</para>
         /// </param>
         /// <param name="cookies">请求附带的 Cookies
-        ///		<para>此参数支持自动更新 Cookies, 若 cookieMerge 参数为True, 将合并新旧Cookie</para>
+        ///		<para>此参数支持自动更新 <see cref="CookieContainer"/>, 若 <see cref="AutoCookieMerge"/> 参数为 True, 将合并新旧 Cookie</para>
         /// </param>
         /// <param name="headers">请求附带的 Headers
-        ///		<para>此参数支持自动更新 Headers</para>
+        ///		<para>此参数支持自动更新 <see cref="WebHeaderCollection"/></para>
         /// </param>
-        /// <param name="proxy">代理 HttpWebClient 的 WebProxy 实例</param>
+        /// <param name="proxy">代理 <see cref="HttpWebClient"/> 的 <see cref="WebProxy"/> 实例</param>
         /// <param name="encoding">文本编码</param>
         /// <param name="allowAutoRedirect">跟随重定向响应</param>
-        /// <param name="autoCookieMerge">自动Cookie合并</param>
-        /// <returns></returns>
+        /// <param name="autoCookieMerge">指定自动 <see cref="CookieContainer"/> 合并</param>
+        /// <returns>返回从 Internal 读取的 <see cref="byte"/> 数组</returns>
         public static byte[] Post (string url, byte[] data, string contentType, string referer, ref CookieCollection cookies, ref WebHeaderCollection headers, WebProxy proxy, Encoding encoding, bool allowAutoRedirect = true, bool autoCookieMerge = true)
         {
             return Post (url, data, contentType, referer, string.Empty, string.Empty, 0, ref cookies, ref headers, proxy, encoding, allowAutoRedirect, autoCookieMerge);
@@ -385,15 +377,15 @@ namespace Native.Csharp.Tool.Http
         ///		<para>告知服务器, 访问时的来源地址</para>
         /// </param>
         /// <param name="cookies">请求附带的 Cookies
-        ///		<para>此参数支持自动更新 Cookies, 若 cookieMerge 参数为True, 将合并新旧Cookie</para>
+        ///		<para>此参数支持自动更新 <see cref="CookieContainer"/>, 若 <see cref="AutoCookieMerge"/> 参数为 True, 将合并新旧 Cookie</para>
         /// </param>
         /// <param name="headers">请求附带的 Headers
-        ///		<para>此参数支持自动更新 Headers</para>
+        ///		<para>此参数支持自动更新 <see cref="WebHeaderCollection"/></para>
         /// </param>
         /// <param name="encoding">文本编码</param>
         /// <param name="allowAutoRedirect">跟随重定向响应</param>
-        /// <param name="autoCookieMerge">自动Cookie合并</param>
-        /// <returns></returns>
+        /// <param name="autoCookieMerge">指定自动 <see cref="CookieContainer"/> 合并</param>
+        /// <returns>返回从 Internal 读取的 <see cref="byte"/> 数组</returns>
         public static byte[] Post (string url, byte[] data, string contentType, string referer, ref CookieCollection cookies, ref WebHeaderCollection headers, Encoding encoding, bool allowAutoRedirect = true, bool autoCookieMerge = true)
         {
             return Post (url, data, contentType, referer, ref cookies, ref headers, null, encoding, allowAutoRedirect, autoCookieMerge);
@@ -410,39 +402,17 @@ namespace Native.Csharp.Tool.Http
         ///		<para>告知服务器, 访问时的来源地址</para>
         /// </param>
         /// <param name="cookies">请求附带的 Cookies
-        ///		<para>此参数支持自动更新 Cookies, 若 cookieMerge 参数为True, 将合并新旧Cookie</para>
+        ///		<para>此参数支持自动更新 <see cref="CookieContainer"/>, 若 <see cref="AutoCookieMerge"/> 参数为 True, 将合并新旧 Cookie</para>
         /// </param>
         /// <param name="headers">请求附带的 Headers
-        ///		<para>此参数支持自动更新 Headers</para>
+        ///		<para>此参数支持自动更新 <see cref="WebHeaderCollection"/></para>
         /// </param>
         /// <param name="allowAutoRedirect">跟随重定向响应</param>
-        /// <param name="autoCookieMerge">自动Cookie合并</param>
-        /// <returns></returns>
+        /// <param name="autoCookieMerge">指定自动 <see cref="CookieContainer"/> 合并</param>
+        /// <returns>返回从 Internal 读取的 <see cref="byte"/> 数组</returns>
         public static byte[] Post (string url, byte[] data, string contentType, string referer, ref CookieCollection cookies, ref WebHeaderCollection headers, bool allowAutoRedirect = true, bool autoCookieMerge = true)
         {
-            return Post (url, data, contentType, referer, ref cookies, ref headers, null, Encoding.UTF8, allowAutoRedirect, autoCookieMerge);
-        }
-        /// <summary>
-        /// 向服务器发送 HTTP POST 请求
-        /// </summary>
-        /// <param name="url">完整的网页地址
-        ///		<para>必须包含 "http://" 或 "https://"</para>
-        ///	</param>
-        /// <param name="data">请求所需的上传数据</param>
-        /// <param name="contentType">Content-Type HTTP 标头</param>
-        /// <param name="referer">参考页链接
-        ///		<para>告知服务器, 访问时的来源地址</para>
-        /// </param>
-        /// <param name="headers">请求附带的 Headers
-        ///		<para>此参数支持自动更新 Headers</para>
-        /// </param>
-        /// <param name="allowAutoRedirect">跟随重定向响应</param>
-        /// <param name="autoCookieMerge">自动Cookie合并</param>
-        /// <returns></returns>
-        public static byte[] Post (string url, byte[] data, string contentType, string referer, ref WebHeaderCollection headers, bool allowAutoRedirect = true, bool autoCookieMerge = true)
-        {
-            CookieCollection cookies = new CookieCollection ();
-            return Post (url, data, contentType, referer, ref cookies, ref headers, null, Encoding.UTF8, allowAutoRedirect, autoCookieMerge);
+            return Post (url, data, contentType, referer, ref cookies, ref headers, Encoding.UTF8, allowAutoRedirect, autoCookieMerge);
         }
         /// <summary>
         /// 向服务器发送 HTTP POST 请求
@@ -456,15 +426,54 @@ namespace Native.Csharp.Tool.Http
         ///		<para>告知服务器, 访问时的来源地址</para>
         /// </param>
         /// <param name="cookies">请求附带的 Cookies
-        ///		<para>此参数支持自动更新 Cookies, 若 cookieMerge 参数为True, 将合并新旧Cookie</para>
+        ///		<para>此参数支持自动更新 <see cref="CookieContainer"/>, 若 <see cref="AutoCookieMerge"/> 参数为 True, 将合并新旧 Cookie</para>
         /// </param>
         /// <param name="allowAutoRedirect">跟随重定向响应</param>
-        /// <param name="autoCookieMerge">自动Cookie合并</param>
-        /// <returns></returns>
+        /// <param name="autoCookieMerge">指定自动 <see cref="CookieContainer"/> 合并</param>
+        /// <returns>返回从 Internal 读取的 <see cref="byte"/> 数组</returns>
         public static byte[] Post (string url, byte[] data, string contentType, string referer, ref CookieCollection cookies, bool allowAutoRedirect = true, bool autoCookieMerge = true)
         {
             WebHeaderCollection headers = new WebHeaderCollection ();
-            return Post (url, data, contentType, referer, ref cookies, ref headers, null, Encoding.UTF8, allowAutoRedirect, autoCookieMerge);
+            return Post (url, data, contentType, referer, ref cookies, ref headers, allowAutoRedirect, autoCookieMerge);
+        }
+        /// <summary>
+        /// 向服务器发送 HTTP POST 请求
+        /// </summary>
+        /// <param name="url">完整的网页地址
+        ///		<para>必须包含 "http://" 或 "https://"</para>
+        ///	</param>
+        /// <param name="data">请求所需的上传数据</param>
+        /// <param name="contentType">Content-Type HTTP 标头</param>
+        /// <param name="referer">参考页链接
+        ///		<para>告知服务器, 访问时的来源地址</para>
+        /// </param>
+        /// <param name="headers">请求附带的 Headers
+        ///		<para>此参数支持自动更新 <see cref="WebHeaderCollection"/></para>
+        /// </param>
+        /// <param name="allowAutoRedirect">跟随重定向响应</param>
+        /// <returns>返回从 Internal 读取的 <see cref="byte"/> 数组</returns>
+        public static byte[] Post (string url, byte[] data, string contentType, string referer, ref WebHeaderCollection headers, bool allowAutoRedirect = true)
+        {
+            CookieCollection cookies = new CookieCollection ();
+            return Post (url, data, contentType, referer, ref cookies, ref headers, allowAutoRedirect, false);
+        }
+        /// <summary>
+        /// 向服务器发送 HTTP POST 请求
+        /// </summary>
+        /// <param name="url">完整的网页地址
+        ///		<para>必须包含 "http://" 或 "https://"</para>
+        ///	</param>
+        /// <param name="data">请求所需的上传数据</param>
+        /// <param name="contentType">Content-Type HTTP 标头</param>
+        /// <param name="cookies">请求附带的 Cookies
+        ///		<para>此参数支持自动更新 <see cref="CookieContainer"/>, 若 <see cref="AutoCookieMerge"/> 参数为 True, 将合并新旧 Cookie</para>
+        /// </param>
+        /// <param name="allowAutoRedirect">跟随重定向响应</param>
+        /// <param name="autoCookieMerge">指定自动 <see cref="CookieContainer"/> 合并</param>
+        /// <returns>返回从 Internal 读取的 <see cref="byte"/> 数组</returns>
+        public static byte[] Post (string url, byte[] data, string contentType, ref CookieCollection cookies, bool allowAutoRedirect = true, bool autoCookieMerge = true)
+        {
+            return Post (url, data, contentType, string.Empty, ref cookies, allowAutoRedirect, autoCookieMerge);
         }
         /// <summary>
         /// 向服务器发送 HTTP POST 请求
@@ -475,37 +484,13 @@ namespace Native.Csharp.Tool.Http
         /// <param name="data">请求所需的上传数据</param>
         /// <param name="contentType">Content-Type HTTP 标头</param>
         /// <param name="headers">请求附带的 Headers
-        ///		<para>此参数支持自动更新 Headers</para>
+        ///		<para>此参数支持自动更新 <see cref="WebHeaderCollection"/></para>
         /// </param>
         /// <param name="allowAutoRedirect">跟随重定向响应</param>
-        /// <param name="autoCookieMerge">自动Cookie合并</param>
-        /// <returns></returns>
-        public static byte[] Post (string url, byte[] data, string contentType, ref WebHeaderCollection headers, bool allowAutoRedirect = true, bool autoCookieMerge = true)
+        /// <returns>返回从 Internal 读取的 <see cref="byte"/> 数组</returns>
+        public static byte[] Post (string url, byte[] data, string contentType, ref WebHeaderCollection headers, bool allowAutoRedirect = true)
         {
-            CookieCollection cookies = new CookieCollection ();
-            return Post (url, data, contentType, string.Empty, ref cookies, ref headers, null, Encoding.UTF8, allowAutoRedirect, autoCookieMerge);
-        }
-        /// <summary>
-        /// 向服务器发送 HTTP POST 请求
-        /// </summary>
-        /// <param name="url">完整的网页地址
-        ///		<para>必须包含 "http://" 或 "https://"</para>
-        ///	</param>
-        /// <param name="data">请求所需的上传数据</param>
-        /// <param name="contentType">Content-Type HTTP 标头</param>
-        /// <param name="referer">参考页链接
-        ///		<para>告知服务器, 访问时的来源地址</para>
-        /// </param>
-        /// <param name="cookies">请求附带的 Cookies
-        ///		<para>此参数支持自动更新 Cookies, 若 cookieMerge 参数为True, 将合并新旧Cookie</para>
-        /// </param>
-        /// <param name="allowAutoRedirect">跟随重定向响应</param>
-        /// <param name="autoCookieMerge">自动Cookie合并</param>
-        /// <returns></returns>
-        public static byte[] Post (string url, byte[] data, string contentType, ref CookieCollection cookies, bool allowAutoRedirect = true, bool autoCookieMerge = true)
-        {
-            WebHeaderCollection headers = new WebHeaderCollection ();
-            return Post (url, data, contentType, string.Empty, ref cookies, ref headers, null, Encoding.UTF8, allowAutoRedirect, autoCookieMerge);
+            return Post (url, data, contentType, string.Empty, ref headers, allowAutoRedirect);
         }
         /// <summary>
         /// 向服务器发送 HTTP POST 请求
@@ -519,13 +504,11 @@ namespace Native.Csharp.Tool.Http
         ///		<para>告知服务器, 访问时的来源地址</para>
         /// </param>
         /// <param name="allowAutoRedirect">跟随重定向响应</param>
-        /// <param name="autoCookieMerge">自动Cookie合并</param>
-        /// <returns></returns>
-        public static byte[] Post (string url, byte[] data, string contentType, string referer, bool allowAutoRedirect = true, bool autoCookieMerge = true)
+        /// <returns>返回从 Internal 读取的 <see cref="byte"/> 数组</returns>
+        public static byte[] Post (string url, byte[] data, string contentType, string referer, bool allowAutoRedirect = true)
         {
             WebHeaderCollection headers = new WebHeaderCollection ();
-            CookieCollection cookies = new CookieCollection ();
-            return Post (url, data, contentType, referer, ref cookies, ref headers, null, Encoding.UTF8, allowAutoRedirect, autoCookieMerge);
+            return Post (url, data, contentType, referer, ref headers, allowAutoRedirect);
         }
         /// <summary>
         /// 向服务器发送 HTTP POST 请求
@@ -536,37 +519,33 @@ namespace Native.Csharp.Tool.Http
         /// <param name="data">请求所需的上传数据</param>
         /// <param name="contentType">Content-Type HTTP 标头</param>
         /// <param name="allowAutoRedirect">跟随重定向响应</param>
-        /// <param name="autoCookieMerge">自动Cookie合并</param>
-        /// <returns></returns>
-        public static byte[] Post (string url, byte[] data, string contentType, bool allowAutoRedirect = true, bool autoCookieMerge = true)
+        /// <returns>返回从 Internal 读取的 <see cref="byte"/> 数组</returns>
+        public static byte[] Post (string url, byte[] data, string contentType, bool allowAutoRedirect = true)
         {
-            WebHeaderCollection headers = new WebHeaderCollection ();
-            CookieCollection cookies = new CookieCollection ();
-            return Post (url, data, contentType, string.Empty, ref cookies, ref headers, null, Encoding.UTF8, allowAutoRedirect, autoCookieMerge);
+            return Post (url, data, contentType, string.Empty, allowAutoRedirect);
         }
         /// <summary>
-        /// 向服务器发送 HTTP POST 请求 (Conttent-Type 为 application/x-www-form-urlencoded)
+        /// 向服务器发送 HTTP POST 请求 <see cref="ContentType"/>: application/x-www-form-urlencoded
         /// </summary>
         /// <param name="url">完整的网页地址
         ///		<para>必须包含 "http://" 或 "https://"</para>
         ///	</param>
         /// <param name="data">请求所需的上传数据</param>
         /// <param name="allowAutoRedirect">跟随重定向响应</param>
-        /// <param name="autoCookieMerge">自动Cookie合并</param>
-        /// <returns></returns>
-        public static byte[] Post (string url, byte[] data, bool allowAutoRedirect = true, bool autoCookieMerge = true)
+        /// <returns>返回从 Internal 读取的 <see cref="byte"/> 数组</returns>
+        public static byte[] Post (string url, byte[] data, bool allowAutoRedirect = true)
         {
-            return Post (url, data, string.Empty, string.Empty, allowAutoRedirect, autoCookieMerge);
+            return Post (url, data, string.Empty, string.Empty, allowAutoRedirect);
         }
         #endregion
 
         #region --Cookie--
         /// <summary>
-        /// Cookie合并与更新
+        /// <see cref="System.Net.CookieCollection"/> 合并更新
         /// </summary>
         /// <param name="oldCookies">原始的Cookis</param>
         /// <param name="newCookies">欲合并Cookies</param>
-        /// <returns></returns>
+        /// <returns>返回处理过的 <see cref="System.Net.CookieCollection"/></returns>
         public static CookieCollection UpdateCookie (CookieCollection oldCookies, CookieCollection newCookies)
         {
             if (oldCookies == null)
@@ -591,28 +570,6 @@ namespace Native.Csharp.Tool.Http
                 }
             }
             return oldCookies;
-        }
-        #endregion
-
-        #region --URL--
-        /// <summary>
-        /// Url编码
-        /// </summary>
-        /// <param name="data">要编码的数据</param>
-        /// <returns>编码后的数据</returns>
-        public static string UrlEncode (string data)
-        {
-            return HttpUtility.UrlEncode (data);
-        }
-
-        /// <summary>
-        /// Url解码
-        /// </summary>
-        /// <param name="data">要解码的数据</param>
-        /// <returns>解码后的数据</returns>
-        public static string UrlDecode (string data)
-        {
-            return HttpUtility.UrlDecode (data);
         }
         #endregion
 
@@ -648,20 +605,35 @@ namespace Native.Csharp.Tool.Http
             }
             return -1;
         }
+        /// <summary>
+        /// 获取 <see cref="SecurityProtocolType"/> 类型所有值的或
+        /// </summary>
+        /// <returns></returns>
+        private static SecurityProtocolType GetSecurityAllValue ()
+        {
+            SecurityProtocolType temp = (SecurityProtocolType)0;
+            foreach (SecurityProtocolType item in Enum.GetValues (typeof (SecurityProtocolType)))
+            {
+                temp |= item;
+            }
+            return temp;
+        }
         #endregion
 
         #region --重写方法--
         /// <summary>
         /// 返回带有 Cookies 的 HttpWebRequest
         /// </summary>
-        /// <param name="address">一个 System.Uri ，它标识要请求的资源</param>
+        /// <param name="address">一个 System.Uri，它标识要请求的资源</param>
         /// <returns></returns>
         protected override WebRequest GetWebRequest (Uri address)
         {
             if (address.OriginalString.StartsWith ("https", StringComparison.OrdinalIgnoreCase))
             {
-                ServicePointManager.ServerCertificateValidationCallback = CheckValidationResult;        // 强行验证HTTPS通过
-                ServicePointManager.SecurityProtocol = (SecurityProtocolType)(48 | 192 | 768 | 3072);   // 通过验证的协议类型, 来源 .Net Framework 4.5
+                // 强行验证HTTPS通过
+                // 验证方式改为用户手动指定
+                ServicePointManager.ServerCertificateValidationCallback = CheckValidationResult;
+                ServicePointManager.SecurityProtocol = this.ServiceSecurityType;
             }
             HttpWebRequest httpWebRequest = (HttpWebRequest)base.GetWebRequest (address);
             httpWebRequest.ProtocolVersion = HttpVersion.Version11;
@@ -695,9 +667,9 @@ namespace Native.Csharp.Tool.Http
             {
                 httpWebRequest.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8";
             }
+            httpWebRequest.AllowAutoRedirect = this.AllowAutoRedirect;
             if (this.AllowAutoRedirect)
             {
-                httpWebRequest.AllowAutoRedirect = this.AllowAutoRedirect;
                 if (this.MaximumAutomaticRedirections <= 0)
                 {
                     httpWebRequest.MaximumAutomaticRedirections = 5;
@@ -733,9 +705,17 @@ namespace Native.Csharp.Tool.Http
         protected override WebResponse GetWebResponse (WebRequest request)
         {
             HttpWebResponse httpWebResponse = (HttpWebResponse)base.GetWebResponse (request);
-            this.CookieCollection = httpWebResponse.Cookies;
             this.Method = httpWebResponse.Method;
             this.ContentType = httpWebResponse.ContentType;
+            // 开启自动合并更新时, 若传入的 CookieCollection 为 null, 则将反回的 CookieCollection 赋给传入的 CookieCollection
+            if (this.AutoCookieMerge && this.CookieCollection != null)
+            {
+                UpdateCookie (this.CookieCollection, httpWebResponse.Cookies);
+            }
+            else
+            {
+                this.CookieCollection = httpWebResponse.Cookies;
+            }
             return httpWebResponse;
         }
         #endregion
