@@ -1,15 +1,11 @@
-﻿<Weavers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="FodyWeavers.xsd">
-	<Costura>
-		<!--在这里填写不被 Fody 打包的程序集名称, 一行一个--><!--
-		<IncludeAssemblies>
-			
-		</IncludeAssemblies>
-		
-		--><!--在这里填写以 bin\x86\Debug(Release) 为基础的非托管dll的相对路径-->
-		<Unmanaged32Assemblies>
+<?xml version="1.0" encoding="utf-8"?>
+<Weavers>
+	<!--<Costura LoadAtModuleInit="False"/>-->
+  <Costura>
+    <Unmanaged32Assemblies>
       lua53
       git2-dd2d538
     </Unmanaged32Assemblies>
-	</Costura>
+  </Costura>
 	<ModuleInit />
 </Weavers>
