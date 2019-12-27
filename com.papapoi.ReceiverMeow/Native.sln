@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28803.156
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Native.Csharp", "Native.Csharp\Native.Csharp.csproj", "{8BC2C861-D30C-425B-98A7-812792D2017D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "com.papapoi.ReceiverMeow", "com.papapoi.ReceiverMeow\com.papapoi.ReceiverMeow.csproj", "{8BC2C861-D30C-425B-98A7-812792D2017D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Native.Csharp.Sdk", "Native.Csharp.Sdk\Native.Csharp.Sdk.csproj", "{797EAEBC-4D5B-4EEF-87F4-A508FDA2CB6A}"
 EndProject
