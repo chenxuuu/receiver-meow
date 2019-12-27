@@ -121,6 +121,12 @@
       <DependentUpon>CQExport.tt</DependentUpon>
     </Compile>
     <Compile Include="App\CQMain.cs" />
+    <Compile Include="LuaEnv\LuaApi.cs" />
+    <Compile Include="LuaEnv\LuaEnv.cs" />
+    <Compile Include="LuaEnv\TcpServer.cs" />
+    <Compile Include="LuaEnv\TimerRun.cs" />
+    <Compile Include="LuaEnv\Tools.cs" />
+    <Compile Include="LuaEnv\XmlApi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repair\Core\Kernel32.cs" />
     <Compile Include="Repair\Enum\LoadLibraryFlags.cs" />
