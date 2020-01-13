@@ -1,0 +1,3 @@
+[submodule "ReceiverMeow/NativeSDK"]
+	path = ReceiverMeow/NativeSDK
+	url = https://github.com/Jie2GG/Native.Csharp.Frame
