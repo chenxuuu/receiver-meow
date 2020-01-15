@@ -137,12 +137,12 @@
     <None Include="FodyWeavers.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NativeSDK\Native.Csharp.Sdk\Native.Csharp.Sdk.csproj">
+    <ProjectReference Include="..\Native.Csharp.Sdk\Native.Csharp.Sdk.csproj">
       <Project>{797eaebc-4d5b-4eef-87f4-a508fda2cb6a}</Project>
       <Name>Native.Csharp.Sdk</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NativeSDK\Native.Csharp.Tool\Native.Csharp.Tool.csproj">
-      <Project>{9db94cbf-6843-4ea3-9241-769124416fe9}</Project>
+    <ProjectReference Include="..\Native.Csharp.Tool\Native.Csharp.Tool.csproj">
+      <Project>{05803f01-eaaa-4fd7-9be6-96bdd700c428}</Project>
       <Name>Native.Csharp.Tool</Name>
     </ProjectReference>
   </ItemGroup>
