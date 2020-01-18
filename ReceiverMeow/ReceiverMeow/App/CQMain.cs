@@ -1,9 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Unity;
+using Native.Csharp.Sdk.Cqp.Interface;
 
 namespace Native.Csharp.App
 {
@@ -18,7 +19,7 @@ namespace Native.Csharp.App
 		/// <param name="container">用于注册的 IOC 容器 </param>
 		public static void Register (IUnityContainer container)
 		{
-
+			container.RegisterType<IGroupMessage, EventGroupMessage>("群消息处理");
 		}
 	}
 }
