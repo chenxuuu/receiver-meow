@@ -65,7 +65,7 @@
       <HintPath>..\packages\KeraLua.1.0.24\lib\net45\KeraLua.dll</HintPath>
     </Reference>
     <Reference Include="LuaTask, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\LuaTask.1.0.1\lib\net45\LuaTask.dll</HintPath>
+      <HintPath>..\packages\LuaTask.1.0.2\lib\net45\LuaTask.dll</HintPath>
     </Reference>
     <Reference Include="NLua, Version=1.4.26.0, Culture=neutral, PublicKeyToken=6a194c04b9c89217, processorArchitecture=MSIL">
       <HintPath>..\packages\NLua.1.4.26\lib\net45\NLua.dll</HintPath>
