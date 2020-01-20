@@ -49,9 +49,10 @@ namespace Native.Csharp.App
             {
                 LuaEnv.LuaStates.Run($"Discuss{e.FromDiscuss.Id}", "DiscussMessage", new
                 {
-                    id = e.FromDiscuss.Id,
+                    fromDiscuss = e.FromDiscuss.Id,
                     qq = e.FromQQ.Id,
                     msg = e.Message.Text,
+                    id = e.Message.Id
                 });
             }
         }
@@ -81,6 +82,7 @@ namespace Native.Csharp.App
                 {
                     qq = e.FromQQ.Id,
                     msg = e.AppendMessage,
+                    tag = e.ResponseFlag
                 });
             }
         }
@@ -97,6 +99,7 @@ namespace Native.Csharp.App
                     qq = e.FromQQ.Id,
                     msg = e.AppendMessage,
                     group = e.FromGroup.Id,
+                    tag = e.ResponseFlag
                 });
             }
             else if(e.SubType == Sdk.Cqp.Enum.CQGroupAddRequestType.RobotBeInviteAddGroup)
@@ -104,7 +107,9 @@ namespace Native.Csharp.App
                 LuaEnv.LuaStates.Run("main", "GroupAddInvite", new
                 {
                     qq = e.FromQQ.Id,
+                    msg = e.AppendMessage,
                     group = e.FromGroup.Id,
+                    tag = e.ResponseFlag
                 });
             }
         }
@@ -123,7 +128,7 @@ namespace Native.Csharp.App
                 {
                     fromqq = e.FromQQ.Id,
                     group = e.FromGroup.Id,
-                    banqq = banqq,
+                    banqq,
                     all = e.IsAllBanSpeak,
                     time = Utils.DateTimeToInt(e.BanSpeakTimeSpan ?? new TimeSpan(0)),
                 });
@@ -137,7 +142,7 @@ namespace Native.Csharp.App
                 {
                     fromqq = e.FromQQ.Id,
                     group = e.FromGroup.Id,
-                    banqq = banqq,
+                    banqq,
                     all = e.IsAllBanSpeak
                 });
             }
@@ -227,6 +232,8 @@ namespace Native.Csharp.App
                     group = e.FromGroup.Id,
                     qq = e.FromQQ.Id,
                     msg = e.Message.Text,
+                    id = e.Message.Id,
+                    fromAnonymous = e.IsFromAnonymous
                 });
             }
         }
@@ -256,7 +263,8 @@ namespace Native.Csharp.App
             {
                 from = e.SubType,
                 qq = e.FromQQ.Id,
-                msg = e.Message.Text
+                msg = e.Message.Text,
+                id = e.Message.Id
             });
         }
     }
