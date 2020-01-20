@@ -33,10 +33,22 @@ namespace Native.Csharp.App.LuaEnv
                     {
                         Common.AppData.CQLog.Error(
                             "Lua插件报错",
-                            $"虚拟机名称：{name},错误信息：{text}"
+                            $"虚拟机运行时错误。名称：{name},错误信息：{text}"
                         );
                     };
-                    states[name].DoFile("head.lua");
+                    try
+                    {
+                        states[name].DoFile("head.lua");
+                    }
+                    catch(Exception e)
+                    {
+                        states[name].Dispose();
+                        Common.AppData.CQLog.Error(
+                            "Lua插件报错",
+                            $"虚拟机启动时错误。名称：{name},错误信息：{e.Message}"
+                        );
+                        return;
+                    }
                 }
                 states[name].addTigger(type, data);//运行
             }
@@ -51,7 +63,9 @@ namespace Native.Csharp.App.LuaEnv
             {
                 foreach(string k in states.Keys)
                 {
-                    states.TryRemove(k, out _);//移除
+                    LuaTask.LuaEnv l; 
+                    states.TryRemove(k, out l);//取出
+                    l.Dispose();//释放
                 }
             }
         }
