@@ -200,4 +200,5 @@ rename "$(TargetDir)$(TargetName)\$(TargetName).json" "app.json"
     <Error Condition="!Exists('..\packages\Costura.Fody.1.6.2\build\dotnet\Costura.Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.1.6.2\build\dotnet\Costura.Fody.targets'))" />
     <Error Condition="!Exists('..\packages\KeraLua.1.0.24\build\net45\KeraLua.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\KeraLua.1.0.24\build\net45\KeraLua.targets'))" />
   </Target>
+  <ProjectExtensions />
 </Project>

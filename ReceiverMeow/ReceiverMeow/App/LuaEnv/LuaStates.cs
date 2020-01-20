@@ -38,7 +38,8 @@ namespace Native.Csharp.App.LuaEnv
                     };
                     try
                     {
-                        states[name].DoFile("head.lua");
+                        states[name].lua.LoadCLRPackage();
+                        states[name].DoFile(Common.AppData.CQApi.AppDirectory + "lua/main.lua");
                     }
                     catch(Exception e)
                     {
@@ -52,6 +53,10 @@ namespace Native.Csharp.App.LuaEnv
                 }
                 states[name].addTigger(type, data);//运行
             }
+        }
+        public static void Run(long name, string type, object data)
+        {
+            Run(name.ToString(), type, data);
         }
 
         /// <summary>
@@ -67,6 +72,14 @@ namespace Native.Csharp.App.LuaEnv
                     states.TryRemove(k, out l);//取出
                     l.Dispose();//释放
                 }
+            }
+        }
+
+        public static string[] GetList()
+        {
+            lock (stateLock)
+            {
+                return states.Keys.ToArray();
             }
         }
     }
