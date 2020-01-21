@@ -47,7 +47,7 @@ namespace Native.Csharp.App
         {
             if (e.SubType == Sdk.Cqp.Enum.CQDiscussMessageType.Discuss)
             {
-                LuaEnv.LuaStates.Run($"Discuss{e.FromDiscuss.Id}", "DiscussMessage", new
+                LuaEnv.LuaStates.Run($"d{e.FromDiscuss.Id}", "DiscussMessage", new
                 {
                     fromDiscuss = e.FromDiscuss.Id,
                     qq = e.FromQQ.Id,

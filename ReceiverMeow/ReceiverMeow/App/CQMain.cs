@@ -34,7 +34,6 @@ namespace Native.Csharp.App
 			container.RegisterType<IGroupMemberIncrease, EventGroupMemberIncrease>("群成员增加事件处理");
 			container.RegisterType<IGroupUpload, EventGroupUpload>("群文件上传事件处理");
 			container.RegisterType<IPrivateMessage, EventPrivateMessage>("私聊消息处理");
-
 		}
 	}
 }

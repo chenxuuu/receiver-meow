@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,6 +25,23 @@ namespace Native.Csharp.App.LuaEnv
         /// <param name="data">回调数据</param>
         public static void Run(string name, string type, object data)
         {
+            //检查文件是否存在
+            if(!File.Exists(Common.AppData.CQApi.AppDirectory + "lua/main.lua"))
+            {
+                Common.AppData.CQLog.Error(
+                    "Lua插件报错",
+                    $"错误虚拟机名称：{name}"
+                );
+                Common.AppData.CQLog.Error(
+                    "Lua插件报错",
+                    $"没有找到入口脚本文件。文件路径应在{Common.AppData.CQApi.AppDirectory}lua/main.lua"
+                );
+                Common.AppData.CQLog.Error(
+                    "Lua插件报错",
+                    $"你也可以打开插件设置页面，下载默认代码直接使用"
+                );
+                return;
+            }
             lock (stateLock)
             {
                 if (!states.ContainsKey(name))//没有的话就初始化池子
@@ -39,6 +57,7 @@ namespace Native.Csharp.App.LuaEnv
                     try
                     {
                         states[name].lua.LoadCLRPackage();
+                        states[name].lua["name"] = name;
                         states[name].DoFile(Common.AppData.CQApi.AppDirectory + "lua/main.lua");
                     }
                     catch(Exception e)
