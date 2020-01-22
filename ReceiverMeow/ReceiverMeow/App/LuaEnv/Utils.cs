@@ -1,4 +1,5 @@
 using Native.Csharp.Tool.IniConfig.Linq;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -18,7 +19,26 @@ namespace Native.Csharp.App.LuaEnv
 {
     class Utils
     {
-        public static Settings setting = new Settings();
+        public static Settings setting;
+
+        /// <summary>
+        /// 插件启动后的所有东西初始化
+        /// </summary>
+        public static void Initial()
+        {
+            //加载配置
+            if (File.Exists(Common.AppData.CQApi.AppDirectory + "settings.json"))
+            {
+                setting = JsonConvert.DeserializeObject<Settings>(
+                    File.ReadAllText(Common.AppData.CQApi.AppDirectory + "settings.json"));
+            }
+            else
+            {
+                setting = new Settings();
+            }
+            TimerRun.Start();//清理文件定时器任务
+            TcpServer.SendList();//tcp定时器任务
+        }
 
         /// <summary>
         /// 转时间戳
