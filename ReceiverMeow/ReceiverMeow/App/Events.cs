@@ -21,6 +21,8 @@ namespace Native.Csharp.App
     {
         public void AppEnable(object sender, CQAppEnableEventArgs e)
         {
+            TimerRun.Start();//清理文件定时器任务
+            TcpServer.SendList();//tcp定时器任务
             LuaEnv.LuaStates.Run("main", "AppEnable", new { });
         }
     }

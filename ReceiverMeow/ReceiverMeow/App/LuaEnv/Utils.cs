@@ -18,6 +18,8 @@ namespace Native.Csharp.App.LuaEnv
 {
     class Utils
     {
+        public static Settings setting = new Settings();
+
         /// <summary>
         /// 转时间戳
         /// https://blog.csdn.net/qq_24025219/article/details/100146913
