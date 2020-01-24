@@ -42,10 +42,35 @@ namespace Native.Csharp.App.Export
 		/// </summary>	
 		private static void ResolveBackcall ()	
 		{	
+			/*	
+			 * Name: 插件基本设置	
+			 * Function: _menuA	
+			 */	
+			if (Common.AppInfo.UnityContainer.IsRegistered<IMenuCall> ("插件基本设置"))	
+			{	
+				Menu_menuAHandler += Common.AppInfo.UnityContainer.Resolve<IMenuCall> ("插件基本设置").MenuCall;	
+			}	
+			
 		}	
 		#endregion	
 		
 		#region --导出方法--	
+		/*	
+		 * Name: 插件基本设置	
+		 * Function: _menuA	
+		 */	
+		public static event EventHandler<CQMenuCallEventArgs> Menu_menuAHandler;	
+		[DllExport (ExportName = "_menuA", CallingConvention = CallingConvention.StdCall)]	
+		public static int Menu_menuA ()	
+		{	
+			if (Menu_menuAHandler != null)	
+			{	
+				CQMenuCallEventArgs args = new CQMenuCallEventArgs (api, log, "插件基本设置", "_menuA");	
+				Menu_menuAHandler (typeof (CQMenuExport), args);	
+			}	
+			return 0;	
+		}	
+		
 		#endregion	
 	}	
 }

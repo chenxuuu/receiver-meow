@@ -118,10 +118,10 @@
 		}
 	],
 	"menu": [ // 设置菜单（发布前请删除无用菜单，如果无需设置菜单请全部删除）
-		//{
-		//	"name": "设置A", //菜单名称
-		//	"function": "_menuA" //菜单对应函数
-		//},
+		{
+			"name": "插件基本设置", //菜单名称
+			"function": "_menuA" //菜单对应函数
+		}//,
 		//{
 		//	"name": "设置B",
 		//	"function": "_menuB"
@@ -138,7 +138,7 @@
 	],
 	"auth": [ // 应用权限（发布前请删除无用权限）
 		20,  //[敏感]取Cookies    getCookies / getCsrfToken
-		//30,  //接收语音           getRecord
+		30,  //接收语音           getRecord
 		101, //发送群消息         sendGroupMsg
 		103, //发送讨论组消息     sendDiscussMsg
 		106, //发送私聊消息       sendPrivateMsg
