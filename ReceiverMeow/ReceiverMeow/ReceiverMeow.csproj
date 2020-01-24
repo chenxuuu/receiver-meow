@@ -171,6 +171,10 @@
       <Project>{05803f01-eaaa-4fd7-9be6-96bdd700c428}</Project>
       <Name>Native.Csharp.Tool</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ReceiverMeow.UI\ReceiverMeow.UI.csproj">
+      <Project>{fc18f765-4e39-4690-bd72-3139adcea8c3}</Project>
+      <Name>ReceiverMeow.UI</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ImportGroup Label=".NET DllExport" />
