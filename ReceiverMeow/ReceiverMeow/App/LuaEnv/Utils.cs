@@ -36,7 +36,7 @@ namespace Native.Csharp.App.LuaEnv
             {
                 setting = new Settings();
             }
-            TimerRun.Start();//清理文件定时器任务
+            //TimerRun.Start();//清理文件定时器任务，可能存在内存泄漏问题，暂时不加这个功能
             TcpServer.SendList();//tcp定时器任务
         }
 
