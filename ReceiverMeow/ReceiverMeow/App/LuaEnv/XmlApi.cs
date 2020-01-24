@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -17,13 +18,11 @@ namespace Native.Csharp.App.LuaEnv
 
         public static string path = Common.AppData.CQApi.AppDirectory + "lua/xml/";
 
-        private static readonly object objLock = new object();
+        //存放xml列表数据在内存，加快读取速度
+        private static ConcurrentDictionary<string, XElement> xmlList = 
+            new ConcurrentDictionary<string, XElement>();
 
-        public static void set(string group, string msg, string str)
-        {
-            del(group, msg);
-            insert(group, msg, str);
-        }
+        private static readonly object objLock = new object();
 
         /// <summary>
         /// 随机获取一条结果
@@ -31,12 +30,9 @@ namespace Native.Csharp.App.LuaEnv
         /// <param name="group"></param>
         /// <param name="msg"></param>
         /// <returns></returns>
-        public static string replay_get(string group, string msg)
+        public static string RandomGet(string group, string msg)
         {
-            dircheck(group);
-            XElement root;
-            lock (objLock)
-                root = XElement.Load(path + group + ".xml");
+            XElement root = GetXml(group);
             Random ran = new Random(System.DateTime.Now.Millisecond);
             int RandKey;
             string ansall = "";
@@ -52,12 +48,27 @@ namespace Native.Csharp.App.LuaEnv
             return ansall;
         }
 
-        public static string xml_get(string group, string msg)
+        /// <summary>
+        /// 设置所有符合名字的值为指定结果
+        /// </summary>
+        /// <param name="group"></param>
+        /// <param name="msg"></param>
+        /// <param name="str"></param>
+        public static void Set(string group, string msg, string str)
         {
-            dircheck(group);
-            XElement root;
-            lock (objLock)
-                root = XElement.Load(path + group + ".xml");
+            Delete(group, msg);
+            Add(group, msg, str);
+        }
+
+        /// <summary>
+        /// 获取某项目的第一个值
+        /// </summary>
+        /// <param name="group"></param>
+        /// <param name="msg"></param>
+        /// <returns></returns>
+        public static string Get(string group, string msg)
+        {
+            XElement root = GetXml(group);
             string ansall = "";
             var element = from ee in root.Elements()
                           where ee.Element(keyName).Value == msg
@@ -67,27 +78,15 @@ namespace Native.Csharp.App.LuaEnv
             return ansall;
         }
 
-        public static string xml_row(string group, string msg)
+        /// <summary>
+        /// 获取条目列表
+        /// </summary>
+        /// <param name="group"></param>
+        /// <param name="msg"></param>
+        /// <returns></returns>
+        public static List<string> GetList(string group, string msg)
         {
-            dircheck(group);
-            XElement root;
-            lock (objLock)
-                root = XElement.Load(path + group + ".xml");
-            string ansall = "";
-            var element = from ee in root.Elements()
-                          where ee.Element(valueName).Value == msg
-                          select ee;
-            if (element.Count() > 0)
-                ansall = element.First().Element(keyName).Value;
-            return ansall;
-        }
-
-        public static List<string> list_get(string group, string msg)
-        {
-            dircheck(group);
-            XElement root;
-            lock (objLock)
-                root = XElement.Load(path + group + ".xml");
+            XElement root = GetXml(group);
             List<string> ansall = new List<string>();
             var element = from ee in root.Elements()
                           where ee.Element(keyName).Value == msg
@@ -98,14 +97,14 @@ namespace Native.Csharp.App.LuaEnv
             return ansall;
         }
 
-        public static void del(string group, string msg)
+        /// <summary>
+        /// 删除所有匹配的值
+        /// </summary>
+        /// <param name="group"></param>
+        /// <param name="msg"></param>
+        public static void Delete(string group, string msg)
         {
-            dircheck(group);
-            string gg = group.ToString();
-            XElement root;
-            lock (objLock)
-                root = XElement.Load(path + group + ".xml");
-
+            XElement root = GetXml(group);
             var element = from ee in root.Elements()
                           where (string)ee.Element(keyName) == msg
                           select ee;
@@ -115,14 +114,15 @@ namespace Native.Csharp.App.LuaEnv
                 root.Save(path + group + ".xml");
         }
 
-        public static void remove(string group, string msg, string ans)
+        /// <summary>
+        /// 删除键值完全匹配的第一条数据
+        /// </summary>
+        /// <param name="group"></param>
+        /// <param name="msg"></param>
+        /// <param name="ans"></param>
+        public static void DeleteOne(string group, string msg, string ans)
         {
-            dircheck(group);
-            string gg = group.ToString();
-            XElement root;
-            lock (objLock)
-                root = XElement.Load(path + group + ".xml");
-
+            XElement root = GetXml(group);
             var element = from ee in root.Elements()
                           where (string)ee.Element(keyName) == msg && (string)ee.Element(valueName) == ans
                           select ee;
@@ -132,18 +132,18 @@ namespace Native.Csharp.App.LuaEnv
                 root.Save(path + group + ".xml");
         }
 
-
-        public static void insert(string group, string msg, string ans)
+        /// <summary>
+        /// 添加一条记录
+        /// </summary>
+        /// <param name="group"></param>
+        /// <param name="msg"></param>
+        /// <param name="ans"></param>
+        public static void Add(string group, string msg, string ans)
         {
             if (msg.IndexOf("\r\n") < 0 & msg != "")
             {
-                dircheck(group);
-                XElement root;
-                lock (objLock)
-                    root = XElement.Load(path + group + ".xml");
-
+                XElement root = GetXml(group);
                 XElement read = root.Element(keyNode);
-
                 if (read == null)
                 {
                     root.Add(new XElement(keyNode,
@@ -163,19 +163,39 @@ namespace Native.Csharp.App.LuaEnv
             }
         }
 
-        public static void dircheck(string group)
+
+        /// <summary>
+        /// 获取xml数据对象
+        /// </summary>
+        /// <param name="group"></param>
+        /// <returns></returns>
+        private static XElement GetXml(string group)
         {
-            if (!File.Exists(path + group + ".xml"))
+            if (!xmlList.ContainsKey(group))
             {
-                XElement root = new XElement(rootNode,
-                    new XElement(keyNode,
-                        new XElement(keyName, "初始问题"),
-                        new XElement(valueName, "初始回答")
-                        )
-                   );
-                lock (objLock)
-                    root.Save(path + group + ".xml");
+                if (!File.Exists(path + group + ".xml"))
+                {
+                    xmlList[group] = new XElement(rootNode,
+                            new XElement(keyNode,
+                                new XElement(keyName, "初始问题"),
+                                new XElement(valueName, "初始回答")
+                                )
+                           );
+                }
+                else
+                {
+                    try
+                    {
+                        xmlList[group] = XElement.Load(path + group + ".xml");
+                    }
+                    catch(Exception e)
+                    {
+                        Common.AppData.CQLog.Fatal("Lua插件",$"xml文件加载错误({group})！{e.Message}");
+                        return null;
+                    }
+                }
             }
+            return xmlList[group];
         }
     }
 }

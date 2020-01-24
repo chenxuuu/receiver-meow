@@ -47,6 +47,10 @@ namespace Native.Csharp.App.LuaEnv
             }
         }
 
+        /// <summary>
+        /// 结束
+        /// </summary>
+        /// <returns></returns>
         public static bool Stop()
         {
             lock (serverLock)
@@ -78,7 +82,7 @@ namespace Native.Csharp.App.LuaEnv
         {
             System.Timers.Timer timer = new System.Timers.Timer();
             timer.Enabled = true;
-            timer.Interval = 1000;//60s
+            timer.Interval = 1000;//1s
             timer.Elapsed += new System.Timers.ElapsedEventHandler((s, e) =>
             {
                 try
