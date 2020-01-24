@@ -38,6 +38,7 @@ namespace Native.Csharp.App.LuaEnv
             }
         }
 
+        private bool _tcp_first = true;
         /// <summary>
         /// 是否自动开启tcp服务端
         /// </summary>
@@ -49,12 +50,26 @@ namespace Native.Csharp.App.LuaEnv
                 if (value)
                 {
                     tcpServerEnable = value;
-                    TcpServer.Start();
+                    if (_tcp_first)
+                    {
+                        _tcp_first = false;
+                    }
+                    else
+                    {
+                        TcpServer.Start();
+                    }
                 }
                 else
                 {
                     tcpServerEnable = value;
-                    TcpServer.Stop();
+                    if (_tcp_first)
+                    {
+                        _tcp_first = false;
+                    }
+                    else
+                    {
+                        TcpServer.Stop();
+                    }
                 }
                 Save();
             }

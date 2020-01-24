@@ -47,22 +47,23 @@ namespace Native.Csharp.App.LuaEnv
                 if (!states.ContainsKey(name))//没有的话就初始化池子
                 {
                     states[name] = new LuaTask.LuaEnv();
-                    states[name].ErrorEvent += (e,text) =>
-                    {
-                        Common.AppData.CQLog.Error(
-                            "Lua插件报错",
-                            $"虚拟机运行时错误。名称：{name},错误信息：{text}"
-                        );
-                    };
                     try
                     {
                         states[name].lua.LoadCLRPackage();
                         states[name].lua["name"] = name;
                         states[name].DoFile(Common.AppData.CQApi.AppDirectory + "lua/main.lua");
+                        states[name].ErrorEvent += (e, text) =>
+                        {
+                            Common.AppData.CQLog.Error(
+                                "Lua插件报错",
+                                $"虚拟机运行时错误。名称：{name},错误信息：{text}"
+                            );
+                        };
                     }
                     catch(Exception e)
                     {
                         states[name].Dispose();
+                        states.TryRemove(name, out _);
                         Common.AppData.CQLog.Error(
                             "Lua插件报错",
                             $"虚拟机启动时错误。名称：{name},错误信息：{e.Message}"
