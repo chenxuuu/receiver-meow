@@ -60,6 +60,7 @@ namespace Native.Csharp.App.LuaEnv
                 try
                 {
                     server.Stop();
+                    Common.AppData.CQLog.Info("lua插件", $"tcp server stoped");
                     return true;
                 }
                 catch(Exception e)

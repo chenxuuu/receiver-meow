@@ -1,5 +1,6 @@
 using Native.Csharp.Tool.IniConfig.Linq;
 using Newtonsoft.Json;
+using ReceiverMeow.UI;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -36,8 +37,10 @@ namespace Native.Csharp.App.LuaEnv
             {
                 setting = new Settings();
             }
+            setting.TcpServerEnable = setting.TcpServerEnable;
             //TimerRun.Start();//清理文件定时器任务，可能存在内存泄漏问题，暂时不加这个功能
             TcpServer.SendList();//tcp定时器任务
+            Global.Settings = setting;
         }
 
         /// <summary>
