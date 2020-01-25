@@ -25,8 +25,8 @@
             </Style>
         </ScrollViewer.Resources>
         <StackPanel Margin="10">
-            <Button Name="InitialButton" Content="一键初始化默认Lua脚本（自动从git下载）" Click="InitialButton_Click"/>
-            <Button Name="UpdateButton" Content="初始化所有Lua虚拟机" Click="UpdateButton_Click"/>
+            <Button Name="InitialButton" Content="一键初始化或升级默认Lua脚本（从git仓库）" Click="InitialButton_Click"/>
+            <Button Name="UpdateButton" Content="重载所有Lua虚拟机" Click="UpdateButton_Click"/>
             <TextBlock Text="管理员QQ："/>
             <TextBox Text="{Binding AdminQQ,UpdateSourceTrigger=PropertyChanged}"/>
             <Rectangle Height="1" Fill="LightGray" Margin="0,5"/>

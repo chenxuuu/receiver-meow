@@ -50,7 +50,7 @@ namespace Native.Csharp.App.LuaEnv
                     try
                     {
                         states[name].lua.LoadCLRPackage();
-                        states[name].lua["name"] = name;
+                        states[name].lua["LuaEnvName"] = name;
                         states[name].DoFile(Common.AppData.CQApi.AppDirectory + "lua/main.lua");
                         states[name].ErrorEvent += (e, text) =>
                         {
