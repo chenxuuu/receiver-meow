@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Native.Csharp.App.LuaEnv
 {
+    [PropertyChanged.AddINotifyPropertyChangedInterface]
     class Settings
     {
         private bool tcpServerEnable = false;

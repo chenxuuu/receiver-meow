@@ -10,8 +10,24 @@ namespace ReceiverMeow.UI
 {
     public class Global
     {
+        //设置对象
         public static object Settings;
 
+        //初始化git的回调
+        public static event EventHandler<bool> GitInitial;
+
+        public static void InitialScript()
+        {
+            GitInitial?.Invoke(null,true);
+        }
+
+        //初始化git的回调
+        public static event EventHandler<bool> LuaInitial;
+
+        public static void InitialLua()
+        {
+            LuaInitial?.Invoke(null, true);
+        }
 
     }
 }
