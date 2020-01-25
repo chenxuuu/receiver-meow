@@ -15,7 +15,6 @@ namespace Native.Csharp.App
         {
             LuaStates.Clear();
             TcpServer.Stop();
-            //LuaEnv.LuaStates.Run("main", "AppDisable", new {});
         }
     }
 
@@ -32,7 +31,6 @@ namespace Native.Csharp.App
     {
         public void CQExit(object sender, CQExitEventArgs e)
         {
-            LuaEnv.LuaStates.Run("main", "CQExit", new { });
             LuaStates.Clear();
             TcpServer.Stop();
         }
@@ -42,7 +40,7 @@ namespace Native.Csharp.App
     {
         public void CQStartup(object sender, CQStartupEventArgs e)
         {
-            LuaEnv.LuaStates.Run("main", "CQStartup", new { });
+            
         }
     }
 
@@ -186,7 +184,7 @@ namespace Native.Csharp.App
                 LuaEnv.LuaStates.Run(e.FromGroup.Id, "GroupMemberExit", new
                 {
                     group = e.FromGroup.Id,
-                    qq = e.BeingOperateQQ,
+                    qq = e.BeingOperateQQ.Id,
                 });
             }
             else if (e.SubType == Sdk.Cqp.Enum.CQGroupMemberDecreaseType.RemoveGroup)
@@ -194,7 +192,7 @@ namespace Native.Csharp.App
                 LuaEnv.LuaStates.Run(e.FromGroup.Id, "GroupMemberRemove", new
                 {
                     group = e.FromGroup.Id,
-                    qq = e.BeingOperateQQ,
+                    qq = e.BeingOperateQQ.Id,
                     fromqq = e.FromGroup.Id
                 });
             }
@@ -210,7 +208,7 @@ namespace Native.Csharp.App
                 LuaEnv.LuaStates.Run(e.FromGroup.Id, "GroupMemberInvite", new
                 {
                     group = e.FromGroup.Id,
-                    qq = e.BeingOperateQQ,
+                    qq = e.BeingOperateQQ.Id,
                     fromqq = e.FromQQ.Id
                 });
             }
@@ -219,7 +217,7 @@ namespace Native.Csharp.App
                 LuaEnv.LuaStates.Run(e.FromGroup.Id, "GroupMemberPass", new
                 {
                     group = e.FromGroup.Id,
-                    qq = e.BeingOperateQQ,
+                    qq = e.BeingOperateQQ.Id,
                     fromqq = e.FromQQ.Id
                 });
             }

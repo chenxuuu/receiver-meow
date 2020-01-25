@@ -79,6 +79,24 @@ namespace Native.Csharp.App.LuaEnv
         }
 
         /// <summary>
+        /// 反查某项目的第一个值
+        /// </summary>
+        /// <param name="group"></param>
+        /// <param name="msg"></param>
+        /// <returns></returns>
+        public static string Row(string group, string msg)
+        {
+            XElement root = GetXml(group);
+            string ansall = "";
+            var element = from ee in root.Elements()
+                          where ee.Element(valueName).Value == msg
+                          select ee;
+            if (element.Count() > 0)
+                ansall = element.First().Element(keyName).Value;
+            return ansall;
+        }
+
+        /// <summary>
         /// 获取条目列表
         /// </summary>
         /// <param name="group"></param>
