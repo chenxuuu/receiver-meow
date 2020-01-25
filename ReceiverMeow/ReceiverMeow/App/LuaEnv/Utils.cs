@@ -56,14 +56,38 @@ namespace Native.Csharp.App.LuaEnv
                 string gitPath = Common.AppData.CQApi.AppDirectory + "lua/";
                 if (Directory.Exists(gitPath))
                 {
-                    Common.AppData.CQLog.Warning("Lua插件初始化脚本", $"lua目录已存在，请删除目录后再试（{gitPath}）");
-                    return;
+                    if (!Repository.IsValid(gitPath))
+                    {
+                        Common.AppData.CQLog.Warning("Lua插件初始化脚本", $"lua目录已存在，且不存在Git结构，为了防止误删文件，请自行处理删除目录后再试（{gitPath}）");
+                        return;
+                    }
+                    else
+                    {
+                        try
+                        {
+                            Common.AppData.CQLog.Info("Lua插件初始化脚本", "正在更新脚本，请稍后");
+                            var options = new LibGit2Sharp.PullOptions();
+                            options.FetchOptions = new FetchOptions();
+                            var signature = new LibGit2Sharp.Signature(
+                                new Identity("MERGE_USER_NAME", "MERGE_USER_EMAIL"), DateTimeOffset.Now);
+                            using var repo = new Repository(gitPath);
+                            Commands.Pull(repo, signature, options);
+                            LuaStates.Clear();
+                            LuaEnv.LuaStates.Run("main", "AppEnable", new { });
+                            Common.AppData.CQLog.Info("Lua插件初始化脚本", "更新完成！您可以开始用了");
+                        }
+                        catch (Exception ee)
+                        {
+                            Common.AppData.CQLog.Warning("Lua插件初始化脚本", $"更新脚本文件失败，错误信息：{ee.Message}");
+                            return;//pull失败
+                        }
+                    }
                 }
                 Common.AppData.CQLog.Info("Lua插件初始化脚本", "正在下载初始脚本，请稍后");
                 try
                 {
-                    LuaStates.Clear();
                     Repository.Clone("https://gitee.com/chenxuuu/receiver-meow-lua.git", gitPath);
+                    LuaStates.Clear();
                     LuaEnv.LuaStates.Run("main", "AppEnable", new { });
                     Common.AppData.CQLog.Info("Lua插件初始化脚本", "初始化完成！您可以开始用了");
                 }
@@ -598,7 +622,7 @@ namespace Native.Csharp.App.LuaEnv
         public static string CQCode_Emoji(int id) => Sdk.Cqp.CQApi.CQCode_Emoji(id).ToString();
         public static string CQCode_Face(int id) => Sdk.Cqp.CQApi.CQCode_Face((CQFace)id).ToString();
         public static string CQCode_Shake() => Sdk.Cqp.CQApi.CQCode_Shake().ToString(); 
-        public static string CQEnCode(string s, bool e) => Sdk.Cqp.CQApi.CQEnCode(s,e).ToString(); 
+        public static string CQEnCode(string s) => Sdk.Cqp.CQApi.CQEnCode(s,false).ToString(); 
         public static string CQDeCode(string s) => Sdk.Cqp.CQApi.CQDeCode(s).ToString(); 
         public static string CQCode_ShareLink(string url, string title, string content, string imageUrl = null) => 
             Sdk.Cqp.CQApi.CQCode_ShareLink(url,title,content,imageUrl).ToString(); 
