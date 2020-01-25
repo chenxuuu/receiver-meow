@@ -16,7 +16,7 @@ namespace Native.Csharp.App.LuaEnv
         public const string keyName = "msg";
         public const string valueName = "ans";
 
-        public static string path = Common.AppData.CQApi.AppDirectory + "lua/xml/";
+        public static string path = Common.AppData.CQApi.AppDirectory + "xml/";
 
         //存放xml列表数据在内存，加快读取速度
         private static ConcurrentDictionary<string, XElement> xmlList = 
@@ -110,6 +110,8 @@ namespace Native.Csharp.App.LuaEnv
                           select ee;
             if (element.Count() > 0)
                 element.Remove();
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
             lock (objLock)
                 root.Save(path + group + ".xml");
         }
@@ -128,6 +130,8 @@ namespace Native.Csharp.App.LuaEnv
                           select ee;
             if (element.Count() > 0)
                 element.First().Remove();
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
             lock (objLock)
                 root.Save(path + group + ".xml");
         }
@@ -158,6 +162,8 @@ namespace Native.Csharp.App.LuaEnv
                       new XElement(valueName, ans)
                       ));
                 }
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
                 lock (objLock)
                     root.Save(path + group + ".xml");
             }

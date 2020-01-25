@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ReceiverMeow.UI"
         mc:Ignorable="d"
-        Title="Lua插件设置" Height="300" Width="400"
+        Title="Lua插件设置" Height="350" Width="400"
+        WindowStartupLocation="CenterScreen"
         Loaded="Window_Loaded">
     <ScrollViewer>
         <ScrollViewer.Resources>
@@ -19,8 +20,13 @@
             <Style TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
                 <Setter Property="Margin" Value="2"/>
             </Style>
+            <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                <Setter Property="Margin" Value="2"/>
+            </Style>
         </ScrollViewer.Resources>
         <StackPanel Margin="10">
+            <Button Name="InitialButton" Content="一键初始化默认Lua脚本（自动从git下载）" Click="InitialButton_Click"/>
+            <Button Name="UpdateButton" Content="初始化所有Lua虚拟机" Click="UpdateButton_Click"/>
             <TextBlock Text="管理员QQ："/>
             <TextBox Text="{Binding AdminQQ,UpdateSourceTrigger=PropertyChanged}"/>
             <Rectangle Height="1" Fill="LightGray" Margin="0,5"/>

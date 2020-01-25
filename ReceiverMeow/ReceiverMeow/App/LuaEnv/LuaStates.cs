@@ -71,6 +71,7 @@ namespace Native.Csharp.App.LuaEnv
                         return;
                     }
                 }
+                Common.AppData.CQLog.Debug("lua插件", $"触发事件{type}");
                 states[name].addTigger(type, data);//运行
             }
         }
@@ -88,10 +89,12 @@ namespace Native.Csharp.App.LuaEnv
             {
                 foreach(string k in states.Keys)
                 {
+                    Common.AppData.CQLog.Info("Lua插件", "已释放虚拟机" + k);
                     LuaTask.LuaEnv l; 
                     states.TryRemove(k, out l);//取出
                     l.Dispose();//释放
                 }
+                Common.AppData.CQLog.Info("Lua插件", "所有虚拟机均已释放");
             }
         }
 

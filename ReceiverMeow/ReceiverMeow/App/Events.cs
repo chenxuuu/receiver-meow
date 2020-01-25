@@ -13,7 +13,9 @@ namespace Native.Csharp.App
     {
         public void AppDisable(object sender, CQAppDisableEventArgs e)
         {
-            LuaEnv.LuaStates.Run("main", "AppDisable", new {});
+            LuaStates.Clear();
+            TcpServer.Stop();
+            //LuaEnv.LuaStates.Run("main", "AppDisable", new {});
         }
     }
 
@@ -31,6 +33,8 @@ namespace Native.Csharp.App
         public void CQExit(object sender, CQExitEventArgs e)
         {
             LuaEnv.LuaStates.Run("main", "CQExit", new { });
+            LuaStates.Clear();
+            TcpServer.Stop();
         }
     }
 
@@ -207,7 +211,7 @@ namespace Native.Csharp.App
                 {
                     group = e.FromGroup.Id,
                     qq = e.BeingOperateQQ,
-                    fromqq = e.FromGroup.Id
+                    fromqq = e.FromQQ.Id
                 });
             }
             else if (e.SubType == Sdk.Cqp.Enum.CQGroupMemberIncreaseType.Pass)
@@ -216,7 +220,7 @@ namespace Native.Csharp.App
                 {
                     group = e.FromGroup.Id,
                     qq = e.BeingOperateQQ,
-                    fromqq = e.FromGroup.Id
+                    fromqq = e.FromQQ.Id
                 });
             }
         }
@@ -260,7 +264,7 @@ namespace Native.Csharp.App
     {
         public void PrivateMessage(object sender, CQPrivateMessageEventArgs e)
         {
-            LuaEnv.LuaStates.Run("private", "GroupFileUpload", new
+            LuaEnv.LuaStates.Run("private", "PrivateMessage", new
             {
                 from = e.SubType,
                 qq = e.FromQQ.Id,
