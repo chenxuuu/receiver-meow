@@ -51,6 +51,17 @@ namespace ReceiverMeow.UI
             DataContext = Global.Settings;
         }
 
+        private void InitialButton_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("点击确定就会开始下载，本窗口可能会卡顿，下载进度请见酷Q日志窗口");
+            Global.InitialScript();
+            MessageBox.Show("初始化脚本操作执行完毕，执行结果请见酷Q日志窗口");
+        }
 
+        private void UpdateButton_Click(object sender, RoutedEventArgs e)
+        {
+            Global.InitialLua();
+            MessageBox.Show("所有虚拟机均已重置完成！");
+        }
     }
 }

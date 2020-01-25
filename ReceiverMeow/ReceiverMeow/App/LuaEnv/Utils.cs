@@ -1,3 +1,5 @@
+using LibGit2Sharp;
+using Native.Csharp.Sdk.Cqp.Enum;
 using Native.Csharp.Tool.IniConfig.Linq;
 using Newtonsoft.Json;
 using ReceiverMeow.UI;
@@ -22,6 +24,7 @@ namespace Native.Csharp.App.LuaEnv
     {
         public static Settings setting;
 
+        private static bool initialFlag = false;
         /// <summary>
         /// 插件启动后的所有东西初始化
         /// </summary>
@@ -40,8 +43,49 @@ namespace Native.Csharp.App.LuaEnv
             setting.TcpServerEnable = setting.TcpServerEnable;
             //TimerRun.Start();//清理文件定时器任务，可能存在内存泄漏问题，暂时不加这个功能
             TcpServer.SendList();//tcp定时器任务
+
+            if (initialFlag)
+                return;
+            initialFlag = true;
+
+            //ui界面数据绑定
             Global.Settings = setting;
+            //git按键回调函数
+            ReceiverMeow.UI.Global.GitInitial += (s, e) =>
+            {
+                string gitPath = Common.AppData.CQApi.AppDirectory + "lua/";
+                if (Directory.Exists(gitPath))
+                {
+                    Common.AppData.CQLog.Warning("Lua插件初始化脚本", $"lua目录已存在，请删除目录后再试（{gitPath}）");
+                    return;
+                }
+                Common.AppData.CQLog.Info("Lua插件初始化脚本", "正在下载初始脚本，请稍后");
+                try
+                {
+                    LuaStates.Clear();
+                    Repository.Clone("https://gitee.com/chenxuuu/receiver-meow-lua.git", gitPath);
+                    LuaEnv.LuaStates.Run("main", "AppEnable", new { });
+                    Common.AppData.CQLog.Info("Lua插件初始化脚本", "初始化完成！您可以开始用了");
+                }
+                catch(Exception ee)
+                {
+                    Common.AppData.CQLog.Warning("Lua插件初始化脚本", $"初始化脚本文件失败，错误信息：{ee.Message}");
+                    return;//clone失败，还原
+                }
+            };
+            //重载虚拟机按键回调函数
+            ReceiverMeow.UI.Global.LuaInitial += (s, e) =>
+            {
+                LuaStates.Clear();
+                LuaEnv.LuaStates.Run("main", "AppEnable", new { });
+            };
         }
+
+        /// <summary>
+        /// 获取版本号
+        /// </summary>
+        /// <returns></returns>
+        public static string GetVersion() => Common.AppInfo.Version.ToString();
 
         /// <summary>
         /// 转时间戳
@@ -51,11 +95,10 @@ namespace Native.Csharp.App.LuaEnv
         /// <returns></returns>
         public static int DateTimeToInt(TimeSpan ts2)
         {
-            int date = 0;
             TimeSpan ts3 = new TimeSpan(DateTime.Parse("1970-01-01").Ticks);
             TimeSpan ts_1 = ts2.Subtract(ts3).Duration();
             int NowMinu = (int)ts_1.TotalSeconds;
-            date = NowMinu;
+            int date = NowMinu;
             return date;
         }
 
@@ -550,6 +593,25 @@ namespace Native.Csharp.App.LuaEnv
             return "";//没这个文件
         }
 
-
+        public static string CQCode_At(long qq) => Sdk.Cqp.CQApi.CQCode_At(qq).ToString();
+        public static string CQCode_AtAll() => Sdk.Cqp.CQApi.CQCode_AtAll().ToString(); 
+        public static string CQCode_Emoji(int id) => Sdk.Cqp.CQApi.CQCode_Emoji(id).ToString();
+        public static string CQCode_Face(int id) => Sdk.Cqp.CQApi.CQCode_Face((CQFace)id).ToString();
+        public static string CQCode_Shake() => Sdk.Cqp.CQApi.CQCode_Shake().ToString(); 
+        public static string CQEnCode(string s, bool e) => Sdk.Cqp.CQApi.CQEnCode(s,e).ToString(); 
+        public static string CQDeCode(string s) => Sdk.Cqp.CQApi.CQDeCode(s).ToString(); 
+        public static string CQCode_ShareLink(string url, string title, string content, string imageUrl = null) => 
+            Sdk.Cqp.CQApi.CQCode_ShareLink(url,title,content,imageUrl).ToString(); 
+        public static string CQCode_ShareFriendCard(long id) => Sdk.Cqp.CQApi.CQCode_ShareFriendCard(id).ToString(); 
+        public static string CQCode_ShareGroupCard(long id) => Sdk.Cqp.CQApi.CQCode_ShareGroupCard(id).ToString();
+        public static string CQCode_ShareGPS(string site, string detail, double lat, double lon, int zoom = 15) =>
+            Sdk.Cqp.CQApi.CQCode_ShareGPS(site, detail, lat, lon, zoom).ToString();
+        public static string CQCode_Anonymous(bool forced) => Sdk.Cqp.CQApi.CQCode_Anonymous(forced).ToString();
+        public static string CQCode_Music(long id, int type, int style) => 
+            Sdk.Cqp.CQApi.CQCode_Music(id,(CQMusicType)type,(CQMusicStyle)style).ToString();
+        public static string CQCode_DIYMusic(string url, string musicUrl, string title, string content, string imageUrl) => 
+            Sdk.Cqp.CQApi.CQCode_DIYMusic(url,musicUrl,title,content,imageUrl).ToString();
+        public static string CQCode_Image(string path) => Sdk.Cqp.CQApi.CQCode_Image(path).ToString();
+        public static string CQCode_Record(string path) => Sdk.Cqp.CQApi.CQCode_Image(path).ToString();
     }
 }
