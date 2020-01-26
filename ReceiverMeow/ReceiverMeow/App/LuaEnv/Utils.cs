@@ -65,7 +65,7 @@ namespace Native.Csharp.App.LuaEnv
                     {
                         try
                         {
-                            Common.AppData.CQLog.Info("Lua插件初始化脚本", "正在更新脚本，请稍后");
+                            Common.AppData.CQLog.Info("Lua插件更新脚本", "正在更新脚本，请稍后");
                             var options = new LibGit2Sharp.PullOptions();
                             options.FetchOptions = new FetchOptions();
                             var signature = new LibGit2Sharp.Signature(
@@ -75,10 +75,11 @@ namespace Native.Csharp.App.LuaEnv
                             LuaStates.Clear();
                             LuaEnv.LuaStates.Run("main", "AppEnable", new { });
                             Common.AppData.CQLog.Info("Lua插件初始化脚本", "更新完成！您可以开始用了");
+                            return;
                         }
                         catch (Exception ee)
                         {
-                            Common.AppData.CQLog.Warning("Lua插件初始化脚本", $"更新脚本文件失败，错误信息：{ee.Message}");
+                            Common.AppData.CQLog.Warning("Lua插件更新脚本", $"更新脚本文件失败，错误信息：{ee.Message}");
                             return;//pull失败
                         }
                     }

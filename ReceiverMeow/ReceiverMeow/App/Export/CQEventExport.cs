@@ -38,8 +38,8 @@ namespace Native.Csharp.App.Export
 			type.GetProperty ("ResultCode", BindingFlags.Public | BindingFlags.Static).SetMethod.Invoke (null, new object[] { 1 });	
 			type.GetProperty ("ApiVersion", BindingFlags.Public | BindingFlags.Static).SetMethod.Invoke (null, new object[] { 9 });	
 			type.GetProperty ("Name", BindingFlags.Public | BindingFlags.Static).SetMethod.Invoke (null, new object[] { "接待喵lua插件" });	
-			type.GetProperty ("Version", BindingFlags.Public | BindingFlags.Static).SetMethod.Invoke (null, new object[] { new Version ("2.0.0") });	
-			type.GetProperty ("VersionId", BindingFlags.Public | BindingFlags.Static).SetMethod.Invoke (null, new object[] { 14 });	
+			type.GetProperty ("Version", BindingFlags.Public | BindingFlags.Static).SetMethod.Invoke (null, new object[] { new Version ("2.0.1") });	
+			type.GetProperty ("VersionId", BindingFlags.Public | BindingFlags.Static).SetMethod.Invoke (null, new object[] { 15 });	
 			type.GetProperty ("Author", BindingFlags.Public | BindingFlags.Static).SetMethod.Invoke (null, new object[] { "chenxu" });	
 			type.GetProperty ("Description", BindingFlags.Public | BindingFlags.Static).SetMethod.Invoke (null, new object[] { "让lua嵌入万物！" });	
 			type.GetProperty ("UnityContainer", BindingFlags.Public | BindingFlags.Static).SetMethod.Invoke (null, new object[] { new UnityContainer () });	
@@ -369,7 +369,7 @@ namespace Native.Csharp.App.Export
 		{	
 			if (Event_eventGroupUploadHandler != null)	
 			{	
-				CQGroupUploadEventArgs args = new CQGroupUploadEventArgs (api, log, 4, 11, "群文件上传事件处理", "_eventGroupUpload", 30000, subType, sendTime, fromQQ, fromQQ, file);	
+				CQGroupUploadEventArgs args = new CQGroupUploadEventArgs (api, log, 4, 11, "群文件上传事件处理", "_eventGroupUpload", 30000, subType, sendTime, fromGroup, fromQQ, file);	
 				Event_eventGroupUploadHandler (typeof (CQEventExport), args);	
 			}	
 			return 0;	
