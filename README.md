@@ -1,66 +1,71 @@
 # receiver-meow
+
 [![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors)
 
-[![appveyor](https://ci.appveyor.com/api/projects/status/46tmg2sh60l7kekf?svg=true)](https://ci.appveyor.com/project/chenxuuu/receiver-meow)
 [![MIT](https://img.shields.io/static/v1.svg?label=license&message=MIT&color=green)](https://github.com/chenxuuu/receiver-meow/blob/master/LICENSE)
 [![Native.SDK](https://img.shields.io/badge/dependencies-Native.SDK-blueviolet.svg)](https://github.com/Jie2GG/Native.Csharp.Frame)
 [![NLua](https://img.shields.io/badge/dependencies-NLua-green.svg)](https://github.com/NLua/NLua/)
-[![code-size](https://img.shields.io/github/languages/code-size/chenxuuu/receiver-meow.svg)](https://github.com/chenxuuu/receiver-meow/archive/master.zip)
 
 能运行`lua`脚本的接待喵qq机器人，欢迎加入交流群`931546484`
 
 ## 功能特点
 
 - 消息处理逻辑，完全由lua实现
-- lua代码动态加载，更改完后即时生效
-- 酷Q接口基本全部提供给了lua层，接口丰富
+- lua代码动态加载，更改完后重载虚拟机，立即生效
+- Lua层可直接调用C#层接口，酷Q功能随意使用
 - 自带了http(s) post/get、2D图片处理、数据存储(xml)等接口
 - 底层使用C#开发，.net framework 4.5版本
 
-## 脚本已有功能
+## 默认脚本
 
-- 关键词回复及设置
-- 今日运势
-- 查快递
-- 空气质量
-- 点赞
-- qq音乐点歌
-- 根据截图查动画
-- 根据图片查p站id
-- 下象棋
-- 抽奖禁言
-- minecraft消息联通功能（需配合相应插件使用）
-- 签到奖励禁言卡
-- QQ AI机器人接口功能
-- 抽象话功能
+自从插件的`V2.0.0`版本开始，默认脚本仓库与主仓库分离，Lua代码可在此仓库查看：[receiver-meow-lua](https://github.com/chenxuuu/receiver-meow-lua)
 
-## lua接口列表
+## lua接口
 
-请见[api.md](api.md)
+调用C#接口，请参考[Nlua](https://github.com/NLua/NLua/)关于`import`函数的使用说明
 
-## 自行编写lua功能的教程（供初学者使用）
+## Task架构介绍
 
-[接待喵lua插件教程](https://www.chenxublog.com/?s=%E6%8E%A5%E5%BE%85%E5%96%B5lua%E6%8F%92%E4%BB%B6%E6%95%99%E7%A8%8B&submit=%E6%90%9C%E7%B4%A2)
+主虚拟机由Task框架调度，具体的任务、定时器用法请见[LuaTask项目的Readme](https://github.com/chenxuuu/LuaTask-csharp)
 
-## 说明
+每次收到新的消息上报，便会加到对应名称的Lua虚拟机中来处理，具体分配代码见[Events.cs](https://github.com/chenxuuu/receiver-meow/blob/Native.Csharp.Frame-4.0/ReceiverMeow/ReceiverMeow/App/Events.cs)
 
-lua代码全部在`appdata`文件夹中
+整个LuaTask管理，由[LuaStates.cs](https://github.com/chenxuuu/receiver-meow/blob/Native.Csharp.Frame-4.0/ReceiverMeow/ReceiverMeow/App/LuaEnv/LuaStates.cs)控制：
 
-所有lua接口可以参考`com.papapoi.ReceiverMeow\Native.Csharp\App\LuaEnv\LuaEnv.cs`文件中的函数定义
+```log
+                  LuaStates.cs文件的代码逻辑
 
-如想自己编译，请注意需要将[package压缩包](https://github.com/chenxuuu/receiver-meow/releases/download/v0.0/packages.zip)，下载并解压到vs项目的文件夹处
+           +-----------+                +--------------------+
+New message|           | Name not exist |                    |
+>>>>>>>>>>>+ lua pool  +--------------->+create new lua state|
+           |           |                |                    |
+           +----+------+                +-------+----------+-+
+                |                               |          |
+                |Name Exist                     |          |
+                v                               |          |
+       +--------+-------------------+           |          |
+       | add new task to this state +<----------+          |
+       +-------------+--------------+                      |
+                     |                                     |
+                     |                                     |
+       +-------------+-------------+                       |
+       |                           |   start run new state |
+       |   task framework running  +<----------------------+
+       |                           |
+       +---------------------------+
+```
 
 ## 食用
 
-实际使用时，只需要将cpk文件放入酷q的app文件夹，cpk文件可以去[这里下载](https://github.com/chenxuuu/receiver-meow/releases/latest)，或者自行编译（自行编译注意打开开发者模式，删掉生成后的lua53.dll）
+实际使用时，只需要将cpk文件放入酷q的app文件夹，cpk文件可以去[这里下载](https://github.com/chenxuuu/receiver-meow/releases/latest)，或者自行编译
 
-然后，等待插件提示，自动下载必要的lua脚本文件，等待提示脚本下载完成，进行下一步
+然后，启用插件，打开设置面板，点击初始化脚本按钮，下载完默认Lua脚本后即可食用
 
-打开`酷Q Air\data\app\com.papapoi.ReceiverMeow\xml\settings.xml`更改设置，尤其是管理员qq号
-
-打开酷q，启用即可
+同时，请在设置面板上修改机器人的管理员QQ号
 
 向机器人发送`帮助`或`help`加上页数，可以查看指令说明
+
+脚本的功能解释请见[Lua脚本项目的Readme](https://github.com/chenxuuu/receiver-meow-lua)
 
 ## 结尾
 
