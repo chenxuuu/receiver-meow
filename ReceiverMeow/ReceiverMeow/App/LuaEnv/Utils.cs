@@ -30,14 +30,6 @@ namespace Native.Csharp.App.LuaEnv
         /// </summary>
         public static void Initial()
         {
-            try
-            {
-                RunSandBox("print(123)");
-            }
-            catch (Exception ee)
-            {
-                Common.AppData.CQLog.Warning("errrrr", $"{ee.Message}");
-            }
             //加载配置
             if (File.Exists(Common.AppData.CQApi.AppDirectory + "settings.json"))
             {
