@@ -30,6 +30,14 @@ namespace Native.Csharp.App.LuaEnv
         /// </summary>
         public static void Initial()
         {
+            try
+            {
+                RunSandBox("print(123)");
+            }
+            catch (Exception ee)
+            {
+                Common.AppData.CQLog.Warning("errrrr", $"{ee.Message}");
+            }
             //加载配置
             if (File.Exists(Common.AppData.CQApi.AppDirectory + "settings.json"))
             {
@@ -103,6 +111,11 @@ namespace Native.Csharp.App.LuaEnv
                 LuaStates.Clear();
                 LuaEnv.LuaStates.Run("main", "AppEnable", new { });
             };
+            //重载Xml按键回调函数
+            ReceiverMeow.UI.Global.XmlInitial += (s, e) =>
+            {
+                XmlApi.Clear();
+            };
         }
 
         /// <summary>
@@ -159,6 +172,106 @@ namespace Native.Csharp.App.LuaEnv
             }
             return result;
         }
+
+        /// <summary>
+        /// 获取图片对象
+        /// </summary>
+        /// <param name="width">宽度</param>
+        /// <param name="length">高度</param>
+        /// <returns>图片对象</returns>
+        public static Bitmap GetBitmap(int width, int length)
+        {
+            Bitmap bmp = new Bitmap(width, length);
+            return bmp;
+        }
+
+        /// <summary>
+        /// 摆放文字
+        /// </summary>
+        /// <param name="bmp">图片对象</param>
+        /// <param name="x">x坐标</param>
+        /// <param name="y">y坐标</param>
+        /// <param name="text">文字内容</param>
+        /// <param name="type">字体名称</param>
+        /// <param name="size">字体大小</param>
+        /// <param name="r">r</param>
+        /// <param name="g">g</param>
+        /// <param name="b">b</param>
+        /// <returns>图片对象</returns>
+        public static Bitmap PutText(Bitmap bmp, int x, int y, string text, string type = "宋体", int size = 9,
+            int r = 0, int g = 0, int b = 0)
+        {
+            using Graphics pic = Graphics.FromImage(bmp);
+            using Font font = new Font(type, size);
+            Color myColor = Color.FromArgb(r, g, b);
+            using SolidBrush myBrush = new SolidBrush(myColor);
+            pic.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            pic.DrawString(text, font, myBrush, new PointF() { X = x, Y = y });
+            return bmp;
+        }
+
+        /// <summary>
+        /// 填充矩形
+        /// </summary>
+        /// <param name="bmp">图片对象</param>
+        /// <param name="x">起始x坐标</param>
+        /// <param name="y">起始y坐标</param>
+        /// <param name="xx">结束x坐标</param>
+        /// <param name="yy">结束y坐标</param>
+        /// <param name="r">r</param>
+        /// <param name="g">g</param>
+        /// <param name="b">b</param>
+        /// <returns>图片对象</returns>
+        public static Bitmap PutBlock(Bitmap bmp, int x, int y, int xx, int yy,
+            int r = 0, int g = 0, int b = 0)
+        {
+            Color myColor = Color.FromArgb(r, g, b);
+            //遍历矩形框内的各象素点
+            for (int i = x; i <= xx; i++)
+            {
+                for (int j = y; j <= yy; j++)
+                {
+                    bmp.SetPixel(i, j, myColor);//设置当前象素点的颜色
+                }
+            }
+            return bmp;
+        }
+
+        /// <summary>
+        /// 摆放图片
+        /// </summary>
+        /// <param name="bmp">图片对象</param>
+        /// <param name="x">起始x坐标</param>
+        /// <param name="y">起始y坐标</param>
+        /// <param name="path">图片路径</param>
+        /// <param name="xx">摆放图片宽度</param>
+        /// <param name="yy">摆放图片高度</param>
+        /// <returns>图片对象</returns>
+        public static Bitmap SetImage(Bitmap bmp, int x, int y, string path, int xx = 0, int yy = 0)
+        {
+            if (!File.Exists(path))
+                return bmp;
+            using Bitmap b = new Bitmap(path);
+            using Graphics pic = Graphics.FromImage(bmp);
+            if (xx != 0 && yy != 0)
+                pic.DrawImage(b, x, y, xx, yy);
+            else
+                pic.DrawImage(b, x, y);
+            return bmp;
+        }
+
+        /// <summary>
+        /// 保存并获取图片路径
+        /// </summary>
+        /// <param name="bmp">图片对象</param>
+        /// <returns>图片路径</returns>
+        public static string SaveImage(Bitmap bmp,string name)
+        {
+            bmp.Save(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "data/image/" + name + ".luatemp", System.Drawing.Imaging.ImageFormat.Jpeg);
+            bmp.Dispose();
+            return name + ".luatemp";
+        }
+
 
         ///  <summary>
         /// 获取指定驱动器的剩余空间总大小(单位为MB)
@@ -566,6 +679,19 @@ namespace Native.Csharp.App.LuaEnv
             return 0;//没这个文件
         }
 
+        /// <summary>
+        /// 接收并获取qq消息中图片的路径
+        /// </summary>
+        /// <param name="image">图片字符串，如“[CQ:image,file=123123]”</param>
+        /// <returns>网址</returns>
+        public static string GetImagePath(string image)
+        {
+            string fileName = Reg_get(image, "\\[CQ:image,file=(?<name>.*?)\\]", "name");//获取文件
+            if (fileName == "")
+                return "";
+            return Common.AppData.CQApi.ReceiveImage(fileName);
+        }
+
 
         private static ConcurrentDictionary<string, string> luaTemp = new ConcurrentDictionary<string, string>();
         /// <summary>
@@ -615,6 +741,30 @@ namespace Native.Csharp.App.LuaEnv
                         @"data\image\" + fileName).Replace("\r", "").Replace("\n", ""),
                         "url=(?<name>.*?)addtime=", "name");//过滤出图片网址
             return "";//没这个文件
+        }
+
+        /// <summary>
+        /// 在沙盒中运行代码，仅允许安全地运行
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        public static string RunSandBox(string code)
+        {
+            using var lua = new NLua.Lua();
+            try
+            {
+                lua.State.Encoding = Encoding.UTF8;
+                lua.LoadCLRPackage();
+                lua["lua_run_result_var"] = "";//返回值所在的变量
+                lua.DoFile(Common.AppData.CQApi.AppDirectory + "lua/sandbox/head.lua");
+                lua.DoString(code);
+                return lua["lua_run_result_var"].ToString();
+            }
+            catch (Exception e)
+            {
+                Common.AppData.CQLog.Warning("lua沙盒错误", e.Message);
+                return "运行错误：" + e.ToString();
+            }
         }
 
         public static string CQCode_At(long qq) => Sdk.Cqp.CQApi.CQCode_At(qq).ToString();
