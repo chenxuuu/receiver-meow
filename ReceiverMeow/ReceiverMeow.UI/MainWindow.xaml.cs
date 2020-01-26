@@ -63,5 +63,11 @@ namespace ReceiverMeow.UI
             Global.InitialLua();
             MessageBox.Show("所有虚拟机均已重置完成！");
         }
+
+        private void UpdateXml_Click(object sender, RoutedEventArgs e)
+        {
+            Global.InitialXml();
+            MessageBox.Show("所有Xml缓存数据已重置完成！");
+        }
     }
 }

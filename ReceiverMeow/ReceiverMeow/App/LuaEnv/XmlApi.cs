@@ -22,7 +22,8 @@ namespace Native.Csharp.App.LuaEnv
         private static ConcurrentDictionary<string, XElement> xmlList = 
             new ConcurrentDictionary<string, XElement>();
 
-        private static readonly object objLock = new object();
+        private static readonly object XmlListLock = new object();
+        private static readonly object XmlChangeLock = new object();
 
         /// <summary>
         /// 随机获取一条结果
@@ -122,16 +123,18 @@ namespace Native.Csharp.App.LuaEnv
         /// <param name="msg"></param>
         public static void Delete(string group, string msg)
         {
-            XElement root = GetXml(group);
-            var element = from ee in root.Elements()
-                          where (string)ee.Element(keyName) == msg
-                          select ee;
-            if (element.Count() > 0)
-                element.Remove();
-            if (!Directory.Exists(path))
-                Directory.CreateDirectory(path);
-            lock (objLock)
+            lock (XmlChangeLock)
+            {
+                XElement root = GetXml(group);
+                var element = from ee in root.Elements()
+                              where (string)ee.Element(keyName) == msg
+                              select ee;
+                if (element.Count() > 0)
+                    element.Remove();
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
                 root.Save(path + group + ".xml");
+            }
         }
 
         /// <summary>
@@ -142,16 +145,18 @@ namespace Native.Csharp.App.LuaEnv
         /// <param name="ans"></param>
         public static void DeleteOne(string group, string msg, string ans)
         {
-            XElement root = GetXml(group);
-            var element = from ee in root.Elements()
-                          where (string)ee.Element(keyName) == msg && (string)ee.Element(valueName) == ans
-                          select ee;
-            if (element.Count() > 0)
-                element.First().Remove();
-            if (!Directory.Exists(path))
-                Directory.CreateDirectory(path);
-            lock (objLock)
+            lock (XmlChangeLock)
+            {
+                XElement root = GetXml(group);
+                var element = from ee in root.Elements()
+                              where (string)ee.Element(keyName) == msg && (string)ee.Element(valueName) == ans
+                              select ee;
+                if (element.Count() > 0)
+                    element.First().Remove();
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
                 root.Save(path + group + ".xml");
+            }
         }
 
         /// <summary>
@@ -164,26 +169,28 @@ namespace Native.Csharp.App.LuaEnv
         {
             if (msg.IndexOf("\r\n") < 0 & msg != "")
             {
-                XElement root = GetXml(group);
-                XElement read = root.Element(keyNode);
-                if (read == null)
+                lock (XmlChangeLock)
                 {
-                    root.Add(new XElement(keyNode,
-                      new XElement(keyName, msg),
-                      new XElement(valueName, ans)
-                      ));
-                }
-                else
-                {
-                    read.AddBeforeSelf(new XElement(keyNode,
-                      new XElement(keyName, msg),
-                      new XElement(valueName, ans)
-                      ));
-                }
-                if (!Directory.Exists(path))
-                    Directory.CreateDirectory(path);
-                lock (objLock)
+                    XElement root = GetXml(group);
+                    XElement read = root.Element(keyNode);
+                    if (read == null)
+                    {
+                        root.Add(new XElement(keyNode,
+                          new XElement(keyName, msg),
+                          new XElement(valueName, ans)
+                          ));
+                    }
+                    else
+                    {
+                        read.AddBeforeSelf(new XElement(keyNode,
+                          new XElement(keyName, msg),
+                          new XElement(valueName, ans)
+                          ));
+                    }
+                    if (!Directory.Exists(path))
+                        Directory.CreateDirectory(path);
                     root.Save(path + group + ".xml");
+                }
             }
         }
 
@@ -195,31 +202,45 @@ namespace Native.Csharp.App.LuaEnv
         /// <returns></returns>
         private static XElement GetXml(string group)
         {
-            if (!xmlList.ContainsKey(group))
+            lock (XmlListLock)
             {
-                if (!File.Exists(path + group + ".xml"))
+                if (!xmlList.ContainsKey(group))
                 {
-                    xmlList[group] = new XElement(rootNode,
-                            new XElement(keyNode,
-                                new XElement(keyName, "初始问题"),
-                                new XElement(valueName, "初始回答")
-                                )
-                           );
-                }
-                else
-                {
-                    try
+                    if (!File.Exists(path + group + ".xml"))
                     {
-                        xmlList[group] = XElement.Load(path + group + ".xml");
+                        xmlList[group] = new XElement(rootNode,
+                                new XElement(keyNode,
+                                    new XElement(keyName, "初始问题"),
+                                    new XElement(valueName, "初始回答")
+                                    )
+                               );
                     }
-                    catch(Exception e)
+                    else
                     {
-                        Common.AppData.CQLog.Fatal("Lua插件",$"xml文件加载错误({group})！{e.Message}");
-                        return null;
+                        try
+                        {
+                            xmlList[group] = XElement.Load(path + group + ".xml");
+                        }
+                        catch (Exception e)
+                        {
+                            Common.AppData.CQLog.Fatal("Lua插件", $"xml文件加载错误({group})！{e.Message}");
+                            return null;
+                        }
                     }
                 }
+                return xmlList[group];
             }
-            return xmlList[group];
+        }
+
+        /// <summary>
+        /// 清空xml缓存列表
+        /// </summary>
+        public static void Clear()
+        {
+            lock(XmlListLock)
+            {
+                xmlList.Clear();
+            }
         }
     }
 }

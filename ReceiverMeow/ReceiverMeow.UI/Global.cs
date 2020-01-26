@@ -21,12 +21,20 @@ namespace ReceiverMeow.UI
             GitInitial?.Invoke(null,true);
         }
 
-        //初始化git的回调
+        //初始化lua虚拟机的回调
         public static event EventHandler<bool> LuaInitial;
 
         public static void InitialLua()
         {
             LuaInitial?.Invoke(null, true);
+        }
+
+        //初始化xml的回调
+        public static event EventHandler<bool> XmlInitial;
+
+        public static void InitialXml()
+        {
+            XmlInitial?.Invoke(null, true);
         }
 
     }
