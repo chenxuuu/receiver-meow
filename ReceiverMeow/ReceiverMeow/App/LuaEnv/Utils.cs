@@ -760,6 +760,16 @@ namespace Native.Csharp.App.LuaEnv
             }
         }
 
+        /// <summary>
+        /// 将字符串转为base64
+        /// </summary>
+        /// <param name="s">输入</param>
+        /// <returns>base64结果</returns>
+        public static string ConvertBase64(string s)
+        {
+            return Convert.ToBase64String(Encoding.UTF8.GetBytes(s));
+        }
+
         public static string CQCode_At(long qq) => Sdk.Cqp.CQApi.CQCode_At(qq).ToString();
         public static string CQCode_AtAll() => Sdk.Cqp.CQApi.CQCode_AtAll().ToString(); 
         public static string CQCode_Emoji(int id) => Sdk.Cqp.CQApi.CQCode_Emoji(id).ToString();
