@@ -30,6 +30,7 @@ namespace Native.Csharp.App.LuaEnv
         /// </summary>
         public static void Initial()
         {
+            RunSandBox("");
             //加载配置
             if (File.Exists(Common.AppData.CQApi.AppDirectory + "settings.json"))
             {
