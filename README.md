@@ -1,7 +1,7 @@
 # receiver-meow
 
 [![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors)
-
+[![Build status](https://ci.appveyor.com/api/projects/status/46tmg2sh60l7kekf?svg=true)](https://ci.appveyor.com/project/chenxuuu/receiver-meow)
 [![MIT](https://img.shields.io/static/v1.svg?label=license&message=MIT&color=green)](https://github.com/chenxuuu/receiver-meow/blob/master/LICENSE)
 [![Native.SDK](https://img.shields.io/badge/dependencies-Native.SDK-blueviolet.svg)](https://github.com/Jie2GG/Native.Csharp.Frame)
 [![NLua](https://img.shields.io/badge/dependencies-NLua-green.svg)](https://github.com/NLua/NLua/)
@@ -15,6 +15,12 @@
 - Lua层可直接调用C#层接口，酷Q功能随意使用
 - 自带了http(s) post/get、2D图片处理、数据存储(xml)等接口
 - 底层使用C#开发，.net framework 4.5版本
+
+## 下载
+
+正式版：[GitHub Releases](https://github.com/chenxuuu/receiver-meow/releases)
+
+快照版：[appveyor](https://ci.appveyor.com/project/chenxuuu/receiver-meow/build/artifacts)
 
 ## 默认脚本
 
