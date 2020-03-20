@@ -790,7 +790,7 @@ namespace Native.Csharp.App.LuaEnv
         public static string CQCode_DIYMusic(string url, string musicUrl, string title, string content, string imageUrl) => 
             Sdk.Cqp.CQApi.CQCode_DIYMusic(url,musicUrl,title,content,imageUrl).ToString();
         public static string CQCode_Image(string path) => Sdk.Cqp.CQApi.CQCode_Image(path).ToString();
-        public static string CQCode_Record(string path) => Sdk.Cqp.CQApi.CQCode_Image(path).ToString();
+        public static string CQCode_Record(string path) => Sdk.Cqp.CQApi.CQCode_Record(path).ToString();
         public static object GetGroupMemberInfo(long groupId, long qqId, bool notCache = false)
         {
             var info = Common.AppData.CQApi.GetGroupMemberInfo(groupId, qqId, notCache);
