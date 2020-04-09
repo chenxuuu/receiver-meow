@@ -35,11 +35,22 @@
         "code",
         "bug"
       ]
+    },
+    {
+      "login": "gy39830",
+      "name": "gy39830",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/60922309?v=4",
+      "profile": "https://github.com/gy39830",
+      "contributions": [
+        "code",
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
   "projectName": "receiver-meow",
   "projectOwner": "chenxuuu",
   "repoType": "github",
-  "repoHost": "https://github.com"
+  "repoHost": "https://github.com",
+  "skipCi": true
 }
