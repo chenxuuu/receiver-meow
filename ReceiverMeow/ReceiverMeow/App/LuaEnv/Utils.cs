@@ -305,6 +305,29 @@ namespace Native.Csharp.App.LuaEnv
             return tmp.ToString();
         }
 
+        private static CookieCollection makeCookie(string cookie)
+        {
+            CookieCollection cookies = new CookieCollection();
+            string[] cs = cookie.Split(';');
+            foreach (string c in cs)
+            {
+                string s = c;
+                if (s.IndexOf(" ") == 0)
+                    s = s.Substring(1);
+                int i = s.IndexOf("=");
+                if (i >= 0)
+                {
+                    cookies.Add(new Cookie(
+                        System.Web.HttpUtility.UrlEncode(s.Substring(0, i)),
+                        s.Substring(i + 1).Replace(",", "%2C")
+                        )
+                    );
+                }
+            }
+            return cookies;
+        }
+
+
         /// <summary>
         /// 下载文件
         /// </summary>
@@ -317,51 +340,24 @@ namespace Native.Csharp.App.LuaEnv
             HttpWebRequest request = null;
             try
             {
-                //请求前设置一下使用的安全协议类型 System.Net
-                if (Url.StartsWith("https", StringComparison.OrdinalIgnoreCase))
-                {
-                    ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors) =>
-                    {
-                        return true; //总是接受
-                    });
-                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
-                }
-                request = (HttpWebRequest)WebRequest.Create(Url);
-                request.ContentType = "text/html;charset=UTF-8";
-                request.Timeout = (int)timeout;
-                request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36 Vivaldi/2.2.1388.37";
+                CookieCollection cookies = new CookieCollection();
+                WebHeaderCollection headers = new WebHeaderCollection();
+                byte[] result =
+                    Tool.Http.HttpWebClient.Get(
+                    Url,
+                    Url,
+                    "Mozilla/5.0 (X11; Ubuntu; Linux; rv:67.0) Gecko/20100101 Firefox/67.0",
+                    "text/css,*/*;q=0.1",
+                    (int)timeout,
+                    ref cookies,
+                    ref headers,
+                    null,
+                    Encoding.UTF8,
+                    true,
+                    true);
 
-                using HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                if (response.ContentLength < maxLength)//1024 * 1024 * 20)//超过20M的文件不下载
-                {
-                    try
-                    {
-                        if (File.Exists(fileName))
-                            File.Delete(fileName);
-                        using Stream outStream = System.IO.File.Create(fileName);
-                        using Stream inStream = response.GetResponseStream();
-                        int l;
-                        byte[] buffer = new byte[1024];
-                        do
-                        {
-                            l = inStream.Read(buffer, 0, buffer.Length);
-                            if (l > 0)
-                                outStream.Write(buffer, 0, l);
-                        }
-                        while (l > 0);
-                        outStream.Close();
-                        inStream.Close();
-                        return true;
-                    }
-                    catch
-                    {
-                        return false;
-                    }
-                }
-                else
-                {
-                    return false;
-                }
+                File.WriteAllBytes(fileName, result);
+                return true;
             }
             catch (Exception e)
             {
@@ -381,48 +377,29 @@ namespace Native.Csharp.App.LuaEnv
         public static string HttpGet(string Url, string postDataStr = "", long timeout = 5000,
             string cookie = "")
         {
-            HttpWebRequest request = null;
             try
             {
-                //请求前设置一下使用的安全协议类型 System.Net
-                if (Url.StartsWith("https", StringComparison.OrdinalIgnoreCase))
-                {
-                    ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors) =>
-                    {
-                        return true; //总是接受
-                    });
-                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
-                }
-                request = (HttpWebRequest)WebRequest.Create(Url + (postDataStr == "" ? "" : "?") + postDataStr);
-                request.Method = "GET";
-                request.ContentType = "text/html;charset=UTF-8";
-                request.Timeout = (int)timeout;
-                request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36 Vivaldi/2.2.1388.37";
-                if (cookie != "")
-                    request.Headers.Add("cookie", cookie);
+                CookieCollection cookies = makeCookie(cookie);
+                WebHeaderCollection headers = new WebHeaderCollection();
+                byte[] result = 
+                    Tool.Http.HttpWebClient.Get(
+                    Url + (postDataStr == "" ? "" : "?") + postDataStr,
+                    Url,
+                    "Mozilla/5.0 (X11; Ubuntu; Linux; rv:67.0) Gecko/20100101 Firefox/67.0",
+                    "text/css,*/*;q=0.1",
+                    (int)timeout,
+                    ref cookies,
+                    ref headers,
+                    null,
+                    Encoding.UTF8,
+                    true,
+                    true);
 
-                using HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                string encoding = response.ContentEncoding;
-                if (encoding == null || encoding.Length < 1)
-                {
-                    encoding = "UTF-8"; //默认编码
-                }
-                using Stream myResponseStream = response.GetResponseStream();
-                using StreamReader myStreamReader = new StreamReader(myResponseStream, Encoding.GetEncoding(encoding));
-
-                string retString = myStreamReader.ReadToEnd();
-                myStreamReader.Close();
-                myResponseStream.Close();
-
-                return retString;
+                return Encoding.UTF8.GetString(result);
             }
             catch (Exception e)
             {
                 Common.AppData.CQLog.Error("lua插件错误", $"get错误：{e.Message}");
-            }
-            finally
-            {
-                request?.Abort();
             }
             return "";
         }
@@ -434,48 +411,31 @@ namespace Native.Csharp.App.LuaEnv
         public static string HttpPost(string Url, string postDataStr, long timeout = 5000,
             string cookie = "", string contentType = "application/x-www-form-urlencoded")
         {
-            HttpWebRequest request = null;
             try
             {
-                //请求前设置一下使用的安全协议类型 System.Net
-                if (Url.StartsWith("https", StringComparison.OrdinalIgnoreCase))
-                {
-                    ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors) =>
-                    {
-                        return true; //总是接受
-                    });
-                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
-                }
-                request = (HttpWebRequest)WebRequest.Create(Url);
-                request.Method = "POST";
-                request.Timeout = (int)timeout;
-                request.ContentType = contentType + "; charset=UTF-8";
-                byte[] byteResquest = Encoding.UTF8.GetBytes(postDataStr);
-                request.ContentLength = byteResquest.Length;
-                request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36 Vivaldi/2.2.1388.37";
-                if (cookie != "")
-                    request.Headers.Add("cookie", cookie);
+                CookieCollection cookies = makeCookie(cookie);
+                WebHeaderCollection headers = new WebHeaderCollection();
+                byte[] result =
+                    Tool.Http.HttpWebClient.Post(
+                        Url,
+                        Encoding.UTF8.GetBytes(postDataStr),
+                        contentType,
+                        Url,
+                        "Mozilla/5.0 (X11; Ubuntu; Linux; rv:67.0) Gecko/20100101 Firefox/67.0",
+                        "text/css,*/*;q=0.1",
+                        (int)timeout,
+                        ref cookies,
+                        ref headers,
+                        null,
+                        Encoding.UTF8,
+                        true,
+                        true);
 
-                using Stream stream = request.GetRequestStream();
-                stream.Write(byteResquest, 0, byteResquest.Length);
-                stream.Close();
-                using HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                string encoding = response.ContentEncoding;
-                if (encoding == null || encoding.Length < 1)
-                {
-                    encoding = "UTF-8"; //默认编码
-                }
-                using StreamReader reader = new StreamReader(response.GetResponseStream(), Encoding.GetEncoding(encoding));
-                string retString = reader.ReadToEnd();
-                return retString;
+                return Encoding.UTF8.GetString(result);
             }
             catch (Exception e)
             {
                 Common.AppData.CQLog.Error("lua插件错误", $"post错误：{e.Message}");
-            }
-            finally
-            {
-                request?.Abort();
             }
             return "";
         }
