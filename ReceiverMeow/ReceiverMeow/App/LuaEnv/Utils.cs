@@ -31,6 +31,7 @@ namespace Native.Csharp.App.LuaEnv
         public static void Initial()
         {
             RunSandBox("");
+            Mqtt.Initial();
             //加载配置
             if (File.Exists(Common.AppData.CQApi.AppDirectory + "settings.json"))
             {
@@ -42,6 +43,7 @@ namespace Native.Csharp.App.LuaEnv
                 setting = new Settings();
             }
             setting.TcpServerEnable = setting.TcpServerEnable;
+            setting.MqttEnable = setting.MqttEnable;
             //TimerRun.Start();//清理文件定时器任务，可能存在内存泄漏问题，暂时不加这个功能
             TcpServer.SendList();//tcp定时器任务
 
