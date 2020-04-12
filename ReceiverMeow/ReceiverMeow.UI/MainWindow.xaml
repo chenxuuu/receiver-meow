@@ -5,9 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ReceiverMeow.UI"
         mc:Ignorable="d"
-        Title="Lua插件设置" Height="380" Width="400"
+        Title="Lua插件设置" Height="520" Width="400"
         WindowStartupLocation="CenterScreen"
         Loaded="Window_Loaded">
+    <Window.Resources>
+        <local:VisibilityBool x:Key="BoolConverter"/>
+    </Window.Resources>
+    
     <ScrollViewer>
         <ScrollViewer.Resources>
             <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
@@ -33,13 +37,27 @@
             <Rectangle Height="1" Fill="LightGray" Margin="0,5"/>
             <CheckBox Content="开启TCP服务端功能" IsChecked="{Binding TcpServerEnable}"/>
             <TextBlock Text="TCP服务端端口号："/>
-            <TextBox Text="{Binding TcpServerPort,UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox Text="{Binding TcpServerPort,UpdateSourceTrigger=PropertyChanged}" 
+                     IsEnabled="{Binding TcpServerEnable,Converter={StaticResource BoolConverter}}"/>
             <Rectangle Height="1" Fill="LightGray" Margin="0,5"/>
             <CheckBox Content="开启MQTT连接功能" IsChecked="{Binding MqttEnable}"/>
+            <CheckBox Content="MQTT使用TLS连接" IsChecked="{Binding MqttTLS}"
+                     IsEnabled="{Binding MqttEnable,Converter={StaticResource BoolConverter}}"/>
             <TextBlock Text="MQTT连接地址："/>
-            <TextBox Text="{Binding MqttServer,UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox Text="{Binding MqttBroker,UpdateSourceTrigger=PropertyChanged}"
+                     IsEnabled="{Binding MqttEnable,Converter={StaticResource BoolConverter}}"/>
             <TextBlock Text="MQTT连接端口："/>
-            <TextBox Text="{Binding MqttPort,UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox Text="{Binding MqttPort,UpdateSourceTrigger=PropertyChanged}"
+                     IsEnabled="{Binding MqttEnable,Converter={StaticResource BoolConverter}}"/>
+            <TextBlock Text="MQTT Client ID（默认GUID）："/>
+            <TextBox Text="{Binding ClientID,UpdateSourceTrigger=PropertyChanged}"
+                     IsEnabled="{Binding MqttEnable,Converter={StaticResource BoolConverter}}"/>
+            <TextBlock Text="MQTT连接用户名："/>
+            <TextBox Text="{Binding MqttUser,UpdateSourceTrigger=PropertyChanged}"
+                     IsEnabled="{Binding MqttEnable,Converter={StaticResource BoolConverter}}"/>
+            <TextBlock Text="MQTT连接密码："/>
+            <TextBox Text="{Binding MqttPassword,UpdateSourceTrigger=PropertyChanged}"
+                     IsEnabled="{Binding MqttEnable,Converter={StaticResource BoolConverter}}"/>
             <TextBlock Text="开源Lua插件，如有bug请反馈或pr，讨论群931546484" Foreground="LightGray"/>
         </StackPanel>
     </ScrollViewer>
