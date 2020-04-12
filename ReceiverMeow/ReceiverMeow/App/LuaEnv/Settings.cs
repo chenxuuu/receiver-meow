@@ -15,8 +15,127 @@ namespace Native.Csharp.App.LuaEnv
         private int tcpServerPort = 23333;
         private long adminQQ = 0;
         private bool mqttEnable = false;
-        private string mqttServer = "mqtt.papapoi.com";
+        private string mqttBroker = "broker.emqx.io";
         private int mqttPort = 1883;
+        private string mqttUser = "user";
+        private string mqttPassword = "password";
+        private bool mqttTLS = false;
+        private string clientID = Guid.NewGuid().ToString();
+
+
+        private bool _mqtt_first = true;
+        /// <summary>
+        /// 是否开启mqtt连接功能
+        /// </summary>
+        public bool MqttEnable
+        {
+            get => mqttEnable;
+            set
+            {
+                mqttEnable = value;
+                if (value)
+                {
+                    if (_mqtt_first)
+                    {
+                        _mqtt_first = false;
+                    }
+                    else
+                    {
+                        Mqtt.Connect();
+                    }
+                }
+                else
+                {
+                    if (_mqtt_first)
+                    {
+                        _mqtt_first = false;
+                    }
+                    else
+                    {
+                        Mqtt.Disconnect();
+                    }
+                }
+                Save();
+            }
+        }
+
+        /// <summary>
+        /// 启用tls
+        /// </summary>
+        public bool MqttTLS
+        {
+            get => mqttTLS;
+            set
+            {
+                mqttTLS = value;
+                Save();
+            }
+        }
+
+        /// <summary>
+        /// mqtt服务端
+        /// </summary>
+        public string MqttBroker
+        {
+            get => mqttBroker;
+            set
+            {
+                mqttBroker = value;
+                Save();
+            }
+        }
+
+        /// <summary>
+        /// mqtt端口号
+        /// </summary>
+        public int MqttPort
+        {
+            get => mqttPort;
+            set
+            {
+                mqttPort = value;
+                Save();
+            }
+        }
+
+        /// <summary>
+        /// mqtt服务器用户名
+        /// </summary>
+        public string MqttUser
+        {
+            get => mqttUser;
+            set
+            {
+                mqttUser = value;
+                Save();
+            }
+        }
+
+        /// <summary>
+        /// mqtt服务器密码
+        /// </summary>
+        public string MqttPassword
+        {
+            get => mqttPassword;
+            set
+            {
+                mqttPassword = value;
+                Save();
+            }
+        }
+
+        /// <summary>
+        /// GUID唯一识别码
+        /// </summary>
+        public string ClientID
+        {
+            get => clientID;
+            set
+            {
+                clientID = value;
+                Save();
+            }
+        }
 
         /// <summary>
         /// 保存配置
@@ -83,56 +202,9 @@ namespace Native.Csharp.App.LuaEnv
             get => tcpServerPort;
             set
             {
-                if (tcpServerPort != value)
-                {
-                    tcpServerPort = value;
-                    if (TcpServerEnable)
-                    {
-                        TcpServer.Stop();
-                        TcpServer.Start();
-                    }
-                }
+                tcpServerPort = value;
                 Save();
             }
         }
-
-
-        /// <summary>
-        /// 是否开启mqtt连接功能
-        /// </summary>
-        public bool MqttEnable
-        {
-            get => mqttEnable;
-            set
-            {
-                mqttEnable = value;
-                Save();
-            }
-        }
-
-        /// <summary>
-        /// mqtt服务端
-        /// </summary>
-        public string MqttServer
-        {
-            get => mqttServer;
-            set
-            {
-                mqttServer = value;
-                Save();
-            }
-        }
-
-        /// <summary>
-        /// mqtt端口号
-        /// </summary>
-        public int MqttPort { get => mqttPort;
-            set
-            {
-                mqttPort = value;
-                Save();
-            }
-        }
-
     }
 }

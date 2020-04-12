@@ -2,9 +2,11 @@ using Native.Csharp.Sdk.Cqp.EventArgs;
 using Native.Csharp.Sdk.Cqp.Interface;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
 
 namespace ReceiverMeow.UI
 {
@@ -37,5 +39,17 @@ namespace ReceiverMeow.UI
             XmlInitial?.Invoke(null, true);
         }
 
+    }
+
+    /// <summary>
+    /// 是否显示
+    /// </summary>
+    [ValueConversion(typeof(bool), typeof(bool))]
+    public class VisibilityBool : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+            => !(bool)value;
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+            => !(bool)value;
     }
 }
