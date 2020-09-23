@@ -63,11 +63,31 @@ New message|           | Name not exist |                    |
 
 ## 食用
 
-实际使用时，只需要将cpk文件放入酷q的app文件夹，cpk文件可以去[这里下载](https://github.com/chenxuuu/receiver-meow/releases/latest)，或者自行编译
+去release页面下载mirai一键包（或者去群共享下）
 
-然后，启用插件，打开设置面板，点击初始化脚本按钮，下载完默认Lua脚本后即可食用
+运行mirai，登录qq
 
-同时，请在设置面板上修改机器人的管理员QQ号
+登录成功后，关闭mirai
+
+修改`data\MiraiNative\data\com.papapoi.ReceiverMeow\settings.json`中的各项配置，一般只改管理员qq号，各项含义具体描述：
+
+```json
+{
+  "AdminQQ": 961726194,//管理员QQ号  ！！如果没有下面的需求，只改这个就好了！！
+  "MqttEnable": false,//是否开启mqtt功能
+  "MqttTLS": false,//mqtt是否启用tls
+  "MqttBroker": "mqtt.xxxxx.com",//mqtt服务器地址
+  "MqttPort": 1883,//mqtt端口
+  "MqttUser": "user",//mqtt登录用户名
+  "MqttPassword": "password",//mqtt密码
+  "ClientID": "a06a52a",//mqtt登录时的client id
+  "KeepAlive": 60,//mqtt的心跳时间
+  "TcpServerEnable": true,//是否开启tcp服务器
+  "TcpServerPort": 23333//tcp服务器的端口
+}
+```
+
+再次打开mirai，登录qq，正常使用即可
 
 向机器人发送`帮助`或`help`加上页数，可以查看指令说明
 
