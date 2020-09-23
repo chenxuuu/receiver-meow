@@ -21,6 +21,7 @@ namespace Native.Csharp.App.LuaEnv
            .WithClientId(Utils.setting.ClientID)
            .WithTcpServer(Utils.setting.MqttBroker, Utils.setting.MqttPort)
            .WithCredentials(Utils.setting.MqttUser, Utils.setting.MqttPassword)
+           .WithKeepAlivePeriod(new TimeSpan(0,0,Utils.setting.KeepAlive))
            .WithCleanSession();
             IMqttClientOptions options;
             if (Utils.setting.MqttTLS)

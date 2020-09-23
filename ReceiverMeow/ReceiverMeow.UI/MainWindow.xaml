@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ReceiverMeow.UI"
         mc:Ignorable="d"
-        Title="Lua插件设置" Height="520" Width="400"
+        Title="Lua插件设置" Height="400" Width="400"
         WindowStartupLocation="CenterScreen"
         Loaded="Window_Loaded">
     <Window.Resources>
@@ -48,6 +48,9 @@
                      IsEnabled="{Binding MqttEnable,Converter={StaticResource BoolConverter}}"/>
             <TextBlock Text="MQTT连接端口："/>
             <TextBox Text="{Binding MqttPort,UpdateSourceTrigger=PropertyChanged}"
+                     IsEnabled="{Binding MqttEnable,Converter={StaticResource BoolConverter}}"/>
+            <TextBlock Text="MQTT保活心跳（秒）："/>
+            <TextBox Text="{Binding KeepAlive,UpdateSourceTrigger=PropertyChanged}"
                      IsEnabled="{Binding MqttEnable,Converter={StaticResource BoolConverter}}"/>
             <TextBlock Text="MQTT Client ID（默认GUID）："/>
             <TextBox Text="{Binding ClientID,UpdateSourceTrigger=PropertyChanged}"
