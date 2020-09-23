@@ -548,14 +548,7 @@ namespace Native.Csharp.App.LuaEnv
         {
             try
             {
-                using Bitmap bmp = new Bitmap(path);
-                using MemoryStream ms = new MemoryStream();
-                bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
-                byte[] arr = new byte[ms.Length];
-                ms.Position = 0;
-                ms.Read(arr, 0, (int)ms.Length);
-                ms.Close();
-                return Convert.ToBase64String(arr);
+                return Convert.ToBase64String(File.ReadAllBytes(path));
             }
             catch (Exception e)
             {
@@ -751,8 +744,28 @@ namespace Native.Csharp.App.LuaEnv
             Sdk.Cqp.CQApi.CQCode_Music(id,(CQMusicType)type,(CQMusicStyle)style).ToString();
         public static string CQCode_DIYMusic(string url, string musicUrl, string title, string content, string imageUrl) => 
             Sdk.Cqp.CQApi.CQCode_DIYMusic(url,musicUrl,title,content,imageUrl).ToString();
-        public static string CQCode_Image(string path) => Sdk.Cqp.CQApi.CQCode_Image(path).ToString();
-        public static string CQCode_Record(string path) => Sdk.Cqp.CQApi.CQCode_Record(path).ToString();
+        public static string CQCode_Image(string path)
+        {
+            //得到完整路径
+            path = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "data/image/" + path;
+            string base64 = Base64File(path);
+            if (base64.Length == 0) return "图片加载失败";
+            try//尝试删掉这个临时文件
+            {
+                File.Delete(path);
+            }
+            catch { }
+            return $"[CQ:image, file=base64://{base64}]";
+        }
+        public static string CQCode_Record(string path)
+        {
+            //得到完整路径
+            //path = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "data/record/" + path;
+            //string base64 = Base64File(path);
+            //if (base64.Length == 0) return "音频加载失败";
+            //return $"[CQ:record, file=base64://{base64}]";
+            return "音频接口还未完成";
+        }
         public static object GetGroupMemberInfo(long groupId, long qqId, bool notCache = false)
         {
             var info = Common.AppData.CQApi.GetGroupMemberInfo(groupId, qqId, notCache);

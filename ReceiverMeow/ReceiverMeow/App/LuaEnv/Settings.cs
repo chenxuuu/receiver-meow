@@ -21,6 +21,7 @@ namespace Native.Csharp.App.LuaEnv
         private string mqttPassword = "password";
         private bool mqttTLS = false;
         private string clientID = Guid.NewGuid().ToString();
+        private int keepAlive = 60;
 
 
         private bool _mqtt_first = true;
@@ -133,6 +134,19 @@ namespace Native.Csharp.App.LuaEnv
             set
             {
                 clientID = value;
+                Save();
+            }
+        }
+
+        /// <summary>
+        /// mqtt保活心跳周期
+        /// </summary>
+        public int KeepAlive
+        {
+            get => keepAlive;
+            set
+            {
+                keepAlive = value;
                 Save();
             }
         }
