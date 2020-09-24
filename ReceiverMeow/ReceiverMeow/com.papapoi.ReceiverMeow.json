@@ -50,13 +50,6 @@
 			"priority": 30000
 		},
 		{
-			"id": 7,
-			"type": 103,
-			"name": "群成员增加事件处理",
-			"function": "_eventSystem_GroupMemberIncrease",
-			"priority": 30000
-		},
-		{
 			"id": 8,
 			"type": 104,
 			"name": "群禁言事件处理",
@@ -75,13 +68,6 @@
 			"type": 301,
 			"name": "好友添加请求处理",
 			"function": "_eventRequest_AddFriend",
-			"priority": 30000
-		},
-		{
-			"id": 12,
-			"type": 302,
-			"name": "群添加请求处理",
-			"function": "_eventRequest_AddGroup",
 			"priority": 30000
 		},
 		{
