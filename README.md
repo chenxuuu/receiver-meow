@@ -3,18 +3,18 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors)
 [![Build status](https://ci.appveyor.com/api/projects/status/46tmg2sh60l7kekf?svg=true)](https://ci.appveyor.com/project/chenxuuu/receiver-meow)
 [![MIT](https://img.shields.io/static/v1.svg?label=license&message=MIT&color=green)](https://github.com/chenxuuu/receiver-meow/blob/master/LICENSE)
-[![Native.SDK](https://img.shields.io/badge/dependencies-Native.SDK-blueviolet.svg)](https://github.com/Jie2GG/Native.Csharp.Frame)
 [![NLua](https://img.shields.io/badge/dependencies-NLua-green.svg)](https://github.com/NLua/NLua/)
 
 能运行`lua`脚本的接待喵qq机器人，欢迎加入交流群`931546484`
 
-## 功能特点
+## 功能
 
+- 对接[go-cqhttp](https://github.com/Mrs4s/go-cqhttp)的websocket通讯协议
+- 使用 .Net Core 5 开发，可跨平台
 - 消息处理逻辑，完全由lua实现
-- lua代码动态加载，更改完后重载虚拟机，立即生效
-- Lua层可直接调用C#层接口，酷Q功能随意使用
+- lua代码动态加载，重载虚拟机后，立即生效
+- Lua层可直接调用C#层接口
 - 自带了http(s) post/get、2D图片处理、数据存储(xml)等接口
-- 底层使用C#开发，.net framework 4.5版本
 
 ## 下载
 
@@ -63,39 +63,15 @@ New message|           | Name not exist |                    |
 
 ## 食用
 
-去release页面下载mirai一键包（或者去群共享下）
+请等待工程重写完毕再使用。
 
-运行mirai，登录qq
-
-登录成功后，关闭mirai
-
-修改`data\MiraiNative\data\com.papapoi.ReceiverMeow\settings.json`中的各项配置，一般只改管理员qq号，各项含义具体描述：
-
-```json
-{
-  "AdminQQ": 961726194,//管理员QQ号  ！！如果没有下面的需求，只改这个就好了！！
-  "MqttEnable": false,//是否开启mqtt功能
-  "MqttTLS": false,//mqtt是否启用tls
-  "MqttBroker": "mqtt.xxxxx.com",//mqtt服务器地址
-  "MqttPort": 1883,//mqtt端口
-  "MqttUser": "user",//mqtt登录用户名
-  "MqttPassword": "password",//mqtt密码
-  "ClientID": "a06a52a",//mqtt登录时的client id
-  "KeepAlive": 60,//mqtt的心跳时间
-  "TcpServerEnable": true,//是否开启tcp服务器
-  "TcpServerPort": 23333//tcp服务器的端口
-}
-```
-
-再次打开mirai，登录qq，正常使用即可
-
-向机器人发送`帮助`或`help`加上页数，可以查看指令说明
+~~向机器人发送`帮助`或`help`加上页数，可以查看指令说明~~
 
 脚本的功能解释请见[Lua脚本项目的Readme](https://github.com/chenxuuu/receiver-meow-lua)
 
 ## 结尾
 
-插件基于[Native.SDK](https://github.com/Jie2GG/Native.Csharp.Frame)
+本项目基于MIT协议
 
 ## Contributors ✨
 
