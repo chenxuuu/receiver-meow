@@ -34,6 +34,13 @@ namespace ReceiverMeow
             GoHttp.Ws.Connect(wsUrl, wsPort);
 
             //命令行命令处理
+            ReceiveCommands();
+        }
+
+
+        private static void ReceiveCommands()
+        {
+            //命令列表
             Dictionary<string, CommandContain> commandList = new Dictionary<string, CommandContain>
             {
                 ["rua".ToUpper()] = new CommandContain
@@ -44,7 +51,7 @@ namespace ReceiverMeow
                 ["color".ToUpper()] = new CommandContain
                 {
                     explain = "切换终端颜色显示。如果显示不正常，可以更改此选项关闭颜色",
-                    run = (s) => 
+                    run = (s) =>
                     {
                         Tools.Setting.Colorful = !Tools.Setting.Colorful;
                         Log.Info($"命令", $"彩色终端状态：{Tools.Setting.Colorful}");
@@ -67,12 +74,21 @@ namespace ReceiverMeow
                     }
                 },
 #endif
+                ["stop".ToUpper()] = new CommandContain
+                {
+                    explain = "退出软件",
+                    run = (s) =>
+                    {
+                        Log.Warn("退出软件", "bye~");
+                        Environment.Exit(0);
+                    }
+                },
             };
-            while(true)
+            while (true)
             {
                 var command = Console.ReadLine();
                 var cp = command.IndexOf(" ") >= 0 ? command.Substring(0, command.IndexOf(" ")) : command;
-                if(commandList.ContainsKey(cp.ToUpper()))
+                if (commandList.ContainsKey(cp.ToUpper()))
                 {
                     try
                     {
@@ -84,7 +100,7 @@ namespace ReceiverMeow
                         Log.Warn("命令", $"{command}执行报错，错误信息：\n{e.Message}");
                     }
                 }
-                else if(command.ToUpper() == "HELP" || command == "?" || command == "？")
+                else if (command.ToUpper() == "HELP" || command == "?" || command == "？")
                 {
                     Log.Info("命令", "可用命令列表：");
                     foreach (var item in commandList)
@@ -94,7 +110,7 @@ namespace ReceiverMeow
                 }
                 else
                 {
-                    Log.Info("命令", $"未知命令，使用help获取命令帮助");
+                    Log.Info("命令", $"未知命令，使用?获取命令帮助");
                 }
             }
         }
