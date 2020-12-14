@@ -1,0 +1,56 @@
+name: build
+
+on:
+  push:
+    paths:
+      - 'ReceiverMeow/**'
+      - '.github/workflows/build.yml'
+  pull_request:
+    paths:
+      - 'ReceiverMeow/**'
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'warning'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # build and publish in parallel: linux-arm,linux-x64,win-x86,win-x64,win-arm,osx-x64
+        dotnetos: [linux, win, osx]
+        dotnetarch: [x86, x64, arm]
+        exclude:
+          - dotnetos: linux
+            dotnetarch: x86
+          - dotnetos: osx
+            dotnetarch: x86
+          - dotnetos: osx
+            dotnetarch: arm
+      fail-fast: true
+    steps:
+      - uses: actions/checkout@v1
+      - name: environment prepare
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y apt-transport-https
+          sudo apt-get update
+          sudo apt-get install -y dotnet-sdk-5.0
+          sudo apt-get install -y p7zip-full
+      - name: build
+        env:
+          DOTNETOS: ${{ matrix.dotnetos }}
+          DOTNETARCH: ${{ matrix.dotnetarch }}
+        run: |
+          cd ReceiverMeow
+          dotnet publish -r $DOTNETOS-$DOTNETARCH -p:PublishSingleFile=true -p:PublishTrimmed=true --self-contained true
+          mkdir pkg
+          mv ReceiverMeow/bin/Debug/net5.0/$DOTNETOS-$DOTNETARCH/publish/* pkg/
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.dotnetos }}-${{ matrix.dotnetarch }}
+          path: ReceiverMeow/pkg/
