@@ -5,10 +5,13 @@ using WebSocketSharp;
 
 namespace ReceiverMeow
 {
-    class Program
+    class Meow
     {
         static void Main(string[] args)
         {
+            Tools.Initial();
+
+            //处理命令行
             string wsUrl = "127.0.0.1";
             int wsPort = 6700;
             string httpUrl = "127.0.0.1";
@@ -22,9 +25,9 @@ namespace ReceiverMeow
                     wsUrl = args[0];
                     httpUrl = args[2];
                 }
-                catch(Exception e)
+                catch
                 {
-                    Log.Error("终端", $"参数错误，请检查\n{e.Message}");
+                    Log.Error("终端", $"参数错误，请使用 xxx.exe [wsUrl] [wsPort] [httpUrl] [httpPort]");
                 }
             }
             GoHttp.Http.Set(httpUrl, httpPort);
@@ -33,10 +36,19 @@ namespace ReceiverMeow
             //命令行命令处理
             Dictionary<string, CommandContain> commandList = new Dictionary<string, CommandContain>
             {
-                ["reload".ToUpper()] = new CommandContain
+                ["rua".ToUpper()] = new CommandContain
                 {
                     explain = "重载所有lua虚拟机",
                     run = (s) => { }
+                },
+                ["color".ToUpper()] = new CommandContain
+                {
+                    explain = "切换终端颜色显示。如果显示不正常，可以更改此选项关闭颜色",
+                    run = (s) => 
+                    {
+                        Tools.Setting.Colorful = !Tools.Setting.Colorful;
+                        Log.Info($"命令", $"彩色终端状态：{Tools.Setting.Colorful}");
+                    }
                 },
 #if DEBUG
                 ["ws".ToUpper()] = new CommandContain
@@ -65,6 +77,7 @@ namespace ReceiverMeow
                     try
                     {
                         commandList[cp.ToUpper()].run(command);
+                        Log.Info($"命令", $"执行完毕");
                     }
                     catch (Exception e)
                     {
@@ -76,7 +89,7 @@ namespace ReceiverMeow
                     Log.Info("命令", "可用命令列表：");
                     foreach (var item in commandList)
                     {
-                        Log.Info($"{item.Key}", $"{item.Value.explain}");
+                        Log.Info($"{item.Key.ToLower()}", $"\t{item.Value.explain}");
                     }
                 }
                 else

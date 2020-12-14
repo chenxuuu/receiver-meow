@@ -52,5 +52,5 @@ jobs:
 
       - uses: actions/upload-artifact@v2
         with:
-          name: ${{ matrix.dotnetos }}-${{ matrix.dotnetarch }}
+          name: ReceiverMeow-${{ matrix.dotnetos }}-${{ matrix.dotnetarch }}
           path: ReceiverMeow/pkg/

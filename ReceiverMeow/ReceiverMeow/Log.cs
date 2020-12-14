@@ -9,19 +9,50 @@ namespace ReceiverMeow
     class Log
     {
         private static string GetTime() => DateTime.Now.ToString("[yyyy-MM-dd HH:mm:ss:ffff]");
+        /// <summary>
+        /// 显示VT100格式控制编码
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns></returns>
+        private static string v(int n) => Tools.Setting.Colorful ? $"\x1B[{n}m" : $"";
+
+        /// <summary>
+        /// debug日志，release模式下不显示
+        /// </summary>
+        /// <param name="m">模块名</param>
+        /// <param name="s">日志信息</param>
         public static void Debug(string m, string s)
         {
 #if DEBUG
-            Console.WriteLine($"\x1B[0m{GetTime()}\x1B[30m\x1B[47m[调试]\x1B[0m[{m}]{s}\x1B[0m");
+            Console.WriteLine($"{v(0)}{GetTime()}{v(30)}{v(47)}[调试]{v(0)}[{m}]{s}{v(0)}");
 #endif
         }
+
+        /// <summary>
+        /// 显示信息
+        /// </summary>
+        /// <param name="m">模块名</param>
+        /// <param name="s">日志信息</param>
         public static void Info(string m, string s) =>
-            Console.WriteLine($"\x1B[0m{GetTime()}\x1B[42m\x1B[37m[信息]\x1B[0m\x1B[32m\x1B[1m[{m}]{s}\x1B[0m");
+            Console.WriteLine($"{v(0)}{GetTime()}{v(42)}{v(37)}[信息]{v(0)}{v(32)}{v(1)}[{m}]{s}{v(0)}");
+
+        /// <summary>
+        /// 显示警告
+        /// </summary>
+        /// <param name="m">模块名</param>
+        /// <param name="s">日志信息</param>
         public static void Warn(string m, string s) =>
-            Console.WriteLine($"\x1B[0m{GetTime()}\x1B[43m\x1B[37m[警告]\x1B[0m\x1B[33m\x1B[1m[{m}]{s}\x1B[0m");
+            Console.WriteLine($"{v(0)}{GetTime()}{v(43)}{v(37)}[警告]{v(0)}{v(33)}{v(1)}[{m}]{s}{v(0)}");
+
+        /// <summary>
+        /// 显示错误，并退出软件
+        /// 一般只用在开头启动时，软件运行中别用
+        /// </summary>
+        /// <param name="m">模块名</param>
+        /// <param name="s">日志信息</param>
         public static void Error(string m, string s)
         {
-            Console.WriteLine($"\x1B[0m{GetTime()}\x1B[41m\x1B[37m[错误]\x1B[0m\x1B[31m\x1B[1m[{m}]{s}\x1B[0m");
+            Console.WriteLine($"{v(0)}{GetTime()}{v(41)}{v(37)}[错误]{v(0)}{v(31)}{v(1)}[{m}]{s}{v(0)}");
             Environment.Exit(-1);
         }
     }
