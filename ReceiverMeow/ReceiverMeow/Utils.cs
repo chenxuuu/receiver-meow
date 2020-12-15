@@ -1,3 +1,4 @@
+using LibGit2Sharp;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -50,10 +51,74 @@ namespace ReceiverMeow
 如有需稳定运行，请使用正式版
 **********************************");
 
+
             Setting.MqttEnable = Setting.MqttEnable;
             Setting.TcpServerEnable = Setting.TcpServerEnable;
+            
+            //更新脚本
+            CheckLuaUpdate();
+            //lua启动事件
+            ReloadLua();
         }
 
+        /// <summary>
+        /// 重载所有lua虚拟机
+        /// </summary>
+        public static void ReloadLua()
+        {
+            LuaEnv.LuaStates.Clear();
+            LuaEnv.LuaStates.Run("main", "AppEnable", new { });
+        }
+
+        /// <summary>
+        /// 更新脚本
+        /// </summary>
+        public static void CheckLuaUpdate()
+        {
+            var gitPath = $"{Path}lua/";
+            var git = "https://gitee.com/chenxuuu/receiver-meow-lua.git";
+            if (!Directory.Exists(gitPath))
+            {
+                Log.Warn("初始化Lua脚本", "没有检测到Lua脚本文件夹，即将下载最新脚本");
+                try
+                {
+                    Log.Info("初始化Lua脚本", "正在获取脚本，请稍后");
+                    Repository.Clone(git, gitPath);
+                    Log.Info("初始化Lua脚本", "更新完成！可以开始用了");
+                }
+                catch (Exception ee)
+                {
+                    Log.Error("初始化Lua脚本", $"更新脚本文件失败，错误信息：{ee.Message}");
+                }
+            }
+            else
+            {
+                Log.Info("更新Lua脚本", "正在检查Lua脚本是否有更新。。。");
+                if (Repository.IsValid($"{Path}lua/"))
+                {
+                    Log.Info("更新Lua脚本", "正在尝试更新脚本，请稍后");
+                    try
+                    {
+                        var options = new LibGit2Sharp.PullOptions();
+                        options.FetchOptions = new FetchOptions();
+                        var signature = new LibGit2Sharp.Signature(
+                            new Identity("MERGE_USER_NAME", "MERGE_USER_EMAIL"), DateTimeOffset.Now);
+                        using var repo = new Repository(gitPath);
+                        Commands.Pull(repo, signature, options);
+                        Log.Info("更新Lua脚本", "更新操作执行完毕");
+                    }
+                    catch(Exception e)
+                    {
+                        Log.Warn("更新Lua脚本", $"拉取最新脚本代码失败，错误原因：\n{e.Message}");
+                    }
+                }
+                else
+                {
+                    Log.Warn("更新Lua脚本",
+                        "检测不到Git目录结构，如果你是自己写的脚本，请忽略该信息。如果你想恢复到默认脚本，请删除lua文件夹后重启软件");
+                }
+            }
+        }
 
         ///  <summary>
         /// 获取指定驱动器的剩余空间总大小(单位为MB)

@@ -46,7 +46,7 @@ namespace ReceiverMeow
                 ["rua".ToUpper()] = new CommandContain
                 {
                     explain = "重载所有lua虚拟机",
-                    run = (s) => LuaEnv.LuaStates.Clear()
+                    run = (s) => Utils.ReloadLua()
                 },
                 ["xml".ToUpper()] = new CommandContain
                 {
