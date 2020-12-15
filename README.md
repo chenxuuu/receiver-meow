@@ -26,9 +26,9 @@
 
 自从插件的`V2.0.0`版本开始，默认脚本仓库与主仓库分离，Lua代码可在此仓库查看：[receiver-meow-lua](https://github.com/chenxuuu/receiver-meow-lua)
 
-## lua接口
+## 使用Lua进行开发
 
-调用C#接口，请参考[Nlua](https://github.com/NLua/NLua/)关于`import`函数的使用说明
+与机器人相关的，收发消息与各种事件的处理接口、脚本运行逻辑、各接口调用方法，请参阅[develop.md](develop.md)的描述
 
 ## Task架构介绍
 
@@ -63,9 +63,13 @@ New message|           | Name not exist |                    |
 
 ## 食用
 
-请等待工程重写完毕再使用。
+先去下载[go-cqhttp](https://github.com/Mrs4s/go-cqhttp/releases)配置好qq和密码跑起来
 
-~~向机器人发送`帮助`或`help`加上页数，可以查看指令说明~~
+下载接待喵：[releases](https://github.com/chenxuuu/receiver-meow/releases)
+
+运行后，输入`?`即可查看帮助
+
+默认脚本可以在群内输入`帮助`查看自带功能
 
 脚本的功能解释请见[Lua脚本项目的Readme](https://github.com/chenxuuu/receiver-meow-lua)
 

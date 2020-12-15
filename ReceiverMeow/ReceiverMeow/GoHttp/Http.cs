@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -21,6 +23,12 @@ namespace ReceiverMeow.GoHttp
             Log.Info(module, $"已设置HTTP接口 http://{h}:{p}");
         }
 
+        /// <summary>
+        /// 发送数据
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="json"></param>
+        /// <returns></returns>
         public static string Send(string path, string json)
         {
             Log.Debug(module, $"发送{json}到{path}");
@@ -33,6 +41,17 @@ namespace ReceiverMeow.GoHttp
             if(response.StatusCode != System.Net.HttpStatusCode.OK)
                 Log.Warn(module, $"HTTP返回状态码：{(int)response.StatusCode}");
             return Encoding.Default.GetString(response.RawBytes);
+        }
+
+        /// <summary>
+        /// 获取json
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="json"></param>
+        /// <returns></returns>
+        public static JObject fetch(string path, string json)
+        {
+            return JsonConvert.DeserializeObject<JObject>(Send(path, json));
         }
     }
 }

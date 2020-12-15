@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,7 +35,16 @@ namespace ReceiverMeow.GoHttp
 
         private static void Ws_OnMessage(object sender, MessageEventArgs e)
         {
-            Log.Debug(module, $"收到消息：{Encoding.Default.GetString(e.RawData)}");
+            var j = Encoding.Default.GetString(e.RawData);
+            Log.Debug(module, $"收到消息：{j}");
+            try
+            {
+                Events(j);
+            }
+            catch(Exception ee)
+            {
+                Log.Warn(module, $"处理事件报错：{ee.Message}");
+            }
         }
 
         private static void Ws_OnOpen(object sender, EventArgs e)
@@ -77,6 +88,186 @@ namespace ReceiverMeow.GoHttp
                 return false;
             }
             return true;
+        }
+
+        /// <summary>
+        /// 分发消息到lua虚拟机
+        /// </summary>
+        /// <param name="j"></param>
+        public static void Events(string j)
+        {
+            JObject o = JsonConvert.DeserializeObject<JObject>(j);
+            switch((string)o["post_type"])
+            {
+                case "message":
+                    if ((string)o["message_type"] == "group")
+                    {
+                        //群消息
+                        LuaEnv.LuaStates.Run(o["group_id"].ToString(), "GroupMessage", new
+                        {
+                            group = o["group_id"],
+                            qq = o["user_id"],
+                            msg = o["message"],
+                            id = o["message_id"],
+                            raw = o
+                        });
+                    }
+                    else if ((string)o["message_type"] == "private")
+                    {
+                        //私聊
+                        LuaEnv.LuaStates.Run("private", "PrivateMessage", new
+                        {
+                            from = o["sub_type"],
+                            qq = o["user_id"],
+                            msg = o["message"],
+                            id = o["message_id"],
+                            raw = o
+                        });
+                    }
+                    break;
+                case "notice":
+                    switch ((string)o["notice_type"])
+                    {
+                        case "group_upload"://群文件上传
+                            LuaEnv.LuaStates.Run(o["group_id"].ToString(), "GroupFileUpload", new
+                            {
+                                group = o["group_id"],
+                                qq = o["user_id"],
+                                file = o["file"],
+                                raw = o
+                            });
+                            break;
+                        case "group_admin"://管理员变动
+                            LuaEnv.LuaStates.Run(
+                                o["group_id"].ToString(),
+                                (string)o["sub_type"] == "set" ? "GroupManageSet" : "GroupManageRemove", 
+                                new
+                                {
+                                    group = o["group_id"],
+                                    qq = o["user_id"],
+                                    raw = o
+                                });
+                            break;
+                        case "group_decrease"://群成员增加
+                            LuaEnv.LuaStates.Run(
+                                o["group_id"].ToString(),
+                                (string)o["sub_type"] == "leave" ? "GroupMemberExit" : "GroupMemberRemove",
+                                new
+                                {
+                                    group = o["group_id"],
+                                    qq = o["user_id"],
+                                    fromqq = o["operator_id"],
+                                    raw = o
+                                });
+                            break;
+                        case "group_increase"://群成员减少
+                            LuaEnv.LuaStates.Run(
+                                o["group_id"].ToString(),
+                                (string)o["sub_type"] == "approve" ? "GroupMemberPass" : "GroupMemberInvite",
+                                new
+                                {
+                                    group = o["group_id"],
+                                    qq = o["user_id"],
+                                    fromqq = o["operator_id"],
+                                    raw = o
+                                });
+                            break;
+                        case "group_ban"://禁言
+                            LuaEnv.LuaStates.Run(
+                                o["group_id"].ToString(),
+                                (string)o["sub_type"] == "ban" ? "GroupBanSpeak" : "GroupUnBanSpeak",
+                                new
+                                {
+                                    fromqq = o["operator_id"],
+                                    group = o["group_id"],
+                                    banqq = o["user_id"],
+                                    time = o["duration"],
+                                    raw = o
+                                });
+                            break;
+                        case "friend_add"://好友增加
+                            LuaEnv.LuaStates.Run("main", "FriendAdd", new
+                            {
+                                qq = o["user_id"],
+                                raw = o
+                            });
+                            break;
+                        case "group_recall"://群消息撤回
+                            LuaEnv.LuaStates.Run(o["group_id"].ToString(), "GroupRecall", new
+                            {
+                                group = o["group_id"],
+                                qq = o["user_id"],
+                                fromqq = o["operator_id"],
+                                id = o["message_id"],
+                                raw = o
+                            });
+                            break;
+                        case "friend_recall"://好友消息撤回
+                            LuaEnv.LuaStates.Run("private", "FriendRecall", new
+                            {
+                                qq = o["user_id"],
+                                id = o["message_id"],
+                                raw = o
+                            });
+                            break;
+                        case "poke"://群内戳一戳
+                            LuaEnv.LuaStates.Run(o["group_id"].ToString(), "Poke", new
+                            {
+                                group = o["group_id"],
+                                qq = o["target_id"],
+                                fromqq = o["user_id"],
+                                raw = o
+                            });
+                            break;
+                        case "lucky_king"://群红包运气王
+                            LuaEnv.LuaStates.Run(o["group_id"].ToString(), "LuckyKing", new
+                            {
+                                group = o["group_id"],
+                                qq = o["target_id"],
+                                fromqq = o["user_id"],
+                                raw = o
+                            });
+                            break;
+                        case "honor"://群成员荣誉变更
+                            LuaEnv.LuaStates.Run(o["group_id"].ToString(), "Honor", new
+                            {
+                                group = o["group_id"],
+                                honor = o["honor_type"],
+                                qq = o["user_id"],
+                                raw = o
+                            });
+                            break;
+                    }
+                    break;
+                case "request":
+                    if ((string)o["request_type"] == "group")
+                    {
+                        //加群请求/邀请
+                        LuaEnv.LuaStates.Run(
+                            o["group_id"].ToString(),
+                            (string)o["sub_type"] == "add" ? "GroupAddRequest" : "GroupAddInvite",
+                            new
+                            {
+                                group = o["group_id"],
+                                qq = o["user_id"],
+                                msg = o["comment"],
+                                tag = o["flag"],
+                                raw = o
+                            });
+                    }
+                    else if ((string)o["request_type"] == "friend")
+                    {
+                        //加好友请求
+                        LuaEnv.LuaStates.Run("private", "FriendAddRequest", new
+                        {
+                            qq = o["user_id"],
+                            msg = o["comment"],
+                            tag = o["flag"],
+                            raw = o
+                        });
+                    }
+                    break;
+            }
         }
     }
 }

@@ -13,6 +13,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Utils.cs~RF14759a2.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="LibGit2Sharp" Version="0.26.2" />
     <PackageReference Include="LuaTask" Version="1.0.7" />
     <PackageReference Include="MQTTnet" Version="2.8.5" />
