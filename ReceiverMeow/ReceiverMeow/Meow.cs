@@ -9,7 +9,7 @@ namespace ReceiverMeow
     {
         static void Main(string[] args)
         {
-            Tools.Initial();
+            Utils.Initial();
 
             //处理命令行
             string wsUrl = "127.0.0.1";
@@ -46,15 +46,83 @@ namespace ReceiverMeow
                 ["rua".ToUpper()] = new CommandContain
                 {
                     explain = "重载所有lua虚拟机",
-                    run = (s) => { }
+                    run = (s) => LuaEnv.LuaStates.Clear()
                 },
                 ["color".ToUpper()] = new CommandContain
                 {
                     explain = "切换终端颜色显示。如果显示不正常，可以更改此选项关闭颜色",
                     run = (s) =>
                     {
-                        Tools.Setting.Colorful = !Tools.Setting.Colorful;
-                        Log.Info($"命令", $"彩色终端状态：{Tools.Setting.Colorful}");
+                        Utils.Setting.Colorful = !Utils.Setting.Colorful;
+                        Log.Info($"命令", $"彩色终端状态：{Utils.Setting.Colorful}");
+                    }
+                },
+                ["mqtt".ToUpper()] = new CommandContain
+                {
+                    explain = "查看/更改mqtt配置",
+                    run = (s) =>
+                    {
+                        if(s.IndexOf(" ") > 0)
+                        {
+                            var t = s.Split(' ');
+                            if(t.Length >= 3)
+                            {
+                                switch (t[1].ToUpper())
+                                {
+                                    case "ENABLE":
+                                        Utils.Setting.MqttEnable = t[2].ToUpper() == "TRUE";
+                                        break;
+                                    case "HOST":
+                                        Utils.Setting.MqttBroker = t[2];
+                                        break;
+                                    case "PORT":
+                                        int p;
+                                        var r = int.TryParse(t[2], out p);
+                                        if(r)
+                                            Utils.Setting.MqttPort = p;
+                                        break;
+                                    case "USER":
+                                        Utils.Setting.MqttUser = t[2];
+                                        break;
+                                    case "PASSWORD":
+                                        Utils.Setting.MqttPassword = t[2];
+                                        break;
+                                    case "TLS":
+                                        Utils.Setting.MqttTLS = t[2].ToUpper() == "TRUE";
+                                        break;
+                                    case "KEEPALIVE":
+                                        int pa;
+                                        var ra = int.TryParse(t[2], out pa);
+                                        if (ra)
+                                            Utils.Setting.KeepAlive = pa;
+                                        break;
+                                    default:
+                                        Log.Info($"MQTT", "命令格式不正确，输入mqtt命令查询命令用法");
+                                        break;
+                                }
+                            }
+                            else
+                            {
+                                Log.Info($"MQTT", "命令格式不正确，输入mqtt命令查询命令用法");
+                            }
+                        }
+                        else
+                        {
+                            Log.Info($"MQTT", @$"↓
+当前配置信息如下：
+mqtt功能启用状态：{Utils.Setting.MqttEnable}
+服务器地址：{Utils.Setting.MqttBroker}
+服务器端口：{Utils.Setting.MqttPort}
+用户名：{Utils.Setting.MqttUser}
+密码：{Utils.Setting.MqttPassword}
+启用tls：{Utils.Setting.MqttTLS}
+client ID：{Utils.Setting.ClientID}
+心跳时长：{Utils.Setting.KeepAlive}秒
+
+更改配置信息：mqtt <enable,host,port,user,password,tls,clientid,keepalive> <value>
+注意：更改完配置后，手动开关mqtt服务器才会生效
+");
+                        }
                     }
                 },
 #if DEBUG
@@ -93,7 +161,7 @@ namespace ReceiverMeow
                     try
                     {
                         commandList[cp.ToUpper()].run(command);
-                        Log.Info($"命令", $"执行完毕");
+                        Log.Info($"命令", $"{command}执行完毕");
                     }
                     catch (Exception e)
                     {

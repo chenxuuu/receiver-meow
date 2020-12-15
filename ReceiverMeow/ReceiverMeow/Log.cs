@@ -14,7 +14,7 @@ namespace ReceiverMeow
         /// </summary>
         /// <param name="n"></param>
         /// <returns></returns>
-        private static string v(int n) => Tools.Setting.Colorful ? $"\x1B[{n}m" : $"";
+        private static string v(int n) => Utils.Setting.Colorful ? $"\x1B[{n}m" : $"";
 
         /// <summary>
         /// debug日志，release模式下不显示
