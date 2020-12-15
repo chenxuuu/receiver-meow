@@ -48,6 +48,11 @@ namespace ReceiverMeow
                     explain = "重载所有lua虚拟机",
                     run = (s) => LuaEnv.LuaStates.Clear()
                 },
+                ["xml".ToUpper()] = new CommandContain
+                {
+                    explain = "清除XML数据缓存，重新读取XML文件",
+                    run = (s) => LuaEnv.XmlApi.Clear()
+                },
                 ["color".ToUpper()] = new CommandContain
                 {
                     explain = "切换终端颜色显示。如果显示不正常，可以更改此选项关闭颜色",
@@ -109,7 +114,7 @@ namespace ReceiverMeow
                         else
                         {
                             Log.Info($"MQTT", @$"↓
-当前配置信息如下：
+当前MQTT配置信息如下：
 mqtt功能启用状态：{Utils.Setting.MqttEnable}
 服务器地址：{Utils.Setting.MqttBroker}
 服务器端口：{Utils.Setting.MqttPort}
@@ -121,6 +126,50 @@ client ID：{Utils.Setting.ClientID}
 
 更改配置信息：mqtt <enable,host,port,user,password,tls,clientid,keepalive> <value>
 注意：更改完配置后，手动开关mqtt服务器才会生效
+");
+                        }
+                    }
+                },
+                ["tcp".ToUpper()] = new CommandContain
+                {
+                    explain = "查看/更改tcp配置",
+                    run = (s) =>
+                    {
+                        if (s.IndexOf(" ") > 0)
+                        {
+                            var t = s.Split(' ');
+                            if (t.Length >= 3)
+                            {
+                                switch (t[1].ToUpper())
+                                {
+                                    case "ENABLE":
+                                        Utils.Setting.TcpServerEnable = t[2].ToUpper() == "TRUE";
+                                        break;
+                                    case "PORT":
+                                        int p;
+                                        var r = int.TryParse(t[2], out p);
+                                        if (r)
+                                            Utils.Setting.TcpServerPort = p;
+                                        break;
+                                    default:
+                                        Log.Info($"TCP", "命令格式不正确，输入tcp命令查询命令用法");
+                                        break;
+                                }
+                            }
+                            else
+                            {
+                                Log.Info($"TCP", "命令格式不正确，输入mqtt命令查询命令用法");
+                            }
+                        }
+                        else
+                        {
+                            Log.Info($"TCP", @$"↓
+当前TCP服务端配置信息如下：
+启用状态：{Utils.Setting.TcpServerEnable}
+端口：{Utils.Setting.TcpServerPort}
+
+更改配置信息：mqtt <enable,port> <value>
+注意：更改完配置后，手动开关TCP服务器才会生效
 ");
                         }
                     }

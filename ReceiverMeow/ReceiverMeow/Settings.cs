@@ -19,6 +19,8 @@ namespace ReceiverMeow
         private bool mqttTLS = false;
         private string clientID = Guid.NewGuid().ToString();
         private int keepAlive = 60;
+        private bool tcpServerEnable = false;
+        private int tcpServerPort = 23333;
 
 
         /// <summary>
@@ -150,6 +152,38 @@ namespace ReceiverMeow
             set
             {
                 keepAlive = value;
+                Save();
+            }
+        }
+
+        /// <summary>
+        /// 是否自动开启tcp服务端
+        /// </summary>
+        public bool TcpServerEnable
+        {
+            get => tcpServerEnable;
+            set
+            {
+                if (value)
+                {
+                    LuaEnv.TcpServer.Start();
+                }
+                else
+                {
+                    LuaEnv.TcpServer.Stop();
+                }
+                Save();
+            }
+        }
+        /// <summary>
+        /// tcp服务端端口号
+        /// </summary>
+        public int TcpServerPort
+        {
+            get => tcpServerPort;
+            set
+            {
+                tcpServerPort = value;
                 Save();
             }
         }
