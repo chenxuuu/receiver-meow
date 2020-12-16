@@ -46,7 +46,7 @@ jobs:
           DOTNETARCH: ${{ matrix.dotnetarch }}
         run: |
           cd ReceiverMeow
-          dotnet publish -r $DOTNETOS-$DOTNETARCH -p:PublishSingleFile=true -p:PublishTrimmed=true --self-contained true
+          dotnet publish -r $DOTNETOS-$DOTNETARCH -p:PublishSingleFile=true --self-contained true
           mkdir pkg
           mv ReceiverMeow/bin/Debug/net5.0/$DOTNETOS-$DOTNETARCH/publish/* pkg/
 
