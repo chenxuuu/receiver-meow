@@ -1,5 +1,6 @@
 using LibGit2Sharp;
 using Newtonsoft.Json;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -47,8 +48,8 @@ namespace ReceiverMeow
             Log.Info("启动", $"接待喵 {Version} 版本正在启动中");
             Log.Debug("", @"
 **************提示*****************
-该版本为测试版本，可能会有无法预料的行为
-如有需稳定运行，请使用正式版
+该版本为测试版本，会持续输出详细日志
+如果觉得输出太多太烦，请使用正式版
 **********************************");
 
 
@@ -185,5 +186,73 @@ namespace ReceiverMeow
         {
             return Convert.ToBase64String(Encoding.UTF8.GetBytes(s));
         }
+
+        /// <summary>
+        /// http get接口
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="para"></param>
+        /// <param name="timeout"></param>
+        /// <param name="cookie"></param>
+        /// <returns></returns>
+        public static string HttpGet(string url,string para = "",long timeout = 5000,string cookie = "")
+        {
+            var client = new RestClient();
+            if (!string.IsNullOrEmpty(para))
+                url = $"{url}?{para}";//直接把参数拼后面
+            client.BaseUrl = new Uri(url);
+            var request = new RestRequest(Method.GET);
+            request.Timeout = (int)timeout;
+            if (!string.IsNullOrEmpty(cookie))
+                request.AddHeader("cookie", cookie);
+            var response = client.Execute(request);
+            var encode = "UTF-8";//编码
+            foreach (var p in response.Headers)
+            {
+                if(p.Name.ToLower() == "content-type" && p.Value.ToString().ToLower().IndexOf("charset=") >= 0)
+                {
+                    var tmp = response.ContentType.Split(';').Select(s => s.Split('='));
+                    var arr = tmp.LastOrDefault(t => t.Length == 2 && t[0].Trim().ToLower() == "charset");
+                    if (arr != null)
+                        encode = arr[1].Trim();//如果网站有写编码
+                }
+            }
+            return Encoding.GetEncoding(encode).GetString(response.RawBytes);
+        }
+
+        /// <summary>
+        /// http post
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="para"></param>
+        /// <param name="timeout"></param>
+        /// <param name="cookie"></param>
+        /// <param name="contentType"></param>
+        /// <returns></returns>
+        public static string HttpPost(string url,string para = "",long timeout = 5000,
+            string cookie = "", string contentType = "application/x-www-form-urlencoded")
+        {
+            var client = new RestClient();
+            client.BaseUrl = new Uri(url);
+            var request = new RestRequest(Method.POST);
+            request.Timeout = (int)timeout;
+            if (!string.IsNullOrEmpty(cookie))
+                request.AddHeader("cookie", cookie);
+            request.AddParameter(contentType, para, ParameterType.RequestBody);
+            var response = client.Execute(request);
+            var encode = "UTF-8";//编码
+            foreach (var p in response.Headers)
+            {
+                if(p.Name.ToLower() == "content-type" && p.Value.ToString().ToLower().IndexOf("charset=") >= 0)
+                {
+                    var tmp = response.ContentType.Split(';').Select(s => s.Split('='));
+                    var arr = tmp.LastOrDefault(t => t.Length == 2 && t[0].Trim().ToLower() == "charset");
+                    if (arr != null)
+                        encode = arr[1].Trim();//如果网站有写编码
+                }
+            }
+            return Encoding.GetEncoding(encode).GetString(response.RawBytes);
+        }
+
     }
 }

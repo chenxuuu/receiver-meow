@@ -40,7 +40,7 @@ namespace ReceiverMeow.GoHttp
             
             if(response.StatusCode != System.Net.HttpStatusCode.OK)
                 Log.Warn(module, $"HTTP返回状态码：{(int)response.StatusCode}");
-            return Encoding.Default.GetString(response.RawBytes);
+            return Encoding.UTF8.GetString(response.RawBytes);
         }
 
         /// <summary>

@@ -105,10 +105,10 @@ namespace ReceiverMeow.GoHttp
                         //群消息
                         LuaEnv.LuaStates.Run(o["group_id"].ToString(), "GroupMessage", new
                         {
-                            group = o["group_id"],
-                            qq = o["user_id"],
-                            msg = o["message"],
-                            id = o["message_id"],
+                            group = (long)o["group_id"],
+                            qq = (long)o["user_id"],
+                            msg = (string)o["message"],
+                            id = (long)o["message_id"],
                             raw = o
                         });
                     }
@@ -117,10 +117,10 @@ namespace ReceiverMeow.GoHttp
                         //私聊
                         LuaEnv.LuaStates.Run("private", "PrivateMessage", new
                         {
-                            from = o["sub_type"],
-                            qq = o["user_id"],
-                            msg = o["message"],
-                            id = o["message_id"],
+                            from = (long)o["sub_type"],
+                            qq = (long)o["user_id"],
+                            msg = (string)o["message"],
+                            id = (long)o["message_id"],
                             raw = o
                         });
                     }
@@ -131,9 +131,9 @@ namespace ReceiverMeow.GoHttp
                         case "group_upload"://群文件上传
                             LuaEnv.LuaStates.Run(o["group_id"].ToString(), "GroupFileUpload", new
                             {
-                                group = o["group_id"],
-                                qq = o["user_id"],
-                                file = o["file"],
+                                group = (long)o["group_id"],
+                                qq = (long)o["user_id"],
+                                file = (string)o["file"],
                                 raw = o
                             });
                             break;
@@ -143,8 +143,8 @@ namespace ReceiverMeow.GoHttp
                                 (string)o["sub_type"] == "set" ? "GroupManageSet" : "GroupManageRemove", 
                                 new
                                 {
-                                    group = o["group_id"],
-                                    qq = o["user_id"],
+                                    group = (long)o["group_id"],
+                                    qq = (long)o["user_id"],
                                     raw = o
                                 });
                             break;
@@ -154,9 +154,9 @@ namespace ReceiverMeow.GoHttp
                                 (string)o["sub_type"] == "leave" ? "GroupMemberExit" : "GroupMemberRemove",
                                 new
                                 {
-                                    group = o["group_id"],
-                                    qq = o["user_id"],
-                                    fromqq = o["operator_id"],
+                                    group = (long)o["group_id"],
+                                    qq = (long)o["user_id"],
+                                    fromqq = (long)o["operator_id"],
                                     raw = o
                                 });
                             break;
@@ -166,9 +166,9 @@ namespace ReceiverMeow.GoHttp
                                 (string)o["sub_type"] == "approve" ? "GroupMemberPass" : "GroupMemberInvite",
                                 new
                                 {
-                                    group = o["group_id"],
-                                    qq = o["user_id"],
-                                    fromqq = o["operator_id"],
+                                    group = (long)o["group_id"],
+                                    qq = (long)o["user_id"],
+                                    fromqq = (long)o["operator_id"],
                                     raw = o
                                 });
                             break;
@@ -178,62 +178,62 @@ namespace ReceiverMeow.GoHttp
                                 (string)o["sub_type"] == "ban" ? "GroupBanSpeak" : "GroupUnBanSpeak",
                                 new
                                 {
-                                    fromqq = o["operator_id"],
-                                    group = o["group_id"],
-                                    banqq = o["user_id"],
-                                    time = o["duration"],
+                                    fromqq = (long)o["operator_id"],
+                                    group = (long)o["group_id"],
+                                    banqq = (long)o["user_id"],
+                                    time = (long)o["duration"],
                                     raw = o
                                 });
                             break;
                         case "friend_add"://好友增加
                             LuaEnv.LuaStates.Run("main", "FriendAdd", new
                             {
-                                qq = o["user_id"],
+                                qq = (long)o["user_id"],
                                 raw = o
                             });
                             break;
                         case "group_recall"://群消息撤回
                             LuaEnv.LuaStates.Run(o["group_id"].ToString(), "GroupRecall", new
                             {
-                                group = o["group_id"],
-                                qq = o["user_id"],
-                                fromqq = o["operator_id"],
-                                id = o["message_id"],
+                                group = (long)o["group_id"],
+                                qq = (long)o["user_id"],
+                                fromqq = (long)o["operator_id"],
+                                id = (long)o["message_id"],
                                 raw = o
                             });
                             break;
                         case "friend_recall"://好友消息撤回
                             LuaEnv.LuaStates.Run("private", "FriendRecall", new
                             {
-                                qq = o["user_id"],
-                                id = o["message_id"],
+                                qq = (long)o["user_id"],
+                                id = (long)o["message_id"],
                                 raw = o
                             });
                             break;
                         case "poke"://群内戳一戳
                             LuaEnv.LuaStates.Run(o["group_id"].ToString(), "Poke", new
                             {
-                                group = o["group_id"],
-                                qq = o["target_id"],
-                                fromqq = o["user_id"],
+                                group = (long)o["group_id"],
+                                qq = (long)o["target_id"],
+                                fromqq = (long)o["user_id"],
                                 raw = o
                             });
                             break;
                         case "lucky_king"://群红包运气王
                             LuaEnv.LuaStates.Run(o["group_id"].ToString(), "LuckyKing", new
                             {
-                                group = o["group_id"],
-                                qq = o["target_id"],
-                                fromqq = o["user_id"],
+                                group = (long)o["group_id"],
+                                qq = (long)o["target_id"],
+                                fromqq = (long)o["user_id"],
                                 raw = o
                             });
                             break;
                         case "honor"://群成员荣誉变更
                             LuaEnv.LuaStates.Run(o["group_id"].ToString(), "Honor", new
                             {
-                                group = o["group_id"],
-                                honor = o["honor_type"],
-                                qq = o["user_id"],
+                                group = (long)o["group_id"],
+                                honor = (string)o["honor_type"],
+                                qq = (long)o["user_id"],
                                 raw = o
                             });
                             break;
@@ -244,25 +244,25 @@ namespace ReceiverMeow.GoHttp
                     {
                         //加群请求/邀请
                         LuaEnv.LuaStates.Run(
-                            o["group_id"].ToString(),
+                            "main",
                             (string)o["sub_type"] == "add" ? "GroupAddRequest" : "GroupAddInvite",
                             new
                             {
-                                group = o["group_id"],
-                                qq = o["user_id"],
-                                msg = o["comment"],
-                                tag = o["flag"],
+                                group = (long)o["group_id"],
+                                qq = (long)o["user_id"],
+                                msg = (string)o["comment"],
+                                tag = (string)o["flag"],
                                 raw = o
                             });
                     }
                     else if ((string)o["request_type"] == "friend")
                     {
                         //加好友请求
-                        LuaEnv.LuaStates.Run("private", "FriendAddRequest", new
+                        LuaEnv.LuaStates.Run("main", "FriendAddRequest", new
                         {
-                            qq = o["user_id"],
-                            msg = o["comment"],
-                            tag = o["flag"],
+                            qq = (long)o["user_id"],
+                            msg = (string)o["comment"],
+                            tag = (string)o["flag"],
                             raw = o
                         });
                     }

@@ -21,6 +21,7 @@ namespace ReceiverMeow
         private int keepAlive = 60;
         private bool tcpServerEnable = false;
         private int tcpServerPort = 23333;
+        private long adminQQ = 0;
 
 
         /// <summary>
@@ -184,6 +185,18 @@ namespace ReceiverMeow
             set
             {
                 tcpServerPort = value;
+                Save();
+            }
+        }
+        /// <summary>
+        /// tcp服务端端口号
+        /// </summary>
+        public long AdminQQ
+        {
+            get => adminQQ;
+            set
+            {
+                adminQQ = value;
                 Save();
             }
         }

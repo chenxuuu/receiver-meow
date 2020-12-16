@@ -9,6 +9,7 @@ namespace ReceiverMeow
     {
         static void Main(string[] args)
         {
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             Utils.Initial();
 
             //处理命令行
@@ -43,6 +44,26 @@ namespace ReceiverMeow
             //命令列表
             Dictionary<string, CommandContain> commandList = new Dictionary<string, CommandContain>
             {
+                ["admin".ToUpper()] = new CommandContain
+                {
+                    explain = "设置/查看管理员qq号",
+                    run = (s) =>
+                    {
+                        if(s.Contains(" "))
+                        {
+                            long qq;
+                            if(long.TryParse(s.Substring(6),out qq))
+                            {
+                                Utils.Setting.AdminQQ = qq;
+                                Log.Info("管理员QQ", $"管理员QQ更改为{Utils.Setting.AdminQQ}");
+                            }
+                        }
+                        else
+                        {
+                            Log.Info("管理员QQ", $"当前管理员QQ为{Utils.Setting.AdminQQ}");
+                        }
+                    }
+                },
                 ["rua".ToUpper()] = new CommandContain
                 {
                     explain = "重载所有lua虚拟机",
