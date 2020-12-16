@@ -179,7 +179,7 @@ client ID：{Utils.Setting.ClientID}
                             }
                             else
                             {
-                                Log.Info($"TCP", "命令格式不正确，输入mqtt命令查询命令用法");
+                                Log.Info($"TCP", "命令格式不正确，输入tcp命令查询命令用法");
                             }
                         }
                         else
