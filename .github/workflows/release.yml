@@ -1,0 +1,71 @@
+name: release
+
+on:
+  push:
+    tags:
+      - '*'
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'warning'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # build and publish in parallel: linux-arm,linux-x64,win-x86,win-x64,win-arm,osx-x64
+        dotnetos: [linux, win, osx]
+        dotnetarch: [x86, x64, arm]
+        exclude:
+          - dotnetos: linux
+            dotnetarch: x86
+          - dotnetos: osx
+            dotnetarch: x86
+          - dotnetos: osx
+            dotnetarch: arm
+      fail-fast: true
+    steps:
+      - uses: actions/checkout@v1
+      - name: environment prepare
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y apt-transport-https
+          sudo apt-get update
+          sudo apt-get install -y dotnet-sdk-5.0
+          sudo apt-get install -y p7zip-full
+      - name: build
+        env:
+          DOTNETOS: ${{ matrix.dotnetos }}
+          DOTNETARCH: ${{ matrix.dotnetarch }}
+        run: |
+          cd ReceiverMeow
+          dotnet publish --configuration Release -r $DOTNETOS-$DOTNETARCH -p:PublishSingleFile=true --self-contained true
+          mkdir pkg
+          mv ReceiverMeow/bin/Release/net5.0/$DOTNETOS-$DOTNETARCH/publish/* pkg/
+          zip -r $DOTNETOS-$DOTNETARCH.zip pkg
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./ReceiverMeow/${{ matrix.dotnetos }}-${{ matrix.dotnetarch }}.zip
+          asset_name: ${{ matrix.dotnetos }}-${{ matrix.dotnetarch }}.zip
+          asset_content_type: application/zip
+
+
+
