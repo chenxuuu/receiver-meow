@@ -9,7 +9,7 @@
 
 ## 功能
 
-- 对接[go-cqhttp](https://github.com/Mrs4s/go-cqhttp)的websocket通讯协议
+- 对接[OneBot](https://github.com/howmanybots/onebot)的http/websocket通讯协议
 - 使用 .Net Core 5 开发，可跨平台
 - 消息处理逻辑，完全由lua实现
 - lua代码动态加载，重载虚拟机后，立即生效
@@ -63,11 +63,11 @@ New message|           | Name not exist |                    |
 
 ## 食用
 
-先去下载[go-cqhttp](https://github.com/Mrs4s/go-cqhttp/releases)配置好qq和密码跑起来
+先去下载一个支持[OneBot](https://github.com/howmanybots/onebot)的框架，推荐[go-cqhttp](https://github.com/Mrs4s/go-cqhttp/releases)。配置好qq和密码跑起来
 
 下载接待喵：[releases](https://github.com/chenxuuu/receiver-meow/releases)
 
-运行后，输入`?`即可查看帮助
+命令行可添加参数更改连接http、ws的端口，运行后，输入`?`即可查看帮助
 
 默认脚本可以在群内输入`帮助`查看自带功能
 
