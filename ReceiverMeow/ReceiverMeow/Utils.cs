@@ -1,6 +1,12 @@
 using LibGit2Sharp;
 using Newtonsoft.Json;
 using RestSharp;
+using SixLabors.Fonts;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Drawing.Processing;
+using SixLabors.ImageSharp.Formats.Jpeg;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -255,6 +261,122 @@ namespace ReceiverMeow
                 }
             }
             return Encoding.GetEncoding(encode).GetString(response.RawBytes);
+        }
+
+
+
+
+        /// <summary>
+        /// 获取图片对象
+        /// </summary>
+        /// <param name="width">宽度</param>
+        /// <param name="height">高度</param>
+        /// <returns>图片对象</returns>
+        public static Image GetBitmap(int width, int height)
+        {
+            Image bmp = new Image<Rgba32>(width, height);
+            return bmp;
+        }
+
+        /// <summary>
+        /// 摆放文字
+        /// </summary>
+        /// <param name="image">图片对象</param>
+        /// <param name="x">x坐标</param>
+        /// <param name="y">y坐标</param>
+        /// <param name="text">文字内容</param>
+        /// <param name="font">字体文件路径</param>
+        /// <param name="size">字体大小</param>
+        /// <param name="r">r</param>
+        /// <param name="g">g</param>
+        /// <param name="b">b</param>
+        /// <returns>图片对象</returns>
+        public static Image PutText(Image image, float xx, float yy, string text, string font = "", int size = 9,
+            int r = 0, int g = 0, int b = 0)
+        {
+            FontCollection collection = new FontCollection();
+            FontFamily family = collection.Install(font);
+            Font f = family.CreateFont(size, FontStyle.Regular);
+            image.Mutate(x => x.DrawText(text, f,
+                new Color(new Rgba32(r / 255f, g / 255f, b / 255f)), new PointF(xx, yy)));
+            return image;
+        }
+
+
+        /// <summary>
+        /// 填充矩形
+        /// </summary>
+        /// <param name="bmp">图片对象</param>
+        /// <param name="x">起始x坐标</param>
+        /// <param name="y">起始y坐标</param>
+        /// <param name="xx">结束x坐标</param>
+        /// <param name="yy">结束y坐标</param>
+        /// <param name="r">r</param>
+        /// <param name="g">g</param>
+        /// <param name="b">b</param>
+        /// <returns>图片对象</returns>
+        public static Image PutBlock(Image bmp, int x, int y, int xx, int yy,
+            int r = 0, int g = 0, int b = 0)
+        {
+            Color myColor = new Color(new Rgba32(r / 255f, g / 255f, b / 255f));
+            var rectangle = new RectangleF(x, y, xx - x + 1, yy - y + 1);
+
+            bmp.Mutate(i => i.Fill(myColor, rectangle));
+            return bmp;
+        }
+
+
+        /// <summary>
+        /// 摆放图片
+        /// </summary>
+        /// <param name="bmp">图片对象</param>
+        /// <param name="x">起始x坐标</param>
+        /// <param name="y">起始y坐标</param>
+        /// <param name="path">图片路径</param>
+        /// <param name="xx">摆放图片宽度</param>
+        /// <param name="yy">摆放图片高度</param>
+        /// <returns>图片对象</returns>
+        public static Image SetImage(Image bmp, int x, int y, string path, int xx = 0, int yy = 0)
+        {
+            if (!File.Exists(path))
+                return bmp;
+            using Image b = Image.Load(path);
+            
+            if (xx != 0 && yy != 0)
+            {
+                b.Mutate(i => i.Resize(xx,yy));
+                bmp.Mutate(i => i.DrawImage(b, new Point(x, y), 1));
+            }
+            else
+            {
+                bmp.Mutate(i => i.DrawImage(b, new Point(x, y), 1));
+            }
+            return bmp;
+        }
+
+
+        /// <summary>
+        /// 保存并获取图片路径
+        /// </summary>
+        /// <param name="bmp">图片对象</param>
+        /// <returns>图片路径</returns>
+        public static bool SaveImage(Image bmp, string path)
+        {
+            bmp.SaveAsJpeg(path);
+            bmp.Dispose();
+            return true;
+        }
+
+        /// <summary>
+        /// 保存并获取图片路径
+        /// </summary>
+        /// <param name="bmp">图片对象</param>
+        /// <returns>图片路径</returns>
+        public static string ImageBase64(Image bmp)
+        {
+            var s = bmp.ToBase64String(JpegFormat.Instance);
+            bmp.Dispose();
+            return s;
         }
 
     }
