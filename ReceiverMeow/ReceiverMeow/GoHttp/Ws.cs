@@ -117,7 +117,7 @@ namespace ReceiverMeow.GoHttp
                         //私聊
                         LuaEnv.LuaStates.Run("private", "PrivateMessage", new
                         {
-                            from = (long)o["sub_type"],
+                            from = (string)o["sub_type"],
                             qq = (long)o["user_id"],
                             msg = (string)o["message"],
                             id = (long)o["message_id"],
