@@ -165,6 +165,7 @@ namespace ReceiverMeow
             get => tcpServerEnable;
             set
             {
+                tcpServerEnable = value;
                 if (value)
                 {
                     LuaEnv.TcpServer.Start();

@@ -60,6 +60,9 @@ namespace ReceiverMeow
             CheckLuaUpdate();
             //lua启动事件
             ReloadLua();
+
+            //tcp队列定时发送检测
+            LuaEnv.TcpServer.SendList();
         }
 
         /// <summary>
