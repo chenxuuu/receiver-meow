@@ -1,9 +1,10 @@
 # receiver-meow
 
 [![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors)
-![Build status](https://github.com/chenxuuu/receiver-meow/workflows/build/badge.svg)
+[![Build status](https://github.com/chenxuuu/receiver-meow/workflows/build/badge.svg)](https://github.com/chenxuuu/receiver-meow/actions?query=workflow%3Abuild)
 [![MIT](https://img.shields.io/static/v1.svg?label=license&message=MIT&color=green)](https://github.com/chenxuuu/receiver-meow/blob/master/LICENSE)
 [![NLua](https://img.shields.io/badge/dependencies-NLua-green.svg)](https://github.com/NLua/NLua/)
+[![code-size](https://img.shields.io/github/languages/code-size/chenxuuu/receiver-meow.svg)](https://github.com/chenxuuu/receiver-meow/archive/master.zip)
 
 能运行`lua`脚本的接待喵qq机器人，欢迎加入交流群`931546484`
 
