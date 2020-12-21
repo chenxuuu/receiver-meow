@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -114,6 +115,19 @@ namespace ReceiverMeow
         {
             var gitPath = $"{Path}lua/";
             var git = "https://gitee.com/chenxuuu/receiver-meow-lua.git";
+
+            //arm架构的系统没法用LibGit2Sharp
+            if (RuntimeInformation.OSArchitecture.ToString().ToUpper().Contains("ARM"))
+            {
+                if (!Directory.Exists(gitPath))
+                    Log.Error("初始化Lua脚本", "该系统不支持自动更新脚本！\r\n" +
+                        "请手动执行下面的命令，初始化脚本后，再尝试运行：\r\n" +
+                        $"git clone {git}");
+                Log.Info("初始化Lua脚本", "该系统不支持自动更新脚本！如果想更新，请手动执行命令：\r\n" +
+                    $"git -C lua pull {git} lua");
+                return;
+            }
+
             if (!Directory.Exists(gitPath))
             {
                 Log.Warn("初始化Lua脚本", "没有检测到Lua脚本文件夹，即将下载最新脚本");
