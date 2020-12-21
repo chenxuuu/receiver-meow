@@ -49,7 +49,14 @@ jobs:
           mkdir osx-x64
           mv ReceiverMeow/bin/Release/net5.0/osx-x64/publish/* osx-x64/
           zip -r osx-x64.zip osx-x64
-
+          dotnet publish --configuration Release -r win-arm64 -p:PublishSingleFile=true --self-contained true
+          mkdir win-arm64
+          mv ReceiverMeow/bin/Release/net5.0/win-arm64/publish/* win-arm64/
+          zip -r win-arm64.zip win-arm64
+          dotnet publish --configuration Release -r linux-arm64 -p:PublishSingleFile=true --self-contained true
+          mkdir linux-arm64
+          mv ReceiverMeow/bin/Release/net5.0/linux-arm64/publish/* linux-arm64/
+          zip -r linux-arm64.zip linux-arm64
 
       - name: Create Release
         id: create_release
@@ -121,6 +128,25 @@ jobs:
           asset_path: ./ReceiverMeow/osx-x64.zip
           asset_name: osx-x64.zip
           asset_content_type: application/zip
-
+      - name: Upload Release Asset7
+        id: upload-release-asset7
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./ReceiverMeow/linux-arm64.zip
+          asset_name: linux-arm64.zip
+          asset_content_type: application/zip
+      - name: Upload Release Asset8
+        id: upload-release-asset8
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./ReceiverMeow/win-arm64.zip
+          asset_name: win-arm64.zip
+          asset_content_type: application/zip
 
 

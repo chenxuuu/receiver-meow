@@ -22,7 +22,7 @@ jobs:
       matrix:
         # build and publish in parallel: linux-arm,linux-x64,win-x86,win-x64,win-arm,osx-x64
         dotnetos: [linux, win, osx]
-        dotnetarch: [x86, x64, arm]
+        dotnetarch: [x86, x64, arm, arm64]
         exclude:
           - dotnetos: linux
             dotnetarch: x86
@@ -30,6 +30,8 @@ jobs:
             dotnetarch: x86
           - dotnetos: osx
             dotnetarch: arm
+          - dotnetos: osx
+            dotnetarch: arm64
       fail-fast: true
     steps:
       - uses: actions/checkout@v1
