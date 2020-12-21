@@ -7,8 +7,8 @@
     <Company>chenxublog.com</Company>
     <Description>QQ robot with lua</Description>
     <Copyright>chenxuuu</Copyright>
-    <AssemblyVersion>3.0.0.2</AssemblyVersion>
-    <FileVersion>3.0.0.2</FileVersion>
+    <AssemblyVersion>3.0.0.3</AssemblyVersion>
+    <FileVersion>3.0.0.3</FileVersion>
     <LangVersion>9.0</LangVersion>
   </PropertyGroup>
 

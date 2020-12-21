@@ -69,6 +69,15 @@ namespace ReceiverMeow
                     explain = "重载所有lua虚拟机",
                     run = (s) => Utils.ReloadLua()
                 },
+                ["uua".ToUpper()] = new CommandContain
+                {
+                    explain = "尝试更新脚本并重载虚拟机",
+                    run = (s) =>
+                    {
+                        Utils.CheckLuaUpdate();
+                        Utils.ReloadLua();
+                    }
+                },
                 ["xml".ToUpper()] = new CommandContain
                 {
                     explain = "清除XML数据缓存，重新读取XML文件",
