@@ -11,8 +11,8 @@ namespace ReceiverMeow.GoHttp
 {
     class Http
     {
-        private static string host;
-        private static int port;
+        private static string host = "127.0.0.1";
+        private static int port = 5700;
         private static string module = "HTTP";
 
 

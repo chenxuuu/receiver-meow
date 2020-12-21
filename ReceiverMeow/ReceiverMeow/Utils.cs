@@ -1,5 +1,6 @@
 using LibGit2Sharp;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using RestSharp;
 using SixLabors.Fonts;
 using SixLabors.ImageSharp;
@@ -64,8 +65,8 @@ namespace ReceiverMeow
             
             //更新脚本
             CheckLuaUpdate();
-            //lua启动事件
-            ReloadLua();
+
+            CheckUpdate();
 
             //tcp队列定时发送检测
             LuaEnv.TcpServer.SendList();
@@ -78,6 +79,32 @@ namespace ReceiverMeow
         {
             LuaEnv.LuaStates.Clear();
             LuaEnv.LuaStates.Run("main", "AppEnable", new { });
+        }
+
+        /// <summary>
+        /// 检查主程序更新
+        /// </summary>
+        public static void CheckUpdate()
+        {
+            Log.Info("检查主程序更新", $"正在检查新版本。。。");
+            try
+            {
+                var s = HttpGet("https://api.github.com/repos/chenxuuu/receiver-meow/releases/latest");
+                JObject o = JsonConvert.DeserializeObject<JObject>(s);
+                if((string)o["tag_name"] != Version)
+                {
+                    Log.Warn("检查主程序更新", $"发现新版本：{o["tag_name"]}");
+                    Log.Warn("检查主程序更新", $"新版本下载页面：{o["html_url"]}");
+                }
+                else
+                {
+                    Log.Info("检查主程序更新", $"已是最新版！");
+                }
+            }
+            catch (Exception ee)
+            {
+                Log.Warn("检查主程序更新", $"检查更新失败，错误信息：{ee.Message}");
+            }
         }
 
         /// <summary>

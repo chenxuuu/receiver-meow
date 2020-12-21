@@ -34,6 +34,8 @@ namespace ReceiverMeow
             GoHttp.Http.Set(httpUrl, httpPort);
             GoHttp.Ws.Connect(wsUrl, wsPort);
 
+            //lua启动事件
+            Utils.ReloadLua();
             //命令行命令处理
             ReceiveCommands();
         }
@@ -76,6 +78,7 @@ namespace ReceiverMeow
                     {
                         Utils.CheckLuaUpdate();
                         Utils.ReloadLua();
+                        Utils.CheckUpdate();
                     }
                 },
                 ["xml".ToUpper()] = new CommandContain
