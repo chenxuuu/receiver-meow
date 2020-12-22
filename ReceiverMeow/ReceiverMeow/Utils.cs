@@ -63,7 +63,7 @@ namespace ReceiverMeow
 
             Setting.MqttEnable = Setting.MqttEnable;
             Setting.TcpServerEnable = Setting.TcpServerEnable;
-            
+
             //更新脚本
             CheckLuaUpdate();
 
@@ -122,9 +122,9 @@ namespace ReceiverMeow
                 if (!Directory.Exists(gitPath))
                     Log.Error("初始化Lua脚本", "该系统不支持自动更新脚本！\r\n" +
                         "请手动执行下面的命令，初始化脚本后，再尝试运行：\r\n" +
-                        $"git clone {git}");
+                        $"git clone {git} lua");
                 Log.Info("初始化Lua脚本", "该系统不支持自动更新脚本！如果想更新，请手动执行命令：\r\n" +
-                    $"git -C lua pull {git} lua");
+                    $"git -C lua pull {git}");
                 return;
             }
 
@@ -382,7 +382,7 @@ namespace ReceiverMeow
             if (!File.Exists(path))
                 return bmp;
             using Image b = Image.Load(path);
-            
+
             if (xx != 0 && yy != 0)
             {
                 b.Mutate(i => i.Resize(xx,yy));
