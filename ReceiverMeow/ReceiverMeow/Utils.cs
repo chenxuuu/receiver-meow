@@ -304,7 +304,29 @@ namespace ReceiverMeow
             return Encoding.GetEncoding(encode).GetString(response.RawBytes);
         }
 
-
+        /// <summary>
+        /// http 下载文件接口
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="para"></param>
+        /// <param name="timeout"></param>
+        /// <param name="cookie"></param>
+        /// <returns>文件长度</returns>
+        public static int HttpDownload(string url, string para = "", long timeout = 15000, string cookie = "",
+            string path = ".")
+        {
+            var client = new RestClient();
+            if (!string.IsNullOrEmpty(para))
+                url = $"{url}?{para}";//直接把参数拼后面
+            client.BaseUrl = new Uri(url);
+            var request = new RestRequest(Method.GET);
+            request.Timeout = (int)timeout;
+            if (!string.IsNullOrEmpty(cookie))
+                request.AddHeader("cookie", cookie);
+            var response = client.DownloadData(request);
+            File.WriteAllBytes(path, response);
+            return response.Length;
+        }
 
 
         /// <summary>
