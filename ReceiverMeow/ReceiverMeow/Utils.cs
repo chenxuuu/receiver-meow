@@ -433,5 +433,13 @@ namespace ReceiverMeow
             return s;
         }
 
+        /// <summary>
+        /// 获取文件列表
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static string[] GetFileList(string path) => Directory.GetFiles(path);
+
+        public static long Ticks() => DateTime.Now.Ticks;
     }
 }
