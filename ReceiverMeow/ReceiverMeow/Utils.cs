@@ -127,20 +127,19 @@ namespace ReceiverMeow
                 }
                 catch (Exception ee)
                 {
-                    if (!Directory.Exists(gitPath))
-                        Log.Error("初始化Lua脚本", $"更新脚本文件失败，错误信息：{ee.Message}\r\n如果始终失败，请手动执行下面的命令，初始化脚本后，再尝试运行：\r\n" +
-                                 $"git clone {git} lua");
-                    Log.Warn("更新Lua脚本", $"更新脚本文件失败，错误原因：\n{ee.Message}");
+                    Log.Error("初始化Lua脚本", $"更新脚本文件失败，错误信息：{ee.Message}\r\n如果始终失败，请手动执行下面的命令，初始化脚本后，再尝试运行：\r\n" +
+                              $"git clone {git} lua");
                 }
             }
             else
             {
                 Log.Info("更新Lua脚本", "正在检查Lua脚本是否有更新。。。");
-                if (Repository.IsValid($"{Path}lua/"))
+                try
                 {
-                    Log.Info("更新Lua脚本", "正在尝试更新脚本，请稍后");
-                    try
+                    if (Repository.IsValid($"{Path}lua/"))
                     {
+                        Log.Info("更新Lua脚本", "正在尝试更新脚本，请稍后");
+
                         var options = new LibGit2Sharp.PullOptions();
                         options.FetchOptions = new FetchOptions();
                         var signature = new LibGit2Sharp.Signature(
@@ -148,16 +147,17 @@ namespace ReceiverMeow
                         using var repo = new Repository(gitPath);
                         Commands.Pull(repo, signature, options);
                         Log.Info("更新Lua脚本", "更新操作执行完毕");
+
                     }
-                    catch(Exception e)
+                    else
                     {
-                        Log.Warn("更新Lua脚本", $"拉取最新脚本代码失败，错误原因：\n{e.Message}");
+                        Log.Warn("更新Lua脚本",
+                            "检测不到Git目录结构，如果你是自己写的脚本，请忽略该信息。如果你想恢复到默认脚本，请删除lua文件夹后重启软件");
                     }
                 }
-                else
+                catch (Exception e)
                 {
-                    Log.Warn("更新Lua脚本",
-                        "检测不到Git目录结构，如果你是自己写的脚本，请忽略该信息。如果你想恢复到默认脚本，请删除lua文件夹后重启软件");
+                    Log.Warn("更新Lua脚本", $"拉取最新脚本代码失败，错误原因：\n{e.Message}");
                 }
             }
         }
