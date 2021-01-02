@@ -130,7 +130,7 @@ namespace ReceiverMeow
                     if (!Directory.Exists(gitPath))
                         Log.Error("初始化Lua脚本", $"更新脚本文件失败，错误信息：{ee.Message}\r\n如果始终失败，请手动执行下面的命令，初始化脚本后，再尝试运行：\r\n" +
                                  $"git clone {git} lua");
-                    Log.Warn("更新Lua脚本", $"更新脚本文件失败，错误原因：\n{e.Message}");
+                    Log.Warn("更新Lua脚本", $"更新脚本文件失败，错误原因：\n{ee.Message}");
                 }
             }
             else
