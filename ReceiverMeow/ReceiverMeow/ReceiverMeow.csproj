@@ -7,8 +7,8 @@
     <Company>chenxublog.com</Company>
     <Description>QQ robot with lua</Description>
     <Copyright>chenxuuu</Copyright>
-    <AssemblyVersion>3.0.0.7</AssemblyVersion>
-    <FileVersion>3.0.0.7</FileVersion>
+    <AssemblyVersion>3.0.0.8</AssemblyVersion>
+    <FileVersion>3.0.0.8</FileVersion>
     <LangVersion>9.0</LangVersion>
   </PropertyGroup>
 
@@ -19,9 +19,9 @@
   <ItemGroup>
     <PackageReference Include="LibGit2Sharp" Version="0.26.2" />
     <PackageReference Include="LuaTask" Version="1.0.7" />
-    <PackageReference Include="MQTTnet" Version="2.8.5" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="NLua" Version="1.5.6" />
+    <PackageReference Include="MQTTnet" Version="3.0.15" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="NLua" Version="1.5.7" />
     <PackageReference Include="RestSharp" Version="106.11.7" />
     <PackageReference Include="SimpleTCPStandar" Version="1.0.1" />
     <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta11" />

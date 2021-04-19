@@ -60,7 +60,7 @@ namespace ReceiverMeow
 如果觉得输出太多太烦，请使用正式版
 **********************************");
 
-
+            LuaEnv.Mqtt.Initial();
             Setting.MqttEnable = Setting.MqttEnable;
             Setting.TcpServerEnable = Setting.TcpServerEnable;
 

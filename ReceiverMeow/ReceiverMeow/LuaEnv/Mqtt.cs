@@ -1,5 +1,6 @@
 using MQTTnet;
 using MQTTnet.Client;
+using MQTTnet.Client.Options;
 using MQTTnet.Protocol;
 using System;
 using System.Collections.Generic;
@@ -13,43 +14,31 @@ namespace ReceiverMeow.LuaEnv
     class Mqtt
     {
         private static MqttFactory factory = new MqttFactory();
-        private static IMqttClient mqttClient = factory.CreateMqttClient();
+        private static IMqttClient mqttClient = null;
         private static string moudle = "MQTT";
-
-        private static IMqttClientOptions getOptions()
-        {
-            var op = new MqttClientOptionsBuilder()
-           .WithClientId(Utils.Setting.ClientID)
-           .WithTcpServer(Utils.Setting.MqttBroker, Utils.Setting.MqttPort)
-           .WithCredentials(Utils.Setting.MqttUser, Utils.Setting.MqttPassword)
-           .WithKeepAlivePeriod(new TimeSpan(0,0,Utils.Setting.KeepAlive))
-           .WithCleanSession();
-            IMqttClientOptions options;
-            if (Utils.Setting.MqttTLS)
-                options = op.WithTls().Build();
-            else
-                options = op.Build();
-            return options;
-        }
 
         /// <summary>
         /// 初始化各个参数
         /// </summary>
         public static void Initial()
         {
+            if (mqttClient != null)
+                return;
+            mqttClient = factory.CreateMqttClient();
             //连接成功
-            mqttClient.Connected += (sender,e)=> 
+            mqttClient.UseConnectedHandler(e =>
             {
                 Log.Info(moudle, "已连接");
-                LuaEnv.LuaStates.Run("MQTT", "MQTT", new {
+                LuaEnv.LuaStates.Run("MQTT", "MQTT", new
+                {
                     t = "connected"
                 });
-            };
+            });
 
             //收到消息
-            mqttClient.ApplicationMessageReceived += (sender, e) =>
+            mqttClient.UseApplicationMessageReceivedHandler(e =>
             {
-                Log.Debug(moudle, 
+                Log.Debug(moudle,
                     $"收到消息：{e.ApplicationMessage.Topic} {Encoding.UTF8.GetString(e.ApplicationMessage.Payload)}");
                 LuaEnv.LuaStates.Run("MQTT", "MQTT", new
                 {
@@ -58,10 +47,10 @@ namespace ReceiverMeow.LuaEnv
                     payload = Encoding.UTF8.GetString(e.ApplicationMessage.Payload),
                     qos = (int)e.ApplicationMessage.QualityOfServiceLevel
                 });
-            };
+            });
 
             //断线重连
-            mqttClient.Disconnected += async (s, e) =>
+            mqttClient.UseDisconnectedHandler(async e =>
             {
                 Log.Warn(moudle, "MQTT连接已断开");
                 if (!Utils.Setting.MqttEnable)
@@ -70,14 +59,22 @@ namespace ReceiverMeow.LuaEnv
                 Log.Warn(moudle, "MQTT尝试重连");
                 try
                 {
-                    await mqttClient.ConnectAsync(getOptions());
+                    var op = new MqttClientOptionsBuilder()
+                        .WithClientId(Utils.Setting.ClientID)
+                        .WithTcpServer(Utils.Setting.MqttBroker, Utils.Setting.MqttPort)
+                        .WithCredentials(Utils.Setting.MqttUser, Utils.Setting.MqttPassword)
+                        .WithKeepAlivePeriod(new TimeSpan(0, 0, Utils.Setting.KeepAlive));
+                    if (Utils.Setting.MqttTLS)
+                        op.WithTls();
+                    var options = op.WithCleanSession().Build();
+                    await mqttClient.ConnectAsync(options, CancellationToken.None);
                 }
-                catch(Exception ee)
+                catch (Exception ee)
                 {
                     Log.Warn(moudle, $"MQTT重连失败");
                     Log.Warn(moudle, $"原因： {ee.Message}");
                 }
-            };
+            });
         }
 
         /// <summary>
@@ -146,21 +143,49 @@ namespace ReceiverMeow.LuaEnv
         /// </summary>
         public static void Connect()
         {
+            if (mqttClient == null)
+                return;
             if (mqttClient.IsConnected)
             {
                 Log.Info(moudle, "已连接，无需再次连接");
                 return;
             }
-            try
+            //var options = new MqttClientOptionsBuilder()
+            //    .WithTcpServer("lbsmqtt.airm2m.com", 1884)
+            //    .Build();
+            //Task.Run(() =>
+            //{
+            //    try
+            //    {
+            //        mqttClient.ConnectAsync(options, CancellationToken.None).Wait();
+            //        Log.Info("mqtt", $"=======连上了");
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        Log.Info("mqtt", $"=======炸了：{e}");
+            //    }
+            //});
+            Task.Run(async () =>
             {
-                mqttClient.ConnectAsync(getOptions());
-                Log.Info(moudle, $"已连接");
-            }
-            catch (Exception e)
-            {
-                Log.Warn(moudle, $"服务器连接失败：{Utils.Setting.MqttBroker}:{Utils.Setting.MqttPort}");
-                Log.Warn(moudle, $"原因：{e.Message}");
-            }
+                try
+                {
+                    var op = new MqttClientOptionsBuilder()
+                        .WithClientId(Utils.Setting.ClientID)
+                        .WithTcpServer(Utils.Setting.MqttBroker, Utils.Setting.MqttPort)
+                        .WithCredentials(Utils.Setting.MqttUser, Utils.Setting.MqttPassword)
+                        .WithKeepAlivePeriod(new TimeSpan(0, 0, Utils.Setting.KeepAlive));
+                    if (Utils.Setting.MqttTLS)
+                        op.WithTls();
+                    var options = op.WithCleanSession().Build();
+                    await mqttClient.ConnectAsync(options, CancellationToken.None);
+                }
+                catch (Exception e)
+                {
+                    Log.Warn(moudle, $"服务器连接失败：{Utils.Setting.MqttBroker}:{Utils.Setting.MqttPort}" +
+                        $",{Utils.Setting.MqttUser},{Utils.Setting.MqttPassword},{Utils.Setting.MqttTLS}");
+                    Log.Warn(moudle, $"原因：{e.Message}");
+                }
+            });
         }
 
         /// <summary>
@@ -168,6 +193,8 @@ namespace ReceiverMeow.LuaEnv
         /// </summary>
         public static void Disconnect()
         {
+            if (mqttClient == null)
+                return;
             if (!mqttClient.IsConnected)
             {
                 Log.Info(moudle, "没有连接服务器，无需再次断开");
@@ -175,16 +202,18 @@ namespace ReceiverMeow.LuaEnv
             }
             if (mqttClient.IsConnected)
             {
-                try
+                Task.Run(async () =>
                 {
-                    mqttClient.DisconnectAsync();
-                    Log.Info(moudle, $"已断开");
-                }
-                catch (Exception e)
-                {
-                    Log.Warn(moudle, $"断开连接失败");
-                    Log.Warn(moudle, $"原因：{e.Message}");
-                }
+                    try
+                    {
+                        await mqttClient.DisconnectAsync();
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Warn(moudle, $"断开连接失败");
+                        Log.Warn(moudle, $"原因：{e.Message}");
+                    }
+                });
             }
         }
     }

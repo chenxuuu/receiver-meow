@@ -25,8 +25,9 @@ namespace ReceiverMeow.LuaEnv
         /// <param name="data">回调数据</param>
         public static void Run(string name, string type, object data)
         {
+            Log.Info("NewLuaEnv", name);
             //检查文件是否存在
-            if(!File.Exists(Utils.Path + "lua/main.lua"))
+            if (!File.Exists(Utils.Path + "lua/main.lua"))
             {
                 Log.Error("Lua",$"报错错虚拟机名称：{name}。没有找到入口脚本文件。文件路径应在{Utils.Path}lua/main.lua");
                 return;
@@ -36,18 +37,18 @@ namespace ReceiverMeow.LuaEnv
                 if (!states.ContainsKey(name))//没有的话就初始化池子
                 {
                     states[name] = new LuaTask.LuaEnv();
+                    states[name].ErrorEvent += (e, text) =>
+                    {
+                        Log.Warn(
+                            "Lua插件报错",
+                            $"虚拟机运行时错误。名称：{name},错误信息：{text}"
+                        );
+                    };
                     try
                     {
                         states[name].lua.LoadCLRPackage();
                         states[name].lua["LuaEnvName"] = name;
-                        states[name].DoFile(Utils.Path + "lua/main.lua");
-                        states[name].ErrorEvent += (e, text) =>
-                        {
-                            Log.Warn(
-                                "Lua插件报错",
-                                $"虚拟机运行时错误。名称：{name},错误信息：{text}"
-                            );
-                        };
+                        states[name].lua.DoFile(Utils.Path + "lua/main.lua");
                     }
                     catch(Exception e)
                     {
@@ -79,7 +80,7 @@ namespace ReceiverMeow.LuaEnv
                 foreach(string k in states.Keys)
                 {
                     Log.Info("Lua插件", "已释放虚拟机" + k);
-                    LuaTask.LuaEnv l; 
+                    LuaTask.LuaEnv l;
                     states.TryRemove(k, out l);//取出
                     l.Dispose();//释放
                 }
