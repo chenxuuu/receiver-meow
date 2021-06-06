@@ -239,6 +239,7 @@ namespace ReceiverMeow
         public static string HttpGet(string url,string para = "",long timeout = 5000,string cookie = "")
         {
             var client = new RestClient();
+            client.UserAgent = "Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.121 Safari/537.36";
             if (!string.IsNullOrEmpty(para))
                 url = $"{url}?{para}";//直接把参数拼后面
             client.BaseUrl = new Uri(url);
@@ -274,6 +275,7 @@ namespace ReceiverMeow
             string cookie = "", string contentType = "application/x-www-form-urlencoded")
         {
             var client = new RestClient();
+            client.UserAgent = "Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.121 Safari/537.36";
             client.BaseUrl = new Uri(url);
             var request = new RestRequest(Method.POST);
             request.Timeout = (int)timeout;
