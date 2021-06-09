@@ -263,6 +263,32 @@ namespace ReceiverMeow
         }
 
         /// <summary>
+        /// http 跳转检测
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="timeout"></param>
+        /// <param name="cookie"></param>
+        /// <returns></returns>
+        public static string HttpJump(string url, long timeout = 5000, string cookie = "")
+        {
+            var client = new RestClient();
+            client.UserAgent = "Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.121 Safari/537.36";
+            client.BaseUrl = new Uri(url);
+            client.FollowRedirects = false;
+            var request = new RestRequest(Method.GET);
+            request.Timeout = (int)timeout;
+            if (!string.IsNullOrEmpty(cookie))
+                request.AddHeader("cookie", cookie);
+            var response = client.Execute(request);
+            foreach(var h in response.Headers)
+            {
+                if (h.Name.ToLower() == "location")
+                    return h.Value.ToString();
+            }
+            throw new Exception("jump not found");
+        }
+
+        /// <summary>
         /// http post
         /// </summary>
         /// <param name="url"></param>
