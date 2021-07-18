@@ -248,17 +248,9 @@ namespace ReceiverMeow
             if (!string.IsNullOrEmpty(cookie))
                 request.AddHeader("cookie", cookie);
             var response = client.Execute(request);
-            var encode = "UTF-8";//编码
-            foreach (var p in response.Headers)
-            {
-                if(p.Name.ToLower() == "content-type" && p.Value.ToString().ToLower().IndexOf("charset=") >= 0)
-                {
-                    var tmp = response.ContentType.Split(';').Select(s => s.Split('='));
-                    var arr = tmp.LastOrDefault(t => t.Length == 2 && t[0].Trim().ToLower() == "charset");
-                    if (arr != null)
-                        encode = arr[1].Trim();//如果网站有写编码
-                }
-            }
+            var encode = response.ContentEncoding;//编码
+            if (string.IsNullOrWhiteSpace(encode))
+                encode = "UTF-8";
             return Encoding.GetEncoding(encode).GetString(response.RawBytes);
         }
 
@@ -309,17 +301,9 @@ namespace ReceiverMeow
                 request.AddHeader("cookie", cookie);
             request.AddParameter(contentType, para, ParameterType.RequestBody);
             var response = client.Execute(request);
-            var encode = "UTF-8";//编码
-            foreach (var p in response.Headers)
-            {
-                if(p.Name.ToLower() == "content-type" && p.Value.ToString().ToLower().IndexOf("charset=") >= 0)
-                {
-                    var tmp = response.ContentType.Split(';').Select(s => s.Split('='));
-                    var arr = tmp.LastOrDefault(t => t.Length == 2 && t[0].Trim().ToLower() == "charset");
-                    if (arr != null)
-                        encode = arr[1].Trim();//如果网站有写编码
-                }
-            }
+            var encode = response.ContentEncoding;//编码
+            if (string.IsNullOrWhiteSpace(encode))
+                encode = "UTF-8";
             return Encoding.GetEncoding(encode).GetString(response.RawBytes);
         }
 
