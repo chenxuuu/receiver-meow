@@ -1,3 +1,4 @@
+using JiebaNet.Segmenter;
 using LibGit2Sharp;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -42,7 +43,7 @@ namespace ReceiverMeow
         public static void Initial()
         {
             using (var processModule = Process.GetCurrentProcess().MainModule)
-                Path = System.IO.Path.GetDirectoryName(processModule?.FileName)+"/";
+                Path = System.IO.Path.GetDirectoryName(processModule?.FileName) + "/";
             if (File.Exists(Path + "settings.json"))
             {
                 Setting = JsonConvert.DeserializeObject<Settings>(
@@ -92,7 +93,7 @@ namespace ReceiverMeow
             {
                 var s = HttpGet("https://api.github.com/repos/chenxuuu/receiver-meow/releases/latest");
                 JObject o = JsonConvert.DeserializeObject<JObject>(s);
-                if((string)o["tag_name"] != Version)
+                if ((string)o["tag_name"] != Version)
                 {
                     Log.Warn("检查主程序更新", $"发现新版本：{o["tag_name"]}");
                     Log.Warn("检查主程序更新", $"新版本下载页面：{o["html_url"]}");
@@ -236,7 +237,7 @@ namespace ReceiverMeow
         /// <param name="timeout"></param>
         /// <param name="cookie"></param>
         /// <returns></returns>
-        public static string HttpGet(string url,string para = "",long timeout = 5000,string cookie = "")
+        public static string HttpGet(string url, string para = "", long timeout = 5000, string cookie = "")
         {
             var client = new RestClient();
             client.UserAgent = "Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.121 Safari/537.36";
@@ -272,7 +273,7 @@ namespace ReceiverMeow
             if (!string.IsNullOrEmpty(cookie))
                 request.AddHeader("cookie", cookie);
             var response = client.Execute(request);
-            foreach(var h in response.Headers)
+            foreach (var h in response.Headers)
             {
                 if (h.Name.ToLower() == "location")
                     return h.Value.ToString();
@@ -289,7 +290,7 @@ namespace ReceiverMeow
         /// <param name="cookie"></param>
         /// <param name="contentType"></param>
         /// <returns></returns>
-        public static string HttpPost(string url,string para = "",long timeout = 5000,
+        public static string HttpPost(string url, string para = "", long timeout = 5000,
             string cookie = "", string contentType = "application/x-www-form-urlencoded")
         {
             var client = new RestClient();
@@ -410,7 +411,7 @@ namespace ReceiverMeow
 
             if (xx != 0 && yy != 0)
             {
-                b.Mutate(i => i.Resize(xx,yy));
+                b.Mutate(i => i.Resize(xx, yy));
                 bmp.Mutate(i => i.DrawImage(b, new Point(x, y), 1));
             }
             else
@@ -453,5 +454,18 @@ namespace ReceiverMeow
         public static string[] GetFileList(string path) => Directory.GetFiles(path);
 
         public static long Ticks() => DateTime.Now.Ticks;
+
+
+        public static JiebaSegmenter segmenter = new JiebaSegmenter();
+        /// <summary>
+        /// 结巴分词
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        public static List<string> Jieba(string s)
+        {
+            var r = segmenter.CutInParallel(s).ToList();
+            return r;
+        }
     }
 }
