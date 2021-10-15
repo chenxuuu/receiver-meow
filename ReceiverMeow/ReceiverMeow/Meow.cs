@@ -9,7 +9,6 @@ namespace ReceiverMeow
     {
         static void Main(string[] args)
         {
-            Log.Info("123",string.Join("/", Utils.Jieba("这是一句话")));
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             Utils.Initial();
 
