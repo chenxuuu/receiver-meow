@@ -129,7 +129,7 @@ namespace ReceiverMeow.GoHttp
                         //频道
                         LuaEnv.LuaStates.Run($"c{o["guild_id"]},{o["channel_id"]}", "GroupMessage", new
                         {
-                            from = (string)o["sub_type"],
+                            group = $"c{o["guild_id"]},{o["channel_id"]}",
                             qq = (string)o["user_id"],
                             msg = (string)o["message"],
                             id = (string)o["message_id"],
