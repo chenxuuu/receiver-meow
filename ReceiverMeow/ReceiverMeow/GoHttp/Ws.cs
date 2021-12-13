@@ -124,6 +124,18 @@ namespace ReceiverMeow.GoHttp
                             raw = o
                         });
                     }
+                    else if ((string)o["message_type"] == "guild")
+                    {
+                        //频道
+                        LuaEnv.LuaStates.Run($"c{o["guild_id"]},{o["channel_id"]}", "GroupMessage", new
+                        {
+                            from = (string)o["sub_type"],
+                            qq = (string)o["user_id"],
+                            msg = (string)o["message"],
+                            id = (string)o["message_id"],
+                            raw = o
+                        });
+                    }
                     break;
                 case "notice":
                     switch ((string)o["notice_type"])
