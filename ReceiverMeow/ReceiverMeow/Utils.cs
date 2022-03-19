@@ -190,7 +190,7 @@ namespace ReceiverMeow
         /// <returns></returns>
         public static string MD5Encrypt(string s)
         {
-            MD5CryptoServiceProvider md5Hasher = new MD5CryptoServiceProvider();
+            var md5Hasher = MD5.Create();
             var hashedDataBytes = md5Hasher.ComputeHash(Encoding.Default.GetBytes(s));
             return BitConverter.ToString(hashedDataBytes).Replace("-", "");
         }
