@@ -31,8 +31,11 @@ namespace ReceiverMeow
                     Log.Error("终端", $"参数错误，请使用 xxx.exe [wsUrl] [wsPort] [httpUrl] [httpPort]");
                 }
             }
-            GoHttp.Http.Set(httpUrl, httpPort);
-            GoHttp.Ws.Connect(wsUrl, wsPort);
+            if (!(args.Length >= 1 && args[0] == "nows"))
+            {
+                GoHttp.Http.Set(httpUrl, httpPort);
+                GoHttp.Ws.Connect(wsUrl, wsPort);
+            }
 
             //lua启动事件
             Utils.ReloadLua();
