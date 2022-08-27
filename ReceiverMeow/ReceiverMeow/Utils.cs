@@ -357,8 +357,8 @@ namespace ReceiverMeow
         /// <param name="r">r</param>
         /// <param name="g">g</param>
         /// <param name="b">b</param>
-        /// <returns>图片对象</returns>
-        public static Image PutText(Image image, float xx, float yy, string text, string font = "", int size = 9,
+        /// <returns>字符串长度</returns>
+        public static float PutText(Image image, float xx, float yy, string text, string font = "", int size = 9,
             int r = 0, int g = 0, int b = 0)
         {
             FontCollection collection = new FontCollection();
@@ -366,8 +366,10 @@ namespace ReceiverMeow
             Font f = family.CreateFont(size, FontStyle.Regular);
             image.Mutate(x => x.DrawText(text, f,
                 new Color(new Rgba32(r / 255f, g / 255f, b / 255f)), new PointF(xx, yy)));
-            return image;
+            var fi = TextMeasurer.Measure(text, new RendererOptions(f));
+            return fi.Width;
         }
+
 
 
         /// <summary>
