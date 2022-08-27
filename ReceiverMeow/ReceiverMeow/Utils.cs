@@ -370,6 +370,14 @@ namespace ReceiverMeow
             return fi.Width;
         }
 
+        public static float GetTextWidth(string text, string font, int size)
+        {
+            FontCollection collection = new FontCollection();
+            FontFamily family = collection.Install(font);
+            Font f = family.CreateFont(size, FontStyle.Regular);
+            return TextMeasurer.Measure(text, new RendererOptions(f)).Width;
+        }
+
 
 
         /// <summary>
