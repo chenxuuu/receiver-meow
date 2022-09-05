@@ -362,20 +362,20 @@ namespace ReceiverMeow
             int r = 0, int g = 0, int b = 0)
         {
             FontCollection collection = new FontCollection();
-            FontFamily family = collection.Install(font);
+            FontFamily family = collection.Add(font);
             Font f = family.CreateFont(size, FontStyle.Regular);
             image.Mutate(x => x.DrawText(text, f,
                 new Color(new Rgba32(r / 255f, g / 255f, b / 255f)), new PointF(xx, yy)));
-            var fi = TextMeasurer.Measure(text, new RendererOptions(f));
+            var fi = TextMeasurer.Measure(text, new TextOptions(f));
             return fi.Width;
         }
 
         public static float GetTextWidth(string text, string font, int size)
         {
             FontCollection collection = new FontCollection();
-            FontFamily family = collection.Install(font);
+            FontFamily family = collection.Add(font);
             Font f = family.CreateFont(size, FontStyle.Regular);
-            return TextMeasurer.Measure(text, new RendererOptions(f)).Width;
+            return TextMeasurer.Measure(text, new TextOptions(f)).Width;
         }
 
 

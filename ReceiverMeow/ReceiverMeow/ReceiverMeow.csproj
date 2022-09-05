@@ -7,8 +7,8 @@
     <Company>chenxublog.com</Company>
     <Description>QQ robot with lua</Description>
     <Copyright>chenxuuu</Copyright>
-    <AssemblyVersion>3.0.1.2</AssemblyVersion>
-    <FileVersion>3.0.1.2</FileVersion>
+    <AssemblyVersion>3.0.1.3</AssemblyVersion>
+    <FileVersion>3.0.1.3</FileVersion>
     <LangVersion>9.0</LangVersion>
   </PropertyGroup>
 
@@ -21,7 +21,7 @@
     <PackageReference Include="NLua" Version="1.5.11" />
     <PackageReference Include="RestSharp" Version="106.12.0" />
     <PackageReference Include="SimpleTCPStandar" Version="1.0.1" />
-    <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta11" />
+    <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta15" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="6.0.0" />
     <PackageReference Include="websocketsharp.core" Version="1.0.0" />
   </ItemGroup>
