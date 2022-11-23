@@ -66,9 +66,30 @@ New message|           | Name not exist |                    |
 
 先去下载一个支持[OneBot](https://github.com/howmanybots/onebot)的框架，推荐[go-cqhttp](https://github.com/Mrs4s/go-cqhttp/releases)。配置好qq和密码跑起来
 
+接待喵使用的连接方式为：HTTP接口、WebSocket消息触发
+
 下载接待喵：[releases](https://github.com/chenxuuu/receiver-meow/releases)
 
-命令行可添加参数更改连接http、ws的端口，运行后，输入`?`即可查看帮助
+推荐运行时开个死循环，这样即使软件崩溃，也可以自动重启，例如下面两种：
+
+run.bat
+
+```bat
+:go
+receiver-meow.exe
+goto go
+```
+
+run.sh
+
+```bash
+while [ 1 ]
+do
+./receiver-meow
+done
+```
+
+命令行可添加参数（`http的端口`、`ws的端口`），运行后，输入`?`即可查看帮助
 
 默认脚本可以在群内输入`帮助`查看自带功能
 
