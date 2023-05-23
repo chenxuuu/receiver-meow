@@ -7,6 +7,7 @@ using SixLabors.Fonts;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.Formats.Jpeg;
+using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using System;
@@ -461,7 +462,7 @@ namespace ReceiverMeow
         /// <returns>图片路径</returns>
         public static string ImageBase64(Image bmp)
         {
-            var s = bmp.ToBase64String(JpegFormat.Instance);
+            var s = bmp.ToBase64String(PngFormat.Instance);
             bmp.Dispose();
             return s;
         }
