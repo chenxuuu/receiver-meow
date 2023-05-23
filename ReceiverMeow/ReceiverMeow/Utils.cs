@@ -291,7 +291,7 @@ namespace ReceiverMeow
         /// <param name="contentType"></param>
         /// <returns></returns>
         public static string HttpPost(string url, string para = "", long timeout = 5000,
-            string cookie = "", string contentType = "application/x-www-form-urlencoded")
+            string cookie = "", string contentType = "application/x-www-form-urlencoded", string header = null)
         {
             var client = new RestClient();
             client.UserAgent = "Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.121 Safari/537.36";
@@ -301,6 +301,16 @@ namespace ReceiverMeow
             if (!string.IsNullOrEmpty(cookie))
                 request.AddHeader("cookie", cookie);
             request.AddParameter(contentType, para, ParameterType.RequestBody);
+            if(!string.IsNullOrEmpty(header))
+            {
+                var hs = header.Replace("\r","").Split("\n");
+                foreach(var h in hs)
+                {
+                    var kv = h.Split(":");
+                    if (kv.Length == 2)
+                        request.AddHeader(kv[0].Trim(), kv[1].Trim());
+                }
+            }
             var response = client.Execute(request);
             var encode = response.ContentEncoding;//编码
             if (string.IsNullOrWhiteSpace(encode))
