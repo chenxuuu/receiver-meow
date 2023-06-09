@@ -292,7 +292,8 @@ namespace ReceiverMeow
         /// <param name="contentType"></param>
         /// <returns></returns>
         public static string HttpPost(string url, string para = "", long timeout = 5000,
-            string cookie = "", string contentType = "application/x-www-form-urlencoded", string header = null)
+            string cookie = "", string contentType = "application/x-www-form-urlencoded", string header = null, 
+            bool getCookie = false)
         {
             var client = new RestClient();
             client.UserAgent = "Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.121 Safari/537.36";
@@ -313,6 +314,14 @@ namespace ReceiverMeow
                 }
             }
             var response = client.Execute(request);
+            if(getCookie)//获取下发的cookie
+            {
+                foreach (var h in response.Headers)
+                {
+                    if (h.Name.ToLower() == "set-cookie")
+                        return h.Value.ToString();
+                }
+            }
             var encode = response.ContentEncoding;//编码
             if (string.IsNullOrWhiteSpace(encode))
                 encode = "UTF-8";
