@@ -11,8 +11,8 @@ namespace ReceiverMeow.LuaEnv
     class LuaStates
     {
         //虚拟机池子
-        private static ConcurrentDictionary<string, LuaTask.LuaEnv> states =
-            new ConcurrentDictionary<string, LuaTask.LuaEnv>();
+        private static ConcurrentDictionary<string, LuaTask> states =
+            new ConcurrentDictionary<string, LuaTask>();
         //池子操作锁
         private static object stateLock = new object();
 
@@ -36,7 +36,7 @@ namespace ReceiverMeow.LuaEnv
             {
                 if (!states.ContainsKey(name))//没有的话就初始化池子
                 {
-                    states[name] = new LuaTask.LuaEnv();
+                    states[name] = new LuaTask();
                     states[name].ErrorEvent += (e, text) =>
                     {
                         Log.Warn(
@@ -80,7 +80,7 @@ namespace ReceiverMeow.LuaEnv
                 foreach(string k in states.Keys)
                 {
                     Log.Info("Lua插件", "已释放虚拟机" + k);
-                    LuaTask.LuaEnv l;
+                    LuaTask l;
                     states.TryRemove(k, out l);//取出
                     l.Dispose();//释放
                 }

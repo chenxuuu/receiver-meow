@@ -20,42 +20,42 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y apt-transport-https
           sudo apt-get update
-          sudo apt-get install -y dotnet-sdk-6.0
+          sudo apt-get install -y dotnet-sdk-7.0
           sudo apt-get install -y p7zip-full
       - name: build
         run: |
           cd ReceiverMeow
           dotnet publish --configuration Release -r win-x86 -p:PublishSingleFile=true --self-contained true
           mkdir win-x86
-          mv ReceiverMeow/bin/Release/net6.0/win-x86/publish/* win-x86/
+          mv ReceiverMeow/bin/Release/net7.0/win-x86/publish/* win-x86/
           zip -r win-x86.zip win-x86
           dotnet publish --configuration Release -r win-x64 -p:PublishSingleFile=true --self-contained true
           mkdir win-x64
-          mv ReceiverMeow/bin/Release/net6.0/win-x64/publish/* win-x64/
+          mv ReceiverMeow/bin/Release/net7.0/win-x64/publish/* win-x64/
           zip -r win-x64.zip win-x64
           dotnet publish --configuration Release -r win-arm -p:PublishSingleFile=true --self-contained true
           mkdir win-arm
-          mv ReceiverMeow/bin/Release/net6.0/win-arm/publish/* win-arm/
+          mv ReceiverMeow/bin/Release/net7.0/win-arm/publish/* win-arm/
           zip -r win-arm.zip win-arm
           dotnet publish --configuration Release -r linux-x64 -p:PublishSingleFile=true --self-contained true
           mkdir linux-x64
-          mv ReceiverMeow/bin/Release/net6.0/linux-x64/publish/* linux-x64/
+          mv ReceiverMeow/bin/Release/net7.0/linux-x64/publish/* linux-x64/
           zip -r linux-x64.zip linux-x64
           dotnet publish --configuration Release -r linux-arm -p:PublishSingleFile=true --self-contained true
           mkdir linux-arm
-          mv ReceiverMeow/bin/Release/net6.0/linux-arm/publish/* linux-arm/
+          mv ReceiverMeow/bin/Release/net7.0/linux-arm/publish/* linux-arm/
           zip -r linux-arm.zip linux-arm
           dotnet publish --configuration Release -r osx-x64 -p:PublishSingleFile=true --self-contained true
           mkdir osx-x64
-          mv ReceiverMeow/bin/Release/net6.0/osx-x64/publish/* osx-x64/
+          mv ReceiverMeow/bin/Release/net7.0/osx-x64/publish/* osx-x64/
           zip -r osx-x64.zip osx-x64
           dotnet publish --configuration Release -r win-arm64 -p:PublishSingleFile=true --self-contained true
           mkdir win-arm64
-          mv ReceiverMeow/bin/Release/net6.0/win-arm64/publish/* win-arm64/
+          mv ReceiverMeow/bin/Release/net7.0/win-arm64/publish/* win-arm64/
           zip -r win-arm64.zip win-arm64
           dotnet publish --configuration Release -r linux-arm64 -p:PublishSingleFile=true --self-contained true
           mkdir linux-arm64
-          mv ReceiverMeow/bin/Release/net6.0/linux-arm64/publish/* linux-arm64/
+          mv ReceiverMeow/bin/Release/net7.0/linux-arm64/publish/* linux-arm64/
           zip -r linux-arm64.zip linux-arm64
 
       - name: Create Release

@@ -2,23 +2,22 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <Authors>chenxuuu</Authors>
     <Company>chenxublog.com</Company>
     <Description>QQ robot with lua</Description>
     <Copyright>chenxuuu</Copyright>
-    <AssemblyVersion>3.0.1.4</AssemblyVersion>
-    <FileVersion>3.0.1.4</FileVersion>
+    <AssemblyVersion>3.1.0.0</AssemblyVersion>
+    <FileVersion>3.1.0.0</FileVersion>
     <LangVersion>9.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="jieba.NET" Version="0.42.2" />
     <PackageReference Include="LibGit2Sharp" Version="0.26.2" />
-    <PackageReference Include="LuaTask" Version="1.0.7" />
     <PackageReference Include="MQTTnet" Version="3.0.16" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
-    <PackageReference Include="NLua" Version="1.5.11" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="NLua" Version="1.6.3" />
     <PackageReference Include="RestSharp" Version="106.12.0" />
     <PackageReference Include="SimpleTCPStandar" Version="1.0.1" />
     <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta15" />
