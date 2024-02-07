@@ -249,6 +249,38 @@ namespace ReceiverMeow.GoHttp
                                 raw = o
                             });
                             break;
+                        case "notify"://适配下onebot11的分类
+                            switch ((string)o["sub_type"])
+                            {
+                                case "poke"://群内戳一戳
+                                    LuaEnv.LuaStates.Run(o["group_id"].ToString(), "Poke", new
+                                    {
+                                        group = (long)o["group_id"],
+                                        qq = (long)o["target_id"],
+                                        fromqq = (long)o["user_id"],
+                                        raw = o
+                                    });
+                                    break;
+                                case "lucky_king"://群红包运气王
+                                    LuaEnv.LuaStates.Run(o["group_id"].ToString(), "LuckyKing", new
+                                    {
+                                        group = (long)o["group_id"],
+                                        qq = (long)o["target_id"],
+                                        fromqq = (long)o["user_id"],
+                                        raw = o
+                                    });
+                                    break;
+                                case "honor"://群成员荣誉变更
+                                    LuaEnv.LuaStates.Run(o["group_id"].ToString(), "Honor", new
+                                    {
+                                        group = (long)o["group_id"],
+                                        honor = (string)o["honor_type"],
+                                        qq = (long)o["user_id"],
+                                        raw = o
+                                    });
+                                    break;
+                            }
+                            break;
                     }
                     break;
                 case "request":
