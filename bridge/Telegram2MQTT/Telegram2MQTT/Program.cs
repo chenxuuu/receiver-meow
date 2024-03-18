@@ -1,5 +1,6 @@
 ﻿using MQTTnet;
 using MQTTnet.Client;
+using MQTTnet.Server;
 using Newtonsoft.Json;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
@@ -47,6 +48,14 @@ internal class Program
                 Topic = meow2tgTopic
             });
             await mqttClient.SubscribeAsync(subscribeOptions);
+        };
+
+        //断线重连
+        mqttClient.DisconnectedAsync += async (m) =>
+        {
+            Console.WriteLine("Disconnected from MQTT Broker");
+            await Task.Delay(TimeSpan.FromSeconds(2));
+            await mqttClient.ConnectAsync(mqttOptions);
         };
 
         //mqtt收到消息
