@@ -42,12 +42,14 @@ jobs:
           DOTNETOS: ${{ matrix.dotnetos }}
           DOTNETARCH: ${{ matrix.dotnetarch }}
         run: |
-          cd ReceiverMeow
-          dotnet publish -r $DOTNETOS-$DOTNETARCH -p:PublishSingleFile=true --self-contained true
-          mkdir pkg
-          mv ReceiverMeow/bin/Debug/net10.0/$DOTNETOS-$DOTNETARCH/publish/* pkg/
+          dotnet publish ReceiverMeow/ReceiverMeow/ReceiverMeow.csproj \
+            -c Release \
+            -r $DOTNETOS-$DOTNETARCH \
+            -p:PublishSingleFile=true \
+            --self-contained true \
+            -o pkg
 
       - uses: actions/upload-artifact@v4
         with:
           name: ReceiverMeow-${{ matrix.dotnetos }}-${{ matrix.dotnetarch }}
-          path: ReceiverMeow/pkg/
+          path: pkg/

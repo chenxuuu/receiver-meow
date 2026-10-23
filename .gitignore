@@ -329,3 +329,6 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder
 .mfractor/
+
+# CI 发布产物目录
+/pkg/
