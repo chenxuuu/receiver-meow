@@ -386,7 +386,7 @@ namespace ReceiverMeow
             Font f = family.CreateFont(size, FontStyle.Regular);
             image.Mutate(x => x.DrawText(text, f,
                 new Color(new Rgba32(r / 255f, g / 255f, b / 255f)), new PointF(xx, yy)));
-            var fi = TextMeasurer.Measure(text, new TextOptions(f));
+            var fi = TextMeasurer.MeasureSize(text, new TextOptions(f));
             return fi.Width;
         }
 
@@ -395,7 +395,7 @@ namespace ReceiverMeow
             FontCollection collection = new FontCollection();
             FontFamily family = collection.Add(font);
             Font f = family.CreateFont(size, FontStyle.Regular);
-            return TextMeasurer.Measure(text, new TextOptions(f)).Width;
+            return TextMeasurer.MeasureSize(text, new TextOptions(f)).Width;
         }
 
 
