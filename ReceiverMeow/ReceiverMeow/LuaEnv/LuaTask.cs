@@ -214,6 +214,7 @@ namespace ReceiverMeow.LuaEnv
             lua = new NLua.Lua();
             lua.State.Encoding = Encoding.UTF8;
             lua.LoadCLRPackage();
+            LuaPopen.Install(lua);
             if (input != null)
                 lua["input"] = input;//传递输入值
             lock (taskLock) lua.DoString(sysCode);
