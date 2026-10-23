@@ -11,6 +11,7 @@ using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -39,6 +40,44 @@ namespace ReceiverMeow
             System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
         /// <summary>
+        /// http请求使用的UserAgent
+        /// </summary>
+        private const string HttpUserAgent =
+            "Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.121 Safari/537.36";
+
+        /// <summary>
+        /// RestClient复用池，避免每次请求都新建连接
+        /// key为超时时间+是否跟随重定向
+        /// </summary>
+        private static readonly ConcurrentDictionary<(long timeout, bool followRedirects), RestClient> httpClients =
+            new ConcurrentDictionary<(long timeout, bool followRedirects), RestClient>();
+
+        /// <summary>
+        /// 获取（或新建）指定超时配置的http客户端
+        /// </summary>
+        private static RestClient GetHttpClient(long timeout, bool followRedirects = true)
+        {
+            return httpClients.GetOrAdd((timeout, followRedirects), key => new RestClient(new RestClientOptions
+            {
+                UserAgent = HttpUserAgent,
+                FollowRedirects = key.followRedirects,
+                Timeout = TimeSpan.FromMilliseconds(key.timeout)
+            }));
+        }
+
+        /// <summary>
+        /// 解析响应内容
+        /// RestSharp会自动按响应头里的charset解码，优先直接用
+        /// </summary>
+        private static string DecodeResponse(RestResponse response)
+        {
+            if (response.Content != null)
+                return response.Content;
+            var bytes = response.RawBytes;
+            return bytes == null ? "" : Encoding.UTF8.GetString(bytes);
+        }
+
+        /// <summary>
         /// 初始化函数
         /// </summary>
         public static void Initial()
@@ -54,6 +93,10 @@ namespace ReceiverMeow
             {
                 Setting = new Settings();
             }
+
+            //老配置里没有clientid时生成一个并写回，避免每次启动都换一个新的
+            if (string.IsNullOrWhiteSpace(Setting.ClientID))
+                Setting.ClientID = Guid.NewGuid().ToString();
 
             Log.Info("启动", $"接待喵 {Version} 版本正在启动中");
             Log.Debug("", @"
@@ -240,20 +283,13 @@ namespace ReceiverMeow
         /// <returns></returns>
         public static string HttpGet(string url, string para = "", long timeout = 5000, string cookie = "")
         {
-            var client = new RestClient();
-            client.UserAgent = "Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.121 Safari/537.36";
             if (!string.IsNullOrEmpty(para))
                 url = $"{url}?{para}";//直接把参数拼后面
-            client.BaseUrl = new Uri(url);
-            var request = new RestRequest(Method.GET);
-            request.Timeout = (int)timeout;
+            var request = new RestRequest(url, Method.Get);
             if (!string.IsNullOrEmpty(cookie))
                 request.AddHeader("cookie", cookie);
-            var response = client.Execute(request);
-            var encode = response.ContentEncoding;//编码
-            if (string.IsNullOrWhiteSpace(encode))
-                encode = "UTF-8";
-            return Encoding.GetEncoding(encode).GetString(response.RawBytes);
+            var response = GetHttpClient(timeout).Execute(request);
+            return DecodeResponse(response);
         }
 
         /// <summary>
@@ -265,15 +301,10 @@ namespace ReceiverMeow
         /// <returns></returns>
         public static string HttpJump(string url, long timeout = 5000, string cookie = "")
         {
-            var client = new RestClient();
-            client.UserAgent = "Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.121 Safari/537.36";
-            client.BaseUrl = new Uri(url);
-            client.FollowRedirects = false;
-            var request = new RestRequest(Method.GET);
-            request.Timeout = (int)timeout;
+            var request = new RestRequest(url, Method.Get);
             if (!string.IsNullOrEmpty(cookie))
                 request.AddHeader("cookie", cookie);
-            var response = client.Execute(request);
+            var response = GetHttpClient(timeout, followRedirects: false).Execute(request);
             foreach (var h in response.Headers)
             {
                 if (h.Name.ToLower() == "location")
@@ -295,25 +326,21 @@ namespace ReceiverMeow
             string cookie = "", string contentType = "application/x-www-form-urlencoded", string header = null, 
             bool getCookie = false)
         {
-            var client = new RestClient();
-            client.UserAgent = "Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.121 Safari/537.36";
-            client.BaseUrl = new Uri(url);
-            var request = new RestRequest(Method.POST);
-            request.Timeout = (int)timeout;
+            var request = new RestRequest(url, Method.Post);
             if (!string.IsNullOrEmpty(cookie))
                 request.AddHeader("cookie", cookie);
-            request.AddParameter(contentType, para, ParameterType.RequestBody);
+            request.AddStringBody(para, contentType);
             if(!string.IsNullOrEmpty(header))
             {
                 var hs = header.Replace("\r","").Split("\n");
                 foreach(var h in hs)
                 {
-                    var kv = h.Split(":");
+                    var kv = h.Split(new[] { ':' }, 2);
                     if (kv.Length == 2)
                         request.AddHeader(kv[0].Trim(), kv[1].Trim());
                 }
             }
-            var response = client.Execute(request);
+            var response = GetHttpClient(timeout).Execute(request);
             if(getCookie)//获取下发的cookie
             {
                 foreach (var h in response.Headers)
@@ -322,10 +349,7 @@ namespace ReceiverMeow
                         return h.Value.ToString();
                 }
             }
-            var encode = response.ContentEncoding;//编码
-            if (string.IsNullOrWhiteSpace(encode))
-                encode = "UTF-8";
-            return Encoding.GetEncoding(encode).GetString(response.RawBytes);
+            return DecodeResponse(response);
         }
 
         /// <summary>
@@ -339,17 +363,15 @@ namespace ReceiverMeow
         public static int HttpDownload(string url, string para = "", long timeout = 15000, string cookie = "",
             string path = ".")
         {
-            var client = new RestClient();
             if (!string.IsNullOrEmpty(para))
                 url = $"{url}?{para}";//直接把参数拼后面
-            client.BaseUrl = new Uri(url);
-            var request = new RestRequest(Method.GET);
-            request.Timeout = (int)timeout;
+            var request = new RestRequest(url, Method.Get);
             if (!string.IsNullOrEmpty(cookie))
                 request.AddHeader("cookie", cookie);
-            var response = client.DownloadData(request);
-            File.WriteAllBytes(path, response);
-            return response.Length;
+            var response = GetHttpClient(timeout).Execute(request);
+            var bytes = response.RawBytes ?? Array.Empty<byte>();
+            File.WriteAllBytes(path, bytes);
+            return bytes.Length;
         }
 
 

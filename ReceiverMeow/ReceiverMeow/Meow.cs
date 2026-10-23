@@ -128,6 +128,9 @@ namespace ReceiverMeow
                                     case "PASSWORD":
                                         Utils.Setting.MqttPassword = t[2];
                                         break;
+                                    case "CLIENTID":
+                                        Utils.Setting.ClientID = t[2];
+                                        break;
                                     case "TLS":
                                         Utils.Setting.MqttTLS = t[2].ToUpper() == "TRUE";
                                         break;

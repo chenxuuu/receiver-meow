@@ -13,24 +13,47 @@ namespace ReceiverMeow.GoHttp
     class Ws
     {
         private static WebSocket ws = null;
+        private static string wsUrl = null;
         private static string module = "WS";
+        //socket收发与替换的锁
+        private static readonly object wsLock = new object();
+        //是否正在重连，防止OnClose重复触发时起多个重连线程
+        private static bool reconnecting = false;
+
         public static void Connect(string url, int port)
         {
             if(ws!=null)
                 Log.Error(module, $"禁止多次初始化 ws！");
-            Log.Info(module, $"开始连接 ws://{url}:{port}");
+            wsUrl = $"ws://{url}:{port}/";
+            Log.Info(module, $"开始连接 {wsUrl}");
             try
             {
-                ws = new WebSocket($"ws://{url}:{port}/");
-                ws.OnClose += Ws_OnClose;
-                ws.OnOpen += Ws_OnOpen;
-                ws.OnMessage += Ws_OnMessage;
-                ws.Connect();
+                var socket = CreateSocket();
+                socket.Connect();
+                lock (wsLock)
+                    ws = socket;
             }
             catch(Exception e)
             {
                 Log.Error(module, $"连接错误：\n{e.Message}");
             }
+        }
+
+        /// <summary>
+        /// 新建一个socket实例并挂好事件
+        /// WebSocket断开后实例不可复用，重连必须新建
+        /// </summary>
+        private static WebSocket CreateSocket()
+        {
+            var socket = new WebSocket(wsUrl)
+            {
+                WaitTime = TimeSpan.FromSeconds(10)
+            };
+            socket.OnClose += Ws_OnClose;
+            socket.OnOpen += Ws_OnOpen;
+            socket.OnMessage += Ws_OnMessage;
+            socket.OnError += Ws_OnError;
+            return socket;
         }
 
         private static void Ws_OnMessage(object sender, MessageEventArgs e)
@@ -52,19 +75,82 @@ namespace ReceiverMeow.GoHttp
             Log.Info(module, $"已连接！");
         }
 
+        private static void Ws_OnError(object sender, ErrorEventArgs e)
+        {
+            Log.Warn(module, $"socket错误：{e.Message}");
+        }
+
         private static void Ws_OnClose(object sender, CloseEventArgs e)
         {
-            while(true)
+            //已经被替换掉的旧实例，忽略它的关闭事件
+            if (!ReferenceEquals(sender, ws))
+                return;
+            Log.Warn(module, $"连接断开（{e.Code}:{e.Reason}）！尝试两秒后重连...");
+            StartReconnect();
+        }
+
+        /// <summary>
+        /// 释放旧socket，先摘掉事件避免关闭时刷一堆假告警
+        /// </summary>
+        private static void CloseSocket(WebSocket socket)
+        {
+            if (socket == null)
+                return;
+            try
+            {
+                socket.OnClose -= Ws_OnClose;
+                socket.OnOpen -= Ws_OnOpen;
+                socket.OnMessage -= Ws_OnMessage;
+                socket.OnError -= Ws_OnError;
+                socket.Close();
+            }
+            catch { }
+        }
+
+        /// <summary>
+        /// 断线重连：每两秒新建一个socket尝试一次，直到成功
+        /// </summary>
+        private static void StartReconnect()
+        {
+            lock (wsLock)
+            {
+                if (reconnecting)
+                    return;
+                reconnecting = true;
+            }
+            Task.Run(async () =>
             {
                 try
                 {
-                    Log.Warn(module, $"连接断开！尝试两秒后重连...");
-                    Thread.Sleep(2);
-                    ws.Connect();
-                    break;
+                    while (true)
+                    {
+                        await Task.Delay(2000);
+                        try
+                        {
+                            var socket = CreateSocket();
+                            socket.Connect();
+                            WebSocket old;
+                            lock (wsLock)
+                            {
+                                old = ws;
+                                ws = socket;
+                            }
+                            Log.Info(module, $"重连成功！");
+                            CloseSocket(old);
+                            return;
+                        }
+                        catch (Exception e)
+                        {
+                            Log.Warn(module, $"重连失败：{e.Message}");
+                        }
+                    }
                 }
-                catch{}
-            }
+                finally
+                {
+                    lock (wsLock)
+                        reconnecting = false;
+                }
+            });
         }
 
 
@@ -77,11 +163,16 @@ namespace ReceiverMeow.GoHttp
         {
             try
             {
-                if (ws != null)
+                WebSocket socket;
+                lock (wsLock)
+                    socket = ws;
+                if (socket != null && socket.ReadyState == WebSocketState.Open)
                 {
-                    ws.Send(d);
+                    socket.Send(d);
                     Log.Debug(module, $"发送数据：{Encoding.Default.GetString(d)}");
                 }
+                else
+                    return false;
             }
             catch 
             {

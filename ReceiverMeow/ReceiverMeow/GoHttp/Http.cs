@@ -15,6 +15,14 @@ namespace ReceiverMeow.GoHttp
         private static int port = 5700;
         private static string module = "HTTP";
 
+        /// <summary>
+        /// 复用的http客户端，避免高频发消息时反复建连接
+        /// </summary>
+        private static readonly RestClient client = new RestClient(new RestClientOptions
+        {
+            Timeout = TimeSpan.FromSeconds(100)
+        });
+
 
         public static void Set(string h, int p)
         {
@@ -32,15 +40,13 @@ namespace ReceiverMeow.GoHttp
         public static string Send(string path, string json)
         {
             Log.Debug(module, $"发送{json}到{path}");
-            var client = new RestClient();
-            client.BaseUrl = new Uri($"http://{host}:{port}/{path}");
-            var request = new RestRequest(RestSharp.Method.POST);
-            request.AddParameter("application/json", json, ParameterType.RequestBody);
+            var request = new RestRequest($"http://{host}:{port}/{path}", Method.Post);
+            request.AddStringBody(json, "application/json");
             var response = client.Execute(request);
 
             if(response.StatusCode != System.Net.HttpStatusCode.OK)
                 Log.Warn(module, $"HTTP返回状态码：{(int)response.StatusCode}");
-            return Encoding.UTF8.GetString(response.RawBytes);
+            return Encoding.UTF8.GetString(response.RawBytes ?? Array.Empty<byte>());
         }
 
         /// <summary>

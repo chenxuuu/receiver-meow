@@ -17,7 +17,7 @@ namespace ReceiverMeow
         private string mqttUser = "user";
         private string mqttPassword = "password";
         private bool mqttTLS = false;
-        private string clientID = Guid.NewGuid().ToString();
+        private string clientID = "";
         private int keepAlive = 60;
         private bool tcpServerEnable = false;
         private int tcpServerPort = 23333;
