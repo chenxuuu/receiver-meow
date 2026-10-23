@@ -17,6 +17,25 @@ namespace ReceiverMeow.LuaEnv
         private static string moudle = "MQTT";
 
         /// <summary>
+        /// 连接流程互斥，防止并发ConnectAsync
+        /// mqtt客户端不允许在连接/断开过程中再次连接，会抛Not allowed to connect...
+        /// </summary>
+        private static readonly SemaphoreSlim connectGate = new SemaphoreSlim(1, 1);
+        /// <summary>
+        /// 是否已有重连线程在跑
+        /// </summary>
+        private static readonly object reconnectLock = new object();
+        private static bool reconnecting = false;
+        /// <summary>
+        /// 连接超时时间
+        /// </summary>
+        private static readonly TimeSpan connectTimeout = TimeSpan.FromSeconds(10);
+        /// <summary>
+        /// 断线后重试间隔
+        /// </summary>
+        private static readonly TimeSpan reconnectInterval = TimeSpan.FromSeconds(5);
+
+        /// <summary>
         /// 初始化各个参数
         /// </summary>
         public static void Initial()
@@ -50,23 +69,13 @@ namespace ReceiverMeow.LuaEnv
                 return Task.CompletedTask;
             };
 
-            //断线重连
-            mqttClient.DisconnectedAsync += async e =>
+            //断线重连（连接失败也会走到这里）
+            mqttClient.DisconnectedAsync += e =>
             {
                 Log.Warn(moudle, "MQTT连接已断开");
-                if (!Utils.Setting.MqttEnable)
-                    return;
-                await Task.Delay(TimeSpan.FromSeconds(5));
-                Log.Warn(moudle, "MQTT尝试重连");
-                try
-                {
-                    await mqttClient.ConnectAsync(BuildOptions(), CancellationToken.None);
-                }
-                catch (Exception ee)
-                {
-                    Log.Warn(moudle, $"MQTT重连失败");
-                    Log.Warn(moudle, $"原因： {ee.Message}");
-                }
+                if (Utils.Setting.MqttEnable)
+                    StartReconnect();
+                return Task.CompletedTask;
             };
         }
 
@@ -79,10 +88,76 @@ namespace ReceiverMeow.LuaEnv
                 .WithClientId(Utils.Setting.ClientID)
                 .WithTcpServer(Utils.Setting.MqttBroker, Utils.Setting.MqttPort)
                 .WithCredentials(Utils.Setting.MqttUser, Utils.Setting.MqttPassword)
-                .WithKeepAlivePeriod(TimeSpan.FromSeconds(Utils.Setting.KeepAlive));
+                .WithKeepAlivePeriod(TimeSpan.FromSeconds(Utils.Setting.KeepAlive))
+                //不设的话默认100秒，broker不通时会卡很久才报一个含糊的"MQTT connect canceled."
+                .WithTimeout(connectTimeout);
             if (Utils.Setting.MqttTLS)
                 op = op.WithTlsOptions(o => o.UseTls());
             return op.WithCleanSession().Build();
+        }
+
+        /// <summary>
+        /// 执行一次连接，已有连接流程在跑时直接跳过
+        /// </summary>
+        private static async Task ConnectOnce()
+        {
+            if (mqttClient == null || mqttClient.IsConnected)
+                return;
+            if (!connectGate.Wait(0))
+            {
+                Log.Debug(moudle, "已有连接流程正在进行，跳过本次连接");
+                return;
+            }
+            try
+            {
+                await mqttClient.ConnectAsync(BuildOptions(), CancellationToken.None);
+            }
+            catch (Exception e)
+            {
+                Log.Warn(moudle, $"服务器连接失败：{Utils.Setting.MqttBroker}:{Utils.Setting.MqttPort}");
+                Log.Warn(moudle, $"原因：{e.Message}");
+                if (e.InnerException != null)
+                    Log.Warn(moudle, $"详细原因：{e.InnerException.Message}");
+                if (e.Message.IndexOf("cancel", StringComparison.OrdinalIgnoreCase) >= 0)
+                    Log.Warn(moudle, $"连接超时（{connectTimeout.TotalSeconds:0}秒）。" +
+                        "请检查服务器地址、端口、用户名密码以及本机网络能否访问该地址");
+            }
+            finally
+            {
+                connectGate.Release();
+            }
+        }
+
+        /// <summary>
+        /// 断线重连：每5秒试一次，直到连上或用户关掉mqtt
+        /// </summary>
+        private static void StartReconnect()
+        {
+            lock (reconnectLock)
+            {
+                if (reconnecting)
+                    return;
+                reconnecting = true;
+            }
+            Task.Run(async () =>
+            {
+                try
+                {
+                    while (Utils.Setting.MqttEnable && mqttClient != null && !mqttClient.IsConnected)
+                    {
+                        await Task.Delay(reconnectInterval);
+                        if (!Utils.Setting.MqttEnable)
+                            break;
+                        Log.Warn(moudle, "MQTT尝试重连");
+                        await ConnectOnce();
+                    }
+                }
+                finally
+                {
+                    lock (reconnectLock)
+                        reconnecting = false;
+                }
+            });
         }
 
         /// <summary>
@@ -163,19 +238,7 @@ namespace ReceiverMeow.LuaEnv
                 Log.Info(moudle, "已连接，无需再次连接");
                 return;
             }
-            Task.Run(async () =>
-            {
-                try
-                {
-                    await mqttClient.ConnectAsync(BuildOptions(), CancellationToken.None);
-                }
-                catch (Exception e)
-                {
-                    Log.Warn(moudle, $"服务器连接失败：{Utils.Setting.MqttBroker}:{Utils.Setting.MqttPort}" +
-                        $",{Utils.Setting.MqttUser},{Utils.Setting.MqttPassword},{Utils.Setting.MqttTLS}");
-                    Log.Warn(moudle, $"原因：{e.Message}");
-                }
-            });
+            Task.Run(ConnectOnce);
         }
 
         /// <summary>
