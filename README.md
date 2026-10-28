@@ -89,7 +89,24 @@ do
 done
 ```
 
-命令行可添加参数（`http的端口`、`ws的端口`），运行后，输入`?`即可查看帮助
+### 命令行参数
+
+```bash
+receiver-meow.exe [nows] [wsUrl] [wsPort] [httpUrl] [httpPort]
+```
+
+| 参数 | 说明 | 默认值 |
+|--|--|--|
+| `wsUrl` | OneBot 的 WebSocket 地址，只填 IP 或域名 | `127.0.0.1` |
+| `wsPort` | OneBot 的 WebSocket 端口，1~65535 | `6700` |
+| `httpUrl` | OneBot 的 HTTP 地址，只填 IP 或域名 | `127.0.0.1` |
+| `httpPort` | OneBot 的 HTTP 端口，1~65535 | `5700` |
+| `nows` | 开关，不连接 WebSocket，只走 HTTP 上报（位置随意） | 关闭 |
+
+- 四个位置参数要么都不填（用默认值），要么按 `wsUrl wsPort httpUrl httpPort` 的顺序一起填。
+- 地址里不要带 `http://`、`ws://` 前缀，端口也不要写在地址里。
+- 填错时会打印具体是哪一项有问题，并附上完整用法。
+- `-h`、`--help` 查看用法说明；启动后输入 `?` 可查看运行中的命令。
 
 默认脚本可以在群内输入`帮助`查看自带功能
 

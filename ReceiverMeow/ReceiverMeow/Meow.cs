@@ -10,31 +10,20 @@ namespace ReceiverMeow
         static void Main(string[] args)
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
+            //处理命令行参数，填错或要求查看帮助时会打印提示并退出
+            var opt = StartupArgs.Parse(args);
+
             Utils.Initial();
 
-            //处理命令行
-            string wsUrl = "127.0.0.1";
-            int wsPort = 6700;
-            string httpUrl = "127.0.0.1";
-            int httpPort = 5700;
-            if (args.Length >= 4)
+            //打印实际使用的连接配置，方便核对参数是否填对
+            Log.Info("连接配置", $"WebSocket：{(opt.NoWs ? "已用nows参数禁用" : $"{opt.WsUrl}:{opt.WsPort}")}");
+            Log.Info("连接配置", $"HTTP：{opt.HttpUrl}:{opt.HttpPort}");
+
+            GoHttp.Http.Set(opt.HttpUrl, opt.HttpPort);
+            if (!opt.NoWs)
             {
-                try
-                {
-                    wsPort = int.Parse(args[1]);
-                    httpPort = int.Parse(args[3]);
-                    wsUrl = args[0];
-                    httpUrl = args[2];
-                }
-                catch
-                {
-                    Log.Error("终端", $"参数错误，请使用 xxx.exe [wsUrl] [wsPort] [httpUrl] [httpPort]");
-                }
-            }
-            if (!(args.Length >= 1 && args[0] == "nows"))
-            {
-                GoHttp.Http.Set(httpUrl, httpPort);
-                GoHttp.Ws.Connect(wsUrl, wsPort);
+                GoHttp.Ws.Connect(opt.WsUrl, opt.WsPort);
             }
 
             //lua启动事件
